@@ -7,8 +7,8 @@
 .version-history {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-1);                 /* 0.25rem (4px) between sections */
-  border-radius: var(--ai-radius-lg);
+  gap: var(--ao-spacing-1);                 /* 0.25rem (4px) between sections */
+  border-radius: var(--ao-radius-lg);
   position: relative;
 }
 
@@ -17,30 +17,30 @@
 .version-history__heading {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-2);                 /* 0.375rem (6px) between title row and subtitle row */
-  padding-bottom: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);                 /* 0.375rem (6px) between title row and subtitle row */
+  padding-bottom: var(--ao-spacing-2);
   width: 100%;
 }
 
 .version-history__heading-title {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);                 /* 0.5rem (8px) between icon and title */
+  gap: var(--ao-spacing-3);                 /* 0.5rem (8px) between icon and title */
 }
 
 .version-history__icon-history {
-  width: var(--ai-icon-size-md);           /* 1.25rem (20px) — BUG FIX: was --ai-spacing-6 (24px) */
-  height: var(--ai-icon-size-md);
-  color: var(--ai-icon-primary);
+  width: var(--ao-icon-size-md);           /* 1.25rem (20px) — BUG FIX: was --ao-spacing-6 (24px) */
+  height: var(--ao-icon-size-md);
+  color: var(--ao-icon-primary);
   flex-shrink: 0;
 }
 
 .version-history__heading-title-text {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-sm);       /* 1rem (16px) */
-  font-weight: var(--ai-font-bold);         /* 700 */
-  line-height: var(--ai-leading-xs);         /* 1rem (16px) */
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-sm);       /* 1rem (16px) */
+  font-weight: var(--ao-font-bold);         /* 700 */
+  line-height: var(--ao-leading-xs);         /* 1rem (16px) */
+  color: var(--ao-text-primary);
 }
 
 .version-history__heading-subtitle {
@@ -56,17 +56,17 @@
 
 .version-history__heading-subtitle-text {
   flex: 1;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);       /* 0.875rem (14px) */
-  font-weight: var(--ai-font-regular);      /* 400 */
-  line-height: var(--ai-leading-md);         /* 1.5rem (24px) */
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);       /* 0.875rem (14px) */
+  font-weight: var(--ao-font-regular);      /* 400 */
+  line-height: var(--ao-leading-md);         /* 1.5rem (24px) */
+  color: var(--ao-text-contrast);
 }
 
 .version-history__chevron {
-  width: var(--ai-icon-size-sm);           /* 1rem (16px) */
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-contrast);
+  width: var(--ao-icon-size-sm);           /* 1rem (16px) */
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-contrast);
   flex-shrink: 0;
 }
 
@@ -80,7 +80,7 @@
 .version-history__rows {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-1);                 /* 0.25rem (4px) */
+  gap: var(--ao-spacing-1);                 /* 0.25rem (4px) */
   position: relative;
 }
 
@@ -88,11 +88,11 @@
  * calc: 16px (row h-padding) + 12px (half of 24px avatar) = 28px */
 .version-history__timeline {
   position: absolute;
-  left: calc(var(--ai-spacing-5) + var(--ai-spacing-6) / 2);
+  left: calc(var(--ao-spacing-5) + var(--ao-spacing-6) / 2);
   top: 0;
   bottom: 0;
   width: 1px;
-  background-color: var(--ai-border-secondary);
+  background-color: var(--ao-border-secondary);
   pointer-events: none;
   z-index: 0;
 }
@@ -112,7 +112,7 @@
 .version-history__footer {
   display: flex;
   align-items: center;
-  padding: var(--ai-spacing-3) var(--ai-spacing-5); /* 8px 16px — matches row padding */
+  padding: var(--ao-spacing-3) var(--ao-spacing-5); /* 8px 16px — matches row padding */
   background: none;
   border: none;
   cursor: pointer;
@@ -121,10 +121,10 @@
 }
 
 .version-history__footer-label {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);      /* 0.75rem (12px) */
-  font-weight: var(--ai-font-regular);      /* 400 */
-  line-height: var(--ai-leading-xs);         /* 1rem (16px) */
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);      /* 0.75rem (12px) */
+  font-weight: var(--ao-font-regular);      /* 400 */
+  line-height: var(--ao-leading-xs);         /* 1rem (16px) */
+  color: var(--ao-text-primary);
   letter-spacing: 0.12px;                   /* optical, kept as px */
 }

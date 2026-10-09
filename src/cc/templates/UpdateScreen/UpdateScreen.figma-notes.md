@@ -34,7 +34,7 @@ disabled so two updates can't overlap.
 | The other eight | Spinner + "Running…" | No: each is a single server step, with nothing to stop part-way |
 
 - **Progress bar:** RoomCard's Figma-built bar, token for token (`spacing-2` tall, `radius-full`, `surface-contrast` track,
-  `surface-brand` fill). The fill eases with `--ai-transition-default`, and doesn't under reduced motion.
+  `surface-brand` fill). The fill eases with `--ao-transition-default`, and doesn't under reduced motion.
 - **Outcome banners:** success "… successful · 128 of 128 skins updated."; cancel (Alert `--warning`) "… cancelled · 34 of 128 skins
   updated."; failure (Alert `--danger`) "… failed · 384 of 640 links updated before it stopped."
 - **a11y:** the status block is `role="status"`, the row gets `aria-busy`, the Cancel button is labelled "Cancel Update All Skins", and

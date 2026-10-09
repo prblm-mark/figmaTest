@@ -10,49 +10,49 @@
   <style>
     body {
       margin: 0;
-      padding: var(--ai-spacing-7);
-      background: var(--ai-surface-secondary);
+      padding: var(--ao-spacing-7);
+      background: var(--ao-surface-secondary);
       min-height: 100vh;
-      color: var(--ai-text-primary);
-      font-family: var(--ai-font-body);
+      color: var(--ao-text-primary);
+      font-family: var(--ao-font-body);
     }
     .demo-section {
-      padding: var(--ai-spacing-6);
-      background: var(--ai-surface-primary);
-      border-radius: var(--ai-radius-lg);
-      margin-bottom: var(--ai-spacing-5);
-      border: 1px solid var(--ai-border-secondary);
+      padding: var(--ao-spacing-6);
+      background: var(--ao-surface-primary);
+      border-radius: var(--ao-radius-lg);
+      margin-bottom: var(--ao-spacing-5);
+      border: 1px solid var(--ao-border-secondary);
     }
     .demo-section__title {
-      font-size: var(--ai-font-fixed-xs);
-      font-weight: var(--ai-font-semibold);
-      color: var(--ai-text-contrast);
+      font-size: var(--ao-font-fixed-xs);
+      font-weight: var(--ao-font-semibold);
+      color: var(--ao-text-contrast);
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin: 0 0 var(--ai-spacing-5);
+      margin: 0 0 var(--ao-spacing-5);
     }
     /* Place items on the CC menu-panel-dark bg so the visible colours match
        what a consumer will see in context. */
     .menu-bg {
       background: var(--cc-mainmenu-secondary-bg);
-      padding: var(--ai-spacing-4);
-      border-radius: var(--ai-radius-md);
+      padding: var(--ao-spacing-4);
+      border-radius: var(--ao-radius-md);
       width: 280px;
     }
-    .stack { display: flex; flex-direction: column; gap: var(--ai-spacing-1); }
+    .stack { display: flex; flex-direction: column; gap: var(--ao-spacing-1); }
   </style>
 </head>
 <body>
 
-  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-3);">MainMenuItem</h1>
-  <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-7); max-width: 60ch;">
+  <h1 style="font-size: var(--ao-font-fixed-4xl); font-weight: var(--ao-font-bold); color: var(--ao-text-primary); margin: 0 0 var(--ao-spacing-3);">MainMenuItem</h1>
+  <p style="font-size: var(--ao-font-fixed-sm); color: var(--ao-text-contrast); margin: 0 0 var(--ao-spacing-7); max-width: 60ch;">
     The atomic row used inside the Menu panel. 4 component states from Figma — Default, Hover, Selected, Expanded. Rows always fill their parent container's width.
   </p>
 
   <div class="demo-section">
     <p class="demo-section__title">State = Default</p>
-    <p style="font-size: var(--ai-font-fixed-xs); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-3);">
-      Transparent bg. Label uses <code>--ai-text-invert-secondary</code>; icon uses <code>--ai-icon-invert-secondary</code> (the dusty pair).
+    <p style="font-size: var(--ao-font-fixed-xs); color: var(--ao-text-contrast); margin: 0 0 var(--ao-spacing-3);">
+      Transparent bg. Label uses <code>--ao-text-invert-secondary</code>; icon uses <code>--ao-icon-invert-secondary</code> (the dusty pair).
     </p>
     <div class="menu-bg">
       <div class="stack">
@@ -70,7 +70,7 @@
 
   <div class="demo-section">
     <p class="demo-section__title">State = Hover</p>
-    <p style="font-size: var(--ai-font-fixed-xs); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-3);">
+    <p style="font-size: var(--ao-font-fixed-xs); color: var(--ao-text-contrast); margin: 0 0 var(--ao-spacing-3);">
       Pinned via inline style so the static showcase captures it. In app, this kicks in via <code>:hover</code>. Bg goes to <code>--cc-mainmenu-primary-bg</code>; label and icon colours stay at the Default duotone. Items with a submenu carry a trailing chevron-down.
     </p>
     <div class="menu-bg">
@@ -84,8 +84,8 @@
 
   <div class="demo-section">
     <p class="demo-section__title">State = Selected</p>
-    <p style="font-size: var(--ai-font-fixed-xs); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-3);">
-      Bg <code>--cc-mainmenu-primary-bg</code>. Label brightens to <code>--ai-text-invert</code> and icon to <code>--cc-mainmenu-icon</code>. No chevron rotation — this is a terminal item, not a submenu trigger.
+    <p style="font-size: var(--ao-font-fixed-xs); color: var(--ao-text-contrast); margin: 0 0 var(--ao-spacing-3);">
+      Bg <code>--cc-mainmenu-primary-bg</code>. Label brightens to <code>--ao-text-invert</code> and icon to <code>--cc-mainmenu-icon</code>. No chevron rotation — this is a terminal item, not a submenu trigger.
     </p>
     <div class="menu-bg">
       <button type="button" class="cc-main-menu-item cc-main-menu-item--selected">
@@ -97,7 +97,7 @@
 
   <div class="demo-section">
     <p class="demo-section__title">State = Expanded</p>
-    <p style="font-size: var(--ai-font-fixed-xs); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-3);">
+    <p style="font-size: var(--ao-font-fixed-xs); color: var(--ao-text-contrast); margin: 0 0 var(--ao-spacing-3);">
       Same colour treatment as Selected, plus the chevron is flipped (<code>scaleY(-1)</code>) so chevron-down points up — signalling the submenu below is open.
     </p>
     <div class="menu-bg">

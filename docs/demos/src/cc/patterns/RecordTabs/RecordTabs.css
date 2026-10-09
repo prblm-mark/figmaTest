@@ -12,24 +12,24 @@
 .record-tabs {
   display: flex;
   align-items: stretch;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
   min-width: 0;
-  padding: var(--ai-spacing-0-5) var(--ai-spacing-5) 0;
+  padding: var(--ao-spacing-0-5) var(--ao-spacing-5) 0;
   overflow: hidden;
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
 }
 
 .record-tabs--full {
   border-width: 0 0 1px;
-  border-radius: var(--ai-radius-none);
+  border-radius: var(--ao-radius-none);
 }
 
 .record-tabs__list {
   display: flex;
   align-items: stretch;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
   min-width: 0;
   /* Overflow navigation (designer, 2026-10-02): when the tabs don't fit, the list scrolls
    * sideways instead of clipping, by swipe (native), mouse drag / wheel and keyboard focus
@@ -58,14 +58,14 @@
 .record-tab {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  padding: var(--ai-spacing-5) 0;
+  gap: var(--ao-spacing-2);
+  padding: var(--ao-spacing-5) 0;
   border-bottom: 2px solid transparent;
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-medium);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
   text-decoration: none;
   white-space: nowrap;
 }
@@ -76,13 +76,13 @@
 }
 
 .record-tab--active {
-  border-bottom-color: var(--ai-border-brand);
-  color: var(--ai-text-brand);
-  font-weight: var(--ai-font-semibold);   /* designer amend 2026-09-29 (was medium, as the rest) */
+  border-bottom-color: var(--ao-border-brand);
+  color: var(--ao-text-brand);
+  font-weight: var(--ao-font-semibold);   /* designer amend 2026-09-29 (was medium, as the rest) */
 }
 
 .record-tab:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
 }
 
@@ -90,20 +90,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: var(--ai-spacing-6);
-  padding: 0 var(--ai-spacing-2);
-  border-radius: var(--ai-radius-full);
-  background-color: var(--ai-surface-info-soft);
-  font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-info);
+  min-width: var(--ao-spacing-6);
+  padding: 0 var(--ao-spacing-2);
+  border-radius: var(--ao-radius-full);
+  background-color: var(--ao-surface-info-soft);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-info);
 }
 
 .record-tabs__actions {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   margin-left: auto;
 }
 
@@ -114,11 +114,11 @@
 .record-tabs__sidebar-toggle {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-secondary);
+  gap: var(--ao-spacing-3);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
   white-space: nowrap;
 }
 
@@ -136,16 +136,16 @@
   /* Tighter bar on mobile (designer amend, 2026-09-30): gap spacing-3, side padding spacing-4
    * (desktop spacing-5 / spacing-5). */
   .record-tabs {
-    gap: var(--ai-spacing-3);
-    padding: var(--ai-spacing-0-5) var(--ai-spacing-4) 0;
+    gap: var(--ao-spacing-3);
+    padding: var(--ao-spacing-0-5) var(--ao-spacing-4) 0;
   }
 
   .record-tabs__list {
-    gap: var(--ai-spacing-3);   /* between the tabs; desktop spacing-5 */
+    gap: var(--ao-spacing-3);   /* between the tabs; desktop spacing-5 */
   }
 
   .record-tab {
-    font-size: var(--ai-font-fixed-2xs);   /* designer amend, 2026-09-30; desktop xs */
+    font-size: var(--ao-font-fixed-2xs);   /* designer amend, 2026-09-30; desktop xs */
   }
 
   .record-tabs__import {
@@ -155,7 +155,7 @@
   /* Any tab action with an icon + a label wrapper (+ Add; Cancel / Save on the form screens)
    * becomes the sm icon-only square. */
   .record-tabs__actions .btn:has(> .record-tabs__btn-label) {
-    width: var(--ai-spacing-7);
+    width: var(--ao-spacing-7);
     padding: 0;
     gap: 0;
   }

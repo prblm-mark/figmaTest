@@ -32,7 +32,7 @@
   height: 100dvh;
   margin: 0;
   background: var(--cc-ui-primary-bg);
-  font-family: var(--ai-font-body);
+  font-family: var(--ao-font-body);
 }
 
 .cc-control__sidebar {
@@ -43,7 +43,7 @@
   height: 100dvh;
   min-width: 0;
   /* Stack above .cc-control__main so the cc-sidebar-menu's right-
-   * edge drop shadow (var(--ai-shadow-cc-rail), applied when the menu
+   * edge drop shadow (var(--ao-shadow-cc-rail), applied when the menu
    * panel is docked open) paints over the chrome + page backgrounds
    * instead of being obscured by them. Sidebar and main are flex
    * siblings under .cc-control; without z-index, main paints last
@@ -83,7 +83,7 @@
 
 .cc-control__chrome {
   flex: 0 0 auto;
-  border-bottom: 1px solid var(--ai-border-secondary);
+  border-bottom: 1px solid var(--ao-border-secondary);
   /* Stacking + position so dropdown panels anchored inside (Zone
    * Selector, User Menu) layer above the scrolling page content. */
   position: relative;
@@ -105,7 +105,7 @@
    the moment scrolling starts. The chrome is z-index 1, so it paints over the
    page beneath. */
 .cc-control__chrome--flush.cc-control__chrome--scrolled {
-  box-shadow: 0 1px 0 var(--ai-border-secondary);
+  box-shadow: 0 1px 0 var(--ao-border-secondary);
 }
 
 /* Standard width, both themes (designer, 2026-10-02): once the page scrolls
@@ -113,14 +113,14 @@
    rule above instead. The chrome is z-index 1, so the shadow paints over the
    page. The transition sits on the resting rule so it eases both ways. */
 .cc-control:not([data-cc-width="full"]) .cc-control__chrome .cc-header-group {
-  transition: box-shadow var(--ai-transition-default);
+  transition: box-shadow var(--ao-transition-default);
 }
 
 /* Only a group that holds a header block. The Seating Planner's group is the top
    nav alone, and that screen already puts shadow/sm on the chrome itself when it
    scrolls (SeatingPlanner.css, 2026-08-27). Without this guard it got both. */
 .cc-control:not([data-cc-width="full"]) .cc-control__chrome--scrolled .cc-header-group:has(.cc-header) {
-  box-shadow: var(--ai-shadow-sm);
+  box-shadow: var(--ao-shadow-sm);
 }
 
 /* Full-width toggle icon (2026-10-01) — the button carries both icons and
@@ -147,7 +147,7 @@
    where the menu ends: the content column gets a left rule. Light needs none,
    because its menu is dark teal against a white page. */
 [data-theme="dark"] .cc-control[data-cc-width="full"] .cc-control__main {
-  border-inline-start: 1px solid var(--ai-border-secondary);
+  border-inline-start: 1px solid var(--ao-border-secondary);
 }
 
 /* The top nav above the header is the same colour as it, so the two need a
@@ -155,7 +155,7 @@
    side padding (below) would leave a 1px gap at each end of the nav and
    header in an edge-to-edge layout, so it is dropped here. */
 [data-theme="dark"] .cc-control[data-cc-width="full"] .cc-top-navigation {
-  border-block-end: 1px solid var(--ai-border-secondary);
+  border-block-end: 1px solid var(--ao-border-secondary);
 }
 
 [data-theme="dark"] .cc-control[data-cc-width="full"] .cc-control__chrome {
@@ -168,7 +168,7 @@
    the chrome's side padding (below) draws at each end. Full width uses a real
    border on the top nav instead (above), because it drops that padding. */
 [data-theme="dark"] .cc-control:not([data-cc-width="full"]) .cc-header-group {
-  gap: var(--ai-spacing-px);
+  gap: var(--ao-spacing-px);
 }
 
 /* …and no rule under the header group, so the header meets the page directly
@@ -182,7 +182,7 @@
 
 /* Dark mode: hairline horizontal padding inside the chrome wrapper. */
 [data-theme="dark"] .cc-control__chrome {
-  padding: 0 var(--ai-spacing-px);
+  padding: 0 var(--ao-spacing-px);
 }
 
 /* Dropdown escape overrides — mirror the HeaderGroup demo's
@@ -206,10 +206,10 @@
 .cc-control__page {
   flex: 1 1 auto;
   overflow-y: auto;
-  padding: var(--ai-spacing-6);
+  padding: var(--ao-spacing-6);
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-7);
+  gap: var(--ao-spacing-7);
   /* Container query context — template-level reflow rules below use
      @container cs-page so the layout responds to the actual content
      column width, not the viewport. This matters because the docked
@@ -253,7 +253,7 @@
    (the Seating Planner) sets its own background back. */
 .cc-control__page.cc-control__page--flush {
   padding: 0;
-  background: var(--ai-surface-primary);
+  background: var(--ao-surface-primary);
 }
 
 /* Desktop + hover-capable pointers only: hide the thumb at rest and fade it in
@@ -262,7 +262,7 @@
 @media (hover: hover) and (min-width: 768px) {
   .cc-control__page {
     scrollbar-color: transparent transparent;
-    transition: scrollbar-color var(--ai-transition-default);
+    transition: scrollbar-color var(--ao-transition-default);
   }
   .cc-control__page:hover {
     scrollbar-color: var(--cc-actions-menu-primary-bg) transparent;
@@ -284,17 +284,17 @@
     scrollbar-width: auto;
   }
   .cc-control__page--flush::-webkit-scrollbar {
-    width: var(--ai-spacing-4);
+    width: var(--ao-spacing-4);
   }
   .cc-control__page--flush::-webkit-scrollbar-track {
     background: transparent;
-    border-left: 1px solid var(--ai-border-secondary);
+    border-left: 1px solid var(--ao-border-secondary);
   }
   .cc-control__page--flush::-webkit-scrollbar-thumb {
     background-color: var(--cc-actions-menu-primary-bg);
     background-clip: padding-box;
     border: 3px solid transparent;
-    border-radius: var(--ai-radius-full);
+    border-radius: var(--ao-radius-full);
   }
   @media (hover: hover) and (min-width: 768px) {
     .cc-control__page--flush::-webkit-scrollbar-thumb { background-color: transparent; }
@@ -305,19 +305,19 @@
 }
 
 /* Alert + card row share one container (Figma Frame 229, node 4183:14662):
-   stacked vertically with a --ai-spacing-5 (16px) gap — tighter than the
+   stacked vertically with a --ao-spacing-5 (16px) gap — tighter than the
    spacing-7 page gap that separates the other top-level blocks. */
 .cc-control__alert-cards {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
 }
 
 /* 3-col card row: StatCard / StatCard / UpgradeCard at desktop. */
 .cc-control__cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   align-items: stretch;
 }
 
@@ -328,30 +328,30 @@
    to the cs-page container-query context. */
 @container cs-page (min-width: 768px) {
   .cc-control__cards {
-    gap: var(--ai-spacing-5);
+    gap: var(--ao-spacing-5);
   }
   .cc-control__cards .stat-card {
-    gap: var(--ai-spacing-5);
-    min-height: var(--ai-spacing-13);
-    padding: var(--ai-spacing-5);
+    gap: var(--ao-spacing-5);
+    min-height: var(--ao-spacing-13);
+    padding: var(--ao-spacing-5);
   }
   .cc-control__cards .stat-card__icon-wrap {
-    width: var(--ai-spacing-9);
-    height: var(--ai-spacing-9);
+    width: var(--ao-spacing-9);
+    height: var(--ao-spacing-9);
   }
   .cc-control__cards .stat-card__icon-wrap [data-lucide] {
-    width: var(--ai-icon-size-md);
-    height: var(--ai-icon-size-md);
+    width: var(--ao-icon-size-md);
+    height: var(--ao-icon-size-md);
   }
   .cc-control__cards .upgrade-card {
-    min-height: var(--ai-spacing-13);
-    padding: var(--ai-spacing-5);
+    min-height: var(--ao-spacing-13);
+    padding: var(--ao-spacing-5);
   }
   .cc-control__cards .upgrade-card__version {
-    font-size: var(--ai-font-fixed-sm);
+    font-size: var(--ao-font-fixed-sm);
   }
   .cc-control__cards .upgrade-card__status {
-    font-size: var(--ai-font-fixed-xs);
+    font-size: var(--ao-font-fixed-xs);
   }
 }
 
@@ -359,9 +359,9 @@
 /* Analysis panel — single bordered card wrapping the header bar + chart row
    (Figma node 4186:21107). */
 .cc-control__panel {
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-datatable-table-border);
-  border-radius: var(--ai-radius-md);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-datatable-table-border);
+  border-radius: var(--ao-radius-md);
   overflow: hidden;
   /* .cc-control__page is a fixed-height flex column; without this the panel
      gets flex-shrunk below its content height and `overflow: hidden` (kept
@@ -376,9 +376,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: var(--ai-spacing-5);
-  padding: var(--ai-spacing-4) var(--ai-spacing-5);
-  border-bottom: 1px solid var(--ai-datatable-table-border);
+  gap: var(--ao-spacing-5);
+  padding: var(--ao-spacing-4) var(--ao-spacing-5);
+  border-bottom: 1px solid var(--ao-datatable-table-border);
 }
 
 /* Select Zone — Label Left Select, grows to fill up to 280px (Figma node
@@ -386,7 +386,7 @@
 .cc-control__panel-head .sel {
   flex: 1 0 0;
   min-width: 0;
-  max-width: var(--ai-size-5);
+  max-width: var(--ao-size-5);
 }
 
 /* Analysis Dashboard — a btn--secondary with a scoped borderless override
@@ -408,8 +408,8 @@
 .cc-control__charts {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--ai-spacing-5);
-  padding: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
+  padding: var(--ao-spacing-5);
 }
 
 /* ControlScreen-scoped: hide the Chart footer (filter + report link) in both
@@ -422,14 +422,14 @@
 .cc-control__section {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
 .cc-control__section-head {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: var(--ai-spacing-0);
+  gap: var(--ao-spacing-0);
 }
 
 /* Whos Online table — two Datatables variants swapped at the cs-page
@@ -440,31 +440,31 @@
 
 .cc-control__section-title {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-md); /* 18px below MD; steps to fixed-lg (20px) at >=768 */
-  font-weight: var(--ai-font-bold);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-md); /* 18px below MD; steps to fixed-lg (20px) at >=768 */
+  font-weight: var(--ao-font-bold);
+  color: var(--ao-text-primary);
 }
 
 .cc-control__section-meta {
   margin: 0;
-  font-size: var(--ai-font-fixed-xxs);
-  color: var(--ai-text-secondary);
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-secondary);
 }
 
 .cc-control__section-meta-strong {
-  font-weight: var(--ai-font-bold);
-  color: var(--ai-text-primary);
+  font-weight: var(--ao-font-bold);
+  color: var(--ao-text-primary);
 }
 
 /* MD (>=768px page-container width): section heading + meta step up to larger
    fixed sizes. Below the breakpoint the title is fixed-md (18px) and meta fixed-xxs. */
 @container cs-page (min-width: 768px) {
   .cc-control__section-title {
-    font-size: var(--ai-font-fixed-lg);
+    font-size: var(--ao-font-fixed-lg);
   }
   .cc-control__section-meta {
-    font-size: var(--ai-font-fixed-xs);
+    font-size: var(--ao-font-fixed-xs);
   }
 }
 
@@ -497,12 +497,12 @@
 .cc-control__rail-popover {
   position: absolute;
   top: 0;
-  right: calc(100% + var(--ai-spacing-5));
+  right: calc(100% + var(--ao-spacing-5));
   z-index: 50;
 }
 
 .cc-control__rail-popover .cc-actions-info-panel {
-  box-shadow: var(--ai-shadow-xl);
+  box-shadow: var(--ao-shadow-xl);
 }
 
 /* Popover variant that supplies its own surface card (for hosted controls that
@@ -510,19 +510,19 @@
 .cc-control__rail-popover--card {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-4);
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-lg);
-  box-shadow: var(--ai-shadow-xl);
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-4);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-lg);
+  box-shadow: var(--ao-shadow-xl);
 }
 
 .cc-control__rail-popover-label {
   margin: 0;
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-secondary);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-secondary);
 }
 
 /* Active look on the rail button while its popover is open, or while a toggle
@@ -537,11 +537,11 @@
  * view only). It keeps position:fixed so the shared drag/resize shell works
  * unchanged — we only re-anchor it from the demo's bottom-right corner to the
  * top-right, beside the rail's AI Assistant button. The right offset clears
- * the 56px rail (--ai-spacing-10) plus an 8px gap (--ai-spacing-3). */
+ * the 56px rail (--ao-spacing-10) plus an 8px gap (--ao-spacing-3). */
 .cc-control .ai-assistant {
-  top: var(--ai-spacing-6);
+  top: var(--ao-spacing-6);
   bottom: auto;
-  right: calc(var(--ai-spacing-10) + var(--ai-spacing-3));
+  right: calc(var(--ao-spacing-10) + var(--ao-spacing-3));
   /* Above the chrome/page/rail-popovers (z 1–50), below the fav modal (100). */
   z-index: 60;
 }
@@ -555,11 +555,11 @@
  * timing is a free-form implementation detail. */
 .cc-control .cc-assistant-popover {
   position: fixed;
-  bottom: var(--ai-spacing-6);
-  right: var(--ai-spacing-6);
+  bottom: var(--ao-spacing-6);
+  right: var(--ao-spacing-6);
   z-index: 55;
   opacity: 0;
-  transform: translateY(var(--ai-spacing-9));
+  transform: translateY(var(--ao-spacing-9));
   pointer-events: none;
   transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1),
               transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -579,23 +579,23 @@
  * before the JS removes them. */
 .cc-control .cc-toast-stack {
   position: fixed;
-  top: var(--ai-spacing-6);
-  right: var(--ai-spacing-6);
+  top: var(--ao-spacing-6);
+  right: var(--ao-spacing-6);
   z-index: 200;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   pointer-events: none;
 }
 
 .cc-control .cc-toast-stack .toast {
   pointer-events: auto;
-  max-width: calc(100vw - var(--ai-spacing-6) * 2);   /* never overflow a narrow viewport */
+  max-width: calc(100vw - var(--ao-spacing-6) * 2);   /* never overflow a narrow viewport */
   opacity: 0;
-  transform: translateX(var(--ai-spacing-5));
-  transition: opacity var(--ai-transition-slow),
-              transform var(--ai-transition-slow);
+  transform: translateX(var(--ao-spacing-5));
+  transition: opacity var(--ao-transition-slow),
+              transform var(--ao-transition-slow);
 }
 
 .cc-control .cc-toast-stack .toast--in {
@@ -605,12 +605,12 @@
 
 .cc-control .cc-toast-stack .toast--leaving {
   opacity: 0;
-  transform: translateX(var(--ai-spacing-5));
+  transform: translateX(var(--ao-spacing-5));
 }
 
 /* Favourites panel list (top-level submenu used as the favourites menu) */
 .cc-control__fav-list {
-  padding: var(--ai-spacing-3) 0;
+  padding: var(--ao-spacing-3) 0;
 }
 
 /* ───── Template-level reflow — driven by main column width ─────
@@ -630,19 +630,19 @@
  * ancestor, not themselves. */
 @media (max-width: 767px) {
   .cc-control__page {
-    padding: var(--ai-spacing-4);
+    padding: var(--ao-spacing-4);
     /* Trim the right padding (as on desktop) so the reserved scrollbar gutter
        doesn't make the right side look heavier than the left.
-       --ai-spacing-2 (6px) undershot: 6 + the 15px gutter read as 21 against
+       --ao-spacing-2 (6px) undershot: 6 + the 15px gutter read as 21 against
        12 on the left, a 9px lean measured on every CC screen 2026-09-17.
-       --ai-spacing-0 brings it to 15 against 12 — the same 3px tolerance the
+       --ao-spacing-0 brings it to 15 against 12 — the same 3px tolerance the
        desktop rule lands on (24 vs 27), so both breakpoints now lean by the
        same amount instead of mobile leaning three times as hard.
        Exactly even is not reachable by trimming here: the reserved gutter
        (15px) is already wider than the 12px left padding, so the only way to
        match it would be `scrollbar-gutter: stable both-edges`, which costs
        15px of content on each side of a 390px screen. */
-    padding-right: var(--ai-spacing-0);
+    padding-right: var(--ao-spacing-0);
   }
 
   /* …UNLESS the scrollbar is an overlay one, in which case there is no gutter
@@ -663,7 +663,7 @@
    * than nothing at all. */
   @media (pointer: coarse) {
     .cc-control__page {
-      padding-right: var(--ai-spacing-4);
+      padding-right: var(--ao-spacing-4);
     }
   }
 }
@@ -673,7 +673,7 @@
    only. Same @media rationale as above — the page can't query its own container. */
 @media (min-width: 768px) {
   .cc-control__page {
-    padding-right: var(--ai-spacing-4);
+    padding-right: var(--ao-spacing-4);
   }
 
   /* Same overlay-scrollbar correction as the mobile block above — a tablet in
@@ -681,7 +681,7 @@
      right against 24 on the left. */
   @media (pointer: coarse) {
     .cc-control__page {
-      padding-right: var(--ai-spacing-6);
+      padding-right: var(--ao-spacing-6);
     }
   }
 }
@@ -696,8 +696,8 @@
   /* Mobile-only StatCard type sizing (template override — the component keeps
      16/14 at all sizes). Standard sizes return at >=768px (MD), where this
      block no longer applies. */
-  .cc-control__cards .stat-card__value { font-size: var(--ai-font-fixed-xs); }   /* 16 -> 14 */
-  .cc-control__cards .stat-card__title { font-size: var(--ai-font-fixed-xxs); }  /* 14 -> 12 */
+  .cc-control__cards .stat-card__value { font-size: var(--ao-font-fixed-xs); }   /* 16 -> 14 */
+  .cc-control__cards .stat-card__title { font-size: var(--ao-font-fixed-xxs); }  /* 14 -> 12 */
   /* Stack the header bar contents (Select keeps its 280px max-width cap). */
   .cc-control__panel-head {
     flex-direction: column;
@@ -706,14 +706,14 @@
   /* The Analysis Dashboard button now lives inside the card below the charts —
      pad the card's bottom edge to house it (Figma 4183:14668: card pb-5). */
   .cc-control__panel {
-    padding-bottom: var(--ai-spacing-5);
+    padding-bottom: var(--ao-spacing-5);
   }
   /* Mobile chart card: tighter padding + smaller title (Figma 4183:14673). */
   .cc-control__charts .chart {
-    padding: var(--ai-spacing-4);
+    padding: var(--ao-spacing-4);
   }
   .cc-control__charts .chart__big {
-    font-size: var(--ai-font-fixed-sm);
+    font-size: var(--ao-font-fixed-sm);
   }
   .cc-control__section-head {
     flex-direction: column;
@@ -749,7 +749,7 @@
 
 /* Card row as a flush strip: a rule between the cells and one beneath. */
 .cc-control__page--flush.cc-control__page--home .cc-control__cards {
-  border-block-end: 1px solid var(--ai-border-secondary);
+  border-block-end: 1px solid var(--ao-border-secondary);
 }
 
 .cc-control__page--flush.cc-control__page--home .cc-control__cards > .stat-card,
@@ -760,25 +760,25 @@
 }
 
 .cc-control__page--flush.cc-control__page--home .cc-control__cards > * + * {
-  border-inline-start: 1px solid var(--ai-border-secondary);
+  border-inline-start: 1px solid var(--ao-border-secondary);
 }
 
 /* Analysis panel as a band; its head row already pads spacing-5 inline. */
 .cc-control__page--flush.cc-control__page--home .cc-control__panel {
   border: 0;
-  border-block-end: 1px solid var(--ai-datatable-table-border);
+  border-block-end: 1px solid var(--ao-datatable-table-border);
   border-radius: 0;
 }
 
 /* Who's Online: the heading gets the band's inline padding (it had none, so it
    sat on the page edge), and the table goes flush as on the Listing. */
 .cc-control__page--flush.cc-control__page--home .cc-control__section-head {
-  padding: var(--ai-spacing-5) var(--ai-spacing-5) 0;
+  padding: var(--ao-spacing-5) var(--ao-spacing-5) 0;
 }
 
 .cc-control__page--flush.cc-control__page--home .cc-control__section > .datatables {
   border: 0;
-  border-block-start: 1px solid var(--ai-datatable-table-border);
+  border-block-start: 1px solid var(--ao-datatable-table-border);
   border-radius: 0;
   box-shadow: none;
 }
@@ -790,13 +790,13 @@
     border-inline-start: 0;
   }
   .cc-control__page--flush.cc-control__page--home .cc-control__cards > * {
-    border-block-start: 1px solid var(--ai-border-secondary);
+    border-block-start: 1px solid var(--ao-border-secondary);
   }
   .cc-control__page--flush.cc-control__page--home .cc-control__cards > .upgrade-card {
     border-block-start: 0;
   }
   .cc-control__page--flush.cc-control__page--home .cc-control__section-head {
-    padding: var(--ai-spacing-4) var(--ai-spacing-3) 0;
+    padding: var(--ao-spacing-4) var(--ao-spacing-3) 0;
   }
 }
 
@@ -814,11 +814,11 @@
 
 /* Table rows: 12 → 4 block padding; header 16 → 8. */
 .cc-control[data-cc-density="condensed"] .table tbody td {
-  padding-block: var(--ai-spacing-1);
+  padding-block: var(--ao-spacing-1);
 }
 
 .cc-control[data-cc-density="condensed"] .table thead th {
-  padding-block: var(--ai-spacing-3);
+  padding-block: var(--ao-spacing-3);
 }
 
 /* The Orders listing holds a 64px minimum row (Datatables.css), so padding alone does nothing
@@ -827,7 +827,7 @@
    Same unnamed container query as Datatables' own `height: auto` below 768, so that still wins. */
 @container (min-width: 768px) {
   .cc-control[data-cc-density="condensed"] .datatables--orders .table tbody td {
-    height: var(--ai-spacing-9);
+    height: var(--ao-spacing-9);
   }
 }
 
@@ -835,36 +835,36 @@
    below 560 of its own container RecordSection already pads spacing-4. */
 @container record-section (min-width: 560px) {
   .cc-control[data-cc-density="condensed"] .record-section__body {
-    gap: var(--ai-spacing-4);
-    padding: var(--ai-spacing-4);
+    gap: var(--ao-spacing-4);
+    padding: var(--ao-spacing-4);
   }
 }
 
 /* Panels: 16 → 8. */
 .cc-control[data-cc-density="condensed"] .fact-panel {
-  padding: var(--ai-spacing-3);
+  padding: var(--ao-spacing-3);
 }
 
 .cc-control[data-cc-density="condensed"] .cc-control__charts {
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-3);
 }
 
 @container cs-page (min-width: 768px) {
   .cc-control[data-cc-density="condensed"] .cc-control__cards .stat-card,
   .cc-control[data-cc-density="condensed"] .cc-control__cards .upgrade-card {
-    padding: var(--ai-spacing-3);
+    padding: var(--ao-spacing-3);
   }
   /* Full width keeps the strip's inline spacing-5, so the cells line up with the bands. */
   .cc-control[data-cc-density="condensed"] .cc-control__page--flush .cc-control__cards .stat-card,
   .cc-control[data-cc-density="condensed"] .cc-control__page--flush .cc-control__cards .upgrade-card {
-    padding-inline: var(--ai-spacing-5);
+    padding-inline: var(--ao-spacing-5);
   }
 }
 
 /* Page gap between blocks: 32 → 12. Not on a flush page, which runs its own gaps. */
 .cc-control[data-cc-density="condensed"] .cc-control__page:not(.cc-control__page--flush) {
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
 /* Page padding at standard width: 24 → 12. Desktop only — mobile already pads spacing-4, the
@@ -874,14 +874,14 @@
    from --cc-listing-pad-top, so it follows. */
 @media (min-width: 768px) {
   .cc-control[data-cc-density="condensed"] .cc-control__page:not(.cc-control__page--flush) {
-    padding: var(--ai-spacing-4) var(--ai-spacing-0) var(--ai-spacing-4) var(--ai-spacing-4);
+    padding: var(--ao-spacing-4) var(--ao-spacing-0) var(--ao-spacing-4) var(--ao-spacing-4);
   }
   .cc-control[data-cc-density="condensed"] .cc-listing:not([data-listing-template="full"]) {
-    --cc-listing-pad-top: var(--ai-spacing-4);
+    --cc-listing-pad-top: var(--ao-spacing-4);
   }
   @media (pointer: coarse) {
     .cc-control[data-cc-density="condensed"] .cc-control__page:not(.cc-control__page--flush) {
-      padding-right: var(--ai-spacing-4);
+      padding-right: var(--ao-spacing-4);
     }
   }
 }
@@ -893,22 +893,22 @@
    would fall further below the 44px touch-target guideline. */
 @media (pointer: fine) {
   .cc-control[data-cc-density="condensed"] .cc-menu:not(.cc-menu--crm) {
-    gap: var(--ai-spacing-2);
-    padding: var(--ai-spacing-3);
+    gap: var(--ao-spacing-2);
+    padding: var(--ao-spacing-3);
   }
   .cc-control[data-cc-density="condensed"] .cc-menu__items {
-    gap: var(--ai-spacing-0-5);
+    gap: var(--ao-spacing-0-5);
   }
   .cc-control[data-cc-density="condensed"] .cc-main-menu-item {
-    min-height: var(--ai-spacing-7);
-    padding-block: var(--ai-spacing-1);
+    min-height: var(--ao-spacing-7);
+    padding-block: var(--ao-spacing-1);
   }
   .cc-control[data-cc-density="condensed"] .cc-menu__submenu {
-    gap: var(--ai-spacing-0-5);
-    padding-block: var(--ai-spacing-3);
+    gap: var(--ao-spacing-0-5);
+    padding-block: var(--ao-spacing-3);
   }
   .cc-control[data-cc-density="condensed"] .cc-menu__submenu-item {
-    padding-block: var(--ai-spacing-0-5);
+    padding-block: var(--ao-spacing-0-5);
   }
 }
 

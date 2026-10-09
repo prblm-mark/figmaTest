@@ -19,15 +19,15 @@
   document.querySelectorAll('canvas[data-contact-chart]').forEach(function (canvas) {
     var d = JSON.parse(canvas.getAttribute('data-contact-chart'));
     var horizontal = d.type === 'bar-h';
-    var solid = tok('--ai-accent-lagoon-solid'), soft = tok('--ai-accent-lagoon-soft');
+    var solid = tok('--ao-accent-lagoon-solid'), soft = tok('--ao-accent-lagoon-soft');
     var last = d.values.length - 1;
     var fill = d.values.map(function (_, i) { return d.partialLast && i === last ? soft : solid; });
 
     Chart.defaults.font.family = 'Inter, sans-serif';
     Chart.defaults.font.size = 12;
-    Chart.defaults.color = tok('--ai-text-contrast');
+    Chart.defaults.color = tok('--ao-text-contrast');
 
-    var valueAxis = { beginAtZero: true, grid: { color: tok('--ai-border-secondary') }, border: { display: false },
+    var valueAxis = { beginAtZero: true, grid: { color: tok('--ao-border-secondary') }, border: { display: false },
                       ticks: { precision: 0, maxTicksLimit: 5 } };
     var labelAxis = { grid: { display: false }, border: { display: false }, ticks: { autoSkip: !horizontal, maxRotation: 0 } };
 
@@ -44,7 +44,7 @@
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: tok('--ai-surface-invert'), titleColor: tok('--ai-text-invert'), bodyColor: tok('--ai-text-invert'),
+            backgroundColor: tok('--ao-surface-invert'), titleColor: tok('--ao-text-invert'), bodyColor: tok('--ao-text-invert'),
             padding: 10, cornerRadius: 6, displayColors: false,
             callbacks: {
               title: function (items) { var i = items[0].dataIndex; return d.labels[i] + (d.partialLast && i === last ? ' (to date)' : ''); },

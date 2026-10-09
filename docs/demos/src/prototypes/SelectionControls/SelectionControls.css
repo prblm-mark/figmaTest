@@ -1,5 +1,5 @@
 /* SelectionControls — Radio, Checkbox, Toggle prototype */
-/* All visual values use --ai-* tokens */
+/* All visual values use --ao-* tokens */
 
 /* ── Page layout ────────────────────────────────────────────────────────── */
 
@@ -8,41 +8,41 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--ai-surface-secondary);
-  padding: var(--ai-spacing-6);
+  background: var(--ao-surface-secondary);
+  padding: var(--ao-spacing-6);
 }
 
 .proto-card {
-  background: var(--ai-surface-primary);
-  border-radius: var(--ai-radius-lg);
-  padding: var(--ai-spacing-7);
-  width: var(--ai-size-10); /* 640px */
+  background: var(--ao-surface-primary);
+  border-radius: var(--ao-radius-lg);
+  padding: var(--ao-spacing-7);
+  width: var(--ao-size-10); /* 640px */
   max-width: 100%;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
 }
 
 .proto-card__title {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fluid-xl);
-  font-weight: var(--ai-font-bold);
-  line-height: var(--ai-leading-lg);
-  color: var(--ai-text-primary);
-  margin: 0 0 var(--ai-spacing-7) 0;
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fluid-xl);
+  font-weight: var(--ao-font-bold);
+  line-height: var(--ao-leading-lg);
+  color: var(--ao-text-primary);
+  margin: 0 0 var(--ao-spacing-7) 0;
 }
 
 .proto-card__subtitle {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-sm);
-  font-weight: var(--ai-font-bold);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
-  margin: 0 0 var(--ai-spacing-5) 0;
-  padding-bottom: var(--ai-spacing-3);
-  border-bottom: 1px solid var(--ai-border-secondary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-sm);
+  font-weight: var(--ao-font-bold);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
+  margin: 0 0 var(--ao-spacing-5) 0;
+  padding-bottom: var(--ao-spacing-3);
+  border-bottom: 1px solid var(--ao-border-secondary);
 }
 
 .proto-card__section {
-  margin-bottom: var(--ai-spacing-7);
+  margin-bottom: var(--ao-spacing-7);
 }
 
 .proto-card__section:last-child {
@@ -50,14 +50,14 @@ body {
 }
 
 .proto-card__label {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin: 0 0 var(--ai-spacing-4) 0;
+  margin: 0 0 var(--ao-spacing-4) 0;
 }
 
 /* ── Shared control row ─────────────────────────────────────────────────── */
@@ -65,13 +65,13 @@ body {
 .control-group {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
 }
 
 .control {
   display: flex;
   align-items: flex-start;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   cursor: pointer;
 }
 
@@ -91,63 +91,63 @@ body {
 .control__text {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
   flex: 1;
 }
 
 .control__label {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-medium);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-medium);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
   margin: 0;
 }
 
 .control__helper {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-secondary);
   margin: 0;
 }
 
 .control--disabled .control__label,
 .control--disabled .control__helper {
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 /* ── Radio ──────────────────────────────────────────────────────────────── */
 
 .control__radio {
-  width: var(--ai-spacing-5);
-  height: var(--ai-spacing-5);
+  width: var(--ao-spacing-5);
+  height: var(--ao-spacing-5);
   flex-shrink: 0;
-  border-radius: var(--ai-radius-full);
-  background: var(--ai-surface-primary);
-  border: 2px solid var(--ai-border-secondary);
+  border-radius: var(--ao-radius-full);
+  background: var(--ao-surface-primary);
+  border: 2px solid var(--ao-border-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: var(--ai-spacing-1);
+  margin-top: var(--ao-spacing-1);
 }
 
 .control__input:checked + .control__radio {
-  background: var(--ai-surface-brand);
-  border-color: var(--ai-surface-brand);
+  background: var(--ao-surface-brand);
+  border-color: var(--ao-surface-brand);
 }
 
 .control__input:checked + .control__radio::after {
   content: "";
   width: 6px; /* inner dot — optical size */
   height: 6px;
-  border-radius: var(--ai-radius-full);
-  background: var(--ai-surface-primary);
+  border-radius: var(--ao-radius-full);
+  background: var(--ao-surface-primary);
 }
 
 .control__input:focus-visible + .control__radio {
-  box-shadow: 0 0 0 1px var(--ai-surface-primary), 0 0 0 3px var(--ai-surface-brand-soft);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary), 0 0 0 3px var(--ao-surface-brand-soft);
 }
 
 .control--disabled .control__radio {
@@ -157,29 +157,29 @@ body {
 /* ── Checkbox ───────────────────────────────────────────────────────────── */
 
 .control__checkbox {
-  width: var(--ai-spacing-5);
-  height: var(--ai-spacing-5);
+  width: var(--ao-spacing-5);
+  height: var(--ao-spacing-5);
   flex-shrink: 0;
-  border-radius: var(--ai-radius-sm);
-  background: var(--ai-surface-primary);
-  border: 2px solid var(--ai-border-secondary);
+  border-radius: var(--ao-radius-sm);
+  background: var(--ao-surface-primary);
+  border: 2px solid var(--ao-border-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--ai-btn-primary-text);
-  margin-top: var(--ai-spacing-1);
+  color: var(--ao-btn-primary-text);
+  margin-top: var(--ao-spacing-1);
 }
 
 .control__checkbox [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
   display: none;
   stroke-width: 3;
 }
 
 .control__input:checked + .control__checkbox {
-  background: var(--ai-surface-brand);
-  border-color: var(--ai-surface-brand);
+  background: var(--ao-surface-brand);
+  border-color: var(--ao-surface-brand);
 }
 
 .control__input:checked + .control__checkbox [data-lucide] {
@@ -187,7 +187,7 @@ body {
 }
 
 .control__input:focus-visible + .control__checkbox {
-  box-shadow: 0 0 0 1px var(--ai-surface-primary), 0 0 0 3px var(--ai-surface-brand-soft);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary), 0 0 0 3px var(--ao-surface-brand-soft);
 }
 
 .control--disabled .control__checkbox {
@@ -196,8 +196,8 @@ body {
 
 /* Indeterminate checkbox */
 .control__input:indeterminate + .control__checkbox {
-  background: var(--ai-surface-brand);
-  border-color: var(--ai-surface-brand);
+  background: var(--ao-surface-brand);
+  border-color: var(--ao-surface-brand);
 }
 
 .control__input:indeterminate + .control__checkbox [data-lucide] {
@@ -207,14 +207,14 @@ body {
 /* ── Toggle switch ──────────────────────────────────────────────────────── */
 
 .control__toggle {
-  width: var(--ai-spacing-8);
-  height: var(--ai-spacing-5);
+  width: var(--ao-spacing-8);
+  height: var(--ao-spacing-5);
   flex-shrink: 0;
-  border-radius: var(--ai-radius-full);
-  background: var(--ai-surface-contrast);
+  border-radius: var(--ao-radius-full);
+  background: var(--ao-surface-contrast);
   border: none;
   position: relative;
-  margin-top: var(--ai-spacing-1);
+  margin-top: var(--ao-spacing-1);
 }
 
 .control__toggle::after {
@@ -224,13 +224,13 @@ body {
   left: 2px;
   width: 12px; /* knob — optical size */
   height: 12px;
-  border-radius: var(--ai-radius-full);
-  background: var(--ai-surface-primary);
+  border-radius: var(--ao-radius-full);
+  background: var(--ao-surface-primary);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .control__input:checked + .control__toggle {
-  background: var(--ai-surface-brand);
+  background: var(--ao-surface-brand);
 }
 
 .control__input:checked + .control__toggle::after {
@@ -239,7 +239,7 @@ body {
 }
 
 .control__input:focus-visible + .control__toggle {
-  box-shadow: 0 0 0 1px var(--ai-surface-primary), 0 0 0 3px var(--ai-surface-brand-soft);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary), 0 0 0 3px var(--ao-surface-brand-soft);
 }
 
 .control--disabled .control__toggle {
@@ -249,13 +249,13 @@ body {
 /* ── Toggle — large variant ─────────────────────────────────────────────── */
 
 .control__toggle--lg {
-  width: var(--ai-spacing-9);
-  height: var(--ai-spacing-6);
+  width: var(--ao-spacing-9);
+  height: var(--ao-spacing-6);
 }
 
 .control__toggle--lg::after {
-  width: var(--ai-spacing-5);
-  height: var(--ai-spacing-5);
+  width: var(--ao-spacing-5);
+  height: var(--ao-spacing-5);
   top: 2px;
   left: 2px;
 }
@@ -268,19 +268,19 @@ body {
 /* ── Card-style radio (bordered selection) ──────────────────────────────── */
 
 .control--card {
-  padding: var(--ai-spacing-5);
-  border: 2px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  gap: var(--ai-spacing-4);
+  padding: var(--ao-spacing-5);
+  border: 2px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  gap: var(--ao-spacing-4);
 }
 
 .control--card:has(.control__input:checked) {
-  border-color: var(--ai-border-brand);
-  background: var(--ai-surface-brand-soft-extra);
+  border-color: var(--ao-border-brand);
+  background: var(--ao-surface-brand-soft-extra);
 }
 
 .control--card:has(.control__input:focus-visible) {
-  box-shadow: 0 0 0 1px var(--ai-surface-primary), 0 0 0 3px var(--ai-surface-brand-soft);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary), 0 0 0 3px var(--ao-surface-brand-soft);
 }
 
 .control--card .control__radio,
@@ -293,7 +293,7 @@ body {
 .control-group--inline {
   flex-direction: row;
   flex-wrap: wrap;
-  gap: var(--ai-spacing-6);
+  gap: var(--ao-spacing-6);
 }
 
 /* ── Toggle row (label left, toggle right) ──────────────────────────────── */

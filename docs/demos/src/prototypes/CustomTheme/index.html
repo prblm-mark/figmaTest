@@ -16,49 +16,49 @@
     }
     body {
       display: flex;
-      background-color: var(--ai-surface-secondary);
+      background-color: var(--ao-surface-secondary);
     }
     .main {
       flex: 1;
-      padding: var(--ai-spacing-7);
+      padding: var(--ao-spacing-7);
       overflow-y: auto;
     }
     .main h1 {
-      margin-bottom: var(--ai-spacing-3);
+      margin-bottom: var(--ao-spacing-3);
     }
     .main__note {
-      font-size: var(--ai-font-fixed-xs);
-      color: var(--ai-text-contrast);
+      font-size: var(--ao-font-fixed-xs);
+      color: var(--ao-text-contrast);
       max-width: 480px;
-      margin-bottom: var(--ai-spacing-7);
+      margin-bottom: var(--ao-spacing-7);
     }
 
     /* ── Color picker controls ─────────────────── */
     .theme-controls {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--ai-spacing-4);
+      gap: var(--ao-spacing-4);
       align-items: center;
-      margin-bottom: var(--ai-spacing-7);
+      margin-bottom: var(--ao-spacing-7);
     }
     .theme-controls__group {
       display: flex;
       align-items: center;
-      gap: var(--ai-spacing-3);
+      gap: var(--ao-spacing-3);
     }
     .theme-controls__label {
-      font-family: var(--ai-font-body);
-      font-size: var(--ai-font-fixed-xxs);
-      font-weight: var(--ai-font-semibold);
-      color: var(--ai-text-secondary);
+      font-family: var(--ao-font-body);
+      font-size: var(--ao-font-fixed-xxs);
+      font-weight: var(--ao-font-semibold);
+      color: var(--ao-text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.06em;
     }
     .theme-controls__input {
       width: 40px;
       height: 40px;
-      border: 2px solid var(--ai-border-secondary);
-      border-radius: var(--ai-radius-md);
+      border: 2px solid var(--ao-border-secondary);
+      border-radius: var(--ao-radius-md);
       cursor: pointer;
       padding: 0;
       background: none;
@@ -66,9 +66,9 @@
     .theme-controls__input::-webkit-color-swatch-wrapper { padding: 2px; }
     .theme-controls__input::-webkit-color-swatch { border-radius: 4px; border: none; }
     .theme-controls__hex {
-      font-family: var(--ai-font-body);
-      font-size: var(--ai-font-fixed-xs);
-      color: var(--ai-text-primary);
+      font-family: var(--ao-font-body);
+      font-size: var(--ao-font-fixed-xs);
+      color: var(--ao-text-primary);
       min-width: 70px;
     }
 
@@ -76,14 +76,14 @@
     .presets {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--ai-spacing-3);
-      margin-bottom: var(--ai-spacing-7);
+      gap: var(--ao-spacing-3);
+      margin-bottom: var(--ao-spacing-7);
     }
     .presets__label {
-      font-family: var(--ai-font-body);
-      font-size: var(--ai-font-fixed-xxs);
-      font-weight: var(--ai-font-semibold);
-      color: var(--ai-text-secondary);
+      font-family: var(--ao-font-body);
+      font-size: var(--ao-font-fixed-xxs);
+      font-weight: var(--ao-font-semibold);
+      color: var(--ao-text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.06em;
       width: 100%;
@@ -91,26 +91,26 @@
     .preset-btn {
       width: 40px;
       height: 40px;
-      border: 2px solid var(--ai-border-secondary);
-      border-radius: var(--ai-radius-md);
+      border: 2px solid var(--ao-border-secondary);
+      border-radius: var(--ao-radius-md);
       cursor: pointer;
-      transition: border-color var(--ai-transition-default),
-                  transform var(--ai-transition-default);
+      transition: border-color var(--ao-transition-default),
+                  transform var(--ao-transition-default);
     }
     .preset-btn:hover {
-      border-color: var(--ai-border-brand);
+      border-color: var(--ao-border-brand);
       transform: scale(1.1);
     }
     .preset-btn--active {
-      border-color: var(--ai-border-brand);
-      box-shadow: 0 0 0 2px var(--ai-surface-brand-soft);
+      border-color: var(--ao-border-brand);
+      box-shadow: 0 0 0 2px var(--ao-surface-brand-soft);
     }
     .preset-btn--reset {
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--ai-surface-minimal);
-      color: var(--ai-icon-secondary);
+      background: var(--ao-surface-minimal);
+      color: var(--ao-icon-secondary);
     }
     .preset-btn--reset [data-lucide] {
       width: 16px;
@@ -119,28 +119,28 @@
 
     /* ── Debug info ─────────────────────────────── */
     .debug {
-      font-family: var(--ai-font-body);
-      font-size: var(--ai-font-fixed-xxs);
-      line-height: var(--ai-leading-sm);
-      color: var(--ai-text-contrast);
-      background: var(--ai-surface-minimal);
-      border-radius: var(--ai-radius-md);
-      padding: var(--ai-spacing-4);
+      font-family: var(--ao-font-body);
+      font-size: var(--ao-font-fixed-xxs);
+      line-height: var(--ao-leading-sm);
+      color: var(--ao-text-contrast);
+      background: var(--ao-surface-minimal);
+      border-radius: var(--ao-radius-md);
+      padding: var(--ao-spacing-4);
       max-width: 400px;
     }
     .debug__row {
       display: flex;
       justify-content: space-between;
-      padding: var(--ai-spacing-1) 0;
+      padding: var(--ao-spacing-1) 0;
     }
-    .debug__label { font-weight: var(--ai-font-semibold); }
+    .debug__label { font-weight: var(--ao-font-semibold); }
     .debug__value { font-family: monospace; }
     .debug__swatch {
       display: inline-block;
       width: 14px;
       height: 14px;
       border-radius: 3px;
-      border: 1px solid var(--ai-border-secondary);
+      border: 1px solid var(--ao-border-secondary);
       vertical-align: middle;
       margin-right: 4px;
     }
@@ -310,7 +310,7 @@
     <h1>Custom Theme Sidebar</h1>
     <p class="main__note">
       Demonstrates the computed sidebar color system. The sidebar background is set via
-      <code>--ai-chat-sidebar-bg</code> — hover, selected, and text colors are computed
+      <code>--ao-chat-sidebar-bg</code> — hover, selected, and text colors are computed
       at runtime based on luminance detection. Pick a color or use the presets below.
     </p>
 
@@ -383,7 +383,7 @@
       return { r: 0, g: 0, b: 0 };
     }
     function initSidebarTheme(el) {
-      var bg = getComputedStyle(el).getPropertyValue('--ai-chat-sidebar-bg').trim();
+      var bg = getComputedStyle(el).getPropertyValue('--ao-chat-sidebar-bg').trim();
       var c = parseColor(bg);
       var lum = getLuminance(c.r, c.g, c.b);
       el.setAttribute('data-sidebar-theme', lum > 0.5 ? 'light' : 'dark');
@@ -400,13 +400,13 @@
 
     function applyColor(hex) {
       if (hex === 'reset') {
-        sidebar.style.removeProperty('--ai-chat-sidebar-bg');
+        sidebar.style.removeProperty('--ao-chat-sidebar-bg');
         initSidebarTheme(sidebar);
-        var resolved = getComputedStyle(sidebar).getPropertyValue('--ai-chat-sidebar-bg').trim();
+        var resolved = getComputedStyle(sidebar).getPropertyValue('--ao-chat-sidebar-bg').trim();
         picker.value = resolved;
         hexLabel.textContent = resolved + ' (default)';
       } else {
-        sidebar.style.setProperty('--ai-chat-sidebar-bg', hex);
+        sidebar.style.setProperty('--ao-chat-sidebar-bg', hex);
         initSidebarTheme(sidebar);
         picker.value = hex;
         hexLabel.textContent = hex;
@@ -422,12 +422,12 @@
     function updateDebug() {
       const cs = getComputedStyle(sidebar);
       dbgTheme.textContent = sidebar.getAttribute('data-sidebar-theme');
-      dbgText.innerHTML = swatch(cs.getPropertyValue('--ai-chat-sidebar-text').trim())
-        + cs.getPropertyValue('--ai-chat-sidebar-text').trim();
-      dbgHover.innerHTML = swatch(cs.getPropertyValue('--ai-chat-sidebar-hover-bg').trim())
-        + cs.getPropertyValue('--ai-chat-sidebar-hover-bg').trim();
-      dbgActive.innerHTML = swatch(cs.getPropertyValue('--ai-chat-sidebar-active-bg').trim())
-        + cs.getPropertyValue('--ai-chat-sidebar-active-bg').trim();
+      dbgText.innerHTML = swatch(cs.getPropertyValue('--ao-chat-sidebar-text').trim())
+        + cs.getPropertyValue('--ao-chat-sidebar-text').trim();
+      dbgHover.innerHTML = swatch(cs.getPropertyValue('--ao-chat-sidebar-hover-bg').trim())
+        + cs.getPropertyValue('--ao-chat-sidebar-hover-bg').trim();
+      dbgActive.innerHTML = swatch(cs.getPropertyValue('--ao-chat-sidebar-active-bg').trim())
+        + cs.getPropertyValue('--ao-chat-sidebar-active-bg').trim();
     }
 
     function swatch(color) {

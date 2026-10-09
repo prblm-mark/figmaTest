@@ -3,7 +3,7 @@
  * Gradients use CSS Relative Color Syntax so transparent stops are derived
  * from the semantic surface token at runtime. Dark mode is automatic.
  *
- * Naming: gradient/surface/NAME → --ai-gradient-surface-NAME
+ * Naming: gradient/surface/NAME → --ao-gradient-surface-NAME
  * - Single name  → fade-out: transparent(NAME) → NAME  (to right)
  * - Hyphen names → solid-to-solid: NAME1 → NAME2        (to right)
  *
@@ -13,35 +13,35 @@
 :root {
   /* gradient/surface/secondary — Figma node 203:4496
    * Fade: transparent secondary → full secondary (left → right) */
-  --ai-gradient-surface-secondary: linear-gradient(
+  --ao-gradient-surface-secondary: linear-gradient(
     to right,
-    rgb(from var(--ai-surface-secondary) r g b / 0),
-    var(--ai-surface-secondary)
+    rgb(from var(--ao-surface-secondary) r g b / 0),
+    var(--ao-surface-secondary)
   );
 
   /* gradient/surface/primary — Figma node 2061:5769
    * Fade: transparent surface-primary → full (top → bottom)
    * Re-declared under [data-surface="chat"] so the gradient resolves
-   * to the chat-context value of --ai-surface-primary. */
-  --ai-gradient-surface-primary: linear-gradient(
+   * to the chat-context value of --ao-surface-primary. */
+  --ao-gradient-surface-primary: linear-gradient(
     to bottom,
-    rgb(from var(--ai-surface-primary) r g b / 0),
-    var(--ai-surface-primary)
+    rgb(from var(--ao-surface-primary) r g b / 0),
+    var(--ao-surface-primary)
   );
 }
 
 [data-surface="chat"] {
-  --ai-gradient-surface-primary: linear-gradient(
+  --ao-gradient-surface-primary: linear-gradient(
     to bottom,
-    rgb(from var(--ai-surface-primary) r g b / 0),
-    var(--ai-surface-primary)
+    rgb(from var(--ao-surface-primary) r g b / 0),
+    var(--ao-surface-primary)
   );
 }
 
 [data-theme="dark"] [data-surface="chat"] {
-  --ai-gradient-surface-primary: linear-gradient(
+  --ao-gradient-surface-primary: linear-gradient(
     to bottom,
-    rgb(from var(--ai-surface-primary) r g b / 0),
-    var(--ai-surface-primary)
+    rgb(from var(--ao-surface-primary) r g b / 0),
+    var(--ao-surface-primary)
   );
 }

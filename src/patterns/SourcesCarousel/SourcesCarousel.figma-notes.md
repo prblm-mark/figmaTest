@@ -6,8 +6,8 @@
 
 | Variant | Node | Layout | Direction | Gap | Image position |
 |---|---|---|---|---|---|
-| Device=Default | `2077:1559` | flex-col | column | `--ai-spacing-3` (8px) | Top (before text) |
-| Device=Desktop | `2107:3829` | flex-row | row | `--ai-spacing-5` (16px) | Right (after text, via `order: 1`) |
+| Device=Default | `2077:1559` | flex-col | column | `--ao-spacing-3` (8px) | Top (before text) |
+| Device=Desktop | `2107:3829` | flex-row | row | `--ao-spacing-5` (16px) | Right (after text, via `order: 1`) |
 
 Layout switching is handled by a **container query** (`@container (min-width: 15rem)`) on each `.sources-card`. HTML order matches Device=Default (image first, text second); Desktop reorders via CSS `order`.
 
@@ -19,25 +19,25 @@ Layout switching is handled by a **container query** (`@container (min-width: 15
 
 | Figma property | CSS token | Value |
 |---|---|---|
-| Card background | `--ai-src-carousel-card-bg` | #f3f4f6 / #111928 |
-| Card padding | `--ai-spacing-4` | 12px |
-| Card border-radius | `--ai-radius-md` | 8px |
-| Internal gap (default/narrow) | `--ai-spacing-3` | 8px |
-| Internal gap (desktop/wide) | `--ai-spacing-5` | 16px |
-| Text column gap | `--ai-spacing-1` | 4px |
-| Text line-height | `--ai-leading-xs` | 1rem (16px) |
-| Category font | `--ai-font-body` + `--ai-font-medium` + `--ai-font-fixed-xxs` | Inter Medium 12px |
-| Category color | `--ai-text-contrast` | #6b7280 |
-| Title font | `--ai-font-title` + `--ai-font-semibold` + `--ai-font-fixed-xs` | Inter SemiBold 14px |
-| Title color | `--ai-text-primary` | #1f2a37 |
-| Thumbnail size | `--ai-spacing-10` | 3.5rem (56px) |
-| Thumbnail radius | `--ai-radius-sm` | 4px |
+| Card background | `--ao-src-carousel-card-bg` | #f3f4f6 / #111928 |
+| Card padding | `--ao-spacing-4` | 12px |
+| Card border-radius | `--ao-radius-md` | 8px |
+| Internal gap (default/narrow) | `--ao-spacing-3` | 8px |
+| Internal gap (desktop/wide) | `--ao-spacing-5` | 16px |
+| Text column gap | `--ao-spacing-1` | 4px |
+| Text line-height | `--ao-leading-xs` | 1rem (16px) |
+| Category font | `--ao-font-body` + `--ao-font-medium` + `--ao-font-fixed-xxs` | Inter Medium 12px |
+| Category color | `--ao-text-contrast` | #6b7280 |
+| Title font | `--ao-font-title` + `--ao-font-semibold` + `--ao-font-fixed-xs` | Inter SemiBold 14px |
+| Title color | `--ao-text-primary` | #1f2a37 |
+| Thumbnail size | `--ao-spacing-10` | 3.5rem (56px) |
+| Thumbnail radius | `--ao-radius-sm` | 4px |
 
 ## Property mapping — Track
 
 | Figma property | CSS token | Value |
 |---|---|---|
-| Track gap | `--ai-spacing-3` | 8px |
+| Track gap | `--ao-spacing-3` | 8px |
 | Scroll | overflow-x auto, scroll-snap-type x mandatory | — |
 
 ## Responsive columns
@@ -48,7 +48,7 @@ Layout switching is handled by a **container query** (`@container (min-width: 15
 | Tablet (768px–1023px) | 2.5 | Half of 3rd card visible | Hidden |
 | Desktop (≥ 1024px) | 3 | Full columns | Visible |
 
-Container query breakpoint: `12rem` (192px = `--ai-size-3`) switches card from vertical to horizontal layout. Nav arrows are hidden (not disabled) when scroll is unavailable.
+Container query breakpoint: `12rem` (192px = `--ao-size-3`) switches card from vertical to horizontal layout. Nav arrows are hidden (not disabled) when scroll is unavailable.
 
 ## GSAP animation
 

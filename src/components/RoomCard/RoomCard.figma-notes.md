@@ -87,8 +87,8 @@ Confirmed with the designer 2026-08-25:
 
 | | Background | Border |
 |---|---|---|
-| Default | `--ai-surface-primary` | 1px solid `--ai-border-secondary` |
-| Selected | `--ai-surface-minimal` | 1px solid `--ai-border-brand` |
+| Default | `--ao-surface-primary` | 1px solid `--ao-border-secondary` |
+| Selected | `--ao-surface-minimal` | 1px solid `--ao-border-brand` |
 
 Verified identical on both Type=Default (`3474:90673`) and Type=Full (`3474:90688`), so Selected
 composes as one modifier rather than branching per type.
@@ -100,9 +100,9 @@ Only four things change. Verified against the mobile Full variant (`3484:186649`
 
 | Property | Desktop | Mobile |
 |---|---|---|
-| card `padding` | `--ai-spacing-5` (16px) | `--ai-spacing-4` (12px) |
-| card `min-inline-size` | `--ai-size-5` (280px) | `--ai-size-4` (240px) |
-| name `font-size` | `--ai-font-fixed-sm` (16px) | `--ai-font-fixed-xs` (14px) |
+| card `padding` | `--ao-spacing-5` (16px) | `--ao-spacing-4` (12px) |
+| card `min-inline-size` | `--ao-size-5` (280px) | `--ao-size-4` (240px) |
+| name `font-size` | `--ao-font-fixed-sm` (16px) | `--ao-font-fixed-xs` (14px) |
 | counts text | `12 tables · 0/148 seated` | `12 tables · 0/148` |
 
 The counts change is **content**, which CSS can't do cleanly. `" seated"` is wrapped in
@@ -115,35 +115,35 @@ while `textContent` still reads `"12 tables · 0/148 seated"`.
 
 | Figma | CSS | Role |
 |---|---|---|
-| `--ai-surface-primary` / `--ai-surface-minimal` | `background-color` | per state |
-| `--ai-border-secondary` / `--ai-border-brand` | `border-color` | per state |
-| `--ai-radius-lg` | card `border-radius` (16px) | |
-| `light/shadow-xxs` → `--ai-shadow-2xs` | card `box-shadow` | |
-| `--ai-spacing-5` / `--ai-spacing-4` | card `padding` desktop / mobile | |
-| `--ai-spacing-3` | card `gap` | header + meta `gap` too, but see below |
-| `--ai-spacing-1` | actions `gap` | |
-| `--ai-size-5` / `--ai-size-4` | card `min-inline-size` desktop / mobile | |
-| `--ai-font-title` | every text node | |
-| `--ai-font-fixed-sm` / `-xs` | name, desktop / mobile | |
-| `--ai-font-fixed-xxs` | counts (12px) | |
-| `--ai-font-fixed-4xs` | seats free (11px) | |
-| `--ai-font-bold` / `-semibold` / `-regular` | name / seats free / counts | |
-| `--ai-text-primary` / `--ai-text-contrast` | name / counts | |
-| `--ai-text-brand` | seats free | see below |
-| `--ai-surface-contrast` | progress track | |
-| `--ai-surface-brand` | progress fill (Default, Seats Assigned) | |
-| `--ai-surface-success` | progress fill (Full) | |
-| `--ai-radius-full` | track, fill | |
-| `--ai-spacing-2` | track `block-size` (6px) | |
-| `--ai-icon-size-xs` | action-button icons (12px, via `btn--2xs`) | |
-| `--ai-radius-sm` | action-button radius (via `btn--2xs`) | |
+| `--ao-surface-primary` / `--ao-surface-minimal` | `background-color` | per state |
+| `--ao-border-secondary` / `--ao-border-brand` | `border-color` | per state |
+| `--ao-radius-lg` | card `border-radius` (16px) | |
+| `light/shadow-xxs` → `--ao-shadow-2xs` | card `box-shadow` | |
+| `--ao-spacing-5` / `--ao-spacing-4` | card `padding` desktop / mobile | |
+| `--ao-spacing-3` | card `gap` | header + meta `gap` too, but see below |
+| `--ao-spacing-1` | actions `gap` | |
+| `--ao-size-5` / `--ao-size-4` | card `min-inline-size` desktop / mobile | |
+| `--ao-font-title` | every text node | |
+| `--ao-font-fixed-sm` / `-xs` | name, desktop / mobile | |
+| `--ao-font-fixed-xxs` | counts (12px) | |
+| `--ao-font-fixed-4xs` | seats free (11px) | |
+| `--ao-font-bold` / `-semibold` / `-regular` | name / seats free / counts | |
+| `--ao-text-primary` / `--ao-text-contrast` | name / counts | |
+| `--ao-text-brand` | seats free | see below |
+| `--ao-surface-contrast` | progress track | |
+| `--ao-surface-brand` | progress fill (Default, Seats Assigned) | |
+| `--ao-surface-success` | progress fill (Full) | |
+| `--ao-radius-full` | track, fill | |
+| `--ao-spacing-2` | track `block-size` (6px) | |
+| `--ao-icon-size-xs` | action-button icons (12px, via `btn--2xs`) | |
+| `--ao-radius-sm` | action-button radius (via `btn--2xs`) | |
 
 ## Two gaps where the CSS leads Figma
 
 | Element | Property | Figma | CSS |
 |---|---|---|---|
-| `__header` | `gap` | **not set** | `--ai-spacing-3` (8px) |
-| `__meta` | `gap` | **not set** | `--ai-spacing-3` (8px) |
+| `__header` | `gap` | **not set** | `--ao-spacing-3` (8px) |
+| `__meta` | `gap` | **not set** | `--ao-spacing-3` (8px) |
 
 **The header gap was requested by the designer** (2026-08-25). It matters more than it looks:
 `justify-content: space-between` gives no clearance once the name is long enough to fill its
@@ -151,7 +151,7 @@ track, so a truncated name butted straight up against the edit button. Verified 
 demo card went from 0px of clearance to 8px.
 
 **The badge's own divergences now live with the component.** Its check icon was enlarged to
-10×10 with `stroke-width: 4` and its label given `--ai-tracking-7`, both of which put it ~5px wider
+10×10 with `stroke-width: 4` and its label given `--ao-tracking-7`, both of which put it ~5px wider
 than the 45×15 Figma draws. Those are recorded in `FullBadge.figma-notes.md`, not here.
 
 **The meta gap is not from Figma's meta frame**, which sets none on any variant. The value came
@@ -159,7 +159,7 @@ from the single-child badge wrapper (`3470:84968`) that was dropped as redundant
 the same reason as the header — clearance between the truncating counts and the seats-free label
 or badge.
 
-**The two were matched at `--ai-spacing-3`** by the designer 2026-08-25 (the header started at 4px).
+**The two were matched at `--ao-spacing-3`** by the designer 2026-08-25 (the header started at 4px).
 Beyond consistency this buys real alignment: the actions cluster and the seats-free label now share
 a right edge, both landing 1px inside the card's padding box. Neither gap comes from Figma, so if
 the frames are ever updated, both rows want 8px.
@@ -172,14 +172,14 @@ when it was extracted.
 
 | Figma | Decision |
 |---|---|
-| `--ai-surface-brand` bound as the "N seats free" **text** colour | **Rebound to `--ai-text-brand`.** At 11px the surface token gives 3.60:1 on white and 3.44:1 on the Selected surface — both under the 4.5:1 AA floor. `--ai-text-brand` gives 5.04:1 / 4.82:1. **Figma has been updated**, and `3470:84948` already returns `--ai-text-brand`, so this is not a divergence. |
-| card `width: 290px` | **Dropped.** The card is fluid and fills its column. 290px has no token; the bound `min-width` does (`--ai-size-5` / `--ai-size-4`), and those are kept. |
+| `--ao-surface-brand` bound as the "N seats free" **text** colour | **Rebound to `--ao-text-brand`.** At 11px the surface token gives 3.60:1 on white and 3.44:1 on the Selected surface — both under the 4.5:1 AA floor. `--ao-text-brand` gives 5.04:1 / 4.82:1. **Figma has been updated**, and `3470:84948` already returns `--ao-text-brand`, so this is not a divergence. |
+| card `width: 290px` | **Dropped.** The card is fluid and fills its column. 290px has no token; the bound `min-width` does (`--ao-size-5` / `--ao-size-4`), and those are kept. |
 
-> **`--ai-font-fixed-6xs` round-tripped cleanly.** It was briefly hand-added to unblock this
+> **`--ao-font-fixed-6xs` round-tripped cleanly.** It was briefly hand-added to unblock this
 > build; the designer's re-export landed the same day and `css/tokens.css` came back
 > byte-identical, so the stopgap and the real variable agree. Worth knowing how the scale moved:
 > the old 10px variable was *renamed* to `6xs` and set to 9, and a **new** variable
-> (`VariableID:3532:102609`) took over `5xs` at 10px. So `--ai-font-fixed-5xs` still exists and
+> (`VariableID:3532:102609`) took over `5xs` at 10px. So `--ao-font-fixed-5xs` still exists and
 > AttendeeCard's seat badge is unaffected — but the ID reuse makes a naive id-based diff look like
 > `5xs` vanished.
 
@@ -188,11 +188,11 @@ when it was extracted.
 Figma places the edit/delete actions as **Button instances at 24×24** with a 12px icon, but no
 existing size produced that: `btn--icon` is 40×40, `+ .btn--sm` 32×32, `+ .btn--xs` 32×24. At the
 designer's direction a new `.btn--icon.btn--2xs` was added to `Button.css` (24×24, 12px icon,
-`--ai-radius-sm`).
+`--ao-radius-sm`).
 
 It is **icon-only by design** — there is no text `.btn--2xs`, because Figma defines none, and
 inventing one would be a variant with no Figma counterpart. AttendeeCard's action buttons have
-identical geometry (24px box, 12px icon, `--ai-radius-sm`) built as scoped `.attendee-card__action`
+identical geometry (24px box, 12px icon, `--ao-radius-sm`) built as scoped `.attendee-card__action`
 CSS; folding those onto `btn--2xs` is a worthwhile follow-up but was out of scope here.
 
 ## Accessibility
@@ -219,15 +219,15 @@ CSS; folding those onto `btn--2xs` is a worthwhile follow-up but was out of scop
   frame. Don't read that empty div as "no actions"; the screenshot shows two.
 - **Design context under-reports bound tokens.** The title's size renders as raw `text-[16px]` and
   the min-width as `min-w-[280px]`, but `get_variable_defs` shows both bound
-  (`--ai-font-fixed-sm`, `--ai-size-5`). Always cross-check the two before flagging a gap.
-- **A single-child flex wrapper around the badge** (`3470:84968`, gap `--ai-spacing-3`) is dropped —
+  (`--ao-font-fixed-sm`, `--ao-size-5`). Always cross-check the two before flagging a gap.
+- **A single-child flex wrapper around the badge** (`3470:84968`, gap `--ao-spacing-3`) is dropped —
   a gap on a one-child flex container does nothing.
 - **No hover, focus, pressed or disabled variants** exist in the Figma set. The action buttons get
   Button's own states; nothing else was invented.
-- **No dark-mode variant** in Figma. Every colour is a theme-aware `--ai-*` token, so the card will
+- **No dark-mode variant** in Figma. Every colour is a theme-aware `--ao-*` token, so the card will
   re-resolve under `[data-theme="dark"]`, but that has not been designed or reviewed.
 - `font-semibold` on the seats-free text is unbound in Figma while its siblings cite
-  `--ai-font-bold` / `--ai-font-regular`. `--ai-font-semibold` (600) is used here. **Worth binding
+  `--ao-font-bold` / `--ao-font-regular`. `--ao-font-semibold` (600) is used here. **Worth binding
   in Figma.**
 
 

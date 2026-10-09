@@ -20,7 +20,7 @@ export function initFontSizeSlider(input) {
     const value = Number(input.value);
     const pct = ((value - min) / (max - min)) * 100;
 
-    const fill = 'var(--ai-surface-brand)';
+    const fill = 'var(--ao-surface-brand)';
     const track = 'var(--cc-actions-menu-secondary-bg)';
 
     input.style.backgroundImage =

@@ -12,7 +12,7 @@
 
    Device=Mobile is expressed as @media (max-width: 767px) — never a modifier.
    Assumes base.css + tokens.css (+ tokens-shadows.css) are loaded by the page.
-   Token note (approved): play-button fill normalised to --ai-surface-brand
+   Token note (approved): play-button fill normalised to --ao-surface-brand
    (Figma binds surface-info on desktop, surface-brand on mobile — both resolve to the
    same brand value, so one token covers both).
    ========================================================================== */
@@ -33,16 +33,16 @@
   grid-template-areas:
     "label label label label"
     "play  wave  time  download";
-  column-gap: var(--ai-spacing-4);   /* 12px */
-  row-gap: var(--ai-spacing-3);      /* 8px */
+  column-gap: var(--ao-spacing-4);   /* 12px */
+  row-gap: var(--ao-spacing-3);      /* 8px */
   width: 100%;
-  max-width: var(--ai-size-11);      /* 768px frame; fills narrower columns */
-  padding: var(--ai-spacing-4) var(--ai-spacing-5);  /* 12px / 16px */
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-lg);
-  font-family: var(--ai-font-title), sans-serif;
-  color: var(--ai-text-primary);
+  max-width: var(--ao-size-11);      /* 768px frame; fills narrower columns */
+  padding: var(--ao-spacing-4) var(--ao-spacing-5);  /* 12px / 16px */
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-lg);
+  font-family: var(--ao-font-title), sans-serif;
+  color: var(--ao-text-primary);
 }
 .audio-player *,
 .audio-player *::before,
@@ -60,11 +60,11 @@
 }
 .audio-player__eyebrow {
   margin: 0;
-  padding-top: var(--ai-spacing-0-5);  /* 2px — Figma text-frame top pad */
-  font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fixed-xs);  /* 14px */
-  line-height: var(--ai-leading-xs);   /* 16px */
-  color: var(--ai-text-secondary);
+  padding-top: var(--ao-spacing-0-5);  /* 2px — Figma text-frame top pad */
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fixed-xs);  /* 14px */
+  line-height: var(--ao-leading-xs);   /* 16px */
+  color: var(--ao-text-secondary);
   white-space: nowrap;                  /* Figma keeps the eyebrow on one line */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -72,10 +72,10 @@
 .audio-player__title {
   display: none;
   margin: 0;
-  font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fixed-sm);  /* 16px */
-  line-height: var(--ai-leading-sm);   /* 20px */
-  color: var(--ai-text-primary);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fixed-sm);  /* 16px */
+  line-height: var(--ao-leading-sm);   /* 20px */
+  color: var(--ao-text-primary);
 }
 .audio-player--sticky .audio-player__eyebrow { display: none; }
 .audio-player--sticky .audio-player__title { display: block; }
@@ -89,23 +89,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-spacing-8);   /* 40px */
-  height: var(--ai-spacing-8);
+  width: var(--ao-spacing-8);   /* 40px */
+  height: var(--ao-spacing-8);
   padding: 0;
   border: none;
-  border-radius: var(--ai-radius-full);
-  background-color: var(--ai-surface-brand);
-  color: var(--ai-icon-invert);
+  border-radius: var(--ao-radius-full);
+  background-color: var(--ao-surface-brand);
+  color: var(--ao-icon-invert);
   cursor: pointer;
-  transition: background-color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default);
 }
 .audio-player__play:hover {
-  background-color: var(--ai-surface-brand-dark);
+  background-color: var(--ao-surface-brand-dark);
 }
 /* Icon swap — play at rest, pause while playing. 20px both. */
 .audio-player__icon {
-  width: var(--ai-icon-size-md);  /* 20px */
-  height: var(--ai-icon-size-md);
+  width: var(--ao-icon-size-md);  /* 20px */
+  height: var(--ao-icon-size-md);
 }
 .audio-player__icon--pause { display: none; }
 .audio-player.is-playing .audio-player__icon--play { display: none; }
@@ -118,21 +118,21 @@
 .audio-player__waveform {
   grid-area: wave;
   min-width: 0;
-  height: var(--ai-spacing-9);   /* 48px */
+  height: var(--ao-spacing-9);   /* 48px */
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-0-5);    /* 2px */
+  gap: var(--ao-spacing-0-5);    /* 2px */
   cursor: pointer;
 }
 .audio-player__bar {
   flex: 1 1 0;
-  min-width: var(--ai-spacing-0-5);  /* 2px */
+  min-width: var(--ao-spacing-0-5);  /* 2px */
   height: 50%;  /* per-bar amplitude % applied inline by JS */
-  border-radius: var(--ai-radius-full);
-  background-color: var(--ai-surface-contrast);
+  border-radius: var(--ao-radius-full);
+  background-color: var(--ao-surface-contrast);
 }
 .audio-player__bar.is-played {
-  background-color: var(--ai-surface-brand);
+  background-color: var(--ao-surface-brand);
 }
 
 /* --------------------------------------------------------------------------
@@ -143,25 +143,25 @@
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-1);   /* 4px */
+  gap: var(--ao-spacing-1);   /* 4px */
 }
 .audio-player__time,
 .audio-player__duration,
 .audio-player__time-sep {
   font-family: inherit;
-  font-size: var(--ai-font-fixed-xxs);  /* 12px */
-  line-height: var(--ai-leading-md);    /* 24px */
-  font-weight: var(--ai-font-medium);
+  font-size: var(--ao-font-fixed-xxs);  /* 12px */
+  line-height: var(--ao-leading-md);    /* 24px */
+  font-weight: var(--ao-font-medium);
   white-space: nowrap;
 }
-.audio-player__time { color: var(--ai-text-secondary); }
-.audio-player__time-sep { color: var(--ai-text-contrast); }
+.audio-player__time { color: var(--ao-text-secondary); }
+.audio-player__time-sep { color: var(--ao-text-contrast); }
 .audio-player__duration {
   margin: 0;
   padding: 0;
   border: none;
   background: none;
-  color: var(--ai-text-secondary);
+  color: var(--ao-text-secondary);
   cursor: pointer;
 }
 
@@ -174,23 +174,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-spacing-8);   /* 40px */
-  height: var(--ai-spacing-8);
+  width: var(--ao-spacing-8);   /* 40px */
+  height: var(--ao-spacing-8);
   padding: 0;
   border: none;
-  border-radius: var(--ai-radius-full);
+  border-radius: var(--ao-radius-full);
   background-color: transparent;
-  color: var(--ai-icon-secondary);
+  color: var(--ao-icon-secondary);
   cursor: pointer;
-  transition: background-color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default);
 }
 .audio-player__download:hover {
-  background-color: var(--ai-surface-secondary);
+  background-color: var(--ao-surface-secondary);
 }
 .audio-player__download i,
 .audio-player__download svg {
-  width: var(--ai-icon-size-sm);  /* 16px */
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);  /* 16px */
+  height: var(--ao-icon-size-sm);
 }
 
 /* --------------------------------------------------------------------------
@@ -198,9 +198,9 @@
    Layout areas are identical to Default on desktop.
    -------------------------------------------------------------------------- */
 .audio-player--sticky {
-  column-gap: var(--ai-spacing-5);   /* 16px */
-  row-gap: var(--ai-spacing-4);      /* 12px */
-  box-shadow: var(--ai-shadow-md);
+  column-gap: var(--ao-spacing-5);   /* 16px */
+  row-gap: var(--ao-spacing-4);      /* 12px */
+  box-shadow: var(--ao-shadow-md);
 }
 
 /* --------------------------------------------------------------------------
@@ -219,26 +219,26 @@
     grid-template-areas:
       "label label label download"
       "play  wave  time  time";
-    column-gap: var(--ai-spacing-4);  /* 12px */
-    row-gap: var(--ai-spacing-2);     /* 6px */
-    padding: var(--ai-spacing-4);     /* 12px */
+    column-gap: var(--ao-spacing-4);  /* 12px */
+    row-gap: var(--ao-spacing-2);     /* 6px */
+    padding: var(--ao-spacing-4);     /* 12px */
   }
   .audio-player__time-group { justify-self: end; }
   .audio-player__download {
     justify-self: end;
-    width: var(--ai-spacing-6);   /* 24px */
-    height: var(--ai-spacing-6);
+    width: var(--ao-spacing-6);   /* 24px */
+    height: var(--ao-spacing-6);
   }
 
   .audio-player--sticky {
     grid-template-areas:
       "play  label label download"
       "wave  wave  time  time";
-    row-gap: var(--ai-spacing-3);     /* 8px */
+    row-gap: var(--ao-spacing-3);     /* 8px */
   }
   .audio-player--sticky .audio-player__title {
-    font-size: var(--ai-font-fixed-xs);  /* 14px — wraps to 2 lines */
-    line-height: var(--ai-leading-sm);   /* 20px */
+    font-size: var(--ao-font-fixed-xs);  /* 14px — wraps to 2 lines */
+    line-height: var(--ao-leading-sm);   /* 20px */
   }
 }
 
@@ -250,19 +250,19 @@
    -------------------------------------------------------------------------- */
 .audio-player--dock {
   position: fixed;
-  left: var(--ai-spacing-5);
-  right: var(--ai-spacing-5);
-  bottom: var(--ai-spacing-5);
+  left: var(--ao-spacing-5);
+  right: var(--ao-spacing-5);
+  bottom: var(--ao-spacing-5);
   /* width:auto so the left/right insets define the width — the base
      `width:100%` would otherwise force full-viewport width and overflow. */
   width: auto;
   margin-inline: auto;
   z-index: 50;
   opacity: 0;
-  transform: translateY(calc(100% + var(--ai-spacing-5)));
+  transform: translateY(calc(100% + var(--ao-spacing-5)));
   transition:
-    transform var(--ai-transition-default),
-    opacity var(--ai-transition-default);
+    transform var(--ao-transition-default),
+    opacity var(--ao-transition-default);
   pointer-events: none;
 }
 .audio-player--dock.is-docked-visible {

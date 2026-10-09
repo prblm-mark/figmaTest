@@ -25,16 +25,16 @@
 
 | Property | Token |
 |---|---|
-| card | --ai-surface-primary, 1px --ai-border-secondary, --ai-radius-md, no shadow (removed 2026-10-02, see below) |
-| padding / gap | --ai-spacing-4 / --ai-spacing-4 (card); body gap --ai-spacing-2 (designer amend 2026-09-29, was -4 — flag for Figma) |
-| name | --ai-font-fixed-2xs Bold --ai-text-primary |
-| role | --ai-font-fixed-xxs --ai-text-contrast |
-| time | --ai-font-fixed-5xs --ai-text-contrast |
-| line height | --ai-leading-xs (draft "normal") |
-| chips gap | --ai-spacing-2 |
+| card | --ao-surface-primary, 1px --ao-border-secondary, --ao-radius-md, no shadow (removed 2026-10-02, see below) |
+| padding / gap | --ao-spacing-4 / --ao-spacing-4 (card); body gap --ao-spacing-2 (designer amend 2026-09-29, was -4 — flag for Figma) |
+| name | --ao-font-fixed-2xs Bold --ao-text-primary |
+| role | --ao-font-fixed-xxs --ao-text-contrast |
+| time | --ao-font-fixed-5xs --ao-text-contrast |
+| line height | --ao-leading-xs (draft "normal") |
+| chips gap | --ao-spacing-2 |
 
 ## Token Gaps & Decisions
-Draft shadow was the retired `light/shadow-xxs` → `shadow/2xs` (`--ai-shadow-2xs`). Draft line-heights were "normal" → `--ai-leading-xs`.
+Draft shadow was the retired `light/shadow-xxs` → `shadow/2xs` (`--ao-shadow-2xs`). Draft line-heights were "normal" → `--ao-leading-xs`.
 
 ## Notes
 - Built 2026-09-28 from the View & Edit kit (section `3861:1902`, CC Light mode). The kit was

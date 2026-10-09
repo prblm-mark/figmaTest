@@ -15,7 +15,7 @@
  *
  * The rules are the listings' (ListingScreen fitColumns / shareSpare, designer 2026-09-18 → 09-22):
  *   1. Every column starts at its natural width. `data-fluid` columns (a title that wraps) count
- *      at most `--ai-size-3` (192px), the listings' FLUID_MIN, so a long title cannot crowd the
+ *      at most `--ao-size-3` (192px), the listings' FLUID_MIN, so a long title cannot crowd the
  *      rest out — and when nothing is left to drop, they wrap below that floor before overflowing.
  *   2. If they do not all fit, a kebab column appears and columns drop in `data-drop` order
  *      (1 first) until the row fits. A dropped column is shown in the row's detail panel, which
@@ -143,7 +143,7 @@
     table.style.inlineSize = '';
     details.forEach(function (tr) { tr.classList.remove('datatables__row-detail--measuring'); });
 
-    var floor = remPx('--ai-size-3');
+    var floor = remPx('--ao-size-3');
     var base = natural.map(function (w, i) {
       return ths[i].hasAttribute('data-fluid') ? Math.max(least[i], Math.min(w, floor)) : w;
     });
@@ -158,7 +158,7 @@
         .sort(function (a, b) { return a.p - b.p; })
         .forEach(function (c) { if (sum() > available) shown[c.i] = false; });
     }
-    // Nothing left to drop and still too wide (a phone): a fluid column gives up its --ai-size-3 floor
+    // Nothing left to drop and still too wide (a phone): a fluid column gives up its --ao-size-3 floor
     // and wraps further, down to its own narrowest width, before the row may overflow.
     var over = sum() - available;
     if (over > 0) {

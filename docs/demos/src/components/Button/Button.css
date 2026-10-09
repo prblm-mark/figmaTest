@@ -1,24 +1,24 @@
-/* Button component — uses only --ai-* design tokens */
+/* Button component — uses only --ao-* design tokens */
 
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--ai-spacing-3);
-  padding: 0 var(--ai-spacing-5);
-  min-height: var(--ai-spacing-8);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fluid-xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-xs);
-  border-radius: var(--ai-radius-md);
+  gap: var(--ao-spacing-3);
+  padding: 0 var(--ao-spacing-5);
+  min-height: var(--ao-spacing-8);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fluid-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-xs);
+  border-radius: var(--ao-radius-md);
   border: 1px solid transparent;
   cursor: pointer;
   text-decoration: none;
-  transition: background-color var(--ai-transition-default),
-              border-color var(--ai-transition-default),
-              color var(--ai-transition-default),
-              box-shadow var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default),
+              border-color var(--ao-transition-default),
+              color var(--ao-transition-default),
+              box-shadow var(--ao-transition-default);
   white-space: nowrap;
   user-select: none;
 }
@@ -32,95 +32,95 @@
 
 /* Lucide icons inside buttons default to 24×24 — override to 16×16 */
 .btn [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
   flex-shrink: 0;
 }
 
 /* ── Primary ─────────────────────────────────────────── */
 
 .btn--primary {
-  background-color: var(--ai-btn-primary-bg);
-  color: var(--ai-btn-primary-text);
-  border-color: var(--ai-btn-primary-border);
+  background-color: var(--ao-btn-primary-bg);
+  color: var(--ao-btn-primary-text);
+  border-color: var(--ao-btn-primary-border);
 }
 
 .btn--primary:hover {
-  background-color: var(--ai-btn-primary-bg-hover);
-  border-color: var(--ai-btn-primary-border-hover);
-  color: var(--ai-btn-primary-text-hover);
+  background-color: var(--ao-btn-primary-bg-hover);
+  border-color: var(--ao-btn-primary-border-hover);
+  color: var(--ao-btn-primary-text-hover);
 }
 
 .btn--primary:active {
-  background-color: var(--ai-btn-primary-bg-pressed);
+  background-color: var(--ao-btn-primary-bg-pressed);
 }
 
 .btn--primary:focus-visible {
-  background-color: var(--ai-btn-primary-bg-hover);
-  border: 2px solid var(--ai-surface-primary);
-  box-shadow: 0 0 0 2px var(--ai-btn-primary-bg-hover);
-  color: var(--ai-btn-primary-text-hover);
+  background-color: var(--ao-btn-primary-bg-hover);
+  border: 2px solid var(--ao-surface-primary);
+  box-shadow: 0 0 0 2px var(--ao-btn-primary-bg-hover);
+  color: var(--ao-btn-primary-text-hover);
   outline: none;
 }
 
 /* ── Secondary ───────────────────────────────────────── */
 
 .btn--secondary {
-  background-color: var(--ai-btn-secondary-bg);
-  color: var(--ai-btn-secondary-text);
-  border-color: var(--ai-btn-secondary-border);
+  background-color: var(--ao-btn-secondary-bg);
+  color: var(--ao-btn-secondary-text);
+  border-color: var(--ao-btn-secondary-border);
 }
 
 .btn--secondary:hover {
-  background-color: var(--ai-btn-secondary-bg-hover);
-  border-color: var(--ai-btn-secondary-border-hover);
-  color: var(--ai-btn-secondary-text-hover);
+  background-color: var(--ao-btn-secondary-bg-hover);
+  border-color: var(--ao-btn-secondary-border-hover);
+  color: var(--ao-btn-secondary-text-hover);
 }
 
 .btn--secondary:active {
-  background-color: var(--ai-btn-secondary-bg-pressed);
-  border-color: var(--ai-btn-secondary-border);
+  background-color: var(--ao-btn-secondary-bg-pressed);
+  border-color: var(--ao-btn-secondary-border);
 }
 
 .btn--secondary:focus-visible {
-  background-color: var(--ai-btn-secondary-bg-hover);
-  border-color: var(--ai-surface-primary);
-  box-shadow: 0 0 0 2px var(--ai-btn-secondary-border);
-  color: var(--ai-btn-secondary-text-hover);
+  background-color: var(--ao-btn-secondary-bg-hover);
+  border-color: var(--ao-surface-primary);
+  box-shadow: 0 0 0 2px var(--ao-btn-secondary-border);
+  color: var(--ao-btn-secondary-text-hover);
   outline: none;
 }
 
 /* ── Tertiary (ghost — transparent bg, no border) ──── */
 
 .btn--tertiary {
-  background-color: var(--ai-btn-tertiary-bg);
-  color: var(--ai-btn-tertiary-text);
-  border-color: var(--ai-btn-tertiary-border);
+  background-color: var(--ao-btn-tertiary-bg);
+  color: var(--ao-btn-tertiary-text);
+  border-color: var(--ao-btn-tertiary-border);
 }
 
 .btn--tertiary:hover {
-  background-color: var(--ai-btn-tertiary-bg-hover);
-  border-color: var(--ai-btn-tertiary-border-hover);
-  color: var(--ai-btn-tertiary-text-hover);
+  background-color: var(--ao-btn-tertiary-bg-hover);
+  border-color: var(--ao-btn-tertiary-border-hover);
+  color: var(--ao-btn-tertiary-text-hover);
 }
 
 .btn--tertiary:active {
-  background-color: var(--ai-btn-tertiary-bg-pressed);
+  background-color: var(--ao-btn-tertiary-bg-pressed);
 }
 
 .btn--tertiary:focus-visible {
-  background-color: var(--ai-btn-tertiary-bg-hover);
-  box-shadow: 0 0 0 2px var(--ai-border-secondary);
-  color: var(--ai-btn-tertiary-text-hover);
+  background-color: var(--ao-btn-tertiary-bg-hover);
+  box-shadow: 0 0 0 2px var(--ao-border-secondary);
+  color: var(--ao-btn-tertiary-text-hover);
   outline: none;
 }
 
 /* ── Alert (destructive — solid red) ─────────────────── */
 
 .btn--alert {
-  background-color: var(--ai-surface-error);
-  color: var(--ai-btn-primary-text);
-  border-color: var(--ai-surface-error);
+  background-color: var(--ao-surface-error);
+  color: var(--ao-btn-primary-text);
+  border-color: var(--ao-surface-error);
 }
 
 .btn--alert:hover {
@@ -135,7 +135,7 @@
 
 .btn--alert:focus-visible {
   background-color: #f87171; /* Red/400 — primitive, approved */
-  border: 2px solid var(--ai-surface-primary);
+  border: 2px solid var(--ao-surface-primary);
   box-shadow: 0 0 0 2px #f87171; /* Red/400 — primitive, approved */
   outline: none;
 }
@@ -144,27 +144,27 @@
 /* Default: outlined red. Hover/focus/pressed: flips to solid red (same as alert). */
 
 .btn--alert-outline {
-  background-color: var(--ai-surface-primary);
-  color: var(--ai-text-error);
-  border-color: var(--ai-border-error);
+  background-color: var(--ao-surface-primary);
+  color: var(--ao-text-error);
+  border-color: var(--ao-border-error);
 }
 
 .btn--alert-outline:hover {
   background-color: #f87171; /* Red/400 — primitive, approved */
   border-color: #f87171;
-  color: var(--ai-btn-primary-text);
+  color: var(--ao-btn-primary-text);
 }
 
 .btn--alert-outline:active {
   background-color: #dc2626; /* Red/600 — primitive, approved */
   border-color: #dc2626;
-  color: var(--ai-btn-primary-text);
+  color: var(--ao-btn-primary-text);
 }
 
 .btn--alert-outline:focus-visible {
   background-color: #f87171; /* Red/400 — primitive, approved */
-  color: var(--ai-btn-primary-text);
-  border: 2px solid var(--ai-surface-primary);
+  color: var(--ao-btn-primary-text);
+  border: 2px solid var(--ao-surface-primary);
   box-shadow: 0 0 0 2px #f87171; /* Red/400 — primitive, approved */
   outline: none;
 }
@@ -173,9 +173,9 @@
 
 .btn:disabled,
 .btn--disabled {
-  background-color: var(--ai-btn-bg-disabled);
-  border-color: var(--ai-btn-bg-disabled);
-  color: var(--ai-btn-text-disabled);
+  background-color: var(--ao-btn-bg-disabled);
+  border-color: var(--ao-btn-bg-disabled);
+  color: var(--ao-btn-text-disabled);
   opacity: 0.8;
   cursor: not-allowed;
 }
@@ -183,10 +183,10 @@
 /* ── Size: small ─────────────────────────────────────── */
 
 .btn--sm {
-  padding: 0 var(--ai-spacing-4);
-  min-height: var(--ai-spacing-7);
-  font-size: var(--ai-font-fluid-xxs);
-  border-radius: var(--ai-radius-md);
+  padding: 0 var(--ao-spacing-4);
+  min-height: var(--ao-spacing-7);
+  font-size: var(--ao-font-fluid-xxs);
+  border-radius: var(--ao-radius-md);
 }
 
 /* ── Size: extra-small ───────────────────────────────── */
@@ -194,40 +194,40 @@
    height token, a tighter gap, semibold weight (designer, 2026-09-28 — was medium), and the small radius. */
 
 .btn--xs {
-  gap: var(--ai-spacing-1);
-  padding: var(--ai-spacing-2) var(--ai-spacing-3);
+  gap: var(--ao-spacing-1);
+  padding: var(--ao-spacing-2) var(--ao-spacing-3);
   min-height: auto;
-  font-size: var(--ai-font-fluid-xxs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-xs);
-  border-radius: var(--ai-radius-md); /* designer, 2026-09-28 — was radius-sm */
+  font-size: var(--ao-font-fluid-xxs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-xs);
+  border-radius: var(--ao-radius-md); /* designer, 2026-09-28 — was radius-sm */
 }
 
 .btn--xs [data-lucide] {
-  width: var(--ai-icon-size-xs);
-  height: var(--ai-icon-size-xs);
+  width: var(--ao-icon-size-xs);
+  height: var(--ao-icon-size-xs);
 }
 
 /* ── Icon-only variant (square button, no text) ──────── */
 
 .btn--icon {
   padding: 0;
-  width: var(--ai-spacing-8);
-  min-height: var(--ai-spacing-8);
+  width: var(--ao-spacing-8);
+  min-height: var(--ao-spacing-8);
 }
 
 .btn--icon.btn--sm {
-  width: var(--ai-spacing-7);
-  min-height: var(--ai-spacing-7);
+  width: var(--ao-spacing-7);
+  min-height: var(--ao-spacing-7);
   padding: 0;
 }
 
-/* 24x24 square. Was `--ai-spacing-7` (32) until 2026-08-28, making this a 32x24 oblong — which
+/* 24x24 square. Was `--ao-spacing-7` (32) until 2026-08-28, making this a 32x24 oblong — which
  * was correct for the Figma of the time. The designer has since squared the size off: every
  * `Icon Only=True, Size=xs` variant now measures 24x24, across all three Types and all five
  * States (Secondary `2926:3565` and its Hover/Focus/Pressed/Disabled siblings, likewise Primary
- * `2926:3559` and Tertiary `2926:3571`). `2926:3565` binds `--ai-spacing-6`, `--ai-icon-size-xs`
- * and `--ai-radius-sm` — the last two of which this file already had right.
+ * `2926:3559` and Tertiary `2926:3571`). `2926:3565` binds `--ao-spacing-6`, `--ao-icon-size-xs`
+ * and `--ao-radius-sm` — the last two of which this file already had right.
  *
  * NOTE: this makes `.btn--icon.btn--2xs` below REDUNDANT — it is now byte-identical to this rule
  * (24x24, 12px icon, radius-sm, padding 0). `2xs` was invented on 2026-08-25 precisely because
@@ -237,8 +237,8 @@
  * Code Connect snippets, so retiring it is a deliberate migration plus a re-publish, not a
  * tidy-up to fold into this change. Flagged for the designer. */
 .btn--icon.btn--xs {
-  width: var(--ai-spacing-6);
-  min-height: var(--ai-spacing-6);
+  width: var(--ao-spacing-6);
+  min-height: var(--ao-spacing-6);
   padding: 0;
 }
 
@@ -248,14 +248,14 @@
    because Figma defines none. Radius is set here rather than inherited, since
    unlike --xs there is no base `.btn--2xs` rule to carry it. */
 .btn--icon.btn--2xs {
-  width: var(--ai-spacing-6);
-  min-height: var(--ai-spacing-6);
+  width: var(--ao-spacing-6);
+  min-height: var(--ao-spacing-6);
   padding: 0;
-  border-radius: var(--ai-radius-sm);
+  border-radius: var(--ao-radius-sm);
 }
 
 .btn--icon.btn--2xs [data-lucide],
 .btn--icon.btn--2xs svg {
-  width: var(--ai-icon-size-xs);
-  height: var(--ai-icon-size-xs);
+  width: var(--ao-icon-size-xs);
+  height: var(--ao-icon-size-xs);
 }

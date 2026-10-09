@@ -50,36 +50,36 @@
 
 | Property | Figma variable | CSS variable |
 |---|---|---|
-| Outer container gap | `--ai-spacing-1` | `--ai-spacing-1` |
-| Outer container radius | `--ai-radius-lg` | `--ai-radius-lg` |
-| Heading internal gap | `--ai-spacing-2` | `--ai-spacing-2` |
-| Heading bottom padding | `--ai-spacing-2` | `--ai-spacing-2` |
-| Title row gap | `--ai-spacing-3` | `--ai-spacing-3` |
-| History icon size | `20px` (= `--ai-icon-size-md`) | `--ai-icon-size-md` |
-| History icon color | `--ai-icon-primary` | `--ai-icon-primary` |
-| Title font | `title/base` | `--ai-font-title`, `--ai-font-bold`, `--ai-font-fixed-sm`, `--ai-leading-xs` |
-| Title color | `--ai-text-primary` | `--ai-text-primary` |
-| Subtitle font | `body/xs` | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xs`, `--ai-leading-md` |
-| Subtitle color | `--ai-text-contrast` | `--ai-text-contrast` |
-| Chevron icon size | `16px` (= `--ai-icon-size-sm`) | `--ai-icon-size-sm` |
-| Chevron icon color | `--ai-icon-contrast` | `--ai-icon-contrast` |
-| Row list gap | `--ai-spacing-1` | `--ai-spacing-1` |
-| Timeline line color | `Neutral/200` = `#e5e7eb` | `--ai-border-secondary` |
-| Footer padding | `--ai-spacing-3` × `--ai-spacing-5` | `--ai-spacing-3` × `--ai-spacing-5` |
-| Footer label font | `body/xxs` | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-xs` |
-| Footer label color | `--ai-text-primary` | `--ai-text-primary` |
+| Outer container gap | `--ao-spacing-1` | `--ao-spacing-1` |
+| Outer container radius | `--ao-radius-lg` | `--ao-radius-lg` |
+| Heading internal gap | `--ao-spacing-2` | `--ao-spacing-2` |
+| Heading bottom padding | `--ao-spacing-2` | `--ao-spacing-2` |
+| Title row gap | `--ao-spacing-3` | `--ao-spacing-3` |
+| History icon size | `20px` (= `--ao-icon-size-md`) | `--ao-icon-size-md` |
+| History icon color | `--ao-icon-primary` | `--ao-icon-primary` |
+| Title font | `title/base` | `--ao-font-title`, `--ao-font-bold`, `--ao-font-fixed-sm`, `--ao-leading-xs` |
+| Title color | `--ao-text-primary` | `--ao-text-primary` |
+| Subtitle font | `body/xs` | `--ao-font-body`, `--ao-font-regular`, `--ao-font-fixed-xs`, `--ao-leading-md` |
+| Subtitle color | `--ao-text-contrast` | `--ao-text-contrast` |
+| Chevron icon size | `16px` (= `--ao-icon-size-sm`) | `--ao-icon-size-sm` |
+| Chevron icon color | `--ao-icon-contrast` | `--ao-icon-contrast` |
+| Row list gap | `--ao-spacing-1` | `--ao-spacing-1` |
+| Timeline line color | `Neutral/200` = `#e5e7eb` | `--ao-border-secondary` |
+| Footer padding | `--ao-spacing-3` × `--ao-spacing-5` | `--ao-spacing-3` × `--ao-spacing-5` |
+| Footer label font | `body/xxs` | `--ao-font-body`, `--ao-font-regular`, `--ao-font-fixed-xxs`, `--ao-leading-xs` |
+| Footer label color | `--ao-text-primary` | `--ao-text-primary` |
 | Footer label tracking | `0.12px` | `0.12px` (optical, px) |
 
 ## Token Gaps
-None — all design values map to `--ai-*` semantic tokens.
-`Neutral/200 = #e5e7eb` maps to `--ai-border-secondary`.
+None — all design values map to `--ao-*` semantic tokens.
+`Neutral/200 = #e5e7eb` maps to `--ao-border-secondary`.
 
 ## Notes
 - **No Header component:** The new VersionHistory uses a custom heading section ("Prompt Template Heading" in Figma), NOT the Header component. All previous Header/InfoLabel/Button/Tooltip dependencies are removed.
-- **History icon:** `data-name="Icon/24px/History"` → Lucide `history` icon. Rendered 24px, `--ai-icon-primary` colour.
+- **History icon:** `data-name="Icon/24px/History"` → Lucide `history` icon. Rendered 24px, `--ao-icon-primary` colour.
 - **Chevron:** `data-name="Icon/16px/ChevronRight"` in both variants. In Default: no rotation. In Expanded: Figma wraps it in a `rotate-90` container → CSS `transform: rotate(90deg)` on `.version-history--expanded .version-history__chevron`.
 - **No transition on chevron:** User confirmed no animation for the expand/collapse toggle.
-- **Timeline line:** Absolute-positioned 1px vertical line inside `.version-history__rows`. Centered at `calc(--ai-spacing-5 + --ai-spacing-6 / 2)` = 28px from left (aligns with avatar centres). Spans top-to-bottom of the rows wrapper (excludes footer).
+- **Timeline line:** Absolute-positioned 1px vertical line inside `.version-history__rows`. Centered at `calc(--ao-spacing-5 + --ao-spacing-6 / 2)` = 28px from left (aligns with avatar centres). Spans top-to-bottom of the rows wrapper (excludes footer).
 - **Extra rows:** Rows 6–12 carry both `.version-history-row` and `.version-history__row-extra` classes. CSS hides `.version-history__row-extra` on the collapsed variant. JS toggles `.version-history--expanded` on the container.
 - **Two toggle triggers:** Both the subtitle row (`"12 previous system roles saved"` + chevron) AND the footer ("Show older"/"Show less") are `<button>` elements that independently toggle expand/collapse. Clicking either syncs `aria-expanded` on both. JS uses a shared `toggleVersionHistory()` helper.
 - **Design context shows layout only, not interactions.** The footer nodes appeared as `<div>` in design context output — but Figma prototype interactions exist separately from visual structure. User confirmed both triggers remain interactive. Always verify interaction model with the user or Figma prototype panel, not from design context element types alone.

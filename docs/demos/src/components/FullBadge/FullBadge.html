@@ -12,42 +12,42 @@
   <style>
     body {
       margin: 0;
-      padding: var(--ai-spacing-7);
-      background: var(--ai-surface-minimal);
-      font-family: var(--ai-font-body);
-      color: var(--ai-text-primary);
+      padding: var(--ao-spacing-7);
+      background: var(--ao-surface-minimal);
+      font-family: var(--ao-font-body);
+      color: var(--ao-text-primary);
     }
-    h1 { font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xl); margin: 0 0 var(--ai-spacing-2); }
+    h1 { font-family: var(--ao-font-title); font-size: var(--ao-font-fixed-xl); margin: 0 0 var(--ao-spacing-2); }
     h2 {
-      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-md);
-      margin: var(--ai-spacing-8) 0 var(--ai-spacing-1);
+      font-family: var(--ao-font-title); font-size: var(--ao-font-fixed-md);
+      margin: var(--ao-spacing-8) 0 var(--ao-spacing-1);
     }
-    .lede { color: var(--ai-text-contrast); font-size: var(--ai-font-fixed-xs); margin: 0 0 var(--ai-spacing-5); max-width: 70ch; }
+    .lede { color: var(--ao-text-contrast); font-size: var(--ao-font-fixed-xs); margin: 0 0 var(--ao-spacing-5); max-width: 70ch; }
     .demo-row-label {
-      font-family: var(--ai-font-title);
-      font-size: var(--ai-font-fixed-xxs); font-weight: var(--ai-font-semibold);
-      color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em;
-      margin: var(--ai-spacing-5) 0 var(--ai-spacing-2);
+      font-family: var(--ao-font-title);
+      font-size: var(--ao-font-fixed-xxs); font-weight: var(--ao-font-semibold);
+      color: var(--ao-text-contrast); text-transform: uppercase; letter-spacing: 0.08em;
+      margin: var(--ao-spacing-5) 0 var(--ao-spacing-2);
     }
     .panel {
-      display: flex; align-items: center; gap: var(--ai-spacing-5);
+      display: flex; align-items: center; gap: var(--ao-spacing-5);
       inline-size: fit-content;
-      padding: var(--ai-spacing-5);
-      background: var(--ai-surface-primary);
-      border: 1px solid var(--ai-border-secondary);
-      border-radius: var(--ai-radius-md);
+      padding: var(--ao-spacing-5);
+      background: var(--ao-surface-primary);
+      border: 1px solid var(--ao-border-secondary);
+      border-radius: var(--ao-radius-md);
     }
-    .panel--dark { background: var(--ai-surface-invert); border-color: var(--ai-border-invert); }
+    .panel--dark { background: var(--ao-surface-invert); border-color: var(--ao-border-invert); }
     .count {
-      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xxs);
-      font-weight: var(--ai-font-medium); color: var(--ai-text-secondary);
+      font-family: var(--ao-font-title); font-size: var(--ao-font-fixed-xxs);
+      font-weight: var(--ao-font-medium); color: var(--ao-text-secondary);
     }
-    .panel--dark .count { color: var(--ai-text-invert-secondary); }
+    .panel--dark .count { color: var(--ao-text-invert-secondary); }
     /* `zoom`, not `transform: scale()`. A transform paints at the new size but leaves the box
        at its ORIGINAL size, so the 3x and 6x copies overflowed the panel and painted over the
        paragraphs above and below it. `zoom` is a used-value change, so the flex row reserves the
        space each copy actually occupies and the panel grows to hold them. */
-    .zoom { display: flex; align-items: flex-end; gap: var(--ai-spacing-6); flex-wrap: wrap; }
+    .zoom { display: flex; align-items: flex-end; gap: var(--ao-spacing-6); flex-wrap: wrap; }
   </style>
 </head>
 <body>
@@ -74,7 +74,7 @@
 
   <h2>Default</h2>
   <p class="lede">The whole component: a check and the word FULL, on
-  <code>--ai-surface-success</code>.</p>
+  <code>--ao-surface-success</code>.</p>
   <div class="panel">
     <span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span>
   </div>

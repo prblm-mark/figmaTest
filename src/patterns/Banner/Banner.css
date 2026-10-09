@@ -11,24 +11,24 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-4);
-  background-color: var(--ai-surface-elevated-1);
-  border: 1px solid var(--ai-border-secondary);
-  font-family: var(--ai-font-body);
+  gap: var(--ao-spacing-4);
+  background-color: var(--ao-surface-elevated-1);
+  border: 1px solid var(--ao-border-secondary);
+  font-family: var(--ao-font-body);
 }
 
 /* ── Position: Floating ───────────────────────────────── */
 /* Rounded, drop-shadow, full border. Self-contained card. */
 
 .banner--floating {
-  border-radius: var(--ai-radius-md);
-  box-shadow: var(--ai-shadow-md);
+  border-radius: var(--ao-radius-md);
+  box-shadow: var(--ao-shadow-md);
 }
 
 /* Marketing + Information use the larger 16px radius when floating */
 .banner--marketing.banner--floating,
 .banner--information.banner--floating {
-  border-radius: var(--ai-radius-lg);
+  border-radius: var(--ao-radius-lg);
 }
 
 /* ── Position: Fixed ──────────────────────────────────── */
@@ -45,7 +45,7 @@
 /* Single row: icon-bubble + text (with link) + close. */
 
 .banner--announcement {
-  padding: var(--ai-spacing-4) var(--ai-spacing-6);
+  padding: var(--ao-spacing-4) var(--ao-spacing-6);
 }
 
 .banner--announcement .banner__icon {
@@ -53,31 +53,31 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-spacing-8);
-  height: var(--ai-spacing-8);
-  background-color: var(--ai-surface-brand-soft-extra);
-  border-radius: var(--ai-radius-full);
-  color: var(--ai-surface-brand);
+  width: var(--ao-spacing-8);
+  height: var(--ao-spacing-8);
+  background-color: var(--ao-surface-brand-soft-extra);
+  border-radius: var(--ao-radius-full);
+  color: var(--ao-surface-brand);
 }
 
 .banner--announcement .banner__icon [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 .banner--announcement .banner__text {
   flex: 1;
   min-width: 0;
   margin: 0;
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
 }
 
 .banner--announcement .banner__link {
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-brand);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-brand);
   text-decoration: underline;
 }
 
@@ -86,10 +86,10 @@
 
 .banner--marketing {
   align-items: center;
-  gap: var(--ai-spacing-7);
-  padding: var(--ai-spacing-7);
+  gap: var(--ao-spacing-7);
+  padding: var(--ao-spacing-7);
   /* close button is absolute top-right; pad-right keeps actions clear of it */
-  padding-right: calc(var(--ai-spacing-7) + var(--ai-spacing-3));
+  padding-right: calc(var(--ao-spacing-7) + var(--ao-spacing-3));
 }
 
 .banner--marketing .banner__logo {
@@ -97,27 +97,27 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-spacing-10);
-  height: var(--ai-spacing-10);
-  background-color: var(--ai-surface-brand);
-  border-radius: var(--ai-radius-md);
-  color: var(--ai-btn-primary-text);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xl);
-  font-weight: var(--ai-font-bold);
+  width: var(--ao-spacing-10);
+  height: var(--ao-spacing-10);
+  background-color: var(--ao-surface-brand);
+  border-radius: var(--ao-radius-md);
+  color: var(--ao-btn-primary-text);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xl);
+  font-weight: var(--ao-font-bold);
 }
 
 .banner--marketing .banner__logo [data-lucide],
 .banner--marketing .banner__logo svg {
-  width: var(--ai-icon-size-xl);
-  height: var(--ai-icon-size-xl);
+  width: var(--ao-icon-size-xl);
+  height: var(--ao-icon-size-xl);
 }
 
 /* Marketing — close button always absolute top-right */
 .banner--marketing .banner__close {
   position: absolute;
-  top: var(--ai-spacing-3);
-  right: var(--ai-spacing-3);
+  top: var(--ao-spacing-3);
+  right: var(--ao-spacing-3);
 }
 
 /* ── Type: Information ────────────────────────────────── */
@@ -125,9 +125,9 @@
 
 .banner--information {
   align-items: center;
-  gap: var(--ai-spacing-4);
-  padding: var(--ai-spacing-6);
-  padding-left: var(--ai-spacing-7);
+  gap: var(--ao-spacing-4);
+  padding: var(--ao-spacing-6);
+  padding-left: var(--ao-spacing-7);
 }
 
 /* ── Body (heading + paragraph) — Marketing & Information */
@@ -137,24 +137,24 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
 }
 
 .banner__title {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-md);
-  font-weight: var(--ai-font-bold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-md);
+  font-weight: var(--ao-font-bold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
 }
 
 .banner__body .banner__text {
   margin: 0;
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-contrast);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-contrast);
 }
 
 /* ── Actions ──────────────────────────────────────────── */
@@ -163,7 +163,7 @@
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 /* ── Close button ─────────────────────────────────────── */
@@ -174,26 +174,26 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-spacing-7);
-  height: var(--ai-spacing-7);
-  padding: 0 var(--ai-spacing-3);
+  width: var(--ao-spacing-7);
+  height: var(--ao-spacing-7);
+  padding: 0 var(--ao-spacing-3);
   background-color: transparent;
   border: 0;
-  border-radius: var(--ai-radius-md);
-  color: var(--ai-icon-contrast);
+  border-radius: var(--ao-radius-md);
+  color: var(--ao-icon-contrast);
   cursor: pointer;
-  transition: background-color var(--ai-transition-default),
-              color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default),
+              color var(--ao-transition-default);
 }
 
 .banner__close:hover {
-  background-color: var(--ai-surface-secondary);
-  color: var(--ai-text-primary);
+  background-color: var(--ao-surface-secondary);
+  color: var(--ao-text-primary);
 }
 
 .banner__close [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 /* ── Mobile (≤767px) ──────────────────────────────────── */
@@ -201,19 +201,19 @@
 @media (max-width: 767px) {
   /* Announcement — tighter padding, slightly smaller line-height */
   .banner--announcement {
-    padding: var(--ai-spacing-4) var(--ai-spacing-3) var(--ai-spacing-4) var(--ai-spacing-5);
+    padding: var(--ao-spacing-4) var(--ao-spacing-3) var(--ao-spacing-4) var(--ao-spacing-5);
   }
 
   .banner--announcement .banner__text {
-    line-height: var(--ai-leading-sm);
+    line-height: var(--ao-leading-sm);
   }
 
   /* Marketing — column stack with full-width Sign Up; Learn more is hidden */
   .banner--marketing {
     flex-direction: column;
     align-items: stretch;
-    gap: var(--ai-spacing-4);
-    padding: var(--ai-spacing-5);
+    gap: var(--ao-spacing-4);
+    padding: var(--ao-spacing-5);
   }
 
   .banner--marketing .banner__actions {
@@ -233,15 +233,15 @@
   .banner--information {
     flex-direction: column;
     align-items: stretch;
-    gap: var(--ai-spacing-4);
-    padding: var(--ai-spacing-5);
-    padding-right: var(--ai-spacing-6);
+    gap: var(--ao-spacing-4);
+    padding: var(--ao-spacing-5);
+    padding-right: var(--ao-spacing-6);
   }
 
   .banner--information .banner__close {
     position: absolute;
-    top: var(--ai-spacing-3);
-    right: var(--ai-spacing-3);
+    top: var(--ao-spacing-3);
+    right: var(--ao-spacing-3);
   }
 
   .banner--information .banner__actions {

@@ -27,9 +27,9 @@
 
 .spinner {
   display: inline-block;
-  width: var(--ai-icon-size-md);    /* 20px default */
-  height: var(--ai-icon-size-md);
-  color: var(--ai-surface-brand);   /* drives currentColor inside the SVG */
+  width: var(--ao-icon-size-md);    /* 20px default */
+  height: var(--ao-icon-size-md);
+  color: var(--ao-surface-brand);   /* drives currentColor inside the SVG */
   flex-shrink: 0;
   vertical-align: middle;
 }
@@ -62,18 +62,18 @@
 /* ── Sizes ─────────────────────────────────────────────── */
 
 .spinner--sm {
-  width: var(--ai-icon-size-sm);    /* 16px */
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);    /* 16px */
+  height: var(--ao-icon-size-sm);
 }
 
 .spinner--lg {
-  width: var(--ai-icon-size-lg);    /* 24px */
-  height: var(--ai-icon-size-lg);
+  width: var(--ao-icon-size-lg);    /* 24px */
+  height: var(--ao-icon-size-lg);
 }
 
 .spinner--xl {
-  width: var(--ai-icon-size-xl);    /* 32px */
-  height: var(--ai-icon-size-xl);
+  width: var(--ao-icon-size-xl);    /* 32px */
+  height: var(--ao-icon-size-xl);
 }
 
 /* ── Colour modifiers ─────────────────────────────────── */
@@ -81,13 +81,13 @@
  * `stroke="currentColor"` so they inherit. Consumers can also set
  * `color: …` directly for one-off tinting. */
 
-.spinner--brand    { color: var(--ai-surface-brand); }
-.spinner--success  { color: var(--ai-surface-success); }
-.spinner--warning  { color: var(--ai-surface-warning); }
-.spinner--danger   { color: var(--ai-surface-error); }
-.spinner--info     { color: var(--ai-surface-info); }
-.spinner--neutral  { color: var(--ai-text-contrast); }
-.spinner--inverted { color: var(--ai-btn-primary-text); }   /* white on coloured bgs */
+.spinner--brand    { color: var(--ao-surface-brand); }
+.spinner--success  { color: var(--ao-surface-success); }
+.spinner--warning  { color: var(--ao-surface-warning); }
+.spinner--danger   { color: var(--ao-surface-error); }
+.spinner--info     { color: var(--ao-surface-info); }
+.spinner--neutral  { color: var(--ao-text-contrast); }
+.spinner--inverted { color: var(--ao-btn-primary-text); }   /* white on coloured bgs */
 
 /* ── Animation ─────────────────────────────────────────── */
 

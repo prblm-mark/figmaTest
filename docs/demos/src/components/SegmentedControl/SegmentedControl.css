@@ -20,12 +20,12 @@
 .seg-control {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-0);
-  height: var(--ai-spacing-8);
-  padding: 0 var(--ai-spacing-1);
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  gap: var(--ao-spacing-0);
+  height: var(--ao-spacing-8);
+  padding: 0 var(--ao-spacing-1);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
 }
 
 /* ── Button ──────────────────────────────────────────── */
@@ -35,32 +35,32 @@
   flex: 1 0 0;
   align-items: center;
   justify-content: center;
-  gap: var(--ai-spacing-3);
-  height: var(--ai-spacing-7);           /* 32px — was a hardcoded 32px */
+  gap: var(--ao-spacing-3);
+  height: var(--ao-spacing-7);           /* 32px — was a hardcoded 32px */
   min-width: 0;
-  padding: 0 var(--ai-spacing-4);
+  padding: 0 var(--ao-spacing-4);
   background: transparent;
   border: none;
-  border-radius: var(--ai-radius-md);
-  font-family: var(--ai-font-body);
-  font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fluid-xxs);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-btn-tertiary-text);
+  border-radius: var(--ao-radius-md);
+  font-family: var(--ao-font-body);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fluid-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-btn-tertiary-text);
   cursor: pointer;
   white-space: nowrap;
-  transition: background-color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default);
   font-feature-settings: 'case' 1;
 }
 
 /* ── Active button ───────────────────────────────────── */
 
 .seg-control__btn--active {
-  /* The Design System's ThemeToggle (2699:2052) binds --ai-surface-secondary
+  /* The Design System's ThemeToggle (2699:2052) binds --ao-surface-secondary
      on the active button in every variant of both sizes. Corrected here
-     2026-09-22 on the designer's call, from --ai-surface-minimal. */
-  background-color: var(--ai-surface-secondary);
-  border-radius: var(--ai-radius-sm);
+     2026-09-22 on the designer's call, from --ao-surface-minimal. */
+  background-color: var(--ao-surface-secondary);
+  border-radius: var(--ao-radius-sm);
   cursor: default;
 }
 
@@ -72,7 +72,7 @@
  * (`data-surface="chat"`), and as ThemeToggle in the Design System file
  * (2699:2052). Resolved per surface:
  *
- *   surface          --ai-surface-secondary   --ai-surface-primary (container)
+ *   surface          --ao-surface-secondary   --ao-surface-primary (container)
  *   base                     #e9eef4                  #ffffff   ✓
  *   cc / cc-dark             #e7edf0 / #3d4b5f        #ffffff / #1e293b  ✓
  *   chat                     #ffffff                  #ffffff   ✗ invisible
@@ -83,7 +83,7 @@
  * there, and the AI Chat Figma binds it. Both bindings kept, each on the
  * surface it is correct for. */
 [data-surface="chat"] .seg-control__btn--active {
-  background-color: var(--ai-surface-minimal);
+  background-color: var(--ao-surface-minimal);
 }
 
 /* ── Label ───────────────────────────────────────────────
@@ -98,8 +98,8 @@
 /* ── Icon ────────────────────────────────────────────── */
 
 .seg-control__btn [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
   flex-shrink: 0;
 }
 
@@ -107,24 +107,24 @@
 
 .seg-control__btn:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px var(--ai-surface-brand-soft);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px var(--ao-surface-brand-soft);
 }
 
 /* ── Size=sm ─────────────────────────────────────────────
  * 3729:25008 / 3729:16713. NOT a scaled-down Default: the button keeps every
- * one of its own values — 32px tall, --ai-spacing-4 padding, --ai-spacing-3
+ * one of its own values — 32px tall, --ao-spacing-4 padding, --ao-spacing-3
  * gap, 16px icon, the same `button/sm` type ramp. What changes is the
  * CONTAINER, and with it the shape of the thing.
  *
- * Default:  40px tall, --ai-spacing-1 (4px) of padding, so the active segment
+ * Default:  40px tall, --ao-spacing-1 (4px) of padding, so the active segment
  *           floats as a pill inside the box.
  * sm:       32px tall and NO padding, so the active segment reaches the
  *           container's own edge and the control reads as one joined bar.
  *
  * That is why the corners move too. Figma gives the sm active button
- * --ai-radius-md on its OUTER corners only, matching the container it is now
- * flush against, where the Default's pill is --ai-radius-sm all round.
+ * --ao-radius-md on its OUTER corners only, matching the container it is now
+ * flush against, where the Default's pill is --ao-radius-sm all round.
  *
  * `overflow: hidden` on the container, and the reason is the whole of why the
  * first attempt looked wrong. A 1px border makes a box's INNER curve 1px
@@ -145,14 +145,14 @@
  */
 
 .seg-control--sm {
-  height: var(--ai-spacing-7);           /* 32px */
+  height: var(--ao-spacing-7);           /* 32px */
   padding: 0;
   overflow: hidden;
 }
 
 /* Square: the container's own curve is what shapes the ends now. */
 .seg-control--sm .seg-control__btn {
-  border-radius: var(--ai-spacing-0);
+  border-radius: var(--ao-spacing-0);
 }
 
 /* The divider between the two halves (designer, 2026-09-22).
@@ -171,18 +171,18 @@
  * `box-sizing: border-box` from base.css keeps the 1px inside the 32px box, so
  * nothing moves. */
 .seg-control--sm .seg-control__btn--active:first-child {
-  border-inline-end: 1px solid var(--ai-border-secondary);
+  border-inline-end: 1px solid var(--ao-border-secondary);
 }
 
 .seg-control--sm .seg-control__btn--active:last-child {
-  border-inline-start: 1px solid var(--ai-border-secondary);
+  border-inline-start: 1px solid var(--ao-border-secondary);
 }
 
 /* Inside the button, so the clip above cannot eat it. CLAUDE.md §9's
-   `2px solid var(--ai-surface-brand)` rather than the double box-shadow ring
+   `2px solid var(--ao-surface-brand)` rather than the double box-shadow ring
    the Default uses, because a shadow is exactly what gets clipped. */
 .seg-control--sm .seg-control__btn:focus-visible {
   box-shadow: none;
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: -2px;
 }

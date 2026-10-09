@@ -23,8 +23,8 @@
 
 | Property | Token |
 |---|---|
-| gap items→CTA | --ai-spacing-5 |
-| gap between items | --ai-spacing-4 |
+| gap items→CTA | --ao-spacing-5 |
+| gap between items | --ao-spacing-4 |
 
 ## Token Gaps & Decisions
 "Add to Contact List" is backend (HANDOVER `viewers-add-to-contact-list`).

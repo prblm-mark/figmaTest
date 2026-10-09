@@ -41,7 +41,7 @@ below — Figma only draws one mobile width, so the intermediate behaviour was s
 by the designer.
 
 Interactive states not drawn as variants: card `:hover` comes from ActionCard
-(`--ai-border-primary`), `:focus-visible` uses the standard brand outline. Note that in
+(`--ao-border-primary`), `:focus-visible` uses the standard brand outline. Note that in
 `3108:6660` (Desktop / search) the first card is drawn **in its hover state** — that is a
 depiction of hover, not a static style, so it is not baked into the markup.
 
@@ -54,23 +54,23 @@ instead, since every value matched:
 | Element | Component | Verified against Figma |
 |---|---|---|
 | Shell, header, close, footer | `patterns/Modal` (`.modal --lg`) | header padding, title type, 32px close, 20px icon, footer padding |
-| Predictive search | `components/SearchInput` (`.search`) | 40px min-height, gap-3, 16px icon, `--ai-text-contrast` placeholder |
-| "Live events only" | `components/Checkbox` | 16px indicator, `--ai-radius-sm`, 14px tick, gap-3, label + helper type |
-| Event row | `components/ActionCard` (`.action-card --chevron`) | `--ai-surface-primary`, 1px `--ai-border-secondary`, `--ai-radius-md`, 56px min-height, `--ai-spacing-4` padding |
-| Status pills | `components/Badge` (`--pill --sm --success/warning/neutral`) | exact bg/text pairs + transparent `--ai-btn-primary-border` |
-| Cancel / Clear search | `components/Button` (`.btn--secondary`) | 40px min-height, `--ai-spacing-5` padding, `--ai-radius-md`, transparent bg |
+| Predictive search | `components/SearchInput` (`.search`) | 40px min-height, gap-3, 16px icon, `--ao-text-contrast` placeholder |
+| "Live events only" | `components/Checkbox` | 16px indicator, `--ao-radius-sm`, 14px tick, gap-3, label + helper type |
+| Event row | `components/ActionCard` (`.action-card --chevron`) | `--ao-surface-primary`, 1px `--ao-border-secondary`, `--ao-radius-md`, 56px min-height, `--ao-spacing-4` padding |
+| Status pills | `components/Badge` (`--pill --sm --success/warning/neutral`) | exact bg/text pairs + transparent `--ao-btn-primary-border` |
+| Cancel / Clear search | `components/Button` (`.btn--secondary`) | 40px min-height, `--ao-spacing-5` padding, `--ao-radius-md`, transparent bg |
 
 ### Contextual overrides (Case B — scoped to this pattern, not added to the children)
 
 | Child | Base value | EventPicker value | Why |
 |---|---|---|---|
-| `.modal` | no border | `1px solid --ai-border-secondary` | Figma shell |
-| `.modal` | `--ai-shadow-lg` (inline) | `var(--ai-shadow-md)` | Figma binds `light/shadow-md` |
+| `.modal` | no border | `1px solid --ao-border-secondary` | Figma shell |
+| `.modal` | `--ao-shadow-lg` (inline) | `var(--ao-shadow-md)` | Figma binds `light/shadow-md` |
 | `.modal__footer` | `justify-content: flex-end` | `space-between` | count sits left of Cancel |
-| `.action-card` | `gap: --ai-spacing-6` | `gap: --ai-spacing-5` | Figma card gap |
+| `.action-card` | `gap: --ao-spacing-6` | `gap: --ao-spacing-5` | Figma card gap |
 
-`.modal`'s background stays `--ai-surface-elevated-1` rather than Figma's
-`--ai-surface-primary`: identical in light (`#ffffff`), but elevated-1 is correctly lighter in
+`.modal`'s background stays `--ao-surface-elevated-1` rather than Figma's
+`--ao-surface-primary`: identical in light (`#ffffff`), but elevated-1 is correctly lighter in
 dark (`#212123` vs `#1b1b1f`), and Figma has no dark variant.
 
 ## CSS Class Mapping
@@ -96,45 +96,45 @@ dark (`#212123` vs `#1b1b1f`), and Figma has no dark variant.
 
 | Figma variable | CSS token | Role |
 |---|---|---|
-| `--ai-border-secondary` | same | shell border, section dividers, card border, meter track edge |
-| `--ai-radius-lg` / `--ai-radius-md` / `--ai-radius-sm` / `--ai-radius-full` | same | shell / card + field / mark / pill + meter |
-| `--ai-spacing-6` / `--ai-spacing-5` | same | section px / py, list py, card gap |
-| `--ai-spacing-4` | same | filters gap, card padding, meta column gap |
-| `--ai-spacing-3` | same | list gap, checkbox gap, mobile card gap |
-| `--ai-spacing-2` | same | meta item gap, stats gap |
-| `--ai-spacing-1` | same | card main gap, meter height (4px), first group padding-top |
-| `--ai-spacing-8` | same | no-results icon circle (40px) |
-| `--ai-spacing-9` | same | no-results block padding (48px) |
-| `--ai-size-1` | same | stats column width (128px) |
-| `--ai-size-6` | same | no-results description max-width (320px) |
-| `--ai-size-7` | same | list scroll cap — see Token Gaps |
-| `--ai-font-fixed-md` | same | modal title (18px) |
-| `--ai-font-fixed-sm` | **`--ai-font-fixed-xs` at ≤639** | event name — 16px desktop, **14px mobile** (corrected 2026-09-14; this row said "same" and was wrong) |
-| `--ai-font-fixed-xs` | same | checkbox label, no-results title, button text (14px) |
-| `--ai-font-fixed-xxs` | same | meta, plans, seated, count, badges, group label (12px) |
-| `--ai-leading-md` / `--ai-leading-sm` / `--ai-leading-xs` | same | title + name / meta + desc / labels |
-| `--ai-tracking-7` | same | group label letter-spacing — see Token Gaps |
-| `--ai-text-primary` / `--ai-text-secondary` / `--ai-text-contrast` | same | name + title / meta + count / group label + 0-plans |
-| `--ai-icon-contrast` | same | 12px meta and plans icons |
-| `--ai-icon-size-xs` / `--ai-icon-size-sm` / `--ai-icon-size-md` | same | meta 12px / chevron 16px / no-results 20px |
-| `--ai-surface-brand-soft-extra` | same | pinned row tint |
-| `--ai-border-brand` | same | pinned row border |
-| `--ai-surface-brand-soft` | same | search match highlight |
-| `--ai-surface-secondary` | same | meter track |
-| `--ai-surface-success` | same | meter fill |
-| `--ai-surface-minimal` | same | no-results icon circle |
-| `--ai-surface-success-soft` + `--ai-text-success` | same | Live badge |
-| `--ai-surface-warning-soft` + `--ai-text-warning` | same | Draft badge |
-| `--ai-surface-neutral-soft` + `--ai-text-neutral` | same | Archived badge |
-| `light/shadow-md` (effect style) | `--ai-shadow-md` | shell — see Token Gaps |
+| `--ao-border-secondary` | same | shell border, section dividers, card border, meter track edge |
+| `--ao-radius-lg` / `--ao-radius-md` / `--ao-radius-sm` / `--ao-radius-full` | same | shell / card + field / mark / pill + meter |
+| `--ao-spacing-6` / `--ao-spacing-5` | same | section px / py, list py, card gap |
+| `--ao-spacing-4` | same | filters gap, card padding, meta column gap |
+| `--ao-spacing-3` | same | list gap, checkbox gap, mobile card gap |
+| `--ao-spacing-2` | same | meta item gap, stats gap |
+| `--ao-spacing-1` | same | card main gap, meter height (4px), first group padding-top |
+| `--ao-spacing-8` | same | no-results icon circle (40px) |
+| `--ao-spacing-9` | same | no-results block padding (48px) |
+| `--ao-size-1` | same | stats column width (128px) |
+| `--ao-size-6` | same | no-results description max-width (320px) |
+| `--ao-size-7` | same | list scroll cap — see Token Gaps |
+| `--ao-font-fixed-md` | same | modal title (18px) |
+| `--ao-font-fixed-sm` | **`--ao-font-fixed-xs` at ≤639** | event name — 16px desktop, **14px mobile** (corrected 2026-09-14; this row said "same" and was wrong) |
+| `--ao-font-fixed-xs` | same | checkbox label, no-results title, button text (14px) |
+| `--ao-font-fixed-xxs` | same | meta, plans, seated, count, badges, group label (12px) |
+| `--ao-leading-md` / `--ao-leading-sm` / `--ao-leading-xs` | same | title + name / meta + desc / labels |
+| `--ao-tracking-7` | same | group label letter-spacing — see Token Gaps |
+| `--ao-text-primary` / `--ao-text-secondary` / `--ao-text-contrast` | same | name + title / meta + count / group label + 0-plans |
+| `--ao-icon-contrast` | same | 12px meta and plans icons |
+| `--ao-icon-size-xs` / `--ao-icon-size-sm` / `--ao-icon-size-md` | same | meta 12px / chevron 16px / no-results 20px |
+| `--ao-surface-brand-soft-extra` | same | pinned row tint |
+| `--ao-border-brand` | same | pinned row border |
+| `--ao-surface-brand-soft` | same | search match highlight |
+| `--ao-surface-secondary` | same | meter track |
+| `--ao-surface-success` | same | meter fill |
+| `--ao-surface-minimal` | same | no-results icon circle |
+| `--ao-surface-success-soft` + `--ao-text-success` | same | Live badge |
+| `--ao-surface-warning-soft` + `--ao-text-warning` | same | Draft badge |
+| `--ao-surface-neutral-soft` + `--ao-text-neutral` | same | Archived badge |
+| `light/shadow-md` (effect style) | `--ao-shadow-md` | shell — see Token Gaps |
 
 ## Token Gaps
 
 Every gap below was raised and resolved with the designer on 2026-07-27.
 
-1. **`light/shadow-md` ≠ `--ai-shadow-md`.** Figma's style is two layers
+1. **`light/shadow-md` ≠ `--ao-shadow-md`.** Figma's style is two layers
    (`0 3px 10px #0000001A` + `0 1px 4px #00000029`); the token was a single
-   `0 2px 10px rgba(0,0,0,0.1)`. **Resolved:** `--ai-shadow-md` was reshaped to two layers in
+   `0 2px 10px rgba(0,0,0,0.1)`. **Resolved:** `--ao-shadow-md` was reshaped to two layers in
    `css/tokens-shadows.css`, then the designer **softened the contact layer to `0.05`**
    (2026-07-28) — so the token is now deliberately lighter than the Figma style, which is
    unchanged at `#00000029`. Final values:
@@ -146,17 +146,17 @@ Every gap below was raised and resolved with the designer on 2026-07-27.
    AudioPlayer, Banner, StatCard, MessageInput, StyleSettings, UpgradeCard, FilterDropdowns,
    AssistantPopover, ActionsInfoPanel.
 2. **`Neutral/0` primitive (`#ffffff`).** The only primitive in the bindings; it is the
-   checkbox tick fill. **Resolved:** already `--ai-text-invert` (`#ffffff`) in the Checkbox
+   checkbox tick fill. **Resolved:** already `--ao-text-invert` (`#ffffff`) in the Checkbox
    component — no change, no substitution made.
-3. **List scroll cap 360px** maps to no token (22.5rem). **Resolved:** use `--ai-size-7`
+3. **List scroll cap 360px** maps to no token (22.5rem). **Resolved:** use `--ao-size-7`
    (384px), the nearest token, in place of an untokenised value.
-4. **Group-label letter-spacing inconsistent.** `--ai-tracking-7` (0.8px) in Desktop/default;
+4. **Group-label letter-spacing inconsistent.** `--ao-tracking-7` (0.8px) in Desktop/default;
    raw `0.96px` (0.08em, inherited from the prototype capture) in the other 7 variants. The
-   tracking scale stops at 0.05em. **Resolved:** use `--ai-tracking-7` everywhere.
+   tracking scale stops at 0.05em. **Resolved:** use `--ao-tracking-7` everywhere.
 5. **No-results description lost its bindings** — raw `#3c3c3f`, `12px`, `20px` line-height and
    `Inter:Bold` (a mixed-style text node the tokenise plugin could not bind). **Resolved:**
-   mapped to the semantic equivalents `--ai-text-secondary` / `--ai-font-fixed-xxs` /
-   `--ai-leading-sm` / `--ai-font-bold`.
+   mapped to the semantic equivalents `--ao-text-secondary` / `--ao-font-fixed-xxs` /
+   `--ao-leading-sm` / `--ao-font-bold`.
 
 ## Deviations & inconsistencies
 
@@ -164,7 +164,7 @@ Every gap below was raised and resolved with the designer on 2026-07-27.
 
 | Figma | Code | Decision |
 |---|---|---|
-| Pinned card (`3087:5104`) is tinted `--ai-surface-brand-soft-extra` with a `--ai-border-brand` border | Pinned card is styled exactly like any other card | **Brand bg/border removed** at the designer's request (2026-07-28). The last-used event is identified by the "Last used" group heading and its position at the top of the list. `.event-picker__event--pinned` is retained as a markup hook with no styling — do not re-add the tint from Figma. |
+| Pinned card (`3087:5104`) is tinted `--ao-surface-brand-soft-extra` with a `--ao-border-brand` border | Pinned card is styled exactly like any other card | **Brand bg/border removed** at the designer's request (2026-07-28). The last-used event is identified by the "Last used" group heading and its position at the top of the list. `.event-picker__event--pinned` is retained as a markup hook with no styling — do not re-add the tint from Figma. |
 | `light/shadow-md` contact layer `#00000029` | `rgba(0,0,0,0.05)` | Softened by the designer — see Token Gaps #1 |
 
 ### Cross-variant inconsistencies
@@ -182,9 +182,9 @@ capture artifacts rather than design intent. Each was raised and decided:
 Zero-visual-impact differences deliberately **not** changed, because the DS component is the
 authority and the token values resolve identically:
 
-- Buttons: Figma `--ai-font-title` + `--ai-font-fixed-xs`; `.btn` uses `--ai-font-body` +
-  `--ai-font-fluid-xs`. Both are Inter at 14px on every breakpoint.
-- Checkbox checked fill: Figma `--ai-btn-primary-bg`; component uses `--ai-surface-brand`.
+- Buttons: Figma `--ao-font-title` + `--ao-font-fixed-xs`; `.btn` uses `--ao-font-body` +
+  `--ao-font-fluid-xs`. Both are Inter at 14px on every breakpoint.
+- Checkbox checked fill: Figma `--ao-btn-primary-bg`; component uses `--ao-surface-brand`.
   Both `#2563eb`.
 
 ## Responsive amends beyond Figma
@@ -194,17 +194,17 @@ directly by the designer on 2026-07-28 and have no Figma counterpart:
 
 | Breakpoint | Element | Rule |
 |---|---|---|
-| all | `.event-picker__list` | `scrollbar-width: thin` + `scrollbar-color: var(--ai-surface-secondary) transparent` (plus `overscroll-behavior: contain`, so scroll doesn't chain to the page behind) |
-| `max-width: 767px` (below `--ai-bp-md`) | `.event-picker__stats` | `border-top: 1px solid var(--ai-border-secondary)` + `padding-top: var(--ai-spacing-3)` — the stats wrap onto their own row here, so they read as a divided section |
-| `max-width: 639px` (below `--ai-bp-sm`) | `.event-picker__filters`, `.event-picker__list`, `.event-picker__empty` | `padding: var(--ai-spacing-5)` (from `--ai-spacing-5 --ai-spacing-6`; the empty block drops from `--ai-spacing-9` vertical) |
-| `max-width: 639px` | `.modal__header`, `.modal__footer` | `padding: var(--ai-spacing-4) var(--ai-spacing-5)` — **lives in `patterns/Modal`, not here**: applied to every modal by request, so it is not duplicated in this file |
+| all | `.event-picker__list` | `scrollbar-width: thin` + `scrollbar-color: var(--ao-surface-secondary) transparent` (plus `overscroll-behavior: contain`, so scroll doesn't chain to the page behind) |
+| `max-width: 767px` (below `--ao-bp-md`) | `.event-picker__stats` | `border-top: 1px solid var(--ao-border-secondary)` + `padding-top: var(--ao-spacing-3)` — the stats wrap onto their own row here, so they read as a divided section |
+| `max-width: 639px` (below `--ao-bp-sm`) | `.event-picker__filters`, `.event-picker__list`, `.event-picker__empty` | `padding: var(--ao-spacing-5)` (from `--ao-spacing-5 --ao-spacing-6`; the empty block drops from `--ao-spacing-9` vertical) |
+| `max-width: 639px` | `.modal__header`, `.modal__footer` | `padding: var(--ao-spacing-4) var(--ao-spacing-5)` — **lives in `patterns/Modal`, not here**: applied to every modal by request, so it is not duplicated in this file |
 
-`--ai-bp-sm` (40rem/640px) and `--ai-bp-md` (48rem/768px) are the token values behind those
+`--ao-bp-sm` (40rem/640px) and `--ao-bp-md` (48rem/768px) are the token values behind those
 media queries; `@media` uses px per CLAUDE.md §2.
 
 ## Brand mode
 
-The Figma component set is authored in the **standard theme** (`--ai-btn-primary-bg` `#2563eb`),
+The Figma component set is authored in the **standard theme** (`--ao-btn-primary-bg` `#2563eb`),
 not the Control Centre palette (`#3391a4`) — confirmed as intentional by the designer
 (2026-07-27).
 
@@ -214,7 +214,7 @@ render in — teal, not the blue of the Figma frames. To keep the Figma comparis
 the demo toolbar carries a **"CC brand" toggle** (on by default) that removes/reapplies
 `data-brand` at runtime.
 
-This is a demo-wrapper concern only: the CSS uses semantic `--ai-*` tokens throughout and is
+This is a demo-wrapper concern only: the CSS uses semantic `--ao-*` tokens throughout and is
 brand-agnostic, so the pattern re-themes automatically wherever it is placed (e.g. inside
 ControlScreen). Both palettes were verified in light and dark.
 
@@ -283,7 +283,7 @@ driven by markup (`data-group="pinned"`), and persistence belongs to the host. S
 
 ## Mobile type was wrong in this file (2026-09-14)
 
-The event name was recorded above as `--ai-font-fixed-sm` (16px) at **both** sizes. The component's
+The event name was recorded above as `--ao-font-fixed-sm` (16px) at **both** sizes. The component's
 own Mobile variant `3108:6658` draws **14px**, and does so in every row — so the note was wrong,
 not merely imprecise, and the CSS followed it. Both consumers rendered a 16px event name on a
 402px-wide dialog.
@@ -295,12 +295,12 @@ drift in a detached copy until the designer pointed at this variant and it agree
 
 | | |
 |---|---|
-| modal title | `--ai-font-fixed-sm` (16), leading 24 |
-| event name | **`--ai-font-fixed-xs` (14)**, semibold |
-| meta item | `--ai-font-fixed-xxs` (12), leading 20 |
-| plans count | `--ai-font-fixed-xxs` (12), Medium, leading 16 |
-| footer count | `--ai-font-fixed-xxs` (12), Regular, leading 16 |
-| Cancel | **`--ai-font-fixed-2xs` (13)**, semibold, leading 16 |
+| modal title | `--ao-font-fixed-sm` (16), leading 24 |
+| event name | **`--ao-font-fixed-xs` (14)**, semibold |
+| meta item | `--ao-font-fixed-xxs` (12), leading 20 |
+| plans count | `--ao-font-fixed-xxs` (12), Medium, leading 16 |
+| footer count | `--ao-font-fixed-xxs` (12), Regular, leading 16 |
+| Cancel | **`--ao-font-fixed-2xs` (13)**, semibold, leading 16 |
 
 Everything but the name and Cancel already matched.
 
@@ -309,9 +309,9 @@ Everything but the name and Cancel already matched.
 **The pinned row's leading.** The first row's name sits in a 20-tall box (`3087:5961`) where every
 other row is 24 (`3087:6000`). Both are 14px, so the size is not in doubt — only that one row's
 leading differs, which reads as drift on a single row rather than a rule. All rows keep
-`--ai-leading-md`.
+`--ao-leading-md`.
 
-**The title's leading.** The variant draws 16px on `--ai-leading-md` (24). Modal renders its title
+**The title's leading.** The variant draws 16px on `--ao-leading-md` (24). Modal renders its title
 `leading-none` at every size, and that is a designer call from 2026-08-27 with its own reading:
 *"Figma's ModalHeader renders the title `leading-none` in BOTH Base and sm — its title row is
 `h-[18px]` against an 18px font"*. Two Figma sources disagree; the resolved decision wins until
@@ -319,7 +319,7 @@ someone settles it. **Flagged.**
 
 ### Cancel at 13px is a contextual override
 
-Modal's own mobile block takes footer buttons to `--ai-font-fluid-xxs` (12), and **13px is no
+Modal's own mobile block takes footer buttons to `--ao-font-fluid-xxs` (12), and **13px is no
 Button size at all** — base is 14, sm is 12. Scoped to `.event-picker__footer .btn` rather than
 changed in Modal or Button, because 13 is what this pattern's frames show and nothing was read for
 the other dialogs. Flagged as the kind of value that usually means a Figma text layer was nudged.

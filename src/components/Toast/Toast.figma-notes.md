@@ -25,7 +25,7 @@ optional `--color`) plus two standalone layout types. Every row is represented i
 Toast.css, Toast.html and this matrix.
 
 ## CSS Class Mapping
-- `.toast` — card (flex, white bg, `--ai-border-secondary`, `--ai-shadow-md`, `--ai-radius-lg`, width `--ai-size-7` 384px)
+- `.toast` — card (flex, white bg, `--ao-border-secondary`, `--ao-shadow-md`, `--ao-radius-lg`, width `--ao-size-7` 384px)
 - `.toast__icon` — 32px status icon chip (status toasts), 20px glyph
 - `.toast__message` — status message text
 - `.toast__close` — 32px scoped dismiss icon button, 16px glyph (NOT a Button instance — matches Alert's `__close`)
@@ -35,47 +35,47 @@ Toast.css, Toast.html and this matrix.
 - `.toast--interactive` — `.toast__content` column + `.toast__title` / `.toast__text` / `.toast__actions`; composes Button (`btn btn--primary btn--sm`, `btn btn--secondary btn--sm`)
 
 ## Token Mapping
-Shared card: bg `--ai-surface-primary` · border `--ai-border-secondary` · shadow
-`--ai-shadow-md` · radius `--ai-radius-lg` · gap/padding `--ai-spacing-4` (status)
-/ `--ai-spacing-5` (notification, interactive) · width `--ai-size-7`.
+Shared card: bg `--ao-surface-primary` · border `--ao-border-secondary` · shadow
+`--ao-shadow-md` · radius `--ao-radius-lg` · gap/padding `--ao-spacing-4` (status)
+/ `--ao-spacing-5` (notification, interactive) · width `--ao-size-7`.
 
-**Gap override (user):** `--color` (filled) variants tighten gap to `--ai-spacing-2` (6px) —
-a deliberate deviation from Figma (which uses `--ai-spacing-4` for all status toasts).
+**Gap override (user):** `--color` (filled) variants tighten gap to `--ao-spacing-2` (6px) —
+a deliberate deviation from Figma (which uses `--ao-spacing-4` for all status toasts).
 
 | Property | Plain | Color (filled) |
 |---|---|---|
-| card background | `--ai-surface-primary` | `--ai-surface-{info\|success\|error\|warning}-soft` |
-| card border | `--ai-border-secondary` | `--ai-border-{info\|success\|error\|warning}` |
-| icon chip background | `--ai-surface-{…}-soft` | transparent |
-| icon glyph | `--ai-surface-{info\|success\|error\|warning}` | same |
-| message text | `--ai-text-primary` | `--ai-text-{info\|success\|error\|warning}` |
-| close glyph | `--ai-icon-contrast` (grey) | `--ai-surface-{info\|success\|error\|warning}` |
+| card background | `--ao-surface-primary` | `--ao-surface-{info\|success\|error\|warning}-soft` |
+| card border | `--ao-border-secondary` | `--ao-border-{info\|success\|error\|warning}` |
+| icon chip background | `--ao-surface-{…}-soft` | transparent |
+| icon glyph | `--ao-surface-{info\|success\|error\|warning}` | same |
+| message text | `--ao-text-primary` | `--ao-text-{info\|success\|error\|warning}` |
+| close glyph | `--ao-icon-contrast` (grey) | `--ao-surface-{info\|success\|error\|warning}` |
 
-Status/error note: Danger maps to the **error** token family (`--ai-surface-error`,
-`--ai-text-error`, `--ai-border-error`) — Figma's "Danger" type.
+Status/error note: Danger maps to the **error** token family (`--ao-surface-error`,
+`--ao-text-error`, `--ao-border-error`) — Figma's "Danger" type.
 
-Typography (all toast text uses `--ai-font-title` in Figma):
+Typography (all toast text uses `--ao-font-title` in Figma):
 | Element | size | weight | line-height | colour |
 |---|---|---|---|---|
-| status message | `--ai-font-fixed-xs` (14) | regular | `--ai-leading-sm` (20) — user override (Figma: leading-md/24) | primary / status |
-| notification name | `--ai-font-fixed-sm` (16) | semibold | `--ai-leading-md` (24) | `--ai-text-primary` |
-| notification message | `--ai-font-fixed-xs` (14) | regular | `--ai-leading-sm` (20) | `--ai-text-secondary` |
-| notification time | `--ai-font-fixed-xxs` (12) | medium | `--ai-leading-md` (24) | `--ai-text-brand` |
-| interactive title | `--ai-font-fixed-sm` (16) | semibold | `--ai-leading-md` (24) | `--ai-text-primary`, letter-spacing `--ai-tracking-5` |
-| interactive body | `--ai-font-fixed-xs` (14) | regular | `--ai-leading-sm` (20) | `--ai-text-secondary` |
+| status message | `--ao-font-fixed-xs` (14) | regular | `--ao-leading-sm` (20) — user override (Figma: leading-md/24) | primary / status |
+| notification name | `--ao-font-fixed-sm` (16) | semibold | `--ao-leading-md` (24) | `--ao-text-primary` |
+| notification message | `--ao-font-fixed-xs` (14) | regular | `--ao-leading-sm` (20) | `--ao-text-secondary` |
+| notification time | `--ao-font-fixed-xxs` (12) | medium | `--ao-leading-md` (24) | `--ao-text-brand` |
+| interactive title | `--ao-font-fixed-sm` (16) | semibold | `--ao-leading-md` (24) | `--ao-text-primary`, letter-spacing `--ao-tracking-5` |
+| interactive body | `--ao-font-fixed-xs` (14) | regular | `--ao-leading-sm` (20) | `--ao-text-secondary` |
 
-Sizes: icon chip / close button `--ai-spacing-7` (32) · chip glyph `--ai-icon-size-md`
-(20) · close glyph `--ai-icon-size-sm` (16) · chip/close radius `--ai-radius-md` (8) ·
-avatar `.avatar--size-2` (32) · notification content gap `--ai-spacing-0-5` (2) ·
-interactive content gap `--ai-spacing-1` (4) · actions gap + top padding `--ai-spacing-3` (8).
+Sizes: icon chip / close button `--ao-spacing-7` (32) · chip glyph `--ao-icon-size-md`
+(20) · close glyph `--ao-icon-size-sm` (16) · chip/close radius `--ao-radius-md` (8) ·
+avatar `.avatar--size-2` (32) · notification content gap `--ao-spacing-0-5` (2) ·
+interactive content gap `--ao-spacing-1` (4) · actions gap + top padding `--ao-spacing-3` (8).
 
 ## Token Gaps
-- **`--ai-spacing-0-5` (2px)** — Notification inter-line gap. The designer added the 0.5 step
-  to the Figma Tokens scale (path key `0-5`); its `codeSyntax.WEB` was `--ai-spacing-0.5`, but a
-  `.` is invalid in a CSS custom-property name (it ends the ident, so `var(--ai-spacing-0.5)`
+- **`--ao-spacing-0-5` (2px)** — Notification inter-line gap. The designer added the 0.5 step
+  to the Figma Tokens scale (path key `0-5`); its `codeSyntax.WEB` was `--ao-spacing-0.5`, but a
+  `.` is invalid in a CSS custom-property name (it ends the ident, so `var(--ao-spacing-0.5)`
   errored). Fixed in `style-dictionary.config.mjs` (`name/figma-web` now replaces `.`→`-`), so
-  `npm run tokens` emits the valid `--ai-spacing-0-5: 0.125rem`. Resolved — no hardcode.
-- No other gaps: all colours/borders/text/radii/shadow/sizes/typography trace to existing `--ai-*` tokens.
+  `npm run tokens` emits the valid `--ao-spacing-0-5: 0.125rem`. Resolved — no hardcode.
+- No other gaps: all colours/borders/text/radii/shadow/sizes/typography trace to existing `--ao-*` tokens.
 
 ## Notes
 - **Icons (Lucide):** Info → `info`, Success → `check`, Danger → `x`, Warning →
@@ -85,6 +85,6 @@ interactive content gap `--ai-spacing-1` (4) · actions gap + top padding `--ai-
 - **Interactive actions ARE Button instances** (Code Connect: `btn--primary` / `btn--secondary`, `btn--sm`), natural width (not stretched).
 - **Dismiss behaviour:** `Toast.js` (document-delegated, removes `.toast` on `.toast__close`
   click) — mirrors `Alert.js`. Component renders fine without it (button is inert).
-- `:focus-visible` on close = `2px solid var(--ai-surface-brand)`; `:hover` dims (opacity).
+- `:focus-visible` on close = `2px solid var(--ao-surface-brand)`; `:hover` dims (opacity).
   Figma specifies no close hover/focus — focus ring is the mandated a11y addition.
-- Font family is `--ai-font-title` (Figma binding) for all toast text — same Inter family as `--ai-font-body`.
+- Font family is `--ao-font-title` (Figma binding) for all toast text — same Inter family as `--ao-font-body`.

@@ -40,25 +40,25 @@
 
 | Property | Token | Notes |
 |---|---|---|
-| Card bg | `var(--ai-surface-primary)` | white |
-| Card border | `1px solid var(--ai-border-secondary)` | |
-| Card shadow | `var(--ai-shadow-md)` | maps to Figma `light/shadow-md` |
-| Card radius | `var(--ai-radius-md)` | 8px (Figma bound `--ai-spacing-3` — approved rebind) |
-| Card gap | `var(--ai-spacing-5)` | 16px (both sizes) |
-| Card padding (Base) | `var(--ai-spacing-4)` | 12px |
-| Card padding (Lg) | `var(--ai-spacing-5)` | 16px |
-| Card min-height (Base) | `var(--ai-spacing-11)` | 64px |
-| Card min-height (Lg) | `var(--ai-spacing-13)` | 80px |
-| Text column gap | `var(--ai-spacing-1)` | 4px |
-| Version font | `var(--ai-font-title)` + `var(--ai-font-bold)` | Inter Bold |
-| Version size (Base) | `var(--ai-font-fixed-xs)` | 14px |
-| Version size (Lg) | `var(--ai-font-fixed-sm)` | 16px |
-| Version colour | `var(--ai-text-primary)` | |
-| Status font | `var(--ai-font-body)` + `var(--ai-font-medium)` | Inter Medium |
-| Status size (Base) | `var(--ai-font-fixed-xxs)` | 12px |
-| Status size (Lg) | `var(--ai-font-fixed-xs)` | 14px |
-| Status colour | `var(--ai-text-contrast)` | |
-| Update button bg (override) | `var(--ai-surface-success)` | Case-B scoped to `.upgrade-card .btn--primary` |
+| Card bg | `var(--ao-surface-primary)` | white |
+| Card border | `1px solid var(--ao-border-secondary)` | |
+| Card shadow | `var(--ao-shadow-md)` | maps to Figma `light/shadow-md` |
+| Card radius | `var(--ao-radius-md)` | 8px (Figma bound `--ao-spacing-3` — approved rebind) |
+| Card gap | `var(--ao-spacing-5)` | 16px (both sizes) |
+| Card padding (Base) | `var(--ao-spacing-4)` | 12px |
+| Card padding (Lg) | `var(--ao-spacing-5)` | 16px |
+| Card min-height (Base) | `var(--ao-spacing-11)` | 64px |
+| Card min-height (Lg) | `var(--ao-spacing-13)` | 80px |
+| Text column gap | `var(--ao-spacing-1)` | 4px |
+| Version font | `var(--ao-font-title)` + `var(--ao-font-bold)` | Inter Bold |
+| Version size (Base) | `var(--ao-font-fixed-xs)` | 14px |
+| Version size (Lg) | `var(--ao-font-fixed-sm)` | 16px |
+| Version colour | `var(--ao-text-primary)` | |
+| Status font | `var(--ao-font-body)` + `var(--ao-font-medium)` | Inter Medium |
+| Status size (Base) | `var(--ao-font-fixed-xxs)` | 12px |
+| Status size (Lg) | `var(--ao-font-fixed-xs)` | 14px |
+| Status colour | `var(--ao-text-contrast)` | |
+| Update button bg (override) | `var(--ao-surface-success)` | Case-B scoped to `.upgrade-card .btn--primary` |
 
 ---
 
@@ -66,9 +66,9 @@
 
 | # | Property | Figma | Resolution |
 |---|---|---|---|
-| 1 | Card radius binding | `--ai-spacing-3` (8px) | User-approved: use semantic `--ai-radius-md` (same value). |
+| 1 | Card radius binding | `--ao-spacing-3` (8px) | User-approved: use semantic `--ao-radius-md` (same value). |
 | 2 | Card width | Figma frame width 286px (no token) | User-approved: `width: 100%` — consumer controls. |
-| 3 | Update button bg | `--ai-surface-success` overriding `--ai-btn-primary-bg` (Code Connect mapping is `btn btn--primary btn--sm`) | User-approved as **Case B contextual override** — scoped to `.upgrade-card .btn--primary { background-color: var(--ai-surface-success); border-color: transparent; }`. The base Button stays primary blue across the rest of the system. |
+| 3 | Update button bg | `--ao-surface-success` overriding `--ao-btn-primary-bg` (Code Connect mapping is `btn btn--primary btn--sm`) | User-approved as **Case B contextual override** — scoped to `.upgrade-card .btn--primary { background-color: var(--ao-surface-success); border-color: transparent; }`. The base Button stays primary blue across the rest of the system. |
 
 ---
 
@@ -82,7 +82,7 @@
 
 - Width is **consumer-controlled** (`width: 100%`) — Figma frame width 286px is treated as a Figma layout artifact, not a production constraint.
 - `No updates` type simply **omits the `<button>` element** from the markup — no extra modifier class needed.
-- The Update button's green colour is **scoped to `.upgrade-card .btn--primary`** so the base Button component stays blue everywhere else. If green-on-success becomes a frequent pattern, promoting `--ai-surface-success` to a proper `btn--success` variant is the follow-up.
+- The Update button's green colour is **scoped to `.upgrade-card .btn--primary`** so the base Button component stays blue everywhere else. If green-on-success becomes a frequent pattern, promoting `--ao-surface-success` to a proper `btn--success` variant is the follow-up.
 - Hover / focus / active for the green button use a simple `filter: brightness()` rather than additional tokens — keeps the override minimal until a real success-Button variant lands.
 
 ---

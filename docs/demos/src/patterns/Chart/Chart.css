@@ -5,7 +5,7 @@
  *
  * Card chrome (header + canvas + footer) styled here in tokens.
  * Chart visualisation rendered via Chart.js on a <canvas> — colours pulled
- * from --ai-* tokens via getComputedStyle so the chart stays brand-aligned.
+ * from --ao-* tokens via getComputedStyle so the chart stays brand-aligned.
  */
 
 /* ── Card ─────────────────────────────────────────── */
@@ -13,11 +13,11 @@
 .chart {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-5);
-  padding: var(--ai-spacing-6);
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  gap: var(--ao-spacing-5);
+  padding: var(--ao-spacing-6);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
 }
 
 /* ── Header ───────────────────────────────────────── */
@@ -26,32 +26,32 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 .chart__title {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
   min-width: 0;
 }
 
 .chart__big {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-lg);
-  font-weight: var(--ai-font-bold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-lg);
+  font-weight: var(--ao-font-bold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
 }
 
 .chart__sub {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-contrast);
 }
 
 /* Delta pill (Multiple Lines / Single Line variants) */
@@ -59,21 +59,21 @@
 .chart__delta {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
   flex-shrink: 0;
-  padding: var(--ai-spacing-1) var(--ai-spacing-3);
-  background-color: var(--ai-surface-success);
-  border-radius: var(--ai-radius-full);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-invert);
+  padding: var(--ao-spacing-1) var(--ao-spacing-3);
+  background-color: var(--ao-surface-success);
+  border-radius: var(--ao-radius-full);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-invert);
 }
 
 .chart__delta [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 /* ── Canvas wrap (chart fills the available space) ─── */
@@ -99,47 +99,47 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
-  padding-top: var(--ai-spacing-5);
-  border-top: 1px solid var(--ai-border-secondary);
+  gap: var(--ao-spacing-3);
+  padding-top: var(--ao-spacing-5);
+  border-top: 1px solid var(--ao-border-secondary);
 }
 
 .chart__filter {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   background: transparent;
   border: 0;
-  padding: var(--ai-spacing-2) var(--ai-spacing-0);
-  border-radius: var(--ai-radius-md);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-medium);
-  color: var(--ai-text-contrast);
+  padding: var(--ao-spacing-2) var(--ao-spacing-0);
+  border-radius: var(--ao-radius-md);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-contrast);
   cursor: pointer;
-  transition: background-color var(--ai-transition-default),
-              color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default),
+              color var(--ao-transition-default);
 }
 
 .chart__filter:hover {
-  background-color: var(--ai-surface-minimal);
-  color: var(--ai-text-primary);
+  background-color: var(--ao-surface-minimal);
+  color: var(--ao-text-primary);
 }
 
 .chart__filter [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 .chart__report-link {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-brand);
+  gap: var(--ao-spacing-2);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-brand);
   text-decoration: none;
 }
 
@@ -148,6 +148,6 @@
 }
 
 .chart__report-link [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }

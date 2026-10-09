@@ -107,7 +107,7 @@ mirrors their post-click state onto the nearest `.cc-header-group`:
 Per user spec the strip is **hidden by default** and shown only via the toggle.
 Strip background keeps the standalone component's `--cc-actions-menu-secondary-bg`
 override (user decision 2026-06-03) — diverges from this Figma node's
-`--ai-surface-minimal` bind, which was deliberately overridden.
+`--ao-surface-minimal` bind, which was deliberately overridden.
 
 ---
 
@@ -162,6 +162,6 @@ Icon Navigation type, also include `IconNavigation.css` and `HeaderGroup.js`.
   default (user spec). Added reusable `.cc-icon-nav--no-labels` modifier to the
   IconNavigation component (not a Figma variant). Strip bg keeps the
   `--cc-actions-menu-secondary-bg` override rather than this node's
-  `--ai-surface-minimal` bind (user decision). Strip is always hidden below 768px
+  `--ao-surface-minimal` bind (user decision). Strip is always hidden below 768px
   of the group's own width via `@container cc-header-group` — even when toggled on
   (user requirement). Required making `.cc-header-group` an inline-size container.

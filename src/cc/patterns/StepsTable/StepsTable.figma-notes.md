@@ -34,14 +34,14 @@
 
 | Property | Token |
 |---|---|
-| surfaces | --ai-datatable-table-bg / -header-bg / -subheader-bg / -footer-bg / -expanded-bg |
-| icons | dash --ai-icon-contrast, live tick --ai-text-success |
-| detail chip | 1px --ai-border-secondary, --ai-radius-sm, --ai-spacing-1 / --ai-spacing-3, --ai-font-fixed-xxs --ai-leading-sm --ai-text-contrast |
-| detail body | --ai-font-fixed-xs; p --ai-leading-md --ai-text-secondary; h4 SemiBold --ai-leading-lg --ai-text-primary |
-| detail indent | --ai-spacing-9 (checkbox column) |
+| surfaces | --ao-datatable-table-bg / -header-bg / -subheader-bg / -footer-bg / -expanded-bg |
+| icons | dash --ao-icon-contrast, live tick --ao-text-success |
+| detail chip | 1px --ao-border-secondary, --ao-radius-sm, --ao-spacing-1 / --ao-spacing-3, --ao-font-fixed-xxs --ao-leading-sm --ao-text-contrast |
+| detail body | --ao-font-fixed-xs; p --ao-leading-md --ao-text-secondary; h4 SemiBold --ao-leading-lg --ao-text-primary |
+| detail indent | --ao-spacing-9 (checkbox column) |
 
 ## Token Gaps & Decisions
-Built on Datatables — no new table. Column widths follow the table resizing rule (Title fills, others hug); Figma's fixed pixel columns are a Figma-table limitation (designer). Live tick in Figma is `green/11` from the Radix Full library → `--ai-text-success` (identical #218358). No Edit Columns on Steps (designer). Draft detail row bg was borrowed `--ai-btn-secondary-bg-hover` → `--ai-datatable-table-expanded-bg`. Tab count says 8 while the table says 21 — draft inconsistency, flagged.
+Built on Datatables — no new table. Column widths follow the table resizing rule (Title fills, others hug); Figma's fixed pixel columns are a Figma-table limitation (designer). Live tick in Figma is `green/11` from the Radix Full library → `--ao-text-success` (identical #218358). No Edit Columns on Steps (designer). Draft detail row bg was borrowed `--ao-btn-secondary-bg-hover` → `--ao-datatable-table-expanded-bg`. Tab count says 8 while the table says 21 — draft inconsistency, flagged.
 
 ## Notes
 - Built 2026-09-28 from the View & Edit kit (section `3861:1902`, CC Light mode). The kit was
@@ -53,7 +53,7 @@ Built on Datatables — no new table. Column widths follow the table resizing ru
 
 ## Contextual override — author chip border (designer, 2026-09-28)
 The "Created By" chip is `btn btn--tertiary btn--sm` + `.steps-table__author-chip`, which holds
-`--ai-border-secondary` through rest / hover / focus — the same Case B line as the listing rows'
+`--ao-border-secondary` through rest / hover / focus — the same Case B line as the listing rows'
 account chip (`.datatables__account-chip`). In Figma both StepRow variants' `Created By` instances
 (`3881:4873`, `3881:4920`) carry a 1px inside stroke bound to `border/secondary`; the Button set
 itself is unchanged (tertiary border tokens stay transparent).
@@ -88,4 +88,4 @@ Horizontal scroll), the kebab detail, paging, and per-user persistence.
 
 ## Mobile (designer amend, 2026-09-30)
 
-`@container cs-page (max-width: 767px)`: the "Show details" label (`.steps-table__details-toggle`) is `--ai-font-fixed-2xs` (desktop `xs`).
+`@container cs-page (max-width: 767px)`: the "Show details" label (`.steps-table__details-toggle`) is `--ao-font-fixed-2xs` (desktop `xs`).

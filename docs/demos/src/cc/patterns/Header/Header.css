@@ -27,8 +27,8 @@
   display: flex;
   align-items: center;
   width: 100%;
-  min-height: var(--ai-spacing-11); /* 64px desktop */
-  padding: var(--ai-spacing-5);
+  min-height: var(--ao-spacing-11); /* 64px desktop */
+  padding: var(--ao-spacing-5);
   background-color: var(--cc-header-secondary-bg);
 }
 
@@ -51,24 +51,24 @@
 }
 
 .cc-header__title {
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-bold);
-  font-size: var(--ai-font-fixed-xl); /* 22px desktop */
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-bold);
+  font-size: var(--ao-font-fixed-xl); /* 22px desktop */
   line-height: 1;
-  color: var(--ai-text-primary);
-  letter-spacing: var(--ai-tracking-3);
+  color: var(--ao-text-primary);
+  letter-spacing: var(--ao-tracking-3);
   font-feature-settings: 'calt' 0;
   white-space: nowrap;
   margin: 0;
 }
 
 .cc-header__subtitle {
-  font-family: var(--ai-font-body);
-  font-weight: var(--ai-font-medium);
-  font-size: var(--ai-font-fixed-xs); /* 14px */
-  line-height: var(--ai-leading-sm); /* 20px */
-  color: var(--ai-text-contrast);
-  letter-spacing: var(--ai-tracking-4);
+  font-family: var(--ao-font-body);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-xs); /* 14px */
+  line-height: var(--ao-leading-sm); /* 20px */
+  color: var(--ao-text-contrast);
+  letter-spacing: var(--ao-tracking-4);
   font-feature-settings: 'calt' 0;
   white-space: nowrap;
   margin: 0;
@@ -79,7 +79,7 @@
 .cc-header__actions {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3); /* 8px desktop */
+  gap: var(--ao-spacing-3); /* 8px desktop */
   flex-shrink: 0;
 }
 
@@ -106,8 +106,8 @@
 /* Contextual override — tertiary button icons (the bell inside NotificationBadge)
  * render at 20px in the header, vs the default 16px. Case B per CLAUDE.md. */
 .cc-header .btn--tertiary [data-lucide] {
-  width: var(--ai-icon-size-md);
-  height: var(--ai-icon-size-md);
+  width: var(--ao-icon-size-md);
+  height: var(--ao-icon-size-md);
 }
 
 /* Contextual override — tertiary buttons in the header render with no background
@@ -123,23 +123,23 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-icon-size-lg); /* 24px */
-  height: var(--ai-icon-size-lg);
+  width: var(--ao-icon-size-lg); /* 24px */
+  height: var(--ao-icon-size-lg);
   padding: 0;
   background: transparent;
   border: 0;
-  color: var(--ai-icon-secondary);
+  color: var(--ao-icon-secondary);
   cursor: pointer;
-  transition: color var(--ai-transition-default);
+  transition: color var(--ao-transition-default);
 }
 
 .cc-header__kebab:hover {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 .cc-header__kebab [data-lucide] {
-  width: var(--ai-icon-size-lg);
-  height: var(--ai-icon-size-lg);
+  width: var(--ao-icon-size-lg);
+  height: var(--ao-icon-size-lg);
 }
 
 /* The kebab is always the last action at the header's right edge, so its menu opens leftwards —
@@ -160,7 +160,7 @@
 /* ── Type=Sub Text ───────────────────────────────────── */
 
 .cc-header--sub-text .cc-header__title-block-text {
-  gap: var(--ai-spacing-1); /* 4px between title and subtitle */
+  gap: var(--ao-spacing-1); /* 4px between title and subtitle */
 }
 
 /* ── Type=Record ─────────────────────────────────────── */
@@ -169,71 +169,71 @@
  * Figma: Lus07xi8pPXLN87sQIyrEt · View & Edit page · RecordHeader 3867:2138 */
 
 .cc-header--record {
-  gap: var(--ai-spacing-5);
-  border-bottom: 1px solid var(--ai-border-secondary);
+  gap: var(--ao-spacing-5);
+  border-bottom: 1px solid var(--ao-border-secondary);
 }
 
 .cc-header--record .cc-header__title-block-text {
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
 }
 
 .cc-header__record-type {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-medium);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
 }
 
 .cc-header--record .cc-header__title {
-  line-height: var(--ai-leading-md);
+  line-height: var(--ao-leading-md);
   white-space: normal;
 }
 
 /* ── Type=Control ────────────────────────────────────── */
 
 .cc-header--control .cc-header__title-block {
-  gap: var(--ai-spacing-4); /* 12px desktop between avatar and text column */
+  gap: var(--ao-spacing-4); /* 12px desktop between avatar and text column */
 }
 
 .cc-header--control .cc-header__title-block-text {
-  gap: var(--ai-spacing-3); /* 8px between title and user details */
+  gap: var(--ao-spacing-3); /* 8px between title and user details */
   height: 100%;
 }
 
 .cc-header--control .portrait {
-  width: var(--ai-spacing-9); /* 48px desktop */
-  height: var(--ai-spacing-9);
+  width: var(--ao-spacing-9); /* 48px desktop */
+  height: var(--ao-spacing-9);
   flex-shrink: 0;
   display: block;
-  border-radius: var(--ai-radius-full);
+  border-radius: var(--ao-radius-full);
   object-fit: cover;
 }
 
 .cc-header__user-details {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-5); /* 16px */
+  gap: var(--ao-spacing-5); /* 16px */
 }
 
 .cc-header__user-item {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2); /* 6px */
-  font-family: var(--ai-font-body);
-  font-weight: var(--ai-font-medium);
-  font-size: var(--ai-font-fixed-xs); /* 14px */
-  line-height: var(--ai-leading-sm); /* 20px */
-  color: var(--ai-text-contrast);
-  letter-spacing: var(--ai-tracking-4);
+  gap: var(--ao-spacing-2); /* 6px */
+  font-family: var(--ao-font-body);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-xs); /* 14px */
+  line-height: var(--ao-leading-sm); /* 20px */
+  color: var(--ao-text-contrast);
+  letter-spacing: var(--ao-tracking-4);
   font-feature-settings: 'calt' 0;
 }
 
 .cc-header__user-item [data-lucide] {
-  width: var(--ai-icon-size-sm); /* 16px */
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-secondary);
+  width: var(--ao-icon-size-sm); /* 16px */
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-secondary);
   flex-shrink: 0;
 }
 
@@ -249,25 +249,25 @@
        TopNavigation above it take the SAME height on a phone. Figma's mobile
        variant still says 56 — an instruction that overrides it, not a reading
        of it, so Figma wants updating rather than this line "fixing" back. */
-    min-height: var(--ai-spacing-9); /* 48px on mobile */
-    padding: var(--ai-spacing-3) var(--ai-spacing-4); /* 8px / 12px */
+    min-height: var(--ao-spacing-9); /* 48px on mobile */
+    padding: var(--ao-spacing-3) var(--ao-spacing-4); /* 8px / 12px */
   }
 
   .cc-header__title {
-    font-size: var(--ai-font-fixed-sm); /* 16px on mobile */
+    font-size: var(--ao-font-fixed-sm); /* 16px on mobile */
   }
 
   .cc-header__subtitle {
-    line-height: var(--ai-leading-xs); /* 16px on mobile */
+    line-height: var(--ao-leading-xs); /* 16px on mobile */
   }
 
   .cc-header__actions {
-    gap: var(--ai-spacing-2); /* 6px on mobile */
+    gap: var(--ao-spacing-2); /* 6px on mobile */
   }
 
   .cc-header .notification-badge__count {
-    top: var(--ai-spacing-1);
-    right: var(--ai-spacing-1);
+    top: var(--ao-spacing-1);
+    right: var(--ao-spacing-1);
   }
 
   /* Collapse text+icon buttons to icon-only 32px square on mobile.
@@ -275,8 +275,8 @@
    * scoped override to force btn--sm + btn--icon dimensions. */
   .cc-header__actions .btn {
     padding: 0;
-    width: var(--ai-spacing-7); /* 32px */
-    min-height: var(--ai-spacing-7);
+    width: var(--ao-spacing-7); /* 32px */
+    min-height: var(--ao-spacing-7);
     gap: 0;
   }
 
@@ -291,37 +291,37 @@
   /* …and that same text-only (tertiary) button takes Button Secondary's paint on mobile, so the
    * bare icon still reads as a button beside its filled neighbours (designer, 2026-10-05). */
   .cc-header__actions .cc-header__btn--bordered-mobile {
-    background-color: var(--ai-btn-secondary-bg);
-    color: var(--ai-btn-secondary-text);
-    border-color: var(--ai-btn-secondary-border);
+    background-color: var(--ao-btn-secondary-bg);
+    color: var(--ao-btn-secondary-text);
+    border-color: var(--ao-btn-secondary-border);
   }
 
   .cc-header__actions .cc-header__btn--bordered-mobile:hover {
-    background-color: var(--ai-btn-secondary-bg-hover);
-    border-color: var(--ai-btn-secondary-border-hover);
-    color: var(--ai-btn-secondary-text-hover);
+    background-color: var(--ao-btn-secondary-bg-hover);
+    border-color: var(--ao-btn-secondary-border-hover);
+    color: var(--ao-btn-secondary-text-hover);
   }
 
   .cc-header__actions .cc-header__btn--bordered-mobile:active {
-    background-color: var(--ai-btn-secondary-bg-pressed);
-    border-color: var(--ai-btn-secondary-border);
+    background-color: var(--ao-btn-secondary-bg-pressed);
+    border-color: var(--ao-btn-secondary-border);
   }
 
   .cc-header__actions .cc-header__btn--bordered-mobile:focus-visible {
-    background-color: var(--ai-btn-secondary-bg-hover);
-    border-color: var(--ai-surface-primary);
-    box-shadow: 0 0 0 2px var(--ai-btn-secondary-border);
-    color: var(--ai-btn-secondary-text-hover);
+    background-color: var(--ao-btn-secondary-bg-hover);
+    border-color: var(--ao-surface-primary);
+    box-shadow: 0 0 0 2px var(--ao-btn-secondary-border);
+    color: var(--ao-btn-secondary-text-hover);
   }
 
   /* Type=Control mobile adjustments */
   .cc-header--control .cc-header__title-block {
-    gap: var(--ai-spacing-3); /* 8px on mobile */
+    gap: var(--ao-spacing-3); /* 8px on mobile */
   }
 
   .cc-header--control .portrait {
-    width: var(--ai-spacing-7); /* 32px on mobile */
-    height: var(--ai-spacing-7);
+    width: var(--ao-spacing-7); /* 32px on mobile */
+    height: var(--ao-spacing-7);
   }
 
   .cc-header--control .cc-header__title {
@@ -335,23 +335,23 @@
 
   /* Tighter gap for Control mobile actions */
   .cc-header--control .cc-header__actions {
-    gap: var(--ai-spacing-1); /* 4px on Control mobile per Figma */
+    gap: var(--ao-spacing-1); /* 4px on Control mobile per Figma */
   }
 
   /* Record title: leading-sm on mobile (designer amend, 2026-09-30; desktop keeps leading-md). */
   .cc-header--record .cc-header__title-block-text {
-    gap: var(--ai-spacing-0-5);   /* designer amend, 2026-09-30; desktop spacing-1 */
+    gap: var(--ao-spacing-0-5);   /* designer amend, 2026-09-30; desktop spacing-1 */
   }
 
   .cc-header--record .cc-header__title {
-    line-height: var(--ai-leading-sm);
+    line-height: var(--ao-leading-sm);
   }
 
   /* Record type label on mobile (designer amend, 2026-09-30): 2xs / leading-xs (desktop xs /
    * leading-sm). Margin, family and weight are unchanged from the base rule. */
   .cc-header__record-type {
-    font-size: var(--ai-font-fixed-2xs);
-    line-height: var(--ai-leading-xs);
+    font-size: var(--ao-font-fixed-2xs);
+    line-height: var(--ao-leading-xs);
   }
 
   /* Type=Record follows the icon-only collapse above like every CC header (designer,

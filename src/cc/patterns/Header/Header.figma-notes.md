@@ -25,7 +25,7 @@ with the live screen's four icon actions: **Live view**, **Related items**, **Go
 `4105:3637`); give it an `aria-label` so the name survives the hidden label. Record: Add `plus`,
 Edit `pencil`, Cancel `x`, Save `check` — its old labels-kept-on-mobile override is gone (2026-09-30).
 
-Record on mobile (designer amends, 2026-09-30): type → title gap `--ai-spacing-0-5` (desktop `spacing-1`); title `line-height` `--ai-leading-sm` (desktop `md`); record type `font-size` `--ai-font-fixed-2xs` + `line-height` `--ai-leading-xs` (desktop `xs` / `leading-sm`).
+Record on mobile (designer amends, 2026-09-30): type → title gap `--ao-spacing-0-5` (desktop `spacing-1`); title `line-height` `--ao-leading-sm` (desktop `md`); record type `font-size` `--ao-font-fixed-2xs` + `line-height` `--ao-leading-xs` (desktop `xs` / `leading-sm`).
 
 ---
 
@@ -65,7 +65,7 @@ Manager) hide on mobile via `.cc-header__user-details`.
 | Type=Default | (base — no modifier) |
 | Type=Sub Text | `.cc-header--sub-text` |
 | Type=Control | `.cc-header--control` |
-| Type=Record *(DS-file RecordHeader `3867:2138`, View & Edit kit)* | `.cc-header--record` — `.cc-header__record-type` above the title, record actions, bottom border `--ai-border-secondary`, title `--ai-leading-md` |
+| Type=Record *(DS-file RecordHeader `3867:2138`, View & Edit kit)* | `.cc-header--record` — `.cc-header__record-type` above the title, record actions, bottom border `--ao-border-secondary`, title `--ao-leading-md` |
 | `Tilte Block` (typo) | `.cc-header__title-block` |
 | Title text column | `.cc-header__title-block-text` (used in Sub Text + Control) |
 | `Title` | `.cc-header__title` (`<h1>`) |
@@ -89,38 +89,38 @@ Manager) hide on mobile via `.cc-header__user-details`.
 | Property | Desktop | Mobile |
 |---|---|---|
 | Background | `var(--cc-header-secondary-bg)` | (same) |
-| Min-height | `var(--ai-spacing-11)` (64px) | `var(--ai-spacing-10)` (56px) |
-| Padding | `var(--ai-spacing-5)` (16px) | `var(--ai-spacing-3) var(--ai-spacing-4)` (8px / 12px) |
+| Min-height | `var(--ao-spacing-11)` (64px) | `var(--ao-spacing-10)` (56px) |
+| Padding | `var(--ao-spacing-5)` (16px) | `var(--ao-spacing-3) var(--ao-spacing-4)` (8px / 12px) |
 
 ### Title
 
 | Property | Desktop | Mobile |
 |---|---|---|
-| Font-family | `var(--ai-font-title)` | (same) |
-| Font-weight | `var(--ai-font-bold)` (700) | (same) |
-| Font-size | `var(--ai-font-fixed-xl)` (22px) | `var(--ai-font-fixed-sm)` (16px) |
+| Font-family | `var(--ao-font-title)` | (same) |
+| Font-weight | `var(--ao-font-bold)` (700) | (same) |
+| Font-size | `var(--ao-font-fixed-xl)` (22px) | `var(--ao-font-fixed-sm)` (16px) |
 | Line-height | `1` | `1.1` (Control only) |
-| Colour | `var(--ai-text-primary)` | (same) |
-| Letter-spacing | `var(--ai-tracking-3)` | (same) |
+| Colour | `var(--ao-text-primary)` | (same) |
+| Letter-spacing | `var(--ao-tracking-3)` | (same) |
 | Font-feature-settings | `'calt' 0` | (same) |
 
 ### Subtitle
 
 | Property | Token |
 |---|---|
-| Font-family | `var(--ai-font-body)` |
-| Font-weight | `var(--ai-font-medium)` |
-| Font-size | `var(--ai-font-fixed-xs)` (14px) |
-| Line-height | `var(--ai-leading-sm)` (20px) |
-| Colour | `var(--ai-text-contrast)` |
-| Letter-spacing | `var(--ai-tracking-4)` |
+| Font-family | `var(--ao-font-body)` |
+| Font-weight | `var(--ao-font-medium)` |
+| Font-size | `var(--ao-font-fixed-xs)` (14px) |
+| Line-height | `var(--ao-leading-sm)` (20px) |
+| Colour | `var(--ao-text-contrast)` |
+| Letter-spacing | `var(--ao-tracking-4)` |
 
 ### Actions cluster
 
 | Property | Desktop | Mobile |
 |---|---|---|
-| Gap (Default / Sub Text) | `var(--ai-spacing-3)` (8px) | `var(--ai-spacing-2)` (6px) |
-| Gap (Control) | `var(--ai-spacing-3)` (8px) | `var(--ai-spacing-1)` (4px) |
+| Gap (Default / Sub Text) | `var(--ao-spacing-3)` (8px) | `var(--ao-spacing-2)` (6px) |
+| Gap (Control) | `var(--ao-spacing-3)` (8px) | `var(--ao-spacing-1)` (4px) |
 
 ### Mobile button collapse
 
@@ -130,8 +130,8 @@ Buttons inside `.cc-header__actions` collapse to icon-only 32×32 squares on mob
 @container cc-header (max-width: 767px) {
   .cc-header__actions .btn {
     padding: 0;
-    width: var(--ai-spacing-7); /* 32px */
-    min-height: var(--ai-spacing-7);
+    width: var(--ao-spacing-7); /* 32px */
+    min-height: var(--ao-spacing-7);
     gap: 0;
   }
   .cc-header__actions .cc-header__btn-label { display: none; }
@@ -145,22 +145,22 @@ square icon-only buttons.
 
 | Property | Desktop | Mobile |
 |---|---|---|
-| `title-block` gap (avatar → text) | `var(--ai-spacing-4)` (12px) | `var(--ai-spacing-3)` (8px) |
-| `title-block-text` gap (title → details) | `var(--ai-spacing-3)` (8px) | (n/a — details hidden) |
-| Portrait size | `var(--ai-spacing-9)` (48px) | `var(--ai-spacing-7)` (32px) |
-| User details gap | `var(--ai-spacing-5)` (16px) | (n/a — details hidden) |
-| User item gap (icon → text) | `var(--ai-spacing-2)` (6px) | (n/a) |
+| `title-block` gap (avatar → text) | `var(--ao-spacing-4)` (12px) | `var(--ao-spacing-3)` (8px) |
+| `title-block-text` gap (title → details) | `var(--ao-spacing-3)` (8px) | (n/a — details hidden) |
+| Portrait size | `var(--ao-spacing-9)` (48px) | `var(--ao-spacing-7)` (32px) |
+| User details gap | `var(--ao-spacing-5)` (16px) | (n/a — details hidden) |
+| User item gap (icon → text) | `var(--ao-spacing-2)` (6px) | (n/a) |
 
 ### Kebab
 
 | Property | Token |
 |---|---|
-| Size | `var(--ai-icon-size-lg)` (24px) |
+| Size | `var(--ao-icon-size-lg)` (24px) |
 | Background | `transparent` |
 | Border | none |
-| Icon colour | `var(--ai-icon-secondary)` |
-| Icon colour (hover) | `var(--ai-text-primary)` |
-| Icon size | `var(--ai-icon-size-lg)` (24px) |
+| Icon colour | `var(--ao-icon-secondary)` |
+| Icon colour (hover) | `var(--ao-text-primary)` |
+| Icon size | `var(--ao-icon-size-lg)` (24px) |
 
 ---
 
@@ -168,10 +168,10 @@ square icon-only buttons.
 
 | Gap | Figma value | Resolution |
 |---|---|---|
-| Notification badge red | Red 500 (#ef4444) | Use `--ai-surface-error` (Red 600). See NotificationBadge figma-notes. |
+| Notification badge red | Red 500 (#ef4444) | Use `--ao-surface-error` (Red 600). See NotificationBadge figma-notes. |
 
 No additional CCHeader-specific gaps — all sizes and tokens map cleanly via the existing
-`--ai-spacing-*`, `--ai-font-*`, `--ai-tracking-*` scale.
+`--ao-spacing-*`, `--ao-font-*`, `--ao-tracking-*` scale.
 
 ---
 
@@ -227,8 +227,8 @@ No additional CCHeader-specific gaps — all sizes and tokens map cleanly via th
 
 ## Mobile height lowered to 48px — designer override of Figma
 
-2026-09-21. `min-height` on a narrow container goes `--ai-spacing-10` (56px) →
-`--ai-spacing-9` (48px), matching the TopNavigation above it, which comes up
+2026-09-21. `min-height` on a narrow container goes `--ao-spacing-10` (56px) →
+`--ao-spacing-9` (48px), matching the TopNavigation above it, which comes up
 from 40 to meet it. Two stacked bars, one height.
 
 **Figma's mobile variant still says 56.** This is an instruction that overrides
@@ -242,7 +242,7 @@ the header already steps its type and padding down, so the height now follows
 the layout it belongs to.
 
 ## Type=Record on mobile (2026-09-28)
-The `cc-header` ≤767 icon-only collapse assumes every action has an icon. Record's Cancel / Add have none, so Record opts out: its actions take Button `sm` dress (padding `0 --ai-spacing-4`, gap `--ai-spacing-3`, `--ai-font-fluid-xxs`) at the same 32px height, labels kept.
+The `cc-header` ≤767 icon-only collapse assumes every action has an icon. Record's Cancel / Add have none, so Record opts out: its actions take Button `sm` dress (padding `0 --ao-spacing-4`, gap `--ao-spacing-3`, `--ao-font-fluid-xxs`) at the same 32px height, labels kept.
 
 ## Figma build 2026-09-30 — RecordHeader is a variant set
 `Lus07xi8pPXLN87sQIyrEt` View & Edit kit: **RecordHeader `3925:19166`** = Mode (View | Edit) × Device (Desktop | Mobile).

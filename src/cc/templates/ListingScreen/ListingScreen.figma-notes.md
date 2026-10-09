@@ -51,13 +51,13 @@ Every value below traces to a `get_design_context` fetch, not to intuition.
 | Wrapper | Property | Figma binding | Applied |
 |---|---|---|---|
 | Page ground | background | `--cc-ui-primary-bg` | `.cc-control__page` (ControlScreen, reused) |
-| Page content | padding | `--ai-spacing-6` (24px) | `.cc-control__page` — already correct, not overridden |
+| Page content | padding | `--ao-spacing-6` (24px) | `.cc-control__page` — already correct, not overridden |
 | Content column ("Frame 1") | flex-direction | column | `.cc-listing` |
-| Content column | gap | `--ai-spacing-4` (12px) | `.cc-listing` |
+| Content column | gap | `--ao-spacing-4` (12px) | `.cc-listing` |
 | Chrome — top nav | background | `--cc-header-primary-bg` | TopNavigation (reused) |
 | Chrome — header band | background | `--cc-header-secondary-bg` | `.cc-header` (reused) |
-| Chrome — header band | min-height / padding | `--ai-spacing-11` / `--ai-spacing-5` | `.cc-header` — already correct |
-| Header title | font / size / tracking | `--ai-font-title` bold · `--ai-font-fixed-xl` · `--ai-tracking-3` | `.cc-header__title` — already correct |
+| Chrome — header band | min-height / padding | `--ao-spacing-11` / `--ao-spacing-5` | `.cc-header` — already correct |
+| Header title | font / size / tracking | `--ao-font-title` bold · `--ao-font-fixed-xl` · `--ao-tracking-3` | `.cc-header__title` — already correct |
 
 The shell is **not forked**. In Figma, ControlScreen and every listing screen are
 instances of the same `CC Shell` component, so `ControlScreen.css` is linked and its
@@ -82,11 +82,11 @@ All three were raised as STOPs and resolved by the designer on 2026-09-17.
 
 | # | Finding | Where | Resolution |
 |---|---|---|---|
-| 1 | `--spacing-5` **primitive** (not `--ai-spacing-5`) bound to the ORDER NO header + body cells | `3648:164918`, every ORDER NO cell | Normalise to `--ai-spacing-5`. **Figma still needs fixing.** |
-| 2 | Raw `px-[12px] py-[8px] gap-[8px]` — unbound — on the ACCOUNT CODE / QTY / ORDER TOTAL header cells, where the other three headers bind `--ai-spacing-5` / `--ai-spacing-2` | `3648:164936/164942/164948` | Normalise all six to `--ai-spacing-5` / `--ai-spacing-2`. This also removed a real 4px header/body misalignment visible in the design. **Figma still needs fixing.** |
-| 3 | Mobile customer role bound to raw `12px` | `3648:164504` | Normalise to `--ai-font-fixed-xxs`. **Figma still needs fixing.** |
+| 1 | `--spacing-5` **primitive** (not `--ao-spacing-5`) bound to the ORDER NO header + body cells | `3648:164918`, every ORDER NO cell | Normalise to `--ao-spacing-5`. **Figma still needs fixing.** |
+| 2 | Raw `px-[12px] py-[8px] gap-[8px]` — unbound — on the ACCOUNT CODE / QTY / ORDER TOTAL header cells, where the other three headers bind `--ao-spacing-5` / `--ao-spacing-2` | `3648:164936/164942/164948` | Normalise all six to `--ao-spacing-5` / `--ao-spacing-2`. This also removed a real 4px header/body misalignment visible in the design. **Figma still needs fixing.** |
+| 3 | Mobile customer role bound to raw `12px` | `3648:164504` | Normalise to `--ao-font-fixed-xxs`. **Figma still needs fixing.** |
 
-Mobile header tracking is a raw `0.6px`; that is `--ai-tracking-7` (0.05em) at the 11px
+Mobile header tracking is a raw `0.6px`; that is `--ao-tracking-7` (0.05em) at the 11px
 font size, so the token is used. Letter-spacing is in any case a documented raw-px
 exception.
 
@@ -94,13 +94,13 @@ exception.
 
 | Element | Base component | Override | Why not a variant |
 |---|---|---|---|
-| Account chip | `btn btn--tertiary btn--sm` | `border-color: var(--ai-border-secondary)` | Tertiary's own border token is transparent in every mode. Designer's call: scope it, don't add a Button variant. |
-| Initials avatar | `avatar avatar--initials` | brand palette (`--ai-surface-brand-soft-extra` / `--ai-text-brand`) | The Avatar component's own `--initials` is the **info** palette. Applied by analogy with the chip; flagged for the designer to formalise if it turns out to be house style. |
+| Account chip | `btn btn--tertiary btn--sm` | `border-color: var(--ao-border-secondary)` | Tertiary's own border token is transparent in every mode. Designer's call: scope it, don't add a Button variant. |
+| Initials avatar | `avatar avatar--initials` | brand palette (`--ao-surface-brand-soft-extra` / `--ao-text-brand`) | The Avatar component's own `--initials` is the **info** palette. Applied by analogy with the chip; flagged for the designer to formalise if it turns out to be house style. |
 
 ## Column widths are intrinsic, not the Figma pixels
 
 Figma fixes ORDER NO 114, QTY 100, kebab 48, checkbox 32, and min-widths of 250
-(CUSTOMER) / 170 (ACCOUNT). None maps to an `--ai-*` token, so writing them would breach
+(CUSTOMER) / 170 (ACCOUNT). None maps to an `--ao-*` token, so writing them would breach
 the hardcoded-dimension rule. `.datatables__col--hug` shrink-wraps the narrow columns and
 the wide ones absorb the remainder — same visual result, and it holds at every width,
 which matters because the content column resizes with no window resize (CLAUDE.md §4a).
@@ -120,7 +120,7 @@ Two fixes were needed to get there, both found by measuring rather than eyeballi
 1. The row-edit button was built as `btn--icon` (40px). Figma's node is `2926:3566` —
    the Secondary `Icon Only=True, Size=xs` variant, i.e. the stock **`btn--icon btn--xs`**
    (24×24). The wrong size cost 28px and pushed the kebab column off-screen.
-2. The mobile kebab cell needed `padding-inline: var(--ai-spacing-0)` per Figma. The
+2. The mobile kebab cell needed `padding-inline: var(--ao-spacing-0)` per Figma. The
    first attempt silently lost the cascade: `.datatables--orders td.<class>` is (0,2,1)
    against the blanket cell rule's (0,2,2) — equal class count, more elements, so the
    blanket rule won. `.table` was added to the selector to lift it to (0,3,1).
@@ -156,10 +156,10 @@ a 15px gutter on the **end edge only**. ControlScreen compensates by trimming
 
 | Breakpoint | padding L | padding R | + gutter | visual L / R |
 |---|---|---|---|---|
-| Desktop (≥768) | `--ai-spacing-6` (24) | `--ai-spacing-4` (12) | 15 | 24 / 27 |
-| Mobile (≤767) | `--ai-spacing-4` (12) | `--ai-spacing-0` (0) | 15 | 12 / 15 |
+| Desktop (≥768) | `--ao-spacing-6` (24) | `--ao-spacing-4` (12) | 15 | 24 / 27 |
+| Mobile (≤767) | `--ao-spacing-4` (12) | `--ao-spacing-0` (0) | 15 | 12 / 15 |
 
-The mobile row was `--ai-spacing-2` (6px) until 2026-09-17, which read as
+The mobile row was `--ao-spacing-2` (6px) until 2026-09-17, which read as
 **12 / 21** — a 9px lean, three times the desktop tolerance, and present on
 every CC screen rather than just this one. Fixed in `ControlScreen.css` so all
 of them benefit.
@@ -265,14 +265,14 @@ Nothing in the JS branches on the template:
 
 | Wrapper | Property | Token |
 |---|---|---|
-| Content slot (page) | fill · padding | `surface/primary` → `--ai-surface-primary` · 0 |
+| Content slot (page) | fill · padding | `surface/primary` → `--ao-surface-primary` · 0 |
 | Content slot (page) | top stroke | `border/secondary`. `.cc-control__chrome` already draws it, so nothing is added |
 | Frame 1 (`.cc-listing`) | gap | 0 |
-| FilterBar | radius · stroke | none · bottom only, `--ai-border-secondary` |
+| FilterBar | radius · stroke | none · bottom only, `--ao-border-secondary` |
 | FilterBar rows | padding | T `spacing/0`, L/R `spacing/5`, B `spacing/4`; no divider between the rows |
-| Datatables | radius · stroke | `--ai-radius-md` kept · bottom only, `--ai-datatable-table-border` |
+| Datatables | radius · stroke | `--ao-radius-md` kept · bottom only, `--ao-datatable-table-border` |
 | CC header (chrome) | bottom border | **none** — `.cc-control__chrome--flush` (designer, 2026-09-23) |
-| Filter chips | FilterItem `Rounded` | **False** (`--ai-radius-md`) — rendered without `filter-item--rounded` via `chipShape` in `applyTemplate()`; standard stays Rounded=True |
+| Filter chips | FilterItem `Rounded` | **False** (`--ao-radius-md`) — rendered without `filter-item--rounded` via `chipShape` in `applyTemplate()`; standard stays Rounded=True |
 | Toolbar / footer | padding | unchanged from standard |
 
 The rules use **child combinators**. A Multi Select Table filter picker has a `.datatables` of
@@ -290,7 +290,7 @@ a mobile frame is drawn.
 - **Right edge.** The page keeps its reserved scrollbar gutter (15px classic), so the content
   stops 15px short of the ActionsMenu rail. Figma runs it to the rail. Dropping the gutter would
   shift the layout whenever the page starts or stops scrolling.
-- **Dark mode.** The flush page is `--ai-surface-primary`. In dark that is a darker slate than
+- **Dark mode.** The flush page is `--ao-surface-primary`. In dark that is a darker slate than
   the CC header band above it, so there is a visible tone step at the chrome line. Light mode has
   none, because both are white there. Figma has no dark frame to check this against.
 
@@ -357,7 +357,7 @@ Verified headless on all four screens, in both templates and both themes:
 - **Figma fixes**: the three binding slips above.
 - **Mobile frame `3648:161126` is titled "Articles"**, not "Orders" — stale title on the
   designer's side. Built as "Orders" to match the desktop frame and the live screen.
-- **Pagination active state**: Figma paints it `--ai-datatable-table-footer-bg`, which in
+- **Pagination active state**: Figma paints it `--ao-datatable-table-footer-bg`, which in
   CC **light** resolves to the same white as the pagination container — so weight alone
   carries the state. `aria-current="page"` is set, but this is a contrast question for
   the designer, not something to "fix" in code.
@@ -642,7 +642,7 @@ gap between the name and the next column.
 advisory under `table-layout: auto`, and the column stayed at 372. Two changes
 did:
 
-1. Customer gets a **preferred** width (`width: var(--ai-size-6)`), not `auto`.
+1. Customer gets a **preferred** width (`width: var(--ao-size-6)`), not `auto`.
    Auto layout treats `width` as a preference, so it still shrinks when space
    is tight but stops growing at 320px.
 2. A **spacer column** before the actions absorbs whatever is left. Nothing
@@ -690,7 +690,7 @@ truncate, tighter line heights.
   what actually caps the column. The full value stays in the `title`, and the
   kebab detail row deliberately does NOT truncate — it exists to show values
   in full.
-- **Line heights**: `th` → `--ai-leading-xs` (16px), `td` → `--ai-leading-sm`
+- **Line heights**: `th` → `--ao-leading-xs` (16px), `td` → `--ao-leading-sm`
   (20px). Scoped to `.datatables--orders` rather than changed in `Table.css`,
   since the Seating Planner's tables use that component and were not part of
   this ask.
@@ -982,7 +982,7 @@ rather than a fidelity detail — raised with Mark rather than assumed.
 
 ### Responsive
 
-The card is `min(var(--ai-size-10), 100cqi)` and establishes its own container,
+The card is `min(var(--ao-size-10), 100cqi)` and establishes its own container,
 so the table responds to the CARD's width rather than the page's — what fits in
 the card is a different question from what fits on screen. Zone drops below
 520px, Catalogue ID below 380px; Name never drops, or the picker is a list of
@@ -1202,16 +1202,16 @@ of the slack, not out of a column. At 1000px the count is unchanged. Row click
 
 Designer, 2026-09-18, two refinements to the pencil/kebab pair:
 
-**Gap.** Default cell padding put `--ai-spacing-5` on each side of the join —
+**Gap.** Default cell padding put `--ao-spacing-5` on each side of the join —
 32px between the two boxes and 48 between the glyphs, which read as two
 unrelated controls at opposite ends of the row rather than a set. The edit
 cell's right padding goes to 0 and the kebab cell's left padding to
-`--ai-spacing-1`, leaving **4px between the boxes and 20px between the
+`--ao-spacing-1`, leaving **4px between the boxes and 20px between the
 glyphs**, with both 32px hit targets intact. The kebab keeps its right
 padding — that one is the row's edge, not the gap.
 
 **Hover border.** Both now draw the same line the table draws between its rows,
-`1px solid var(--ai-border-secondary)`. The border is **reserved as transparent
+`1px solid var(--ao-border-secondary)`. The border is **reserved as transparent
 at rest** rather than added on hover: with `box-sizing: border-box` the box
 stays 32px either way, so nothing shifts by a pixel as the pointer crosses it.
 
@@ -1283,14 +1283,14 @@ separate loads. The RO handler calls `fitColumns`, which is the only thing
 Reported 2026-09-21, and a direct consequence of the row hover tint.
 
 `.btn--tertiary:hover` out-specifies the chip's contextual border (0,2,0 vs
-0,1,0) and sets `--ai-btn-tertiary-border-hover` — **transparent in every
+0,1,0) and sets `--ao-btn-tertiary-border-hover` — **transparent in every
 mode**. So hovering the chip removed the only edge it had, and what it fell
 back to was `rgb(242,244,245)` against a row tint of `rgb(243,246,247)`: one to
 two per channel apart, in both Light and CC. No border, no fill contrast, no
 chip. Dark was survivable (`rgb(71,85,105)` on `rgb(41,53,72)`) but is fixed
 the same way.
 
-The chip now holds `--ai-border-secondary` through hover and focus — the same
+The chip now holds `--ao-border-secondary` through hover and focus — the same
 colour the edit icon and the kebab use, so all three row controls draw one
 line.
 
@@ -1321,7 +1321,7 @@ measurement artefact, and this one would have been too.
 
 Designer, 2026-09-21. One pair per line made 15 hidden columns a 425px scroll
 for a row whose point is to be glanced at. The list is now
-`repeat(auto-fill, minmax(var(--ai-size-3), 1fr))`.
+`repeat(auto-fill, minmax(var(--ao-size-3), 1fr))`.
 
 **No container query, and no chosen breakpoints.** The grid counts the space
 itself, so the panel is right at every width rather than at the three or four
@@ -1359,10 +1359,10 @@ the designer has seen it there.
 pair's 4px gap". Neither wholesale: the panel now mirrors the TABLE's own
 rhythm, which is what it stands in for.
 
-- **Label → `--ai-leading-xs` (16px), the same as `.table thead th`.** It was
+- **Label → `--ao-leading-xs` (16px), the same as `.table thead th`.** It was
   inheriting the CELL's 20px, which is loose for 12px uppercase, and that was
   the slack worth taking.
-- **Value stays at `--ai-leading-sm` (20px), the same as `.table tbody td`.**
+- **Value stays at `--ao-leading-sm` (20px), the same as `.table tbody td`.**
   16px on 14px text is a ratio of 1.14 — too tight for the wrapped lines a
   192px column produces from a catalogue item name, and the panel's whole
   argument is that long values stay readable.
@@ -1372,7 +1372,7 @@ rhythm, which is what it stands in for.
   was only height. (I had argued to keep it as the binding signal; it is not
   needed once the label's leading is tight.)
 
-The row-gap between pairs then went 12px → **16px** (`--ai-spacing-5`): with
+The row-gap between pairs then went 12px → **16px** (`--ao-spacing-5`): with
 nothing inside a pair, that gap is the only thing grouping a label with its
 value, so it has to be unambiguous.
 
@@ -1381,7 +1381,7 @@ once the row-gap opened up; pair height 40px → 36px. Both leadings are now sta
 keeps its rhythm if the cell's line-height moves.
 
 **Labels step down with the headers on mobile** (designer, 2026-09-21): the
-detail `dt` takes `--ai-font-fixed-4xs` in the same `@container (max-width:
+detail `dt` takes `--ao-font-fixed-4xs` in the same `@container (max-width:
 767px)` block that steps `.table thead th` down, so the two cannot drift.
 They are the same labels — read from behind the kebab rather than across the
 row — so a panel whose labels stayed 12px while the table's went to 11px would
@@ -1409,7 +1409,7 @@ desktop width**, and the NAME truncated on **half the rows** — "Michael
 Thompson" as "Michael Th…". The row's job is to identify a record; the role
 line beneath can truncate, the name cannot.
 
-`min-inline-size: var(--ai-size-3)` (192px) on the fluid column. 192 is what
+`min-inline-size: var(--ao-size-3)` (192px) on the fluid column. 192 is what
 the cell needs: 24px avatar + 12px gap + ~124px for the longest name here +
 32px of cell padding. A floor, not a width — Customer still takes the slack
 above it, up to its 240px preference.
@@ -1546,7 +1546,7 @@ this inheritance has bitten in this template, after the row detail list and the
 picker's table.
 
 `white-space: normal` on `.cc-listing__empty`, and the description's cap became
-`min(var(--ai-size-6), 100%)` — 320px is a MEASURE, not a floor, and 100% keeps
+`min(var(--ao-size-6), 100%)` — 320px is a MEASURE, not a floor, and 100% keeps
 it inside a column narrower than that.
 
 Measured at 360 / 393 / 700 / 1400: wraps at every width, stays centred, and
@@ -2258,7 +2258,7 @@ all 50 rows. Not real: the thumbnail **images**, and the Topics tagging.
 
 ## The thumbnail
 
-`--ai-spacing-11` (64px) on desktop, `--ai-spacing-9` (48px) from mobile — the
+`--ao-spacing-11` (64px) on desktop, `--ao-spacing-9` (48px) from mobile — the
 designer's values, against the live screen's 60×60, which is off the spacing
 scale in both directions. `@container`, and a max-width step rather than a
 min-width one, because that is what every other responsive rule in
@@ -2523,7 +2523,7 @@ Each cell holds **a thumbnail and nothing else.**
 | Live | Here | Why |
 |---|---|---|
 | Thumbnail only; name, W×H, file size and type in a jQuery hover tooltip (`trailOn`) | Thumbnail + a caption block: name (13px semibold) over `format · created` (12px) | `sTempName` is computed AND truncated in the source, then never printed. A hover tooltip cannot be reached by keyboard or read by a screen reader, and 96,000 unlabelled thumbnails is not a library you can scan (designer) |
-| Fixed 140px cell, profile-driven column count | `repeat(auto-fill, minmax(--ai-size-2, 1fr))` | CLAUDE.md §4a — it has to reflow with the content column, not the window. 160px against live's off-scale 140, so the name has room to be read |
+| Fixed 140px cell, profile-driven column count | `repeat(auto-fill, minmax(--ao-size-2, 1fr))` | CLAUDE.md §4a — it has to reflow with the content column, not the window. 160px against live's off-scale 140, so the name has room to be read |
 | Permanent "Select all" above, permanent Move/Delete row below | One selection bar, shown only when something is ticked | Two pieces of chrome for a state that is usually empty |
 | Checkbox / View Album / Slideshow / Edit revealed on `mouseenter` only | All four, revealed on hover, on **focus**, and unconditionally where there is **no hover at all** | A hover-only control is unreachable by keyboard AND by finger — see below |
 
@@ -2569,12 +2569,12 @@ than reasoning from the names would have caught it:
 So secondary was a bordered box with **no fill** over the picture. Tertiary is
 solid under the CC brand, which is what these demos run as.
 
-**One collision, flagged not fixed.** `--ai-btn-tertiary-bg` in cc-light is
-`#e7edf0` — the *same value* as `--ai-surface-secondary`, which is the empty
+**One collision, flagged not fixed.** `--ao-btn-tertiary-bg` in cc-light is
+`#e7edf0` — the *same value* as `--ao-surface-secondary`, which is the empty
 box a non-image card shows. So on a PDF, ZIP or audio card the buttons are
-invisible but for their `--ai-shadow-2xs` hairline. It reads perfectly over a
+invisible but for their `--ao-shadow-2xs` hairline. It reads perfectly over a
 photograph and disappears over the ~10% of cards without one. Either the box
-wants `--ai-surface-minimal` instead, or those buttons want a different type;
+wants `--ao-surface-minimal` instead, or those buttons want a different type;
 both are designer calls, so neither was taken unasked.
 
 Live's own conditions are kept rather than showing three unconditionally.
@@ -2608,12 +2608,12 @@ Measured after: the glyph's centre is 0,0 from the box's centre.
 Designer, 2026-09-22. Name and meta were siblings of the picture, so the card's
 single `gap` spaced all three equally and the two text lines read as two
 separate things rather than one caption. They now sit in `.cc-grid__text` with
-their own tighter gap — `--ai-spacing-1` (4px) inside, against the card's
-`--ai-spacing-3` (8px) between picture and text. Both steps on the scale, not
+their own tighter gap — `--ao-spacing-1` (4px) inside, against the card's
+`--ao-spacing-3` (8px) between picture and text. Both steps on the scale, not
 numbers picked to look right, and the caption's gap is deliberately half the
 card's so the two lines read as one block rather than as two more children.
 
-Name is **13px semibold** (`--ai-font-fixed-2xs` / `--ai-font-semibold`) over
+Name is **13px semibold** (`--ao-font-fixed-2xs` / `--ao-font-semibold`) over
 12px regular meta, so the pair has a hierarchy of its own.
 
 `min-inline-size: 0` on the wrapper, because a flex child's automatic minimum
@@ -2664,10 +2664,10 @@ working in one of two views. Child combinators fix it. `listingTable()` already
 carries a comment about being caught by exactly this trap; the CSS needed the
 same care.
 
-**`--ai-surface-brand-contrast` does not exist.** The Apr 2026 rename took every
+**`--ao-surface-brand-contrast` does not exist.** The Apr 2026 rename took every
 `-contrast` brand and status surface to `-soft`, and the focus-ring examples
 still quoting the old name are stale. The selection bar uses
-`--ai-surface-brand-soft`, which is defined per theme (`#d9f2f2` light,
+`--ao-surface-brand-soft`, which is defined per theme (`#d9f2f2` light,
 `#043840` dark) so the bar reads in both.
 
 ### And one that was NOT a bug
@@ -2802,8 +2802,8 @@ long option label cannot push a column past its share — and the selects' 160px
 cap comes off, because in a grid cell it would leave the control short of its
 own column.
 
-The bar's inline padding also tightens from `--ai-spacing-5` to
-`--ai-spacing-4` below the breakpoint, matching the narrower gutters the rest
+The bar's inline padding also tightens from `--ao-spacing-5` to
+`--ao-spacing-4` below the breakpoint, matching the narrower gutters the rest
 of the table uses there; block padding is unchanged. Measured: 8/16 above,
 8/12 below.
 
@@ -2836,7 +2836,7 @@ view too, since the grid sits inside the same `.datatables`.
   showing through the gap (measured). `-spacing-6`, and `-spacing-4` below a
   768px viewport, mirroring `.cc-control__page`'s padding on the same viewport
   `@media`. Keep the two in step.
-- **`--ai-shadow-sm` only while pinned** (designer's choice over a border-only
+- **`--ao-shadow-sm` only while pinned** (designer's choice over a border-only
   version). CSS cannot tell a stuck sticky from a resting one, so
   `watchSelectionStuck` in ListingScreen.js compares the bar's top with the
   scroller's edge on scroll, on a scroller resize and whenever the bar is shown
@@ -2880,7 +2880,7 @@ Select-all stay in view while scrolling a long page.
   With `border-collapse: collapse` the table paints the cell border, so it
   stays behind when the cell moves, and `box-shadow` does not apply to cells in
   that model. While stuck, a pseudo-element the full height of each cell draws
-  the header's line (`--ai-datatable-table-border`) and casts `--ai-shadow-sm`.
+  the header's line (`--ao-datatable-table-border`) and casts `--ao-shadow-sm`.
   Each overhangs its neighbours by spacing-4 and is clip-pathed back to its own
   cell, top and sides, so only the shadow below shows and the pieces tile into
   one edge with no notch at the column seams.
@@ -3090,7 +3090,7 @@ did something). One column fewer at every width; re-measured, no overflow.
 - **Select.js needs no re-init.** It binds one delegated click listener at the
   document, so a select rendered into the bar after load works — verified by
   opening one and picking from it, not assumed.
-- **Background is `--ai-datatable-table-expanded-bg`** (designer), not a brand
+- **Background is `--ao-datatable-table-expanded-bg`** (designer), not a brand
   wash: the bar is a *state of the table*, the same way an expanded row is, and
   should read as the table reacting rather than a notice pasted over it.
   Themed — `#f3f6f7` cc, `#293548` cc-dark.
@@ -3111,7 +3111,7 @@ code-first at Mark's direction, then **added to Figma 2026-09-29** (Listings pag
 - **Settings** button after Edit Columns: `btn btn--secondary dropdown__trigger`, Lucide `settings`
   + visible label. Dropdown panel `dropdown__panel--settings`, right-anchored, 240px. Hidden below a
   1024 viewport and in grid layout, exactly like Edit Columns.
-- Panel: `dropdown__label` "When columns don't fit" (padding-left 0, padding-bottom `--ai-spacing-3` in this panel — designer amend 2026-09-29) + a `radiogroup` of the DS **Radio** component,
+- Panel: `dropdown__label` "When columns don't fit" (padding-left 0, padding-bottom `--ao-spacing-3` in this panel — designer amend 2026-09-29) + a `radiogroup` of the DS **Radio** component,
   `name="cc-listing-overflow"`: **Expanding row** (`fit`, default — the adaptive fit + kebab detail)
   and **Horizontal scroll** (`scroll`).
 - **Horizontal scroll** (`[data-listing][data-overflow="scroll"]`, set by JS only while in force):
@@ -3135,18 +3135,18 @@ Total – £47,618.25 / $1,000.00 / €2,115.00 / Payment Total – £1,774.95 /
 backend team added. **No Figma frame yet.** Two **StatCard Xl** tiles (a new variant, the designer's chosen compact "v2"; see
 StatCard figma-notes): Order total (lagoon solid, `receipt-pound-sterling`; blue until 2026-10-02) and Payments received
 (jade solid, `badge-pound-sterling`; both soft until the designer's 2026-10-02 switch to solid). GBP is the headline value; other currencies sit in the
-ruled breakdown beside it. Grid gap `--ai-spacing-4` (= `.cc-listing` gap); 2 columns, 1 at `cs-page`
+ruled breakdown beside it. Grid gap `--ao-spacing-4` (= `.cc-listing` gap); 2 columns, 1 at `cs-page`
 ≤ 767px. Backend marker `listing-orders-totals` (HANDOVER.md).
 
 
 **Shadow + full-width (designer, 2026-10-02):** the top-level cards (FilterBar, totals tiles,
-Datatables) carry `--ai-shadow-2xs`, and none in the full-width template. In full width the totals
+Datatables) carry `--ao-shadow-2xs`, and none in the full-width template. In full width the totals
 become a **flush strip**: no outer card or radius, padding `spacing-4` × `spacing-5` (sides match the
 FilterBar rows), a `border-secondary` rule between the tiles and one beneath. Below 768px the strip
 stacks, the divider turns horizontal and padding drops to `spacing-3`. Code-first, with no Figma
 frame yet.
 
-**Card border (2026-10-02):** the FilterBar and Datatables cards' OUTER edges use `--ai-border-card`
+**Card border (2026-10-02):** the FilterBar and Datatables cards' OUTER edges use `--ao-border-card`
 (`border/card`), overridden here. Their inner dividers keep their own tokens. The totals tiles get it here too, because
 StatCard's own default is `border/secondary`. Full width's flush bottom rules are unchanged.
 

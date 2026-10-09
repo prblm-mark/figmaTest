@@ -21,10 +21,10 @@ inserts the picked image at the cursor. Live's image plugin uses TinyMCE's URL d
 ## Theming
 
 - **Chrome** (RichTextEditor.css), scoped under `.rich-text` to out-rank the oxide skin: the frame
-  is the Textarea's `--ai-border-secondary` / `--ai-radius-md`, with a brand border on focus. The
-  toolbar is `--ai-surface-primary`, toolbar controls (buttons, the Styles dropdown) have the input radius `--ai-radius-md`, and the Styles dropdown is styled as our Select / Input field (surface-primary, border-secondary, brand border on hover and open, the Input focus ring) at TinyMCE's toolbar height, a hovered button `--ai-surface-minimal`, an active one
-  `--ai-surface-brand-soft` / `--ai-text-brand`. The statusbar uses `--ai-text-secondary` at
-  `--ai-font-fixed-xxs`. Menus and dialogs keep oxide.
+  is the Textarea's `--ao-border-secondary` / `--ao-radius-md`, with a brand border on focus. The
+  toolbar is `--ao-surface-primary`, toolbar controls (buttons, the Styles dropdown) have the input radius `--ao-radius-md`, and the Styles dropdown is styled as our Select / Input field (surface-primary, border-secondary, brand border on hover and open, the Input focus ring) at TinyMCE's toolbar height, a hovered button `--ao-surface-minimal`, an active one
+  `--ao-surface-brand-soft` / `--ao-text-brand`. The statusbar uses `--ao-text-secondary` at
+  `--ao-font-fixed-xxs`. Menus and dialogs keep oxide.
 - **Content** (RichTextEditor.content.css, inside the iframe): the token files are loaded into the
   iframe and the page's `data-brand` / `data-theme` are mirrored onto its `<html>`, so body, headings,
   links, lists, quote and table resolve the page's tokens. It follows a theme switch live.

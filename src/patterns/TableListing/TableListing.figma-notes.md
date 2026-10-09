@@ -28,7 +28,7 @@ Figma specifies `repeat(4, minmax(0,1fr))` on desktop and `repeat(1, …)` on mo
 Built as:
 
 ```css
-grid-template-columns: repeat(auto-fill, minmax(var(--ai-size-4), 1fr));
+grid-template-columns: repeat(auto-fill, minmax(var(--ao-size-4), 1fr));
 ```
 
 **Why, and why it is not a divergence in practice.** TableCard carries a 240px `min-inline-size`, so
@@ -51,12 +51,12 @@ through 3 and 2 columns instead of breaking. The mobile single column falls out 
 
 | Property | Desktop | Mobile |
 |---|---|---|
-| root `padding` | `--ai-spacing-5` all round | `--ai-spacing-4` inline, `--ai-spacing-5` block |
+| root `padding` | `--ao-spacing-5` all round | `--ao-spacing-4` inline, `--ao-spacing-5` block |
 | toolbar `flex-direction` | `row` | **`column`** — title+filter, then a full-width search |
-| toolbar `padding-block-end` | `--ai-spacing-3` (8px) | `--ai-spacing-0` |
-| title `font-size` | `--ai-font-fixed-md` (18px) | `--ai-font-fixed-sm` (16px) |
+| toolbar `padding-block-end` | `--ao-spacing-3` (8px) | `--ao-spacing-0` |
+| title `font-size` | `--ao-font-fixed-md` (18px) | `--ao-font-fixed-sm` (16px) |
 | `__divider` | present | **`display: none`** |
-| `__search` | `--ai-size-6` (320px) | `100%` |
+| `__search` | `--ao-size-6` (320px) | `100%` |
 | grid columns | 4 | 1 — from auto-fill, no rule needed |
 
 The "Only free seats" label is **12px at both** breakpoints — worth stating because it would be easy
@@ -76,29 +76,29 @@ at every desktop size tested.
 
 | Figma | CSS | Role |
 |---|---|---|
-| `--ai-surface-primary` | root `background-color` | |
-| `--ai-border-secondary` | root `border-color`, divider `background-color` | |
-| `--ai-radius-lg` | root `border-radius` (16px) | |
-| `--ai-spacing-5` | root `padding` (desktop), mobile `padding-block`, divider `block-size` (16px) | |
-| `--ai-spacing-4` | toolbar `gap`, mobile root `padding-inline` (12px) | |
-| `--ai-spacing-3` | root `gap`, toolbar `padding-block-end`, filter `gap`, grid `gap` (8px) | |
-| `--ai-spacing-0` | mobile toolbar `padding-block-end` | |
-| `--ai-size-6` | search `inline-size` (320px) | |
-| `--ai-size-4` | grid column `minmax` floor (240px) | TableCard's own min-width |
-| `--ai-font-title` | title, filter label | |
-| `--ai-font-fixed-md` / `-sm` | title, desktop / mobile | |
-| `--ai-font-fixed-xxs` | filter label (12px) | unbound in Figma — see below |
-| `--ai-font-bold` / `-medium` | title / filter label | |
-| `--ai-text-primary` / `--ai-text-contrast` | title / filter label | |
+| `--ao-surface-primary` | root `background-color` | |
+| `--ao-border-secondary` | root `border-color`, divider `background-color` | |
+| `--ao-radius-lg` | root `border-radius` (16px) | |
+| `--ao-spacing-5` | root `padding` (desktop), mobile `padding-block`, divider `block-size` (16px) | |
+| `--ao-spacing-4` | toolbar `gap`, mobile root `padding-inline` (12px) | |
+| `--ao-spacing-3` | root `gap`, toolbar `padding-block-end`, filter `gap`, grid `gap` (8px) | |
+| `--ao-spacing-0` | mobile toolbar `padding-block-end` | |
+| `--ao-size-6` | search `inline-size` (320px) | |
+| `--ao-size-4` | grid column `minmax` floor (240px) | TableCard's own min-width |
+| `--ao-font-title` | title, filter label | |
+| `--ao-font-fixed-md` / `-sm` | title, desktop / mobile | |
+| `--ao-font-fixed-xxs` | filter label (12px) | unbound in Figma — see below |
+| `--ao-font-bold` / `-medium` | title / filter label | |
+| `--ao-text-primary` / `--ao-text-contrast` | title / filter label | |
 
 ## Token gaps and decisions
 
 | Figma | Decision |
 |---|---|
 | root `w-[1180px]` desktop / `w-[390px]` mobile | **Fluid `inline-size: 100%`** (designer, 2026-08-25). Both unbound and matching no token — they are just the frames Figma drew. This is the main content area, not a fixed rail, so the same call already taken for AttendeeCard and TableCard applies; the grid does the responsive work. |
-| filter label `text-[12px]`, unbound | **`--ai-font-fixed-xxs`**, which is exactly 12px, so binding it is visually a no-op. Same treatment as TableCard's company size. **Worth binding in Figma.** |
-| divider `line` node stroke, invisible in design context | **`--ai-border-secondary`**, resolved by `get_variable_defs` on the node itself (`3474:91537`). Not a gap — just hidden behind an SVG asset. |
-| `--ai-font-fixed-2xs` (13px) and `--ai-font-fixed-xs` (14px) in the set's variable list | **Not gaps.** Neither is used by anything in this pattern's own design context — phantoms of the same kind seen on TableDetail and Unassigned, likely bound on hidden layers or inside TableCard. |
+| filter label `text-[12px]`, unbound | **`--ao-font-fixed-xxs`**, which is exactly 12px, so binding it is visually a no-op. Same treatment as TableCard's company size. **Worth binding in Figma.** |
+| divider `line` node stroke, invisible in design context | **`--ao-border-secondary`**, resolved by `get_variable_defs` on the node itself (`3474:91537`). Not a gap — just hidden behind an SVG asset. |
+| `--ao-font-fixed-2xs` (13px) and `--ao-font-fixed-xs` (14px) in the set's variable list | **Not gaps.** Neither is used by anything in this pattern's own design context — phantoms of the same kind seen on TableDetail and Unassigned, likely bound on hidden layers or inside TableCard. |
 
 ## Two child components had to change
 
@@ -109,9 +109,9 @@ repeatedly; the components were simply behind.
 
 The toolbar toggle is `Toggle` at `size="xxs"` — **a real variant in Toggle's Figma set**
 (`2025:1081` Initial, `3435:28284` Active), which our component did not have. Added
-`.toggle--xxs`: 24×12 track (`--ai-spacing-6` × `--ai-spacing-4`), 8×8 knob (`--ai-spacing-3`), all
-tokens. Verified 24×12 / 8×8, knob at 2.5px → 13.5px, track `--ai-border-secondary` →
-`--ai-surface-brand`.
+`.toggle--xxs`: 24×12 track (`--ao-spacing-6` × `--ao-spacing-4`), 8×8 knob (`--ao-spacing-3`), all
+tokens. Verified 24×12 / 8×8, knob at 2.5px → 13.5px, track `--ao-border-secondary` →
+`--ao-surface-brand`.
 
 Figma defines **only Initial and Active** for this size — no Disabled — so no Disabled row was added
 to Toggle's demo. The generic `--disabled` still composes if a consumer ever needs it.
@@ -123,7 +123,7 @@ an asymmetry that reads as a Figma nudge.
 
 ### Input lost its 192px cap
 
-The search is 320px, but `.input--sm .input__wrap` carried `max-width: var(--ai-size-3)` (192px), so
+The search is 320px, but `.input--sm .input__wrap` carried `max-width: var(--ao-size-3)` (192px), so
 an `input--sm` could never fill its container. **Removed from Input entirely** at the designer's
 direction, rather than overridden again — a *size* modifier should govern height, padding and
 typography, not cap width, and it had already been worked around in three places:
@@ -192,9 +192,9 @@ table-listing`; its descendant rules key on it. The root's own padding **cannot*
 matches a query on the container it declares — so that one rule keys on `cs-page`.
 
 **The search field was the real bug.** It had `flex-shrink: 0` and a hard `inline-size:
-var(--ai-size-6)`, so it held its full 320px inside a 382px toolbar, leaving 62px for the title and
-filter together: the title got a 13px box. Now `flex: 0 1 var(--ai-size-6)` with
-`max-inline-size: var(--ai-size-6)` and `min-inline-size: 0` — 320 is a **cap**, not a floor. The
+var(--ao-size-6)`, so it held its full 320px inside a 382px toolbar, leaving 62px for the title and
+filter together: the title got a 13px box. Now `flex: 0 1 var(--ao-size-6)` with
+`max-inline-size: var(--ao-size-6)` and `min-inline-size: 0` — 320 is a **cap**, not a floor. The
 stacked block releases the cap (`max-inline-size: none`) so the field still fills the row, which is
 what Figma's mobile frame draws.
 
@@ -260,7 +260,7 @@ the box.
 
 Horizontally nothing changed and nothing needed to: `justify-content` computes to `normal` and the
 four columns fill the content box exactly (4 × 242.75 + 3 × 8 = 995, the 1010px border box less the
-15px scrollbar gutter), and `auto-fill` with `minmax(--ai-size-4, 1fr)` stays as it was. There was
+15px scrollbar gutter), and `auto-fill` with `minmax(--ao-size-4, 1fr)` stays as it was. There was
 never any even spacing to remove on that axis.
 
 **Where the slack goes is TableCard's decision, and Figma pins the footer.** The seated-count row

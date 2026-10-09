@@ -9,67 +9,67 @@
   <link rel="stylesheet" href="AudioPlayer.css">
   <style>
     body {
-      padding: var(--ai-spacing-7);
-      background: var(--ai-surface-secondary);
+      padding: var(--ao-spacing-7);
+      background: var(--ao-surface-secondary);
       min-height: 100vh;
     }
     .demo-wrap { max-width: 820px; margin: 0 auto; }
     .demo-section {
-      padding: var(--ai-spacing-6);
-      background: var(--ai-surface-primary);
-      border-radius: var(--ai-radius-lg);
-      margin-bottom: var(--ai-spacing-5);
+      padding: var(--ao-spacing-6);
+      background: var(--ao-surface-primary);
+      border-radius: var(--ao-radius-lg);
+      margin-bottom: var(--ao-spacing-5);
       display: flex;
       flex-direction: column;
-      gap: var(--ai-spacing-5);
+      gap: var(--ao-spacing-5);
     }
     .demo-section__title {
-      font-size: var(--ai-font-fixed-xs);
-      font-weight: var(--ai-font-semibold);
-      color: var(--ai-text-contrast);
+      font-size: var(--ao-font-fixed-xs);
+      font-weight: var(--ao-font-semibold);
+      color: var(--ao-text-contrast);
       text-transform: uppercase;
       letter-spacing: 0.08em;
       margin: 0;
     }
     .demo-section__note {
-      font-size: var(--ai-font-fixed-xxs);
-      color: var(--ai-text-contrast);
+      font-size: var(--ao-font-fixed-xxs);
+      color: var(--ao-text-contrast);
       margin: 0;
     }
     /* Mock-article chrome for the dock-on-scroll demo */
     .demo-article__kicker {
-      font-size: var(--ai-font-fixed-xxs);
-      font-weight: var(--ai-font-semibold);
+      font-size: var(--ao-font-fixed-xxs);
+      font-weight: var(--ao-font-semibold);
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--ai-text-brand);
-      margin: 0 0 var(--ai-spacing-3);
+      color: var(--ao-text-brand);
+      margin: 0 0 var(--ao-spacing-3);
     }
     .demo-article__title {
-      font-size: var(--ai-font-fixed-3xl);
-      font-weight: var(--ai-font-bold);
-      line-height: var(--ai-leading-xl);
-      color: var(--ai-text-primary);
-      margin: 0 0 var(--ai-spacing-4);
+      font-size: var(--ao-font-fixed-3xl);
+      font-weight: var(--ao-font-bold);
+      line-height: var(--ao-leading-xl);
+      color: var(--ao-text-primary);
+      margin: 0 0 var(--ao-spacing-4);
     }
     .demo-article__standfirst {
-      font-size: var(--ai-font-fixed-md);
-      line-height: var(--ai-leading-lg);
-      color: var(--ai-text-secondary);
-      margin: 0 0 var(--ai-spacing-6);
+      font-size: var(--ao-font-fixed-md);
+      line-height: var(--ao-leading-lg);
+      color: var(--ao-text-secondary);
+      margin: 0 0 var(--ao-spacing-6);
     }
     .demo-article__body p {
-      font-size: var(--ai-font-fixed-sm);
-      line-height: var(--ai-leading-lg);
-      color: var(--ai-text-primary);
-      margin: 0 0 var(--ai-spacing-5);
+      font-size: var(--ao-font-fixed-sm);
+      line-height: var(--ao-leading-lg);
+      color: var(--ao-text-primary);
+      margin: 0 0 var(--ao-spacing-5);
     }
   </style>
 </head>
 <body>
   <div class="demo-wrap">
-    <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Audio Player</h1>
-    <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-secondary); margin: 0 0 var(--ai-spacing-6);">
+    <h1 style="font-size: var(--ao-font-fixed-4xl); font-weight: var(--ao-font-bold); color: var(--ao-text-primary); margin: 0 0 var(--ao-spacing-6);">Audio Player</h1>
+    <p style="font-size: var(--ao-font-fixed-sm); color: var(--ao-text-secondary); margin: 0 0 var(--ao-spacing-6);">
       Article audio player — one unified waveform card. The waveform is the seek control;
       played bars turn brand-blue while playing. Playback is simulated.
       Resize the viewport below 768px to see the two-row mobile layout.

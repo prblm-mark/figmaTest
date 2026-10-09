@@ -15,7 +15,7 @@
 .cc-live__layout {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
   min-inline-size: 0;
 }
 
@@ -51,37 +51,37 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
   min-inline-size: 0;
-  padding: var(--ai-spacing-6);
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  padding: var(--ao-spacing-6);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
 }
 
 .cc-live:not(.cc-live--full) .cc-live__card,
 .cc-live:not(.cc-live--full) .chart,
 .cc-live:not(.cc-live--full) .stat-card,
 .cc-live:not(.cc-live--full) .datatables {
-  border-color: var(--ai-border-card);
-  box-shadow: var(--ai-shadow-2xs);
+  border-color: var(--ao-border-card);
+  box-shadow: var(--ao-shadow-2xs);
 }
 
 .cc-live__card-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 /* Card titles: RecordSection's title, token for token (title, semibold, md). */
 .cc-live__card-title {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fixed-md);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fixed-md);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
 }
 
 /* "Show more" sits at the foot, left-aligned under the list, as Flowbite's card links do. */
@@ -91,13 +91,13 @@
 
 .cc-live__card-foot .btn [data-lucide],
 .cc-live__card-foot .btn svg {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
 }
 
 .cc-live__card-foot--table {
-  padding: var(--ai-spacing-4) var(--ai-spacing-6);
-  border-block-start: 1px solid var(--ai-datatable-table-border);
+  padding: var(--ao-spacing-4) var(--ao-spacing-6);
+  border-block-start: 1px solid var(--ao-datatable-table-border);
 }
 
 /* Table cards read as the other cards (Mark, 2026-10-07): the title is the card title — semibold,
@@ -106,32 +106,32 @@
    `.datatables` in the selectors out-specifies Datatables' own toolbar / cell rules, including
    its narrow-container ones. Shared by Sales Leaderboard (same classes). */
 .datatables.cc-live__articles .datatables__toolbar {
-  padding: var(--ai-spacing-6) var(--ai-spacing-6) var(--ai-spacing-1);
+  padding: var(--ao-spacing-6) var(--ao-spacing-6) var(--ao-spacing-1);
   background-color: transparent;
   border-block-end: 0;
 }
 
 .datatables.cc-live__articles .datatables__meta .cc-live__card-title {
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-primary);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
 }
 
 .datatables.cc-live__articles .table thead th:first-child,
 .datatables.cc-live__articles .table tbody td:first-child {
-  padding-inline-start: var(--ai-spacing-6);
+  padding-inline-start: var(--ao-spacing-6);
 }
 
 /* The last column when no kebab follows it (DatatablesFit sets the class). */
 .datatables.cc-live__articles .table thead th.datatables__col--end,
 .datatables.cc-live__articles .table tbody td.datatables__col--end {
-  padding-inline-end: var(--ai-spacing-6);
+  padding-inline-end: var(--ao-spacing-6);
 }
 
 .cc-live__empty {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-contrast);
 }
 
 /* ── KPIs ───────────────────────────────────────────────────
@@ -151,15 +151,15 @@
   .stat-card--xl {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas: "head" "value" "breakdown";
-    gap: var(--ai-spacing-3);
+    gap: var(--ao-spacing-3);
   }
 
   .stat-card__breakdown {
-    gap: var(--ai-spacing-3) var(--ai-spacing-5);
+    gap: var(--ao-spacing-3) var(--ao-spacing-5);
     padding-left: 0;
-    padding-top: var(--ai-spacing-3);
+    padding-top: var(--ao-spacing-3);
     border-left: 0;
-    border-top: 1px solid var(--ai-border-secondary);
+    border-top: 1px solid var(--ao-border-secondary);
   }
 }
 
@@ -168,21 +168,21 @@
    colour. (A stray, unopened comment line here once swallowed this rule: measured, the delta
    rendered in text-primary.) */
 .stat-card__breakdown-value.cc-live__up {
-  color: var(--ai-text-success);
+  color: var(--ao-text-success);
 }
 
 .stat-card__breakdown-value.cc-live__down {
-  color: var(--ai-text-error);
+  color: var(--ao-text-error);
 }
 
 /* A value that just changed on a refresh: a brief secondary-surface wash, then nothing. */
 .cc-live__changed {
   animation: cc-live-changed 1.2s ease-out;
-  border-radius: var(--ai-radius-sm);
+  border-radius: var(--ao-radius-sm);
 }
 
 @keyframes cc-live-changed {
-  from { background-color: var(--ai-surface-brand-soft); }
+  from { background-color: var(--ao-surface-brand-soft); }
   to { background-color: transparent; }
 }
 
@@ -202,13 +202,13 @@
 .cc-live__canvas {
   position: relative;
   flex: 1 1 auto;
-  min-block-size: var(--ai-size-6);
+  min-block-size: var(--ao-size-6);
 }
 
 .cc-live__chart .badge [data-lucide],
 .cc-live__chart .badge svg {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
 }
 
 /* Legend: a short line in each series' colour before its name (solid for today, dashed for the
@@ -216,46 +216,46 @@
 .cc-live__legend {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--ai-spacing-3) var(--ai-spacing-5);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-secondary);
+  gap: var(--ao-spacing-3) var(--ao-spacing-5);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-secondary);
 }
 
 .cc-live__key {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
 }
 
 .cc-live__key::before {
   content: "";
-  inline-size: var(--ai-spacing-5);
-  border-block-start: 2px solid var(--ai-accent-lagoon-solid);
+  inline-size: var(--ao-spacing-5);
+  border-block-start: 2px solid var(--ao-accent-lagoon-solid);
 }
 
 .cc-live__key--average::before {
-  border-block-start: 2px dashed var(--ai-accent-purple-solid);
+  border-block-start: 2px dashed var(--ao-accent-purple-solid);
 }
 
 /* The chart's data as a table, for screen readers and anyone who wants the numbers. */
 .cc-live__summary {
   inline-size: fit-content;
   cursor: pointer;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-secondary);
 }
 
 .cc-live__summary:hover {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 .cc-live__table-wrap {
-  max-block-size: var(--ai-size-6);
-  margin-block-start: var(--ai-spacing-4);
+  max-block-size: var(--ao-size-6);
+  margin-block-start: var(--ao-spacing-4);
   overflow-y: auto;
 }
 
@@ -266,8 +266,8 @@
   /* One column in the side card; two or three when the card spans the page (stacked layout), so a
      wide card never holds a single thin column. Tracks at least 280px (`size-5`). Intrinsic. */
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--ai-size-5)), 1fr));
-  gap: var(--ai-spacing-1) var(--ai-spacing-6);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--ao-size-5)), 1fr));
+  gap: var(--ao-spacing-1) var(--ao-spacing-6);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -276,27 +276,27 @@
 .cc-live__person .cc-live__link {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   /* 8 / 12: DropdownItem's row padding, pulled out by the same so names align with the title. */
-  margin-inline: calc(-1 * var(--ai-spacing-4));
-  padding: var(--ai-spacing-3) var(--ai-spacing-4);
-  border-radius: var(--ai-radius-md);
+  margin-inline: calc(-1 * var(--ao-spacing-4));
+  padding: var(--ao-spacing-3) var(--ao-spacing-4);
+  border-radius: var(--ao-radius-md);
 }
 
 .cc-live__link {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
   text-decoration: none;
-  transition: background-color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default);
   min-inline-size: 0;
 }
 
 .cc-live__link:hover {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
   text-decoration: none;
 }
 
 .cc-live__person .cc-live__link:hover {
-  background-color: var(--ai-surface-secondary);
+  background-color: var(--ao-surface-secondary);
 }
 
 .cc-live__who {
@@ -310,21 +310,21 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
 }
 
 .cc-live__sub {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
 }
 
 /* ── Leaderboards ───────────────────────────────────────────
@@ -334,7 +334,7 @@
 .cc-live__rank {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -343,17 +343,17 @@
 .cc-live__row {
   display: flex;
   align-items: flex-start;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
 .cc-live__pos {
   flex: 0 0 auto;
-  min-inline-size: var(--ai-spacing-5);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  min-inline-size: var(--ao-spacing-5);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
   font-variant-numeric: tabular-nums;
 }
 
@@ -361,7 +361,7 @@
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   min-inline-size: 0;
 }
 
@@ -369,18 +369,18 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   min-inline-size: 0;
 }
 
 .cc-live__row-line .cc-live__link {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 .cc-live__row-line .cc-live__link:hover .cc-live__row-name {
-  color: var(--ai-text-brand);
+  color: var(--ao-text-brand);
 }
 
 /* Right-aligned values on this dashboard (Mark, 2026-10-05: Flowbite's convention here; the
@@ -388,11 +388,11 @@
 .cc-live__views,
 .cc-live__num {
   flex: 0 0 auto;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
   font-variant-numeric: tabular-nums;
   text-align: end;
 }
@@ -400,20 +400,20 @@
 .cc-live__bar {
   display: flex;
   inline-size: 100%;
-  block-size: var(--ai-spacing-2);
-  border-radius: var(--ai-radius-full);
-  background-color: var(--ai-surface-contrast);
+  block-size: var(--ao-spacing-2);
+  border-radius: var(--ao-radius-full);
+  background-color: var(--ao-surface-contrast);
   overflow: hidden;
 }
 
 .cc-live__bar-fill {
   inline-size: var(--cc-live-share, 0%);
   block-size: 100%;
-  border-radius: var(--ai-radius-full);
+  border-radius: var(--ao-radius-full);
   /* Lagoon, the same accent as the chart's Today line (designer, 2026-10-07). Not
    * surface-brand-light: equal in light mode, but it lightens to #30b6c2 in dark. */
-  background-color: var(--ai-accent-lagoon-solid);
-  transition: inline-size var(--ai-transition-default);
+  background-color: var(--ao-accent-lagoon-solid);
+  transition: inline-size var(--ao-transition-default);
 }
 
 /* ── Top articles ───────────────────────────────────────────
@@ -440,17 +440,17 @@
 }
 
 .cc-live__title-cell .cc-live__link {
-  font-weight: var(--ai-font-medium);
+  font-weight: var(--ao-font-medium);
 }
 
 .cc-live__title-cell .cc-live__link:hover {
-  color: var(--ai-text-brand);
+  color: var(--ao-text-brand);
 }
 
 .cc-live__author {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   white-space: nowrap;
 }
 
@@ -464,28 +464,28 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
 }
 
 .cc-live__window [data-lucide],
 .cc-live__window svg {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
-  color: var(--ai-icon-secondary);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+  color: var(--ao-icon-secondary);
 }
 
 .cc-live__window strong {
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-primary);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
 }
 
 .cc-live__window-why {
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 /* ── Header: Live status + Pause ────────────────────────────
@@ -494,18 +494,18 @@
 .cc-live__status {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 .cc-live__live {
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
 }
 
 .cc-live__dot {
   position: relative;
-  inline-size: var(--ai-spacing-3);
-  block-size: var(--ai-spacing-3);
-  border-radius: var(--ai-radius-full);
+  inline-size: var(--ao-spacing-3);
+  block-size: var(--ao-spacing-3);
+  border-radius: var(--ao-radius-full);
   background-color: currentColor;
 }
 
@@ -528,10 +528,10 @@
 }
 
 .cc-live__updated {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
@@ -580,7 +580,7 @@
   }
 
   .cc-live__canvas {
-    min-block-size: var(--ai-size-5);
+    min-block-size: var(--ao-size-5);
   }
 
   /* Top articles' columns are fitted by DatatablesFit.js at every width. The author name may still
@@ -601,11 +601,11 @@
    the page keeps a 12px inset and the gaps tighten to 12px (`spacing-4`, the listing totals strip's);
    the cards keep their own edges and radius, and lose the card shadow (full width is flat). */
 .cc-control[data-cc-width="full"] .cc-control__page.cc-live {
-  padding: var(--ai-spacing-4);
+  padding: var(--ao-spacing-4);
 }
 
 .cc-live--full .cc-live__layout {
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
 .cc-live--full .cc-live__card,

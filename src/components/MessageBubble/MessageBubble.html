@@ -13,26 +13,26 @@
   <style>
     body {
       min-height: 100vh;
-      background-color: var(--ai-chat-bg, var(--ai-surface-primary));
-      padding: var(--ai-spacing-7);
+      background-color: var(--ao-chat-bg, var(--ao-surface-primary));
+      padding: var(--ao-spacing-7);
     }
 
     .demo-section {
-      margin-bottom: var(--ai-spacing-8);
+      margin-bottom: var(--ao-spacing-8);
     }
 
     .demo-brand {
-      margin-bottom: var(--ai-spacing-7);
+      margin-bottom: var(--ao-spacing-7);
     }
 
     .demo-brand-input {
       display: flex;
       align-items: center;
-      gap: var(--ai-spacing-3);
-      font-family: var(--ai-font-body);
-      font-size: var(--ai-font-fixed-xs);
-      color: var(--ai-text-secondary);
-      margin-top: var(--ai-spacing-3);
+      gap: var(--ao-spacing-3);
+      font-family: var(--ao-font-body);
+      font-size: var(--ao-font-fixed-xs);
+      color: var(--ao-text-secondary);
+      margin-top: var(--ao-spacing-3);
     }
 
     .demo-brand-input input[type="color"] {
@@ -43,32 +43,32 @@
     }
 
     .demo-reset {
-      font-family: var(--ai-font-body);
-      font-size: var(--ai-font-fixed-xxs);
-      font-weight: var(--ai-font-medium);
-      color: var(--ai-text-contrast);
-      background: var(--ai-surface-minimal);
-      border: 1px solid var(--ai-border-secondary);
-      border-radius: var(--ai-radius-sm);
-      padding: var(--ai-spacing-1) var(--ai-spacing-3);
+      font-family: var(--ao-font-body);
+      font-size: var(--ao-font-fixed-xxs);
+      font-weight: var(--ao-font-medium);
+      color: var(--ao-text-contrast);
+      background: var(--ao-surface-minimal);
+      border: 1px solid var(--ao-border-secondary);
+      border-radius: var(--ao-radius-sm);
+      padding: var(--ao-spacing-1) var(--ao-spacing-3);
       cursor: pointer;
     }
 
     .demo-label {
-      font-family: var(--ai-font-body);
-      font-size: var(--ai-font-fixed-xxs);
-      font-weight: var(--ai-font-semibold);
-      color: var(--ai-text-contrast);
+      font-family: var(--ao-font-body);
+      font-size: var(--ao-font-fixed-xxs);
+      font-weight: var(--ao-font-semibold);
+      color: var(--ao-text-contrast);
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: var(--ai-spacing-5);
+      margin-bottom: var(--ao-spacing-5);
     }
 
     .demo-frame {
       max-width: 719px;
-      padding: var(--ai-spacing-7);
-      padding-bottom: var(--ai-spacing-11);
-      background-color: var(--ai-chat-bg, var(--ai-surface-primary));
+      padding: var(--ao-spacing-7);
+      padding-bottom: var(--ao-spacing-11);
+      background-color: var(--ao-chat-bg, var(--ao-surface-primary));
     }
   </style>
 </head>
@@ -152,7 +152,7 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>
     function initBrandTheme(el) {
-      var brand = getComputedStyle(el).getPropertyValue('--ai-chat-brand').trim();
+      var brand = getComputedStyle(el).getPropertyValue('--ao-chat-brand').trim();
       var hex = brand.replace(/^#/, '');
       var r = parseInt(hex.slice(0, 2), 16) / 255;
       var g = parseInt(hex.slice(2, 4), 16) / 255;
@@ -181,14 +181,14 @@
     picker.addEventListener('input', function(e) {
       var color = e.target.value;
       valueEl.textContent = color;
-      document.documentElement.style.setProperty('--ai-chat-brand', color);
+      document.documentElement.style.setProperty('--ao-chat-brand', color);
       initBrandTheme(document.documentElement);
     });
 
     document.getElementById('brand-reset').addEventListener('click', function() {
       picker.value = DEFAULT_BRAND;
       valueEl.textContent = DEFAULT_BRAND;
-      document.documentElement.style.removeProperty('--ai-chat-brand');
+      document.documentElement.style.removeProperty('--ao-chat-brand');
       initBrandTheme(document.documentElement);
     });
   </script>

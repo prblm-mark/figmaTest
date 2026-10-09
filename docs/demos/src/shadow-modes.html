@@ -9,123 +9,123 @@
   <style>
     body {
       margin: 0;
-      padding: var(--ai-spacing-7);
+      padding: var(--ao-spacing-7);
       min-height: 100vh;
-      background: var(--ai-surface-secondary);
-      font-family: var(--ai-font-body);
-      color: var(--ai-text-primary);
+      background: var(--ao-surface-secondary);
+      font-family: var(--ao-font-body);
+      color: var(--ao-text-primary);
     }
-    h1 { font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xl); margin: 0 0 var(--ai-spacing-2); }
+    h1 { font-family: var(--ao-font-title); font-size: var(--ao-font-fixed-xl); margin: 0 0 var(--ao-spacing-2); }
     h2 {
-      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-md);
-      margin: var(--ai-spacing-8) 0 var(--ai-spacing-1);
+      font-family: var(--ao-font-title); font-size: var(--ao-font-fixed-md);
+      margin: var(--ao-spacing-8) 0 var(--ao-spacing-1);
     }
-    .sub { color: var(--ai-text-contrast); font-size: var(--ai-font-fixed-xs); margin: 0 0 var(--ai-spacing-5); max-width: 70ch; }
+    .sub { color: var(--ao-text-contrast); font-size: var(--ao-font-fixed-xs); margin: 0 0 var(--ao-spacing-5); max-width: 70ch; }
     code {
-      font-size: var(--ai-font-fixed-xxs);
-      background: var(--ai-surface-minimal);
-      border: 1px solid var(--ai-border-secondary);
-      border-radius: var(--ai-radius-sm);
-      padding: 0 var(--ai-spacing-1);
+      font-size: var(--ao-font-fixed-xxs);
+      background: var(--ao-surface-minimal);
+      border: 1px solid var(--ao-border-secondary);
+      border-radius: var(--ao-radius-sm);
+      padding: 0 var(--ao-spacing-1);
     }
 
     /* ── Mode bar ── */
     .modes {
-      display: flex; gap: var(--ai-spacing-2); align-items: center; flex-wrap: wrap;
-      padding: var(--ai-spacing-3);
-      background: var(--ai-surface-elevated-1);
-      border: 1px solid var(--ai-border-secondary);
-      border-radius: var(--ai-radius-md);
-      margin-bottom: var(--ai-spacing-6);
-      position: sticky; top: var(--ai-spacing-3); z-index: 2;
-      box-shadow: var(--ai-shadow-sm);
+      display: flex; gap: var(--ao-spacing-2); align-items: center; flex-wrap: wrap;
+      padding: var(--ao-spacing-3);
+      background: var(--ao-surface-elevated-1);
+      border: 1px solid var(--ao-border-secondary);
+      border-radius: var(--ao-radius-md);
+      margin-bottom: var(--ao-spacing-6);
+      position: sticky; top: var(--ao-spacing-3); z-index: 2;
+      box-shadow: var(--ao-shadow-sm);
     }
     .modes__label {
-      font-size: var(--ai-font-fixed-xxs); font-weight: var(--ai-font-semibold);
-      color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em;
-      margin-right: var(--ai-spacing-2);
+      font-size: var(--ao-font-fixed-xxs); font-weight: var(--ao-font-semibold);
+      color: var(--ao-text-contrast); text-transform: uppercase; letter-spacing: 0.08em;
+      margin-right: var(--ao-spacing-2);
     }
     .modes__current {
-      margin-left: auto; font-size: var(--ai-font-fixed-xxs);
-      color: var(--ai-text-contrast); font-variant-numeric: tabular-nums;
+      margin-left: auto; font-size: var(--ao-font-fixed-xxs);
+      color: var(--ao-text-contrast); font-variant-numeric: tabular-nums;
     }
-    [data-mode][aria-pressed="true"] { outline: 2px solid var(--ai-surface-brand); outline-offset: 1px; }
+    [data-mode][aria-pressed="true"] { outline: 2px solid var(--ao-surface-brand); outline-offset: 1px; }
 
     /* ── Shadow specimen grid ──
        Each band paints a different surface token so the same shadow can be judged
        against every ground it actually lands on. */
     .band {
-      border: 1px solid var(--ai-border-secondary);
-      border-radius: var(--ai-radius-md);
-      margin-bottom: var(--ai-spacing-5);
+      border: 1px solid var(--ao-border-secondary);
+      border-radius: var(--ao-radius-md);
+      margin-bottom: var(--ao-spacing-5);
       overflow: hidden;
     }
     .band__hd {
-      display: flex; align-items: baseline; gap: var(--ai-spacing-3); flex-wrap: wrap;
-      padding: var(--ai-spacing-2) var(--ai-spacing-4);
-      background: var(--ai-surface-elevated-1);
-      border-bottom: 1px solid var(--ai-border-secondary);
-      font-size: var(--ai-font-fixed-xxs);
+      display: flex; align-items: baseline; gap: var(--ao-spacing-3); flex-wrap: wrap;
+      padding: var(--ao-spacing-2) var(--ao-spacing-4);
+      background: var(--ao-surface-elevated-1);
+      border-bottom: 1px solid var(--ao-border-secondary);
+      font-size: var(--ao-font-fixed-xxs);
     }
-    .band__hd b { font-weight: var(--ai-font-semibold); }
-    .band__hex { color: var(--ai-text-contrast); font-variant-numeric: tabular-nums; }
+    .band__hd b { font-weight: var(--ao-font-semibold); }
+    .band__hex { color: var(--ao-text-contrast); font-variant-numeric: tabular-nums; }
     .band__body {
-      display: flex; gap: var(--ai-spacing-6); flex-wrap: wrap;
-      padding: var(--ai-spacing-6) var(--ai-spacing-5);
+      display: flex; gap: var(--ao-spacing-6); flex-wrap: wrap;
+      padding: var(--ao-spacing-6) var(--ao-spacing-5);
     }
-    .band--primary   .band__body { background: var(--ai-surface-primary); }
-    .band--minimal   .band__body { background: var(--ai-surface-minimal); }
-    .band--secondary .band__body { background: var(--ai-surface-secondary); }
-    .band--elev2     .band__body { background: var(--ai-surface-elevated-2); }
-    .band--invert    .band__body { background: var(--ai-surface-invert); }
+    .band--primary   .band__body { background: var(--ao-surface-primary); }
+    .band--minimal   .band__body { background: var(--ao-surface-minimal); }
+    .band--secondary .band__body { background: var(--ao-surface-secondary); }
+    .band--elev2     .band__body { background: var(--ao-surface-elevated-2); }
+    .band--invert    .band__body { background: var(--ao-surface-invert); }
 
     .chip {
-      width: 8.5rem; display: flex; flex-direction: column; gap: var(--ai-spacing-2);
+      width: 8.5rem; display: flex; flex-direction: column; gap: var(--ao-spacing-2);
       align-items: center;
     }
     .chip__box {
-      width: 100%; height: var(--ai-spacing-11);
-      background: var(--ai-surface-elevated-1);
-      border-radius: var(--ai-radius-md);
+      width: 100%; height: var(--ao-spacing-11);
+      background: var(--ao-surface-elevated-1);
+      border-radius: var(--ao-radius-md);
     }
     /* On the inverted band the card needs a light face or the shadow is meaningless */
-    .band--invert .chip__box { background: var(--ai-surface-primary); }
+    .band--invert .chip__box { background: var(--ao-surface-primary); }
     .chip__name {
-      font-size: var(--ai-font-fixed-xxs); font-weight: var(--ai-font-medium);
-      color: var(--ai-text-primary);
+      font-size: var(--ao-font-fixed-xxs); font-weight: var(--ao-font-medium);
+      color: var(--ao-text-primary);
     }
-    .band--invert .chip__name { color: var(--ai-text-invert); }
+    .band--invert .chip__name { color: var(--ao-text-invert); }
 
-    .s-2xs     { box-shadow: var(--ai-shadow-2xs); }
-    .s-xs      { box-shadow: var(--ai-shadow-xs); }
-    .s-sm      { box-shadow: var(--ai-shadow-sm); }
-    .s-md      { box-shadow: var(--ai-shadow-md); }
-    .s-lg      { box-shadow: var(--ai-shadow-lg); }
-    .s-xl      { box-shadow: var(--ai-shadow-xl); }
-    .s-2xl     { box-shadow: var(--ai-shadow-2xl); }
-    .s-card    { box-shadow: var(--ai-shadow-card); }
-    .s-cc-rail { box-shadow: var(--ai-shadow-cc-rail); }
+    .s-2xs     { box-shadow: var(--ao-shadow-2xs); }
+    .s-xs      { box-shadow: var(--ao-shadow-xs); }
+    .s-sm      { box-shadow: var(--ao-shadow-sm); }
+    .s-md      { box-shadow: var(--ao-shadow-md); }
+    .s-lg      { box-shadow: var(--ao-shadow-lg); }
+    .s-xl      { box-shadow: var(--ao-shadow-xl); }
+    .s-2xl     { box-shadow: var(--ao-shadow-2xl); }
+    .s-card    { box-shadow: var(--ao-shadow-card); }
+    .s-cc-rail { box-shadow: var(--ao-shadow-cc-rail); }
 
     /* ── Resolved-value table ── */
-    .tablewrap { overflow-x: auto; border: 1px solid var(--ai-border-secondary); border-radius: var(--ai-radius-md); }
-    table { border-collapse: collapse; width: 100%; font-size: var(--ai-font-fixed-xxs); }
+    .tablewrap { overflow-x: auto; border: 1px solid var(--ao-border-secondary); border-radius: var(--ao-radius-md); }
+    table { border-collapse: collapse; width: 100%; font-size: var(--ao-font-fixed-xxs); }
     th, td {
-      text-align: left; padding: var(--ai-spacing-2) var(--ai-spacing-3);
-      border-bottom: 1px solid var(--ai-border-secondary); white-space: nowrap;
+      text-align: left; padding: var(--ao-spacing-2) var(--ao-spacing-3);
+      border-bottom: 1px solid var(--ao-border-secondary); white-space: nowrap;
     }
     th {
-      background: var(--ai-surface-minimal); color: var(--ai-text-contrast);
-      font-weight: var(--ai-font-medium); text-transform: uppercase; letter-spacing: 0.06em;
+      background: var(--ao-surface-minimal); color: var(--ao-text-contrast);
+      font-weight: var(--ao-font-medium); text-transform: uppercase; letter-spacing: 0.06em;
     }
     tr:last-child td { border-bottom: 0; }
-    td.tok { font-weight: var(--ai-font-medium); }
-    td.val { color: var(--ai-text-secondary); }
+    td.tok { font-weight: var(--ao-font-medium); }
+    td.val { color: var(--ao-text-secondary); }
     .note {
-      margin-top: var(--ai-spacing-4); padding: var(--ai-spacing-3) var(--ai-spacing-4);
-      background: var(--ai-surface-info-soft);
-      border: 1px solid var(--ai-border-info);
-      border-radius: var(--ai-radius-md);
-      font-size: var(--ai-font-fixed-xxs); color: var(--ai-text-info);
+      margin-top: var(--ao-spacing-4); padding: var(--ao-spacing-3) var(--ao-spacing-4);
+      background: var(--ao-surface-info-soft);
+      border: 1px solid var(--ao-border-info);
+      border-radius: var(--ao-radius-md);
+      font-size: var(--ao-font-fixed-xxs); color: var(--ao-text-info);
       max-width: 78ch;
     }
   </style>
@@ -191,23 +191,23 @@
     };
 
     const SHADOWS = [
-      ['--ai-shadow-2xs',     's-2xs',     '2xs'],
-      ['--ai-shadow-xs',      's-xs',      'xs'],
-      ['--ai-shadow-sm',      's-sm',      'sm'],
-      ['--ai-shadow-md',      's-md',      'md'],
-      ['--ai-shadow-lg',      's-lg',      'lg'],
-      ['--ai-shadow-xl',      's-xl',      'xl'],
-      ['--ai-shadow-2xl',     's-2xl',     '2xl'],
-      ['--ai-shadow-card',    's-card',    'card'],
-      ['--ai-shadow-cc-rail', 's-cc-rail', 'cc-rail'],
+      ['--ao-shadow-2xs',     's-2xs',     '2xs'],
+      ['--ao-shadow-xs',      's-xs',      'xs'],
+      ['--ao-shadow-sm',      's-sm',      'sm'],
+      ['--ao-shadow-md',      's-md',      'md'],
+      ['--ao-shadow-lg',      's-lg',      'lg'],
+      ['--ao-shadow-xl',      's-xl',      'xl'],
+      ['--ao-shadow-2xl',     's-2xl',     '2xl'],
+      ['--ao-shadow-card',    's-card',    'card'],
+      ['--ao-shadow-cc-rail', 's-cc-rail', 'cc-rail'],
     ];
 
     const BANDS = [
-      ['primary',   '--ai-surface-primary',   'the default card ground'],
-      ['minimal',   '--ai-surface-minimal',   'subtle page background'],
-      ['secondary', '--ai-surface-secondary', 'tinted section background'],
-      ['elev2',     '--ai-surface-elevated-2','modal / raised layer'],
-      ['invert',    '--ai-surface-invert',    'inverted surface — card face flips to primary'],
+      ['primary',   '--ao-surface-primary',   'the default card ground'],
+      ['minimal',   '--ao-surface-minimal',   'subtle page background'],
+      ['secondary', '--ao-surface-secondary', 'tinted section background'],
+      ['elev2',     '--ao-surface-elevated-2','modal / raised layer'],
+      ['invert',    '--ao-surface-invert',    'inverted surface — card face flips to primary'],
     ];
 
     // Build the bands once; everything below re-resolves through custom properties.

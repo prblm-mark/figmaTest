@@ -8,15 +8,15 @@
 /* ── Base modal ──────────────────────────── */
 
 .modal {
-  background: var(--ai-surface-elevated-1);
-  /* Figma binds a 1px --ai-border-secondary on the Modal root, and had done all along —
+  background: var(--ao-surface-elevated-1);
+  /* Figma binds a 1px --ao-border-secondary on the Modal root, and had done all along —
    * it was noted as a difference while building the Seating Planner screens and then not
    * acted on. Added for ALL modals 2026-08-27. With the global border-box it sits inside
-   * the width, so `--ai-size-9` stays 512px. */
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-lg);
+   * the width, so `--ao-size-9` stays 512px. */
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-lg);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
-  width: var(--ai-size-9); /* 512px — default */
+  width: var(--ao-size-9); /* 512px — default */
   max-width: 100%;
   /* Cap the HEIGHT too (2026-08-27, from Samsung S23 testing). Without it a modal grows to its
    * content height and, being centred in a flex overlay, overflows equally past the overlay's
@@ -36,15 +36,15 @@
 /* ── Size modifiers ──────────────────────── */
 
 .modal--sm {
-  width: var(--ai-size-7); /* 384px */
+  width: var(--ao-size-7); /* 384px */
 }
 
 .modal--lg {
-  width: var(--ai-size-11); /* 768px */
+  width: var(--ao-size-11); /* 768px */
 }
 
 .modal--confirm {
-  width: var(--ai-size-8); /* 448px */
+  width: var(--ao-size-8); /* 448px */
   text-align: center;
 }
 
@@ -62,27 +62,27 @@
  * NOT yet implemented from that set, and flagged in Modal.figma-notes: `showIcon` (a 40px
  * tinted disc — note its `rgba(48,203,144,0.15)` fill is the SAME already-approved value
  * `.modal__header-icon--positive` uses below, so that part is settled), `subTitle` (a second
- * inline title beside the first, with --ai-tracking-3), and the fact that Base/sm are SIZE
+ * inline title beside the first, with --ao-tracking-3), and the fact that Base/sm are SIZE
  * VARIANTS rather than a breakpoint. A proper ModalHeader/Body/Footer audit is its own job. */
 
 .modal__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--ai-spacing-5) var(--ai-spacing-6);
-  border-bottom: 1px solid var(--ai-border-secondary);
+  padding: var(--ao-spacing-5) var(--ao-spacing-6);
+  border-bottom: 1px solid var(--ao-border-secondary);
   flex-shrink: 0;
 }
 
 .modal__title {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-md);
-  font-weight: var(--ai-font-semibold);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-md);
+  font-weight: var(--ao-font-semibold);
   /* Figma's ModalHeader renders the title `leading-none` in BOTH Base and sm — its title row
-   * is `h-[18px]` against an 18px font — where this was --ai-leading-md (24px), making every
+   * is `h-[18px]` against an 18px font — where this was --ao-leading-md (24px), making every
    * modal header 8px taller than drawn (designer, 2026-08-27).
    *
-   * --ai-leading-none is a RATIO (1), deliberately, and not 0. Zero would give the element
+   * --ao-leading-none is a RATIO (1), deliberately, and not 0. Zero would give the element
    * zero height, so in this flex column the title would contribute nothing and the subtitle
    * would overlap it — the header collapses rather than tightens. (Figma's `leading-[0]`
    * appears on the text WRAPPER and is an export artefact of mixed-style containers;
@@ -90,12 +90,12 @@
    *
    * Being a ratio it also scales, so this single rule covers both sizes — 18px here, 16px in
    * the compact block below — which a fixed px value could not, and it stays right in themes
-   * where --ai-font-fixed-md resolves differently (16px on EventPicker's page).
+   * where --ao-font-fixed-md resolves differently (16px on EventPicker's page).
    *
    * Note the title has no `nowrap`/ellipsis, so a long user-supplied name still wraps rather
    * than being clipped; at leading 1 those lines touch but stay legible. */
-  line-height: var(--ai-leading-none);
-  color: var(--ai-text-primary);
+  line-height: var(--ao-leading-none);
+  color: var(--ao-text-primary);
   margin: 0;
 }
 
@@ -103,32 +103,32 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-spacing-7);
-  height: var(--ai-spacing-7);
+  width: var(--ao-spacing-7);
+  height: var(--ao-spacing-7);
   border: none;
-  border-radius: var(--ai-radius-md);
+  border-radius: var(--ao-radius-md);
   background: transparent;
-  color: var(--ai-icon-secondary);
+  color: var(--ao-icon-secondary);
   cursor: pointer;
   flex-shrink: 0;
-  padding: var(--ai-spacing-2);
-  transition: background-color var(--ai-transition-default),
-              color var(--ai-transition-default);
+  padding: var(--ao-spacing-2);
+  transition: background-color var(--ao-transition-default),
+              color var(--ao-transition-default);
 }
 
 .modal__close:hover {
-  background: var(--ai-surface-minimal);
-  color: var(--ai-icon-primary);
+  background: var(--ao-surface-minimal);
+  color: var(--ao-icon-primary);
 }
 
 .modal__close:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
 }
 
 .modal__close [data-lucide] {
-  width: var(--ai-icon-size-md);
-  height: var(--ai-icon-size-md);
+  width: var(--ao-icon-size-md);
+  height: var(--ao-icon-size-md);
 }
 
 /* Title + subtitle stack. `flex: 1 0 0` + `min-inline-size: 0` mirrors Figma's
@@ -136,30 +136,30 @@
 .modal__title-block {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   flex: 1 0 0;
   min-inline-size: 0;
 }
 
 .modal__subtitle {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
   /* `leading-none` as well — Figma renders BOTH the title and Sub Text that way. At
-   * --ai-leading-xs (16px) against a 14px font this was 2px too tall, which was the last of
+   * --ao-leading-xs (16px) against a 14px font this was 2px too tall, which was the last of
    * the create-plan modal's difference from Figma. Same reasoning as `.modal__title` above. */
-  line-height: var(--ai-leading-none);
-  color: var(--ai-text-contrast);
+  line-height: var(--ao-leading-none);
+  color: var(--ao-text-contrast);
 }
 
 /* ── Body ────────────────────────────────── */
 
 .modal__body {
-  padding: var(--ai-spacing-6);
+  padding: var(--ao-spacing-6);
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
 }
 
 /* DIRECT children only. `.modal__body p` is (0,1,1) and beats a single-class selector like
@@ -169,11 +169,11 @@
  * Verified safe: all 50 paragraphs in Modal's own demo are direct children, and the only
  * nested ones anywhere are the help lines that should never have been caught. */
 .modal__body > p {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
   margin: 0;
 }
 
@@ -182,15 +182,15 @@
  * `.modal__scroll` IS THE CONVENTION for any modal scroll area — add it to whichever element
  * actually scrolls, and set that element's own height/flex rules alongside it.
  *
- * A transparent track with a thin `--ai-surface-secondary` thumb. This is the treatment the
+ * A transparent track with a thin `--ao-surface-secondary` thumb. This is the treatment the
  * design system already uses everywhere it scrolls: `.chat-sidebar__sections` established it,
  * `.system-role__textarea` follows it, and the designer confirmed it for `.table-detail__list`
  * on 2026-08-25. Figma specifies NOTHING here — its Scrollable variant (`2464:757`) draws a
  * clipped 360px container with no scrollbar at all — so the appearance is a code decision, and
  * one answer is better than two.
  *
- * `.modal__body--scroll` used to be that second answer: a visible `--ai-surface-minimal` track
- * with an `--ai-border-secondary` thumb at a raw 6px, undocumented and used only by this
+ * `.modal__body--scroll` used to be that second answer: a visible `--ao-surface-minimal` track
+ * with an `--ao-border-secondary` thumb at a raw 6px, undocumented and used only by this
  * component's own demo. Folded in here 2026-09-10 so the pattern is singular.
  *
  * CHROME CAVEAT, worth knowing before anyone tunes the width: Chrome honours
@@ -205,7 +205,7 @@
 .modal__body--scroll {
   overflow-y: auto;
   min-block-size: 0;
-  scrollbar-color: var(--ai-surface-secondary) transparent;
+  scrollbar-color: var(--ao-surface-secondary) transparent;
   scrollbar-width: thin;
 }
 
@@ -213,7 +213,7 @@
  * reliably honoured on them. */
 .modal__scroll::-webkit-scrollbar,
 .modal__body--scroll::-webkit-scrollbar {
-  width: var(--ai-spacing-2);
+  width: var(--ao-spacing-2);
 }
 
 .modal__scroll::-webkit-scrollbar-track,
@@ -223,8 +223,8 @@
 
 .modal__scroll::-webkit-scrollbar-thumb,
 .modal__body--scroll::-webkit-scrollbar-thumb {
-  background-color: var(--ai-surface-secondary);
-  border-radius: var(--ai-radius-full);
+  background-color: var(--ao-surface-secondary);
+  border-radius: var(--ao-radius-full);
 }
 
 /* The variant keeps its own cap; only the scrollbar treatment is shared. */
@@ -238,9 +238,9 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-5) var(--ai-spacing-6);
-  border-top: 1px solid var(--ai-border-secondary);
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-5) var(--ao-spacing-6);
+  border-top: 1px solid var(--ao-border-secondary);
   flex-shrink: 0;
 }
 
@@ -249,8 +249,8 @@
 
 .modal--confirm .modal__body {
   align-items: center;
-  padding: var(--ai-spacing-6);
-  gap: var(--ai-spacing-3);
+  padding: var(--ao-spacing-6);
+  gap: var(--ao-spacing-3);
 }
 
 .modal__icon-wrap {
@@ -259,32 +259,32 @@
   justify-content: center;
   width: 56px; /* layout dimension — no token match */
   height: 56px;
-  border-radius: var(--ai-radius-full);
-  background: var(--ai-surface-minimal);
-  padding: var(--ai-spacing-5);
+  border-radius: var(--ao-radius-full);
+  background: var(--ao-surface-minimal);
+  padding: var(--ao-spacing-5);
 }
 
 .modal__icon-wrap [data-lucide] {
-  width: var(--ai-icon-size-lg);
-  height: var(--ai-icon-size-lg);
-  color: var(--ai-text-error);
+  width: var(--ao-icon-size-lg);
+  height: var(--ao-icon-size-lg);
+  color: var(--ao-text-error);
 }
 
 .modal__confirm-title {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-md);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-md);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
   margin: 0;
 }
 
 .modal__confirm-desc {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
   margin: 0;
   text-align: center;
 }
@@ -292,7 +292,7 @@
 .modal--confirm .modal__footer {
   justify-content: center;
   border-top: none;
-  padding: 0 var(--ai-spacing-6) var(--ai-spacing-6);
+  padding: 0 var(--ao-spacing-6) var(--ao-spacing-6);
 }
 
 /* ── Form layout ─────────────────────────── */
@@ -300,26 +300,26 @@
 .modal__form {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
 }
 
 .modal__form-group {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
 }
 
 .modal__form-label {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-medium);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-primary);
 }
 
 /* ── Feedback variants ───────────────────── */
 
 .modal--feedback .modal__header {
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   justify-content: flex-start;
 }
 
@@ -331,55 +331,55 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-spacing-8);
-  height: var(--ai-spacing-8);
-  border-radius: var(--ai-radius-full);
+  width: var(--ao-spacing-8);
+  height: var(--ao-spacing-8);
+  border-radius: var(--ao-radius-full);
   flex-shrink: 0;
 }
 
 .modal__header-icon [data-lucide] {
-  width: var(--ai-icon-size-md);
-  height: var(--ai-icon-size-md);
+  width: var(--ao-icon-size-md);
+  height: var(--ao-icon-size-md);
 }
 
 /* Positive feedback icon: success at 15% opacity */
 .modal__header-icon--positive {
-  background: rgba(48, 203, 144, 0.15); /* --ai-surface-success at 15% — approved */
+  background: rgba(48, 203, 144, 0.15); /* --ao-surface-success at 15% — approved */
 }
 
 .modal__header-icon--positive [data-lucide] {
-  color: var(--ai-surface-success);
+  color: var(--ao-surface-success);
 }
 
 /* Negative feedback icon: error at 15% opacity */
 .modal__header-icon--negative {
-  background: rgba(239, 68, 68, 0.15); /* --ai-surface-error at 15% — approved */
+  background: rgba(239, 68, 68, 0.15); /* --ao-surface-error at 15% — approved */
 }
 
 .modal__header-icon--negative [data-lucide] {
-  color: var(--ai-text-error);
+  color: var(--ao-text-error);
 }
 
 .modal__check-list {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
-/* Feedback modals use --ai-chat-brand for primary buttons and checked checkboxes
+/* Feedback modals use --ao-chat-brand for primary buttons and checked checkboxes
    (accent colour adapts to Style Settings, not fixed brand) */
 .modal--feedback .btn--primary {
-  background-color: var(--ai-chat-brand);
-  border-color: var(--ai-chat-brand);
+  background-color: var(--ao-chat-brand);
+  border-color: var(--ao-chat-brand);
 }
 
 .modal--feedback .btn--primary:hover {
-  background-color: color-mix(in srgb, var(--ai-chat-brand) 85%, black);
+  background-color: color-mix(in srgb, var(--ao-chat-brand) 85%, black);
 }
 
 .modal--feedback .checkbox__input:checked + .checkbox__indicator {
-  background: var(--ai-chat-brand);
-  border-color: var(--ai-chat-brand);
+  background: var(--ao-chat-brand);
+  border-color: var(--ao-chat-brand);
 }
 
 /* ── Below bp-sm (640px) ─────────────────── */
@@ -401,23 +401,23 @@
 @media (max-width: 639px) {
   .modal__header,
   .modal__footer {
-    padding: var(--ai-spacing-4) var(--ai-spacing-5);
+    padding: var(--ao-spacing-4) var(--ao-spacing-5);
   }
 
   .modal__body {
-    padding: var(--ai-spacing-5);
+    padding: var(--ao-spacing-5);
   }
 
   .modal__title {
-    font-size: var(--ai-font-fixed-sm);
+    font-size: var(--ao-font-fixed-sm);
   }
 
   .modal__title-block {
-    gap: var(--ai-spacing-1);
+    gap: var(--ao-spacing-1);
   }
 
   .modal__subtitle {
-    font-size: var(--ai-font-fixed-2xs);
+    font-size: var(--ao-font-fixed-2xs);
   }
 
   /* Footer buttons drop to the sm size. This was the missing piece of the Size=sm mapping this
@@ -431,14 +431,14 @@
    * otherwise have to remember to swap the class, and none of the 312 footer buttons in the repo
    * declares a size today. */
   .modal__footer .btn {
-    min-height: var(--ai-spacing-7);        /* 32 */
-    padding: 0 var(--ai-spacing-4);         /* 12 */
-    font-size: var(--ai-font-fluid-xxs);    /* 12 */
+    min-height: var(--ao-spacing-7);        /* 32 */
+    padding: 0 var(--ao-spacing-4);         /* 12 */
+    font-size: var(--ao-font-fluid-xxs);    /* 12 */
   }
 
   /* An icon-only footer button stays square rather than becoming a 12px-padded oblong. */
   .modal__footer .btn--icon {
-    inline-size: var(--ai-spacing-7);
+    inline-size: var(--ao-spacing-7);
     padding: 0;
   }
 }
@@ -452,7 +452,7 @@
   z-index: 100;
   align-items: center;
   justify-content: center;
-  padding: var(--ai-spacing-6);
+  padding: var(--ao-spacing-6);
   /* Scrim — see the theme block below. */
   background: rgba(15, 23, 42, 0.5);
 }
@@ -476,7 +476,7 @@
  * is the fix; raising specificity to force it would have hidden the ordering problem. */
 @media (max-width: 639px) {
   .modal-overlay {
-    padding: var(--ai-spacing-7);
+    padding: var(--ao-spacing-7);
   }
 }
 
@@ -507,7 +507,7 @@
  * Raw rgba because THERE IS NO SCRIM TOKEN in the scale. `#0f172a` exists as
  * `--cc-header-primary-bg` (and dark `--cc-ui-primary-bg`), but binding a scrim to a header
  * or page background would be a category error, and a hex token cannot carry the alpha
- * anyway. A real `--ai-surface-scrim` with per-theme values is the proper fix — flagged in
+ * anyway. A real `--ao-surface-scrim` with per-theme values is the proper fix — flagged in
  * Modal.figma-notes.md. */
 
 [data-theme="dark"] .modal-overlay {

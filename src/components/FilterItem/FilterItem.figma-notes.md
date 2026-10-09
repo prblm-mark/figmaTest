@@ -33,7 +33,7 @@ rollup at 4+.
 | 3664:14441 | **Filter Dropdown Active** | True *(Mobile)* | **`surface-info-soft`** | **`border-info`** solid | `+ Name` | ⚠ paint ✅ / geometry ✗ |
 
 **Axis independence (verified, not assumed):** `Rounded` changes only the radius — confirmed on
-Default False (`--ai-radius-md`) vs Default True (`--ai-radius-full`); design context is otherwise
+Default False (`--ao-radius-md`) vs Default True (`--ao-radius-full`); design context is otherwise
 identical. `State` changes only fill/border/content — confirmed across the False column
 (Default / Empty / 1 / 4+ fetched in full). The True selected variants therefore compose as
 `--rounded` + `--selected` + value text. CSS represents the cross-product via two independent
@@ -47,8 +47,8 @@ not cross in the design.
 
 | State | What moves | Implemented as |
 |---|---|---|
-| `MOuseover` *(Figma's typo, kept here so the name matches)* | background only → `--ai-surface-minimal`. Border, text, icon, padding, radius all unchanged — verified on Desktop **and** Mobile, not carried across | `:hover` |
-| `Filter Dropdown Active` | `--ai-surface-info-soft` + `--ai-border-info` | `.filter-item--open` |
+| `MOuseover` *(Figma's typo, kept here so the name matches)* | background only → `--ao-surface-minimal`. Border, text, icon, padding, radius all unchanged — verified on Desktop **and** Mobile, not carried across | `:hover` |
+| `Filter Dropdown Active` | `--ao-surface-info-soft` + `--ao-border-info` | `.filter-item--open` |
 
 **Hover is scoped with `:not()`** to exclude `--selected`, `--open` and `--empty`.
 The first two carry the info palette in Figma and a hover passing over them must
@@ -70,10 +70,10 @@ Two combinations Figma does not define, and what the code does:
 
 ### Device=Mobile is NOT implemented (pre-existing gap)
 
-The set carries 10 `Device=Mobile` variants — height `--ai-spacing-6` (24px) vs
-32, gap `--ai-spacing-0-5` (2px) vs `--ai-spacing-1`, padding
-`--ai-spacing-2`/`--ai-spacing-3` vs `--ai-spacing-3`/`--ai-spacing-4`, and font
-`--ai-font-fixed-4xs` (11px) vs `--ai-font-fixed-xxs` (12px). `FilterItem.css`
+The set carries 10 `Device=Mobile` variants — height `--ao-spacing-6` (24px) vs
+32, gap `--ao-spacing-0-5` (2px) vs `--ao-spacing-1`, padding
+`--ao-spacing-2`/`--ao-spacing-3` vs `--ao-spacing-3`/`--ao-spacing-4`, and font
+`--ao-font-fixed-4xs` (11px) vs `--ao-font-fixed-xxs` (12px). `FilterItem.css`
 has **no `@media` or `@container` block at all**, so chips render at desktop
 geometry on every screen. Predates this change and is not addressed by it.
 
@@ -84,58 +84,58 @@ geometry on every screen. Predates this change and is not addressed by it.
 - **Empty vs Default:** Empty (dashed) is an *add-a-filter placeholder*; Default (solid) is a
   configured filter with no values selected yet, whose chevron opens the picker.
 - **Label rollup:** 1–3 selected list every value comma-joined; 4+ shows `<first>, and N more`.
-  Filter name in `--ai-font-medium`, values in `--ai-font-semibold`.
+  Filter name in `--ao-font-medium`, values in `--ao-font-semibold`.
 
 ## CSS Class Mapping
 
 | Figma element | CSS class | Notes |
 |---|---|---|
-| Chip container | `.filter-item` | inline-flex, gap `--ai-spacing-1`, height `--ai-spacing-7`, padding `--ai-spacing-2 --ai-spacing-4 --ai-spacing-2 --ai-spacing-3` (py6 / pr12 / pl8), `--ai-radius-md`. Base = Default. |
-| Rounded=True | `.filter-item--rounded` | `border-radius: var(--ai-radius-full)` |
-| Empty | `.filter-item--empty` | `border-style: dashed; border-color: var(--ai-border-contrast)` |
-| Selected | `.filter-item--selected` | `background: var(--ai-surface-info-soft); border-color: var(--ai-border-info)` |
+| Chip container | `.filter-item` | inline-flex, gap `--ao-spacing-1`, height `--ao-spacing-7`, padding `--ao-spacing-2 --ao-spacing-4 --ao-spacing-2 --ao-spacing-3` (py6 / pr12 / pl8), `--ao-radius-md`. Base = Default. |
+| Rounded=True | `.filter-item--rounded` | `border-radius: var(--ao-radius-full)` |
+| Empty | `.filter-item--empty` | `border-style: dashed; border-color: var(--ao-border-contrast)` |
+| Selected | `.filter-item--selected` | `background: var(--ao-surface-info-soft); border-color: var(--ao-border-info)` |
 | Open (chevron flipped) | `.filter-item--open` | JS-toggled; rotates `.filter-item__chevron` 180° |
 | Trigger (Name · values + chevron) | `.filter-item__trigger` | `<button>`, transparent reset, opens the picker |
 | Clear (×) | `.filter-item__clear` | `<button>`, selected-only, resets the chip |
 | Leading add icon (+) | `.filter-item__add` | Lucide `plus`; hidden when `--selected` |
-| Filter name | `.filter-item__name` | `--ai-font-medium`, `--ai-font-fixed-xxs` |
-| Separator | `.filter-item__sep` | `·` — `--ai-font-fixed-sm` / `--ai-font-regular` / `--ai-icon-contrast` |
-| Selected values | `.filter-item__values` | `--ai-font-semibold`, `--ai-font-fixed-xxs`; text set by JS rollup |
+| Filter name | `.filter-item__name` | `--ao-font-medium`, `--ao-font-fixed-xxs` |
+| Separator | `.filter-item__sep` | `·` — `--ao-font-fixed-sm` / `--ao-font-regular` / `--ao-icon-contrast` |
+| Selected values | `.filter-item__values` | `--ao-font-semibold`, `--ao-font-fixed-xxs`; text set by JS rollup |
 | Chevron | `.filter-item__chevron` | Lucide `chevron-down`, 12px |
 
 ## Token Mapping
 
 | Figma variable | CSS variable | Role |
 |---|---|---|
-| `surface/primary` | `--ai-surface-primary` | Default / Empty bg |
-| `surface/info-soft` | `--ai-surface-info-soft` | Selected bg (#f0f3ff) |
-| `border/secondary` | `--ai-border-secondary` | Default border (#e2e2e3) |
-| `border/contrast` | `--ai-border-contrast` | Empty dashed border (#c2c2c4) |
-| `border/info` | `--ai-border-info` | Selected border (#bfd1ff) |
-| `text/primary` | `--ai-text-primary` | Name + values text |
-| `icon/contrast` | `--ai-icon-contrast` | All icons (+, ×, chevron) + separator (#929295) |
-| `icon-size/xs` (12px) | `--ai-icon-size-xs` | Plus / × / chevron size |
-| `font/title` | `--ai-font-title` | All text (Inter) |
-| `font/medium` | `--ai-font-medium` | Filter name weight |
-| `font/semibold` | `--ai-font-semibold` | Selected values weight |
-| `font/regular` | `--ai-font-regular` | Separator weight |
-| `font/fixed-xxs` (12px) | `--ai-font-fixed-xxs` | Name + values size |
-| `font/fixed-sm` (16px) | `--ai-font-fixed-sm` | Separator glyph size |
-| `leading/xs` (16px) | `--ai-leading-xs` | Name + values line-height |
-| `leading/md` (24px) | `--ai-leading-md` | Separator line-height |
-| `spacing/1` (4px) | `--ai-spacing-1` | Inter-element gap |
-| `spacing/2` (6px) | `--ai-spacing-2` | Vertical padding |
-| `spacing/3` (8px) | `--ai-spacing-3` | Left padding |
-| `spacing/4` (12px) | `--ai-spacing-4` | Right padding |
-| `spacing/7` (32px) | `--ai-spacing-7` | Chip height |
-| `radius/md` (8px) | `--ai-radius-md` | Rounded=False corner |
-| `radius/full` | `--ai-radius-full` | Rounded=True corner |
+| `surface/primary` | `--ao-surface-primary` | Default / Empty bg |
+| `surface/info-soft` | `--ao-surface-info-soft` | Selected bg (#f0f3ff) |
+| `border/secondary` | `--ao-border-secondary` | Default border (#e2e2e3) |
+| `border/contrast` | `--ao-border-contrast` | Empty dashed border (#c2c2c4) |
+| `border/info` | `--ao-border-info` | Selected border (#bfd1ff) |
+| `text/primary` | `--ao-text-primary` | Name + values text |
+| `icon/contrast` | `--ao-icon-contrast` | All icons (+, ×, chevron) + separator (#929295) |
+| `icon-size/xs` (12px) | `--ao-icon-size-xs` | Plus / × / chevron size |
+| `font/title` | `--ao-font-title` | All text (Inter) |
+| `font/medium` | `--ao-font-medium` | Filter name weight |
+| `font/semibold` | `--ao-font-semibold` | Selected values weight |
+| `font/regular` | `--ao-font-regular` | Separator weight |
+| `font/fixed-xxs` (12px) | `--ao-font-fixed-xxs` | Name + values size |
+| `font/fixed-sm` (16px) | `--ao-font-fixed-sm` | Separator glyph size |
+| `leading/xs` (16px) | `--ao-leading-xs` | Name + values line-height |
+| `leading/md` (24px) | `--ao-leading-md` | Separator line-height |
+| `spacing/1` (4px) | `--ao-spacing-1` | Inter-element gap |
+| `spacing/2` (6px) | `--ao-spacing-2` | Vertical padding |
+| `spacing/3` (8px) | `--ao-spacing-3` | Left padding |
+| `spacing/4` (12px) | `--ao-spacing-4` | Right padding |
+| `spacing/7` (32px) | `--ao-spacing-7` | Chip height |
+| `radius/md` (8px) | `--ao-radius-md` | Rounded=False corner |
+| `radius/full` | `--ao-radius-full` | Rounded=True corner |
 
 ## Token Gaps
 
-None. Every design value resolves to an `--ai-*` token (verified via `get_variable_defs`):
-the 12px icons map to `--ai-icon-size-xs`, and `--ai-surface-info-soft` / `--ai-border-info` /
-`--ai-border-contrast` all exist in `css/tokens.css`.
+None. Every design value resolves to an `--ao-*` token (verified via `get_variable_defs`):
+the 12px icons map to `--ao-icon-size-xs`, and `--ao-surface-info-soft` / `--ao-border-info` /
+`--ao-border-contrast` all exist in `css/tokens.css`.
 
 The only raw px value is `letter-spacing: -0.3125px` on the separator `·` — an allowed optical
 typographic exception (matches Figma `tracking-[-0.3125px]`).
@@ -147,9 +147,9 @@ typographic exception (matches Figma `tracking-[-0.3125px]`).
   plus — visually equivalent, no hardcoded `16.971px` box needed.
 - **Icon naming mismatch:** Figma icons are named `Icon/24px/Plus`, `Icon/24px/ChevronDown` but
   are *placed* at 12px. Design context reports the base 24px name; the placed `size-[12px]` is the
-  real size → `--ai-icon-size-xs`. Lucide names: `plus`, `x`, `chevron-down`.
+  real size → `--ao-icon-size-xs`. Lucide names: `plus`, `x`, `chevron-down`.
 - **No Figma hover/focus state.** The component set defines only the 12 static variants. A
-  `:focus-visible` outline (`--ai-surface-brand`) is added for WCAG 2.1 AA; no hover colour is
+  `:focus-visible` outline (`--ao-surface-brand`) is added for WCAG 2.1 AA; no hover colour is
   invented (per the no-fallback rule).
 - **Touch target.** The chip is a fixed 32px tall per Figma — below the 44px WCAG AAA target.
   Kept at the Figma height; consumers placing it in dense filter bars should be aware.

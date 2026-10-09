@@ -13,48 +13,48 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--ai-surface-primary);
-      padding: var(--ai-spacing-7);
+      background: var(--ao-surface-primary);
+      padding: var(--ao-spacing-7);
     }
     .demo {
       display: flex;
       flex-direction: column;
-      gap: var(--ai-spacing-7);
-      width: var(--ai-size-10);
+      gap: var(--ao-spacing-7);
+      width: var(--ao-size-10);
       max-width: 100%;
     }
     .demo__section {
       display: flex;
       flex-direction: column;
-      gap: var(--ai-spacing-4);
+      gap: var(--ao-spacing-4);
     }
     .demo__label {
-      font-family: var(--ai-font-body);
-      font-size: var(--ai-font-fixed-xxs);
-      font-weight: var(--ai-font-semibold);
-      color: var(--ai-text-contrast);
+      font-family: var(--ao-font-body);
+      font-size: var(--ao-font-fixed-xxs);
+      font-weight: var(--ao-font-semibold);
+      color: var(--ao-text-contrast);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
     .demo__row {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--ai-spacing-3);
+      gap: var(--ao-spacing-3);
       align-items: center;
     }
     .demo__note {
-      font-family: var(--ai-font-body);
-      font-size: var(--ai-font-fixed-xxs);
-      color: var(--ai-text-contrast);
-      margin-top: var(--ai-spacing-3);
+      font-family: var(--ao-font-body);
+      font-size: var(--ao-font-fixed-xxs);
+      color: var(--ao-text-contrast);
+      margin-top: var(--ao-spacing-3);
     }
     .demo__brand-input {
       display: flex;
       align-items: center;
-      gap: var(--ai-spacing-3);
-      font-family: var(--ai-font-body);
-      font-size: var(--ai-font-fixed-xs);
-      color: var(--ai-text-secondary);
+      gap: var(--ao-spacing-3);
+      font-family: var(--ao-font-body);
+      font-size: var(--ao-font-fixed-xs);
+      color: var(--ao-text-secondary);
     }
     .demo__brand-input input[type="color"] {
       width: 3rem;
@@ -63,14 +63,14 @@
       cursor: pointer;
     }
     .demo__reset {
-      font-family: var(--ai-font-body);
-      font-size: var(--ai-font-fixed-xxs);
-      font-weight: var(--ai-font-medium);
-      color: var(--ai-text-contrast);
-      background: var(--ai-surface-minimal);
-      border: 1px solid var(--ai-border-secondary);
-      border-radius: var(--ai-radius-sm);
-      padding: var(--ai-spacing-1) var(--ai-spacing-3);
+      font-family: var(--ao-font-body);
+      font-size: var(--ao-font-fixed-xxs);
+      font-weight: var(--ao-font-medium);
+      color: var(--ao-text-contrast);
+      background: var(--ao-surface-minimal);
+      border: 1px solid var(--ao-border-secondary);
+      border-radius: var(--ao-radius-sm);
+      padding: var(--ao-spacing-1) var(--ao-spacing-3);
       cursor: pointer;
     }
   </style>
@@ -125,7 +125,7 @@
   <script>
     // Inline brand theme detection (same logic as src/utils/brand-colors.js)
     function initBrandTheme(el) {
-      var brand = getComputedStyle(el).getPropertyValue('--ai-chat-brand').trim();
+      var brand = getComputedStyle(el).getPropertyValue('--ao-chat-brand').trim();
       var hex = brand.replace(/^#/, '');
       var r = parseInt(hex.slice(0, 2), 16) / 255;
       var g = parseInt(hex.slice(2, 4), 16) / 255;
@@ -156,14 +156,14 @@
     picker.addEventListener('input', function(e) {
       var color = e.target.value;
       valueEl.textContent = color;
-      document.documentElement.style.setProperty('--ai-chat-brand', color);
+      document.documentElement.style.setProperty('--ao-chat-brand', color);
       initBrandTheme(document.documentElement);
     });
 
     document.getElementById('brand-reset').addEventListener('click', function() {
       picker.value = DEFAULT_BRAND;
       valueEl.textContent = DEFAULT_BRAND;
-      document.documentElement.style.removeProperty('--ai-chat-brand');
+      document.documentElement.style.removeProperty('--ao-chat-brand');
       initBrandTheme(document.documentElement);
     });
   </script>

@@ -10,8 +10,8 @@
  * gap·padding·radius) are Figma-bound — see Login.figma-notes.md §Shell.
  *
  * Scoped override: the two Input fields and the Checkbox box use
- * --ai-surface-input (a softer input surface) in place of their default
- * --ai-surface-primary. Scoped to .cc-login only — base components unchanged.
+ * --ao-surface-input (a softer input surface) in place of their default
+ * --ao-surface-primary. Scoped to .cc-login only — base components unchanged.
  */
 
 /* ── Shell: full-viewport, vertically centred ─────────── */
@@ -21,7 +21,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--ai-spacing-8);                  /* 40 — Desktop */
+  padding: var(--ao-spacing-8);                  /* 40 — Desktop */
   background-color: var(--cc-ui-primary-bg);
 }
 
@@ -30,9 +30,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--ai-spacing-7);                       /* 32 — Desktop */
+  gap: var(--ao-spacing-7);                       /* 32 — Desktop */
   width: 100%;
-  max-width: var(--ai-size-9);                    /* 512 */
+  max-width: var(--ao-size-9);                    /* 512 */
 }
 
 /* ── Logo + title group ───────────────────────────────── */
@@ -40,7 +40,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--ai-spacing-4);                       /* 12 — Desktop */
+  gap: var(--ao-spacing-4);                       /* 12 — Desktop */
 }
 
 /* Affino wordmark — CSS mask of affinoLogo.svg painted in brand teal,
@@ -50,18 +50,18 @@
   flex-shrink: 0;
   width: 167px;
   height: 38px;
-  background-color: var(--ai-surface-brand);
+  background-color: var(--ao-surface-brand);
   -webkit-mask: url('../../../../img/affinoLogo.svg') no-repeat center center / 167px auto;
   mask: url('../../../../img/affinoLogo.svg') no-repeat center center / 167px auto;
 }
 
 .cc-login__title {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-bold);
-  font-size: var(--ai-font-fixed-xl);             /* 22 — Desktop */
-  line-height: var(--ai-leading-md);              /* 24 */
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-bold);
+  font-size: var(--ao-font-fixed-xl);             /* 22 — Desktop */
+  line-height: var(--ao-leading-md);              /* 24 */
+  color: var(--ao-text-primary);
   text-align: center;
 }
 
@@ -69,21 +69,21 @@
 .cc-login__card {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-6);                       /* 24 */
+  gap: var(--ao-spacing-6);                       /* 24 */
   width: 100%;
-  max-width: var(--ai-size-10);                   /* 640 */
-  padding: var(--ai-spacing-8);                   /* 40 — Desktop */
+  max-width: var(--ao-size-10);                   /* 640 */
+  padding: var(--ao-spacing-8);                   /* 40 — Desktop */
   background-color: var(--cc-ui-secondary-bg);
-  border-radius: var(--ai-radius-lg);             /* 16 */
-  box-shadow: var(--ai-shadow-sm);                /* Figma shadow-1 ≈ shadow-sm */
+  border-radius: var(--ao-radius-lg);             /* 16 */
+  box-shadow: var(--ao-shadow-sm);                /* Figma shadow-1 ≈ shadow-sm */
 }
 
 /* ── Scoped surface-input override ────────────────────── */
 .cc-login .input__wrap {
-  background-color: var(--ai-surface-input);
+  background-color: var(--ao-surface-input);
 }
 .cc-login .checkbox__input:not(:checked) + .checkbox__indicator {
-  background: var(--ai-surface-input);
+  background: var(--ao-surface-input);
 }
 
 /* ── Remember-me / forgot-password row ────────────────── */
@@ -91,7 +91,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);                       /* 8 */
+  gap: var(--ao-spacing-3);                       /* 8 */
   width: 100%;
 }
 
@@ -103,20 +103,20 @@
 /* ── Footer ("Not a member? Register Now") ────────────── */
 .cc-login__footer {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-xs);             /* 14 */
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-weight: var(--ao-font-regular);
+  font-size: var(--ao-font-fixed-xs);             /* 14 */
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
   text-align: center;
 }
 
 /* ── Links (Forgot password? / Register Now) ──────────── */
 .cc-login__link {
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fixed-xs);             /* 14 */
-  color: var(--ai-text-brand);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fixed-xs);             /* 14 */
+  color: var(--ao-text-brand);
   text-decoration: none;
 }
 .cc-login__link:hover {
@@ -126,19 +126,19 @@
 /* ── Mobile (Figma Device=Mobile, 390 wide) ───────────── */
 @media (max-width: 767px) {
   .cc-login {
-    padding: var(--ai-spacing-6);                 /* 24 */
+    padding: var(--ao-spacing-6);                 /* 24 */
   }
   .cc-login__column {
-    gap: var(--ai-spacing-6);                     /* 24 */
+    gap: var(--ao-spacing-6);                     /* 24 */
   }
   .cc-login__head {
-    gap: var(--ai-spacing-3);                     /* 8 */
+    gap: var(--ao-spacing-3);                     /* 8 */
   }
   .cc-login__title {
-    font-size: var(--ai-font-fixed-md);           /* 18 */
-    line-height: var(--ai-leading-sm);            /* 20 */
+    font-size: var(--ao-font-fixed-md);           /* 18 */
+    line-height: var(--ao-leading-sm);            /* 20 */
   }
   .cc-login__card {
-    padding: var(--ai-spacing-6);                 /* 24 */
+    padding: var(--ao-spacing-6);                 /* 24 */
   }
 }

@@ -10,69 +10,69 @@
   <style>
     body {
       margin: 0;
-      padding: var(--ai-spacing-7);
-      background: var(--ai-surface-secondary);
+      padding: var(--ao-spacing-7);
+      background: var(--ao-surface-secondary);
       min-height: 100vh;
-      color: var(--ai-text-primary);
-      font-family: var(--ai-font-body);
+      color: var(--ao-text-primary);
+      font-family: var(--ao-font-body);
     }
-    .demo-section { margin-bottom: var(--ai-spacing-8); }
+    .demo-section { margin-bottom: var(--ao-spacing-8); }
     .demo-section__title {
-      font-size: var(--ai-font-fixed-xs);
-      font-weight: var(--ai-font-semibold);
-      color: var(--ai-text-contrast);
+      font-size: var(--ao-font-fixed-xs);
+      font-weight: var(--ao-font-semibold);
+      color: var(--ao-text-contrast);
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin: 0 0 var(--ai-spacing-3);
+      margin: 0 0 var(--ao-spacing-3);
     }
     .demo-section__lead {
-      font-size: var(--ai-font-fixed-xs);
-      color: var(--ai-text-contrast);
-      margin: 0 0 var(--ai-spacing-5);
+      font-size: var(--ao-font-fixed-xs);
+      color: var(--ao-text-contrast);
+      margin: 0 0 var(--ao-spacing-5);
       max-width: 70ch;
     }
     .aa-stack {
       display: flex;
       flex-direction: column;
-      gap: var(--ai-spacing-6);
+      gap: var(--ao-spacing-6);
     }
     .demo-card {
       display: flex;
       flex-direction: column;
-      gap: var(--ai-spacing-3);
+      gap: var(--ao-spacing-3);
     }
     .demo-card__caption {
-      font-size: var(--ai-font-fixed-xxs);
-      color: var(--ai-text-contrast);
+      font-size: var(--ao-font-fixed-xxs);
+      color: var(--ao-text-contrast);
     }
 
     /* QA: one resizable container holds ALL variants so the toggle reflows them together */
     .aa-qa__controls {
       display: flex;
-      gap: var(--ai-spacing-3);
+      gap: var(--ao-spacing-3);
       align-items: center;
       flex-wrap: wrap;
-      margin-bottom: var(--ai-spacing-4);
+      margin-bottom: var(--ao-spacing-4);
     }
     .aa-qa__btn {
-      padding: var(--ai-spacing-2) var(--ai-spacing-4);
-      background: var(--ai-surface-primary);
-      border: 1px solid var(--ai-border-secondary);
-      border-radius: var(--ai-radius-md);
-      color: var(--ai-text-secondary);
-      font-family: var(--ai-font-body);
-      font-size: var(--ai-font-fixed-xs);
+      padding: var(--ao-spacing-2) var(--ao-spacing-4);
+      background: var(--ao-surface-primary);
+      border: 1px solid var(--ao-border-secondary);
+      border-radius: var(--ao-radius-md);
+      color: var(--ao-text-secondary);
+      font-family: var(--ao-font-body);
+      font-size: var(--ao-font-fixed-xs);
       cursor: pointer;
     }
     .aa-qa__btn--active {
-      background: var(--ai-surface-brand);
-      border-color: var(--ai-surface-brand);
-      color: var(--ai-btn-primary-text);
+      background: var(--ao-surface-brand);
+      border-color: var(--ao-surface-brand);
+      color: var(--ao-btn-primary-text);
     }
     .aa-qa__badge {
-      font-family: var(--ai-font-body);
-      font-size: var(--ai-font-fixed-xxs);
-      color: var(--ai-text-contrast);
+      font-family: var(--ao-font-body);
+      font-size: var(--ao-font-fixed-xxs);
+      color: var(--ao-text-contrast);
     }
     .aa-qa__frame {
       box-sizing: border-box;
@@ -81,33 +81,33 @@
       min-width: 280px;
       resize: horizontal;
       overflow: auto;
-      padding: var(--ai-spacing-5);
-      border: 1px dashed var(--ai-border-secondary);
-      border-radius: var(--ai-radius-lg);
+      padding: var(--ao-spacing-5);
+      border: 1px dashed var(--ao-border-secondary);
+      border-radius: var(--ao-radius-lg);
     }
     .aa-reset {
       display: inline-flex;
       align-items: center;
-      gap: var(--ai-spacing-2);
-      padding: var(--ai-spacing-2) var(--ai-spacing-4);
-      background: var(--ai-surface-primary);
-      border: 1px solid var(--ai-border-secondary);
-      border-radius: var(--ai-radius-md);
-      color: var(--ai-text-secondary);
-      font-family: var(--ai-font-body);
-      font-size: var(--ai-font-fixed-xs);
+      gap: var(--ao-spacing-2);
+      padding: var(--ao-spacing-2) var(--ao-spacing-4);
+      background: var(--ao-surface-primary);
+      border: 1px solid var(--ao-border-secondary);
+      border-radius: var(--ao-radius-md);
+      color: var(--ao-text-secondary);
+      font-family: var(--ao-font-body);
+      font-size: var(--ao-font-fixed-xs);
       cursor: pointer;
     }
-    .aa-reset svg { width: var(--ai-icon-size-sm); height: var(--ai-icon-size-sm); }
+    .aa-reset svg { width: var(--ao-icon-size-sm); height: var(--ao-icon-size-sm); }
   </style>
 </head>
 <body>
 
-  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-3);">AutoAnswers</h1>
-  <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-7); max-width: 70ch;">
+  <h1 style="font-size: var(--ao-font-fixed-4xl); font-weight: var(--ao-font-bold); color: var(--ao-text-primary); margin: 0 0 var(--ao-spacing-3);">AutoAnswers</h1>
+  <p style="font-size: var(--ao-font-fixed-sm); color: var(--ao-text-contrast); margin: 0 0 var(--ao-spacing-7); max-width: 70ch;">
     AI auto-answer card for support forums. Six states across the answer lifecycle —
     Processing → Suggested → (Complete / Partial / Inadequate), plus a No&nbsp;Answer fallback.
-    Theme-agnostic <code>--ai-*</code> tokens; rendered here under <code>data-brand="cc"</code>.
+    Theme-agnostic <code>--ao-*</code> tokens; rendered here under <code>data-brand="cc"</code>.
     Responsive via <strong>container queries</strong> — each card adapts to its container width
     (MD breakpoint = 768px), not the viewport.
   </p>

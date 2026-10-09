@@ -211,9 +211,9 @@
    * for "Other": the order passes both themes (worst adjacent protan ΔE 10.1, normal 28.6). Emerald
    * and pink are ΔE 1.1 deutan and emerald/lagoon 11.9 normal, so neither pair sits together.
    * Purple is 2.72:1 on the dark card — relieved by the legend and the month tables. */
-  var PAIR = ['--ai-accent-lagoon-solid', '--ai-accent-purple-solid'];
-  var SERIES = ['--ai-accent-lagoon-solid', '--ai-accent-purple-solid', '--ai-accent-emerald-solid', '--ai-accent-orange-solid',
-    '--ai-accent-blue-solid', '--ai-accent-pink-solid', '--ai-text-contrast'];
+  var PAIR = ['--ao-accent-lagoon-solid', '--ao-accent-purple-solid'];
+  var SERIES = ['--ao-accent-lagoon-solid', '--ao-accent-purple-solid', '--ao-accent-emerald-solid', '--ao-accent-orange-solid',
+    '--ao-accent-blue-solid', '--ao-accent-pink-solid', '--ao-text-contrast'];
 
   function chartCard(id, big, sub) {
     var host = page.querySelector('[data-chart="' + id + '"]');
@@ -226,7 +226,7 @@
     if (!window.Chart) return;
     if (charts[id]) charts[id].destroy();
     var canvas = page.querySelector('[data-chart="' + id + '"] canvas');
-    var grid = tok('--ai-border-secondary'), text = tok('--ai-text-contrast');
+    var grid = tok('--ao-border-secondary'), text = tok('--ao-text-contrast');
     Chart.defaults.font.family = 'Inter, sans-serif';
     Chart.defaults.font.size = 12;
     Chart.defaults.color = text;
@@ -240,7 +240,7 @@
         plugins: {
           legend: { display: !!cfg.legend, position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, usePointStyle: true } },
           tooltip: {
-            backgroundColor: tok('--ai-surface-invert'), titleColor: tok('--ai-text-invert'), bodyColor: tok('--ai-text-invert'),
+            backgroundColor: tok('--ao-surface-invert'), titleColor: tok('--ao-text-invert'), bodyColor: tok('--ao-text-invert'),
             padding: 10, cornerRadius: 6,
             callbacks: { title: cfg.tooltipTitle ? function (items) { return items.length ? cfg.tooltipTitle(items[0].dataIndex) : ''; } : undefined,
               label: function (c) {
@@ -470,13 +470,13 @@
     chartCard('ov-month-count', NUM.format(soFar), 'Contracts · ' + mName + ' to date · ' + pName + ' by day ' + pace.today + ': ' + NUM.format(lastBy));
     draw('ov-month-count', { type: 'line', labels: pace.labels, legend: true,
       tooltipTitle: function (i) { return (i + 1) + ' ' + MONTH[pace.month].slice(0, 3); },
-      datasets: [paceLine(mName, pace.current, countC), paceLine(pName, pace.previous, tok('--ai-text-contrast'), true)] });
+      datasets: [paceLine(mName, pace.current, countC), paceLine(pName, pace.previous, tok('--ao-text-contrast'), true)] });
     chartCard('ov-12-value', money(total(yv.data)), 'Contract value · last 12 months');
     draw('ov-12-value', { type: 'line', labels: yv.labels, datasets: [line('Value', yv.data, valueC, true)], money: true });
     /* The 12-month count uses the same pace form (designer, 2026-10-07): a running total
      * against the previous period of the same length. The reference is drawn only when that period
      * has contracts — an all-zero grey line would claim a comparison the data can't make. */
-    var grey = tok('--ai-text-contrast');
+    var grey = tok('--ao-text-contrast');
     function paceChart(id, n, label, prevLabel) {
       var p = paceMonths(COUNTED, n), now = p.current[n - 1], before = p.previous[n - 1];
       chartCard(id, NUM.format(now), 'Contracts · ' + label + (before ? ' · ' + prevLabel + ': ' + NUM.format(before) : ''));
@@ -520,7 +520,7 @@
     var top = accts.slice().sort(function (a, b) { return b.total - a.total; }).slice(0, 10);
     chartCard('top-10', top.length ? top[0].account : '—', top.length ? 'Top account · ' + money(top[0].total) : 'No accounts match these filters');
     draw('top-10', { type: 'bar', indexAxis: 'y', labels: top.map(function (a) { return a.account; }),
-      datasets: [bar('Total value', top.map(function (a) { return a.total; }), tok('--ai-surface-brand'))], money: true });
+      datasets: [bar('Total value', top.map(function (a) { return a.total; }), tok('--ao-surface-brand'))], money: true });
 
     table('top', [
       { key: 'account', label: 'Account', fit: { keep: 1, weight: 2, fluid: 1 }, sort: function (r) { return r.account; }, html: acctLink },

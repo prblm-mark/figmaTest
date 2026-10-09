@@ -144,10 +144,10 @@
   function chartDefaults() {
     Chart.defaults.font.family = 'Inter, sans-serif';
     Chart.defaults.font.size = 12;
-    Chart.defaults.color = tok('--ai-text-contrast');
+    Chart.defaults.color = tok('--ao-text-contrast');
   }
   function tooltip(fmt) {
-    return { backgroundColor: tok('--ai-surface-invert'), titleColor: tok('--ai-text-invert'), bodyColor: tok('--ai-text-invert'),
+    return { backgroundColor: tok('--ao-surface-invert'), titleColor: tok('--ao-text-invert'), bodyColor: tok('--ao-text-invert'),
       padding: 10, cornerRadius: 6, displayColors: false, callbacks: fmt };
   }
   /* Area: Live Dashboard's treatment — a 2px line over a fill that fades from 25% to nothing. */
@@ -155,7 +155,7 @@
     /* Monotone: a smoothed line that never overshoots, so a busy Friday then an empty Saturday
        does not dip below zero. */
     return { label: label, data: data, borderColor: colour, borderWidth: 2, cubicInterpolationMode: 'monotone', fill: true,
-      pointRadius: 0, pointHoverRadius: 5, pointHoverBorderWidth: 2, pointHoverBorderColor: tok('--ai-surface-primary'),
+      pointRadius: 0, pointHoverRadius: 5, pointHoverBorderWidth: 2, pointHoverBorderColor: tok('--ao-surface-primary'),
       pointHoverBackgroundColor: colour,
       backgroundColor: function (ctx) {
         var a = ctx.chart.chartArea;
@@ -171,7 +171,7 @@
       var act = c.tooltip && c.tooltip.getActiveElements && c.tooltip.getActiveElements();
       if (!act || !act.length) return;
       var ctx = c.ctx, x = act[0].element.x;
-      ctx.save(); ctx.strokeStyle = tok('--ai-border-primary'); ctx.lineWidth = 1;
+      ctx.save(); ctx.strokeStyle = tok('--ao-border-primary'); ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(x, c.chartArea.top); ctx.lineTo(x, c.chartArea.bottom); ctx.stroke(); ctx.restore();
     }
   };
@@ -197,7 +197,7 @@
     if (!window.Chart) return;
     /* Lagoon bars, the house shape (4px top radius, flat base). The month still running is the soft
        lagoon with a lagoon edge, so a part-month total does not read as a drop. */
-    var solid = tok('--ai-accent-lagoon-solid'), soft = tok('--ai-accent-lagoon-soft');
+    var solid = tok('--ao-accent-lagoon-solid'), soft = tok('--ao-accent-lagoon-soft');
     p.chart = new Chart(canvas, {
       type: 'bar',
       data: { labels: data.map(function (d) { return d.label; }), datasets: [{ label: p.noun, data: data.map(function (d) { return d.value; }),
@@ -211,7 +211,7 @@
           label: function (c) { return ' ' + NUM.format(c.parsed.y) + ' ' + (c.parsed.y === 1 ? nouns[0] : nouns[1]); } }) },
         scales: {
           x: { grid: { display: false }, border: { display: false }, ticks: { maxRotation: 0, autoSkip: true, autoSkipPadding: 8 } },
-          y: { beginAtZero: true, grid: { color: tok('--ai-border-secondary') }, border: { display: false }, ticks: { precision: 0, maxTicksLimit: 4 } }
+          y: { beginAtZero: true, grid: { color: tok('--ao-border-secondary') }, border: { display: false }, ticks: { precision: 0, maxTicksLimit: 4 } }
         }
       }
     });
@@ -244,7 +244,7 @@
     var canvas = $('[data-act-canvas="' + key + '"]');
     canvas.setAttribute('aria-label', 'Area chart of ' + a.noun[1] + ' per day for the last 30 days, ' + t + ' in all');
     if (!window.Chart) return;
-    var colour = tok('--ai-accent-lagoon-solid');
+    var colour = tok('--ao-accent-lagoon-solid');
     var c = new Chart(canvas, {
       type: 'line',
       data: { labels: last.map(function (d) { return d.date.getDate(); }), datasets: [area(last.map(function (d) { return d.count; }), colour, a.noun[1])] },

@@ -12,7 +12,7 @@
  * works at any viewport.
  *
  * Token namespace (added 2026-05-07): chrome uses the new
- * `--ai-datatable-*` tokens (table-bg / table-header-bg /
+ * `--ao-datatable-*` tokens (table-bg / table-header-bg /
  * table-subheader-bg / table-footer-bg / table-expanded-bg /
  * table-border) sourced from the Figma `components/global/datatable`
  * subtree. Table cells inside Datatables are scoped via
@@ -26,9 +26,9 @@
  * The inner <table> uses .table from the Table component. */
 
 .datatables {
-  background-color: var(--ai-datatable-table-bg);
-  border: 1px solid var(--ai-datatable-table-border);
-  border-radius: var(--ai-radius-md);
+  background-color: var(--ao-datatable-table-bg);
+  border: 1px solid var(--ao-datatable-table-border);
+  border-radius: var(--ao-radius-md);
   /* `clip`, not `hidden` (2026-09-23). Both clip the children to the rounded
    * corners, but `hidden` also makes this box a scroll container, and a
    * `position: sticky` descendant then sticks to IT — which never scrolls — so
@@ -47,12 +47,12 @@
  * the new Figma tokens (subheader-bg = white, border = #e2e2e3). */
 
 .datatables .table thead th {
-  background-color: var(--ai-datatable-table-subheader-bg);
-  border-bottom-color: var(--ai-datatable-table-border);
+  background-color: var(--ao-datatable-table-subheader-bg);
+  border-bottom-color: var(--ao-datatable-table-border);
 }
 
 .datatables .table tbody td {
-  border-bottom-color: var(--ai-datatable-table-border);
+  border-bottom-color: var(--ao-datatable-table-border);
 }
 
 /* Trigger variant: when the last <tr> is a paired (hidden) detail row,
@@ -96,31 +96,31 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-4);
-  padding: var(--ai-spacing-4) var(--ai-spacing-5);
-  background-color: var(--ai-datatable-table-header-bg);
-  border-bottom: 1px solid var(--ai-datatable-table-border);
+  gap: var(--ao-spacing-4);
+  padding: var(--ao-spacing-4) var(--ao-spacing-5);
+  background-color: var(--ao-datatable-table-header-bg);
+  border-bottom: 1px solid var(--ao-datatable-table-border);
 }
 
 .datatables__meta {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  color: var(--ai-text-contrast);
+  gap: var(--ao-spacing-2);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  color: var(--ao-text-contrast);
   white-space: nowrap;
 }
 
 .datatables__meta strong {
-  font-weight: var(--ai-font-bold);
+  font-weight: var(--ao-font-bold);
 }
 
 .datatables__actions {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 /* ── Page-size select (button styled as small select) ──
@@ -131,28 +131,28 @@
 .datatables__select {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  height: var(--ai-spacing-8);
-  padding: 0 var(--ai-spacing-3);
-  background-color: var(--ai-datatable-table-bg);
-  border: 1px solid var(--ai-datatable-table-border);
-  border-radius: var(--ai-radius-md);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-medium);
-  color: var(--ai-text-primary);
+  gap: var(--ao-spacing-2);
+  height: var(--ao-spacing-8);
+  padding: 0 var(--ao-spacing-3);
+  background-color: var(--ao-datatable-table-bg);
+  border: 1px solid var(--ao-datatable-table-border);
+  border-radius: var(--ao-radius-md);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-primary);
   cursor: pointer;
-  transition: border-color var(--ai-transition-default);
+  transition: border-color var(--ao-transition-default);
 }
 
 .datatables__select:hover {
-  border-color: var(--ai-border-contrast);
+  border-color: var(--ao-border-contrast);
 }
 
 .datatables__select [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-contrast);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-contrast);
 }
 
 /* ── Search field (Search type, slots into toolbar) ── */
@@ -164,7 +164,7 @@
 }
 
 .datatables__search .input__wrap {
-  min-height: var(--ai-spacing-8);
+  min-height: var(--ao-spacing-8);
 }
 
 /* ── Sortable column header ──────────────────────────── */
@@ -174,7 +174,7 @@
 .datatables__sort {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   background: transparent;
   border: 0;
   padding: 0;
@@ -186,9 +186,9 @@
 }
 
 .datatables__sort [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-contrast);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-contrast);
 }
 
 /* ── Pagination footer ───────────────────────────────── */
@@ -197,25 +197,25 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-3) var(--ai-spacing-5);
-  background-color: var(--ai-datatable-table-footer-bg);
-  border-top: 1px solid var(--ai-datatable-table-border);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  color: var(--ai-text-contrast);
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-3) var(--ao-spacing-5);
+  background-color: var(--ao-datatable-table-footer-bg);
+  border-top: 1px solid var(--ao-datatable-table-border);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-contrast);
 }
 
 .datatables__footer strong {
-  font-weight: var(--ai-font-bold);
+  font-weight: var(--ao-font-bold);
 }
 
 .datatables__pagination {
   display: inline-flex;
   align-items: stretch;
-  background-color: var(--ai-datatable-table-bg);
-  border: 1px solid var(--ai-datatable-table-border);
-  border-radius: var(--ai-radius-md);
+  background-color: var(--ao-datatable-table-bg);
+  border: 1px solid var(--ao-datatable-table-border);
+  border-radius: var(--ao-radius-md);
   overflow: hidden;
 }
 
@@ -223,20 +223,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: var(--ai-spacing-8);
-  height: var(--ai-spacing-8);
-  padding: 0 var(--ai-spacing-3);
+  min-width: var(--ao-spacing-8);
+  height: var(--ao-spacing-8);
+  padding: 0 var(--ao-spacing-3);
   background: transparent;
   border: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-primary);
   cursor: pointer;
-  transition: background-color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default);
 }
 
 .datatables__page-btn:hover {
-  background-color: var(--ai-datatable-table-footer-bg);
+  background-color: var(--ao-datatable-table-footer-bg);
 }
 
 /* Separators sit between the GROUP's children — the arrows, the number set
@@ -245,7 +245,7 @@
  * Keyed to the buttons alone, the Next arrow lost its divider whenever the
  * hidden member happened to sit in front of it. */
 .datatables__pagination > * + * {
-  border-left: 1px solid var(--ai-datatable-table-border);
+  border-left: 1px solid var(--ao-datatable-table-border);
 }
 
 /* …and between the numbers inside their own wrapper. */
@@ -255,7 +255,7 @@
 }
 
 .datatables__page-numbers .datatables__page-btn + .datatables__page-btn {
-  border-left: 1px solid var(--ai-datatable-table-border);
+  border-left: 1px solid var(--ao-datatable-table-border);
 }
 
 /* "Page 3 of 7" — what the numbers become when there is no room for them.
@@ -263,26 +263,26 @@
 .datatables__page-position {
   display: none;
   align-items: center;
-  padding: 0 var(--ai-spacing-4);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  color: var(--ai-text-primary);
+  padding: 0 var(--ao-spacing-4);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-primary);
   white-space: nowrap;
 }
 
 .datatables__page-btn--active {
-  background-color: var(--ai-datatable-table-border);
-  color: var(--ai-text-primary);
-  font-weight: var(--ai-font-bold);
+  background-color: var(--ao-datatable-table-border);
+  color: var(--ao-text-primary);
+  font-weight: var(--ao-font-bold);
 }
 
 .datatables__page-btn--active:hover {
-  background-color: var(--ai-datatable-table-border);
+  background-color: var(--ao-datatable-table-border);
 }
 
 .datatables__page-btn [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 /* ── Kebab-row-expand pattern (Overflow Content=Trigger) ──
@@ -296,26 +296,26 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-spacing-7);
-  height: var(--ai-spacing-7);
+  width: var(--ao-spacing-7);
+  height: var(--ao-spacing-7);
   border: 1px solid transparent;
-  border-radius: var(--ai-radius-md);
+  border-radius: var(--ao-radius-md);
   cursor: pointer;
-  color: var(--ai-icon-contrast);
-  transition: background-color var(--ai-transition-default),
-              border-color var(--ai-transition-default),
-              color var(--ai-transition-default);
+  color: var(--ao-icon-contrast);
+  transition: background-color var(--ao-transition-default),
+              border-color var(--ao-transition-default),
+              color var(--ao-transition-default);
 }
 
 /* Hover draws the SAME line the table draws between its rows —
- * `1px solid var(--ai-border-secondary)`, the row border (designer,
+ * `1px solid var(--ao-border-secondary)`, the row border (designer,
  * 2026-09-18). The border is reserved as transparent at rest rather than
  * added on hover: with `box-sizing: border-box` the box stays 32px either way,
  * so the icon does not shift by a pixel as the pointer crosses it. */
 .datatables__kebab:hover {
-  background-color: var(--ai-datatable-table-expanded-bg);
-  border-color: var(--ai-border-secondary);
-  color: var(--ai-text-primary);
+  background-color: var(--ao-datatable-table-expanded-bg);
+  border-color: var(--ao-border-secondary);
+  color: var(--ao-text-primary);
 }
 
 .datatables__kebab__input {
@@ -327,12 +327,12 @@
 }
 
 .datatables__kebab [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 .datatables__kebab-cell {
-  width: var(--ai-spacing-7);
+  width: var(--ao-spacing-7);
   text-align: right;
 }
 
@@ -359,23 +359,23 @@
 }
 
 .datatables__row:has(.datatables__kebab__input:checked) {
-  background-color: var(--ai-datatable-table-expanded-bg);
+  background-color: var(--ao-datatable-table-expanded-bg);
 }
 
 .datatables__row-detail__cell {
   padding: 0;
-  background-color: var(--ai-datatable-table-expanded-bg);
-  border-bottom: 1px solid var(--ai-datatable-table-border);
+  background-color: var(--ao-datatable-table-expanded-bg);
+  border-bottom: 1px solid var(--ao-datatable-table-border);
 }
 
 .datatables__detail-list {
   margin: 0;
-  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+  padding: var(--ao-spacing-3) var(--ao-spacing-5);
   display: grid;
   grid-template-columns: max-content 1fr;
-  column-gap: var(--ai-spacing-5);
-  row-gap: var(--ai-spacing-2);
-  font-size: var(--ai-font-fixed-xs);
+  column-gap: var(--ao-spacing-5);
+  row-gap: var(--ao-spacing-2);
+  font-size: var(--ao-font-fixed-xs);
 }
 
 /* One dt/dd pair, as a single thing to show or hide. `display: contents`
@@ -394,21 +394,21 @@
 .datatables__detail-empty {
   grid-column: 1 / -1;
   margin: 0;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 .datatables__detail-list dt {
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-contrast);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-contrast);
   text-transform: uppercase;
-  letter-spacing: var(--ai-tracking-7);
+  letter-spacing: var(--ao-tracking-7);
   align-self: center;
 }
 
 .datatables__detail-list dd {
   margin: 0;
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 /* ── Mobile responsive (≤767px container width) ─────────
@@ -418,7 +418,7 @@
 @container (max-width: 767px) {
   /* Trim toolbar gap and stack action labels behind icons */
   .datatables__toolbar {
-    gap: var(--ai-spacing-2);
+    gap: var(--ao-spacing-2);
   }
 
   /* Compact padding below 768px container width: every element that uses
@@ -431,7 +431,7 @@
   .datatables__detail-list,
   .datatables .table thead th,
   .datatables .table tbody td {
-    padding: var(--ai-spacing-3) var(--ai-spacing-3);
+    padding: var(--ao-spacing-3) var(--ao-spacing-3);
   }
 
   /* Tight column: drops right padding so the column collapses toward its
@@ -465,13 +465,13 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 .datatables__user-text {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-0);
+  gap: var(--ao-spacing-0);
   min-width: 0;
 }
 
@@ -485,19 +485,19 @@
 }
 
 .datatables__user-name {
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-bold);
-  font-size: var(--ai-font-fixed-xs);
-  color: var(--ai-text-primary);
-  line-height: var(--ai-leading-sm);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-bold);
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-primary);
+  line-height: var(--ao-leading-sm);
 }
 
 .datatables__user-role {
-  font-family: var(--ai-font-body);
-  font-weight: var(--ai-font-medium);
-  font-size: var(--ai-font-fixed-xs);
-  color: var(--ai-text-contrast);
-  line-height: var(--ai-leading-sm);
+  font-family: var(--ao-font-body);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-contrast);
+  line-height: var(--ao-leading-sm);
 }
 
 /* Cell that centres a Lucide icon (e.g. fingerprint TOUCH column). */
@@ -506,12 +506,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--ai-icon-secondary);
+  color: var(--ao-icon-secondary);
 }
 
 .datatables__icon-cell [data-lucide] {
-  width: var(--ai-icon-size-md);
-  height: var(--ai-icon-size-md);
+  width: var(--ao-icon-size-md);
+  height: var(--ao-icon-size-md);
 }
 
 /* ── Type=Orders ─────────────────────────────────────────
@@ -534,7 +534,7 @@
  * COLUMN WIDTHS ARE INTRINSIC, NOT THE FIGMA PIXELS
  * Figma fixes ORDER NO 114, QTY 100, kebab 48, checkbox 32 and sets
  * min-widths of 250 (CUSTOMER) / 170 (ACCOUNT). None of those map to
- * an --ai-* token, so writing them would breach the hardcoded-
+ * an --ao-* token, so writing them would breach the hardcoded-
  * dimension rule. `.datatables__col--hug` shrink-wraps the narrow
  * columns instead and the wide ones take the remainder, which
  * reproduces the design AND holds at any column width — the point of
@@ -547,18 +547,18 @@
  * CC light (both #ffffff); they diverge in CC dark (#1e293b vs
  * #293548), which is the only reason this override exists. */
 .datatables--orders .datatables__toolbar {
-  background-color: var(--ai-surface-primary);
+  background-color: var(--ao-surface-primary);
 }
 
 /* "of 296" — Figma colours the bold count a step darker than the
  * label it sits in. Figma cannot bind a variable to a text RANGE, so
  * the design context reports it as a raw hex; it resolves to
- * --ai-text-secondary in every mode. */
+ * --ao-text-secondary in every mode. */
 .datatables--orders .datatables__meta strong {
-  color: var(--ai-text-secondary);
+  color: var(--ao-text-secondary);
 }
 
-/* Rows-per-page control: the base 40px (`--ai-spacing-8`, the base button
+/* Rows-per-page control: the base 40px (`--ao-spacing-8`, the base button
  * height). Orders used to take it down to 32px from the Orders frame
  * (3648:164786); the designer put it back to base height on both listing
  * templates, 2026-09-23 — and the full-width Listings frame 3788:16762 draws
@@ -568,14 +568,14 @@
  * on primary, from the Orders frame; the base Table component uses semibold
  * on secondary. */
 .datatables--orders .table thead th {
-  font-weight: var(--ai-font-bold);
-  color: var(--ai-text-contrast);
+  font-weight: var(--ao-font-bold);
+  color: var(--ao-text-contrast);
 }
 
 /* …and the ACTIVE sort column's label stays that colour too (designer,
  * 2026-09-23). The base `.datatables__sort--active` darkens it to
- * `--ai-text-primary`; on Orders every header label reads alike, and so does
- * every chevron — the active one keeps the rest's `--ai-icon-contrast`
+ * `--ao-text-primary`; on Orders every header label reads alike, and so does
+ * every chevron — the active one keeps the rest's `--ao-icon-contrast`
  * rather than darkening to primary. The state is carried by SHAPE alone: a
  * single direction chevron on the active column, the pair on the rest. */
 .datatables--orders .datatables__sort--active {
@@ -583,13 +583,13 @@
 }
 
 .datatables--orders .datatables__sort--active [data-lucide] {
-  color: var(--ai-icon-contrast);
+  color: var(--ao-icon-contrast);
 }
 
 /* 64px minimum row. `height` on a table cell behaves as a minimum, so
  * this grows with content instead of clipping it. */
 .datatables--orders .table tbody td {
-  height: var(--ai-spacing-11);
+  height: var(--ao-spacing-11);
 }
 
 /* Shrink-to-fit column (ORDER NO, QTY, checkbox, kebab). `width: 1%`
@@ -652,7 +652,7 @@
 /* ORDER NO is the row's identifier — semibold, unlike the other
  * plain-text cells which stay regular. */
 .datatables--orders .datatables__order-no {
-  font-weight: var(--ai-font-semibold);
+  font-weight: var(--ao-font-semibold);
 }
 
 /* ── Clickable rows ──────────────────────────────────────
@@ -671,13 +671,13 @@
 }
 
 .datatables--rows-clickable .datatables__row:hover {
-  background-color: var(--ai-datatable-table-expanded-bg);
+  background-color: var(--ao-datatable-table-expanded-bg);
 }
 
 /* The account chip vanished on a hovered row.
  *
  * `.btn--tertiary:hover` (0,2,0) out-specifies the chip's contextual border
- * (0,1,0) and sets `--ai-btn-tertiary-border-hover`, which is transparent in
+ * (0,1,0) and sets `--ao-btn-tertiary-border-hover`, which is transparent in
  * every mode — so hovering the chip removed the only edge it had. Measured in
  * Light and CC, the fill it falls back to is `rgb(242,244,245)` against a row
  * tint of `rgb(243,246,247)`: a difference of one to two per channel. No
@@ -689,7 +689,7 @@
  * (designer, 2026-09-21). */
 .datatables--rows-clickable .datatables__account-chip:hover,
 .datatables--rows-clickable .datatables__account-chip:focus-visible {
-  border-color: var(--ai-border-secondary);
+  border-color: var(--ao-border-secondary);
 }
 
 /* The order number is the row's real link — the keyboard path to the same
@@ -711,22 +711,22 @@
 /* The record link is the row's identifier, like ORDER NO — so it takes the
  * same semibold (designer, 2026-09-23), where the cell around it is regular. */
 .datatables--orders .datatables__record-link {
-  font-weight: var(--ai-font-semibold);
+  font-weight: var(--ao-font-semibold);
 }
 
 /* Customer cell deltas vs the Whos Online rendering. */
 .datatables--orders .datatables__user-cell {
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
 .datatables--orders .datatables__user-name {
-  font-weight: var(--ai-font-semibold);
+  font-weight: var(--ao-font-semibold);
 }
 
 .datatables--orders .datatables__user-role {
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-regular);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-regular);
+  color: var(--ao-text-secondary);
 }
 
 /* Initials avatar uses the BRAND soft palette here; the Avatar
@@ -735,8 +735,8 @@
  * flagged for the designer to formalise as an Avatar variant if it
  * turns out to be the house style rather than a one-off. */
 .datatables--orders .avatar--initials {
-  background-color: var(--ai-surface-brand-soft-extra);
-  color: var(--ai-text-brand);
+  background-color: var(--ao-surface-brand-soft-extra);
+  color: var(--ao-text-brand);
 }
 
 /* Account chip — `btn btn--tertiary btn--sm` plus a visible border.
@@ -744,12 +744,12 @@
  * border is a contextual override (Case B, designer's call
  * 2026-09-17) rather than a new Button variant. */
 .datatables__account-chip {
-  border-color: var(--ai-border-secondary);
+  border-color: var(--ao-border-secondary);
 }
 
 /* Footer matches the toolbar: white, not the shared footer-bg. */
 .datatables--orders .datatables__footer {
-  background-color: var(--ai-surface-primary);
+  background-color: var(--ao-surface-primary);
 }
 
 /* Current page is painted footer-bg rather than the border grey the
@@ -758,11 +758,11 @@
  * which is why the markup also sets aria-current="page". Flagged to
  * the designer; do not "fix" it here without a Figma change. */
 .datatables--orders .datatables__page-btn--active {
-  background-color: var(--ai-datatable-table-footer-bg);
+  background-color: var(--ao-datatable-table-footer-bg);
 }
 
 .datatables--orders .datatables__page-btn--active:hover {
-  background-color: var(--ai-datatable-table-footer-bg);
+  background-color: var(--ao-datatable-table-footer-bg);
 }
 
 /* Per-row edit affordance — BORDERLESS, and on every row at every width
@@ -780,22 +780,22 @@
   align-items: center;
   justify-content: center;
   flex: none;
-  width: var(--ai-spacing-7);
-  height: var(--ai-spacing-7);
+  width: var(--ao-spacing-7);
+  height: var(--ao-spacing-7);
   border: 1px solid transparent;
-  border-radius: var(--ai-radius-md);
+  border-radius: var(--ao-radius-md);
   cursor: pointer;
-  color: var(--ai-icon-contrast);
-  transition: background-color var(--ai-transition-default),
-              border-color var(--ai-transition-default),
-              color var(--ai-transition-default);
+  color: var(--ao-icon-contrast);
+  transition: background-color var(--ao-transition-default),
+              border-color var(--ao-transition-default),
+              color var(--ao-transition-default);
 }
 
 /* Same hover as the kebab, including the row-border line — see the note there. */
 .datatables__row-edit:hover {
-  background-color: var(--ai-datatable-table-expanded-bg);
-  border-color: var(--ai-border-secondary);
-  color: var(--ai-text-primary);
+  background-color: var(--ao-datatable-table-expanded-bg);
+  border-color: var(--ao-border-secondary);
+  color: var(--ao-text-primary);
 }
 
 /* The pencil comes off below a laptop.
@@ -831,22 +831,22 @@
  * names an element — the same trap documented on the mobile kebab rule below. */
 .datatables--orders .table td.datatables__col--edit,
 .datatables--orders .table th.datatables__col--edit {
-  padding-right: var(--ai-spacing-0);
+  padding-right: var(--ao-spacing-0);
 }
 
 .datatables--orders .table td.datatables__col--kebab,
 .datatables--orders .table th.datatables__col--kebab {
-  padding-left: var(--ai-spacing-1);
+  padding-left: var(--ao-spacing-1);
   /* 8px, down from the 16px every other cell takes (designer, 2026-09-21).
      The kebab is a 32px box with its own internal breathing room, so the
      cell's padding is the only thing between the icon and the table edge —
      and at 16 it read as a margin rather than a gutter. */
-  padding-right: var(--ai-spacing-3);
+  padding-right: var(--ao-spacing-3);
 }
 
 .datatables__row-edit [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 /* Header label pair. Figma shortens some headers on mobile; both
@@ -870,15 +870,15 @@
 @container (max-width: 767px) {
   .datatables--orders .datatables__toolbar,
   .datatables--orders .datatables__footer {
-    padding: var(--ai-spacing-3) var(--ai-spacing-4);
+    padding: var(--ao-spacing-3) var(--ao-spacing-4);
   }
 
   .datatables--orders .datatables__toolbar {
-    background-color: var(--ai-datatable-table-header-bg);
+    background-color: var(--ao-datatable-table-header-bg);
   }
 
   .datatables--orders .datatables__footer {
-    background-color: var(--ai-datatable-table-footer-bg);
+    background-color: var(--ao-datatable-table-footer-bg);
   }
 
   /* The word "Show" is dropped; the control and count carry it. */
@@ -889,7 +889,7 @@
   .datatables--orders .datatables__meta,
   .datatables--orders .datatables__select,
   .datatables--orders .datatables__footer {
-    font-size: var(--ai-font-fixed-2xs);
+    font-size: var(--ao-font-fixed-2xs);
   }
 
   /* ── Footer at narrow widths ───────────────────────────
@@ -926,8 +926,8 @@
   /* Cells hug the left edge and hand every spare pixel to CUSTOMER. */
   .datatables--orders .table thead th,
   .datatables--orders .table tbody td {
-    padding: var(--ai-spacing-3) var(--ai-spacing-0)
-             var(--ai-spacing-3) var(--ai-spacing-4);
+    padding: var(--ao-spacing-3) var(--ao-spacing-0)
+             var(--ao-spacing-3) var(--ao-spacing-4);
   }
 
   /* …which leaves the row's right edge to the kebab cell. When every column fits there is no kebab,
@@ -937,7 +937,7 @@
      edge); now every fitted table gets it. */
   .datatables--orders .table thead th.datatables__col--end,
   .datatables--orders .table tbody td.datatables__col--end {
-    padding-right: var(--ai-spacing-4);
+    padding-right: var(--ao-spacing-4);
   }
 
   /* The HEADER keeps a taller block padding than the rows — 12px against the
@@ -948,48 +948,48 @@
      `padding-block` after the shorthand, so only the vertical half is
      overridden and the horizontal hug above survives. */
   .datatables--orders .table thead th {
-    padding-block: var(--ai-spacing-4);
+    padding-block: var(--ao-spacing-4);
   }
 
   /* Bold at every width (designer, 2026-09-24) — this step used to drop the
      weight to semibold along with the size. */
   .datatables--orders .table thead th {
-    font-size: var(--ai-font-fixed-4xs);
-    letter-spacing: var(--ai-tracking-7);
+    font-size: var(--ao-font-fixed-4xs);
+    letter-spacing: var(--ao-tracking-7);
   }
 
   /* The detail panel's labels step down with the headers they stand in for
      (designer, 2026-09-21) — they are the same labels, just read from behind
      the kebab instead of across the row. */
   .datatables--orders .datatables__detail-list dt {
-    font-size: var(--ai-font-fixed-4xs);
+    font-size: var(--ao-font-fixed-4xs);
   }
 
   /* Mobile rows divide on the lighter border-secondary, not the
      datatable border. */
   .datatables--orders .table thead th,
   .datatables--orders .table tbody td {
-    border-bottom-color: var(--ai-border-secondary);
+    border-bottom-color: var(--ao-border-secondary);
   }
 
   .datatables--orders .datatables__order-no {
-    font-size: var(--ai-font-fixed-2xs);
-    font-weight: var(--ai-font-medium);
+    font-size: var(--ao-font-fixed-2xs);
+    font-weight: var(--ao-font-medium);
   }
 
   .datatables--orders .datatables__user-cell {
-    gap: var(--ai-spacing-2);
+    gap: var(--ao-spacing-2);
   }
 
   .datatables--orders .datatables__user-name {
-    font-size: var(--ai-font-fixed-2xs);
+    font-size: var(--ao-font-fixed-2xs);
   }
 
   /* Figma leaves this size unbound (raw 12px); normalised to the
      token per the designer's 2026-09-17 ruling on unbound values. */
   .datatables--orders .datatables__user-role {
-    font-size: var(--ai-font-fixed-xxs);
-    line-height: var(--ai-leading-none);
+    font-size: var(--ao-font-fixed-xxs);
+    line-height: var(--ao-leading-none);
   }
 
   /* Row height relaxes — the 64px desktop minimum would leave the
@@ -999,8 +999,8 @@
   }
 
   .datatables--orders .datatables__page-btn {
-    min-width: var(--ai-spacing-7);
-    height: var(--ai-spacing-7);
+    min-width: var(--ao-spacing-7);
+    height: var(--ao-spacing-7);
   }
 
   /* Short header labels ("Order" for "Order No"), per Figma. */
@@ -1012,7 +1012,7 @@
     display: inline;
   }
 
-  /* Figma gives the mobile kebab cell px: --ai-spacing-0 — it sits
+  /* Figma gives the mobile kebab cell px: --ao-spacing-0 — it sits
      flush to the row edge. Without this the 12px inline padding the
      rule above applies to every cell pushes the column past the card,
      which is how it first rendered (measured 320px of table in a
@@ -1025,15 +1025,15 @@
   .datatables--orders .table td.datatables__col--kebab,
   .datatables--orders .table th.datatables__col--kebab {
     /* Figma's mobile frame puts this cell flush to the row edge
-       (--ai-spacing-0 both sides). The designer overruled it on 2026-09-21:
+       (--ao-spacing-0 both sides). The designer overruled it on 2026-09-21:
        flush reads as the kebab falling off the table, and it is the last
        control in the row, so the row's own gutter has to come from here.
        LEFT stays tight — it pairs with the pencil when there is one; RIGHT
        takes the 12px the other cells use on their leading edge, so the gutter
        matches the one down the left of the table.
        An instruction that overrides the frame, not a reading of it. */
-    padding-left: var(--ai-spacing-1);    /* 4px */
-    padding-right: var(--ai-spacing-2);   /* 6px */
+    padding-left: var(--ao-spacing-1);    /* 4px */
+    padding-right: var(--ao-spacing-2);   /* 6px */
   }
 }
 
@@ -1048,7 +1048,7 @@
 @media (max-width: 1023px) {
   .datatables--orders .table td.datatables__col--kebab,
   .datatables--orders .table th.datatables__col--kebab {
-    padding-left: var(--ai-spacing-3);    /* 8px */
+    padding-left: var(--ao-spacing-3);    /* 8px */
   }
 }
 
@@ -1117,9 +1117,9 @@
 
 .datatables__order-ext {
   display: block;
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-regular);
-  color: var(--ai-text-contrast);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-regular);
+  color: var(--ao-text-contrast);
 }
 
 /* ── Sort + pagination state ─────────────────────────────
@@ -1129,23 +1129,23 @@
  */
 
 .datatables__sort--active {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 /* The active chevron is the SAME family as the others, just darker — it was
- * `--ai-icon-brand`, the one coloured thing in a row of grey, and it read as a
+ * `--ao-icon-brand`, the one coloured thing in a row of grey, and it read as a
  * link rather than as a state (designer, 2026-09-21).
  *
  * It does not need the colour: the control is a chevron PAIR at rest and a
  * single direction chevron once a column is sorting, so the shape already
- * carries the state, and `--ai-text-primary` matches the label sitting next to
+ * carries the state, and `--ao-text-primary` matches the label sitting next to
  * it — the two now darken together.
  *
  * This rule duplicated one 900 lines above that already said
- * `--ai-text-primary`; the brand version was later and quietly won. The
+ * `--ao-text-primary`; the brand version was later and quietly won. The
  * duplicate is gone with it. */
 .datatables__sort--active [data-lucide] {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 /* Elided page numbers. Not a button — there is nothing to click. */
@@ -1153,8 +1153,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: var(--ai-spacing-8);
-  color: var(--ai-text-contrast);
+  min-width: var(--ao-spacing-8);
+  color: var(--ao-text-contrast);
 }
 
 
@@ -1174,7 +1174,7 @@
  * panel. auto-fill holds the track width and leaves the rest empty, which is
  * what a column layout should do.
  *
- * `--ai-size-3` (192px) is the minimum a pair needs: an uppercase label like
+ * `--ao-size-3` (192px) is the minimum a pair needs: an uppercase label like
  * PAYMENT METHOD plus values such as "Awaiting Payment Confirmation". Below
  * that the count is what changes, never the legibility — which is why this is
  * a minmax rather than a set of breakpoints. It needs no container query at
@@ -1182,10 +1182,10 @@
  * than at the three or four someone chose.
  */
 .datatables--orders .datatables__detail-list {
-  grid-template-columns: repeat(auto-fill, minmax(var(--ai-size-3), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(var(--ao-size-3), 1fr));
   /* 16px between pairs, against 0 inside one (designer, 2026-09-21) — the
      grouping now comes entirely from this gap, so it has to be unambiguous. */
-  row-gap: var(--ai-spacing-5);
+  row-gap: var(--ao-spacing-5);
   /* The detail cell is a <td>, and Table.css gives every cell
      `white-space: nowrap` — which inherits straight into this list and would
      push long values out of a 192px column. */
@@ -1201,7 +1201,7 @@
   /* No gap (designer, 2026-09-21). The label's own 16px leading already
      carries the separation, and the 12px row-gap between pairs is what does
      the grouping — so the 4px inside each pair was only height. */
-  gap: var(--ai-spacing-0);
+  gap: var(--ao-spacing-0);
   min-inline-size: 0;
 }
 
@@ -1217,13 +1217,13 @@
      uppercase and was the slack worth taking out (designer, 2026-09-21).
      The VALUE stays at 20px — 16px on 14px text is 1.14, too tight for the
      wrapped lines a 192px column produces from a catalogue item name. */
-  line-height: var(--ai-leading-xs);     /* 16px, as .table thead th */
+  line-height: var(--ao-leading-xs);     /* 16px, as .table thead th */
 }
 
 /* Stated rather than inherited, so the pair keeps its rhythm if the cell's
  * line-height ever changes. */
 .datatables--orders .datatables__detail-list dd {
-  line-height: var(--ai-leading-sm);     /* 20px, as .table tbody td */
+  line-height: var(--ao-leading-sm);     /* 20px, as .table tbody td */
 }
 
 /* Long values wrap inside their column instead of widening it — catalogue
@@ -1238,7 +1238,7 @@
      a definite width, so a percentage resolves against it — the chip follows
      its column the way the title does, instead of being cropped when the fit
      hands that column less than 160px (designer, 2026-09-21). */
-  max-inline-size: min(var(--ai-size-2), 100%);
+  max-inline-size: min(var(--ao-size-2), 100%);
   overflow: hidden;
   text-overflow: ellipsis;
   vertical-align: middle;
@@ -1275,8 +1275,8 @@
  * where it showed five with an unreadable one. That is the trade the floor
  * exists to make. */
 .datatables--orders .datatables__col--fluid {
-  width: var(--ai-size-4);                /* 240px preferred … */
-  min-inline-size: var(--ai-size-3);      /* … never below 192px */
+  width: var(--ao-size-4);                /* 240px preferred … */
+  min-inline-size: var(--ao-size-3);      /* … never below 192px */
 }
 
 /* …but the floor comes off once the table is narrow.
@@ -1306,7 +1306,7 @@
  * measured as the override silently doing nothing. */
 @container (max-width: 400px) {
   .datatables--orders .datatables__col--fluid {
-    min-inline-size: var(--ai-spacing-0);
+    min-inline-size: var(--ao-spacing-0);
   }
 }
 
@@ -1337,12 +1337,12 @@
  * report its whole 436px and eat two columns' budget; 240 is the fluid
  * column's own floor, so the two agree. */
 .datatables--orders .datatables__table--measuring .datatables__article-title .datatables__truncate {
-  max-inline-size: var(--ai-size-4);     /* 240px */
+  max-inline-size: var(--ao-size-4);     /* 240px */
 }
 
 .datatables__truncate {
   display: block;
-  max-inline-size: var(--ai-size-2);     /* 160px */
+  max-inline-size: var(--ao-size-2);     /* 160px */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1353,11 +1353,11 @@
  * Orders rather than changed in Table.css — the Seating Planner's tables use
  * that component too and were not part of this ask. */
 .datatables--orders .table thead th {
-  line-height: var(--ai-leading-xs);     /* 16px */
+  line-height: var(--ao-leading-xs);     /* 16px */
 }
 
 .datatables--orders .table tbody td {
-  line-height: var(--ai-leading-sm);     /* 20px */
+  line-height: var(--ao-leading-sm);     /* 20px */
 }
 
 /* ── Media Items: the thumbnail and the Type cell ─────────────
@@ -1379,20 +1379,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  inline-size: var(--ai-spacing-11);     /* 64px */
-  block-size: var(--ai-spacing-11);
+  inline-size: var(--ao-spacing-11);     /* 64px */
+  block-size: var(--ao-spacing-11);
   flex: 0 0 auto;
-  border-radius: var(--ai-radius-sm);
-  border: 1px solid var(--ai-border-secondary);
-  background-color: var(--ai-surface-secondary);
-  color: var(--ai-icon-contrast);
+  border-radius: var(--ao-radius-sm);
+  border: 1px solid var(--ao-border-secondary);
+  background-color: var(--ao-surface-secondary);
+  color: var(--ao-icon-contrast);
   overflow: hidden;
 }
 
 .datatables--orders .datatables__thumb [data-lucide],
 .datatables--orders .datatables__thumb svg {
-  inline-size: var(--ai-icon-size-md);
-  block-size: var(--ai-icon-size-md);
+  inline-size: var(--ao-icon-size-md);
+  block-size: var(--ao-icon-size-md);
 }
 
 /* The picture fills the box and is cropped to it. `cover` rather than
@@ -1410,7 +1410,7 @@
 /* The thumbnail column hugs its box: it never grows, and it must not be the
  * column that gives way when the table narrows. */
 .datatables--orders .datatables__col--thumb {
-  inline-size: var(--ai-spacing-11);
+  inline-size: var(--ao-spacing-11);
   white-space: nowrap;
 }
 
@@ -1418,25 +1418,25 @@
 .datatables--orders .datatables__type-cell {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   white-space: nowrap;
 }
 
 .datatables--orders .datatables__type-cell [data-lucide],
 .datatables--orders .datatables__type-cell svg {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
   flex: 0 0 auto;
-  color: var(--ai-icon-contrast);
+  color: var(--ao-icon-contrast);
 }
 
 @container (max-width: 767px) {
   .datatables--orders .datatables__thumb {
-    inline-size: var(--ai-spacing-9);    /* 48px */
-    block-size: var(--ai-spacing-9);
+    inline-size: var(--ao-spacing-9);    /* 48px */
+    block-size: var(--ao-spacing-9);
   }
 
   .datatables--orders .datatables__col--thumb {
-    inline-size: var(--ai-spacing-9);
+    inline-size: var(--ao-spacing-9);
   }
 }

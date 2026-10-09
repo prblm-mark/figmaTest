@@ -32,27 +32,27 @@ inner node ID — `I<instance>;2699:2156` references the Warning-variant icon, v
 |---|---|---|
 | Container (root) | `.dropdown` | `position: relative` so the panel can absolutely-position underneath the trigger |
 | Trigger button | `.btn .btn--secondary .dropdown__trigger` | Reuses Button. `.dropdown__trigger` only adds chevron-rotate-on-open |
-| Panel | `.dropdown__panel` | Absolute, white-on-secondary-border, `--ai-shadow-md`. Display toggled by `.dropdown.is-open` |
+| Panel | `.dropdown__panel` | Absolute, white-on-secondary-border, `--ao-shadow-md`. Display toggled by `.dropdown.is-open` |
 | Panel — Search variant | `.dropdown__panel .dropdown__panel--search` | Adds vertical gap between search input and list |
 | Panel — Actions variant | `.dropdown__panel .dropdown__panel--actions` | Adds vertical gap between item list and Delete CTA |
 | Panel — Checkbox variant | `.dropdown__panel .dropdown__panel--checkbox` | Different padding (16px x, 12px y) per Figma |
-| Panel — Filter views variant | `.dropdown__panel .dropdown__panel--filter-views` | `min-width: var(--ai-size-3)` (192px). Scoped override: rows hover to `--ai-surface-minimal` (vs the default DropdownItem `--ai-surface-secondary`). |
-| Filter views — section label | `.dropdown__label` | "Saved views" — `--ai-font-body` / `--ai-font-fluid-xxs` (12px) / `--ai-text-contrast`, padding `2px 12px 4px` (`--ai-spacing-0-5` / `-4` / `-1`) |
-| Filter views — item group (top) | `.dropdown__list--filter-views-top` | `padding-bottom: var(--ai-spacing-3)`. Rows are `.dropdown-item--sm`; selected row carries `.dropdown-item__check` (no grey bg) |
-| Filter views — footer | `.dropdown__filter-views-footer` | `padding-top: var(--ai-spacing-3)`. Holds the "New view" CTA — a `.btn .btn--tertiary .btn--sm` forced full-width + left-aligned (`justify-content: flex-start`) with a leading `plus` icon. Scoped overrides: horizontal padding `--ai-spacing-3` (8px, vs btn--sm's 12px), text + icon `--ai-text-contrast`, weight `--ai-font-medium`. |
+| Panel — Filter views variant | `.dropdown__panel .dropdown__panel--filter-views` | `min-width: var(--ao-size-3)` (192px). Scoped override: rows hover to `--ao-surface-minimal` (vs the default DropdownItem `--ao-surface-secondary`). |
+| Filter views — section label | `.dropdown__label` | "Saved views" — `--ao-font-body` / `--ao-font-fluid-xxs` (12px) / `--ao-text-contrast`, padding `2px 12px 4px` (`--ao-spacing-0-5` / `-4` / `-1`) |
+| Filter views — item group (top) | `.dropdown__list--filter-views-top` | `padding-bottom: var(--ao-spacing-3)`. Rows are `.dropdown-item--sm`; selected row carries `.dropdown-item__check` (no grey bg) |
+| Filter views — footer | `.dropdown__filter-views-footer` | `padding-top: var(--ao-spacing-3)`. Holds the "New view" CTA — a `.btn .btn--tertiary .btn--sm` forced full-width + left-aligned (`justify-content: flex-start`) with a leading `plus` icon. Scoped overrides: horizontal padding `--ao-spacing-3` (8px, vs btn--sm's 12px), text + icon `--ao-text-contrast`, weight `--ao-font-medium`. |
 | Filter views — view row (with actions) | `.dropdown__view` (`<li>`, `position: relative`) | Wraps a non-selected view's `.dropdown-item--sm` plus its `.dropdown-item__more` trigger and `.dropdown__row-menu`. |
-| Filter views — "…" trigger | `.dropdown-item__more` | Absolute, right `--ai-spacing-4`, `--ai-icon-contrast`, `opacity:0` → `1` on `.dropdown__view:hover` or `[aria-expanded="true"]`. **Touch (`@media (hover: none)`): always visible** — hover never fires on touch, so the menu would otherwise be unreachable. Lucide `ellipsis` (Figma `Icon/16px/Ellipsis`). |
-| Filter views — row action menu | `.dropdown__row-menu` | Floating card right of the row (`left: calc(100% - var(--ai-spacing-4))`, `z-index:11`): `--ai-surface-primary` + `--ai-border-secondary` + `--ai-radius-md` + `--ai-spacing-3` (8px) padding + `--ai-shadow-sm`. Vertical (`flex-direction: column; align-items: flex-start`) stack of two **labelled** rows — `.btn--tertiary .btn--sm` forced full-width + left-aligned (`copy` "Copy" + `trash-2` "Delete"). Scoped overrides: left padding `--ai-spacing-3` (8px, vs btn--sm's 12px), text `--ai-text-primary`, weight `--ai-font-medium`, icon `--ai-icon-contrast`. Toggled via `hidden`. |
+| Filter views — "…" trigger | `.dropdown-item__more` | Absolute, right `--ao-spacing-4`, `--ao-icon-contrast`, `opacity:0` → `1` on `.dropdown__view:hover` or `[aria-expanded="true"]`. **Touch (`@media (hover: none)`): always visible** — hover never fires on touch, so the menu would otherwise be unreachable. Lucide `ellipsis` (Figma `Icon/16px/Ellipsis`). |
+| Filter views — row action menu | `.dropdown__row-menu` | Floating card right of the row (`left: calc(100% - var(--ao-spacing-4))`, `z-index:11`): `--ao-surface-primary` + `--ao-border-secondary` + `--ao-radius-md` + `--ao-spacing-3` (8px) padding + `--ao-shadow-sm`. Vertical (`flex-direction: column; align-items: flex-start`) stack of two **labelled** rows — `.btn--tertiary .btn--sm` forced full-width + left-aligned (`copy` "Copy" + `trash-2` "Delete"). Scoped overrides: left padding `--ao-spacing-3` (8px, vs btn--sm's 12px), text `--ao-text-primary`, weight `--ao-font-medium`, icon `--ao-icon-contrast`. Toggled via `hidden`. |
 | List | `.dropdown__list` | Flex column. `--header` modifier adds 4px gap (used in With Header) |
 | Item (action / link) | `.dropdown-item` | Extracted to **DropdownItem** component on 2026-05-27 — see `src/components/DropdownItem/`. Has Default and Warning Types, with State=Hover. The legacy `.dropdown__item` class still works via a back-compat alias in `Dropdown.css` (deprecated — prefer `.dropdown-item`). |
 | User menu — toggle list wrapper | `.dropdown__toggle-list` | Used only by `.dropdown--user-menu`. Vertical flex stack for Toggle rows. Padding `8px / 6px`. |
 | User menu — single toggle row | `.dropdown__toggle-row` | Flex row, gap 12px, py 1px. Holds a `.toggle` and a `.toggle__label`. |
 | User menu — reveal-on-active row | `.dropdown__toggle-row.dropdown__toggle-row--reveal` | Hidden by default. `data-reveal-by="<toggle-id>"` links it to a source `.toggle`. When that toggle becomes `.toggle--active`, the JS hook adds `.is-revealed` to show this row. Used for Hide Labels under Icon Navigation. |
-| Divider | `.dropdown__divider` | 1px line, `--ai-surface-secondary` |
-| Profile block | `.dropdown__profile` | Avatar + name + email — used only by With Header. Always rendered with `--ai-surface-secondary` bg |
-| Avatar image | `.dropdown__profile-avatar` | 40px, `--ai-radius-full`, `object-fit: cover` |
+| Divider | `.dropdown__divider` | 1px line, `--ao-surface-secondary` |
+| Profile block | `.dropdown__profile` | Avatar + name + email — used only by With Header. Always rendered with `--ao-surface-secondary` bg |
+| Avatar image | `.dropdown__profile-avatar` | 40px, `--ao-radius-full`, `object-fit: cover` |
 | Name | `.dropdown__profile-name` | 14px semibold |
-| Email | `.dropdown__profile-email` | 12px regular, `--ai-text-contrast` |
+| Email | `.dropdown__profile-email` | 12px regular, `--ao-text-contrast` |
 | Search wrapper | `.dropdown__search` | 40px tall, primary bg, secondary border |
 | Search input | `.dropdown__search-input` | Native input, no border (parent provides it) |
 | Delete CTA | `.btn .btn--alert` | Reuses Button; CSS sets `width: 100%` when inside `.dropdown__panel` |
@@ -61,38 +61,38 @@ inner node ID — `I<instance>;2699:2156` references the Warning-variant icon, v
 
 | Figma variable | CSS variable | Role |
 |---|---|---|
-| `surface/primary` | `--ai-surface-primary` | Panel background (was `--ai-surface-elevated-1` — corrected 2026-05-27 per Figma) |
-| `surface/primary` | `--ai-surface-primary` | Trigger bg, search input bg |
-| `surface/secondary` | `--ai-surface-secondary` | Selected/hover item bg, profile bg, divider colour |
-| `surface/brand` | `--ai-surface-brand` | Checked-checkbox bg (via Checkbox component) |
-| `surface/error` | `--ai-surface-error` | Delete button bg (via Button --alert) |
-| `border/secondary` | `--ai-border-secondary` | Panel border, trigger border, checkbox border, search border |
-| `border/brand` | `--ai-border-brand` | Search input focus border |
-| `text/primary` | `--ai-text-primary` | All item text, profile name |
-| `text/contrast` | `--ai-text-contrast` | Profile email, search placeholder |
-| `btn/primary-text` | `--ai-btn-primary-text` | Delete button text (white) |
-| `icon/primary` | `--ai-icon-primary` | Item leading icons |
-| `icon/contrast` | `--ai-icon-contrast` | Search input leading icon |
-| `radius/md` (8px) | `--ai-radius-md` | Panel, items, profile, trigger |
-| `radius/full` | `--ai-radius-full` | Profile avatar |
-| `spacing/1` (4px) | `--ai-spacing-1` | With Header list gap |
-| `spacing/2` (6px) | `--ai-spacing-2` | Item icon-to-label gap |
-| `spacing/3` (8px) | `--ai-spacing-3` | Item py, profile gap, search gap |
-| `spacing/4` (12px) | `--ai-spacing-4` | Panel padding, item px |
-| `spacing/5` (16px) | `--ai-spacing-5` | Checkbox panel px |
-| `spacing/8` (40px) | `--ai-spacing-8` | Trigger height, profile avatar size, search height, default item min-height |
-| `font/title` | `--ai-font-title` | All text |
-| `font/fixed-xs` (14px) | `--ai-font-fixed-xs` | Trigger label, item text |
-| `font/fixed-xxs` (12px) | `--ai-font-fixed-xxs` | Profile email |
-| `font/regular/medium/semibold` | `--ai-font-regular/medium/semibold` | Item / selected item / trigger weights |
-| `leading/xs` (16px) | `--ai-leading-xs` | Profile name |
-| `leading/md` (24px) | `--ai-leading-md` | Item text |
+| `surface/primary` | `--ao-surface-primary` | Panel background (was `--ao-surface-elevated-1` — corrected 2026-05-27 per Figma) |
+| `surface/primary` | `--ao-surface-primary` | Trigger bg, search input bg |
+| `surface/secondary` | `--ao-surface-secondary` | Selected/hover item bg, profile bg, divider colour |
+| `surface/brand` | `--ao-surface-brand` | Checked-checkbox bg (via Checkbox component) |
+| `surface/error` | `--ao-surface-error` | Delete button bg (via Button --alert) |
+| `border/secondary` | `--ao-border-secondary` | Panel border, trigger border, checkbox border, search border |
+| `border/brand` | `--ao-border-brand` | Search input focus border |
+| `text/primary` | `--ao-text-primary` | All item text, profile name |
+| `text/contrast` | `--ao-text-contrast` | Profile email, search placeholder |
+| `btn/primary-text` | `--ao-btn-primary-text` | Delete button text (white) |
+| `icon/primary` | `--ao-icon-primary` | Item leading icons |
+| `icon/contrast` | `--ao-icon-contrast` | Search input leading icon |
+| `radius/md` (8px) | `--ao-radius-md` | Panel, items, profile, trigger |
+| `radius/full` | `--ao-radius-full` | Profile avatar |
+| `spacing/1` (4px) | `--ao-spacing-1` | With Header list gap |
+| `spacing/2` (6px) | `--ao-spacing-2` | Item icon-to-label gap |
+| `spacing/3` (8px) | `--ao-spacing-3` | Item py, profile gap, search gap |
+| `spacing/4` (12px) | `--ao-spacing-4` | Panel padding, item px |
+| `spacing/5` (16px) | `--ao-spacing-5` | Checkbox panel px |
+| `spacing/8` (40px) | `--ao-spacing-8` | Trigger height, profile avatar size, search height, default item min-height |
+| `font/title` | `--ao-font-title` | All text |
+| `font/fixed-xs` (14px) | `--ao-font-fixed-xs` | Trigger label, item text |
+| `font/fixed-xxs` (12px) | `--ao-font-fixed-xxs` | Profile email |
+| `font/regular/medium/semibold` | `--ao-font-regular/medium/semibold` | Item / selected item / trigger weights |
+| `leading/xs` (16px) | `--ao-leading-xs` | Profile name |
+| `leading/md` (24px) | `--ao-leading-md` | Item text |
 
 ## Token Gaps
 
-- **Drop shadow.** Figma applies `0 4px 6px rgba(0,0,0,0.08)` to the panel. The closest existing token is `--ai-shadow-md` (`0 2px 10px rgba(0,0,0,0.1)`). The token reference in `docs/tokens-reference.md` describes shadow-md as covering "tooltips, inputs, **menus**" so it is the semantically correct choice for this dropdown menu. The visual delta is small (slightly larger blur, slightly higher opacity in shadow-md). Flag to the designer if a dedicated `--ai-shadow-popover` token is preferred.
-- **2px gap on the Search variant's list** (Figma `gap-[2px]`). Collapsed to `0` in the build — matches the Basic variant's flush-row pattern, and 2px has no `--ai-spacing-*` equivalent.
-- **Filter-views row action menu shadow.** Figma `0 2px 1.5px rgba(0,0,0,0.1)` on the floating "ChatMenu" card → mapped to `--ai-shadow-sm` (nearest token). Small visual delta only.
+- **Drop shadow.** Figma applies `0 4px 6px rgba(0,0,0,0.08)` to the panel. The closest existing token is `--ao-shadow-md` (`0 2px 10px rgba(0,0,0,0.1)`). The token reference in `docs/tokens-reference.md` describes shadow-md as covering "tooltips, inputs, **menus**" so it is the semantically correct choice for this dropdown menu. The visual delta is small (slightly larger blur, slightly higher opacity in shadow-md). Flag to the designer if a dedicated `--ao-shadow-popover` token is preferred.
+- **2px gap on the Search variant's list** (Figma `gap-[2px]`). Collapsed to `0` in the build — matches the Basic variant's flush-row pattern, and 2px has no `--ao-spacing-*` equivalent.
+- **Filter-views row action menu shadow.** Figma `0 2px 1.5px rgba(0,0,0,0.1)` on the floating "ChatMenu" card → mapped to `--ao-shadow-sm` (nearest token). Small visual delta only.
 
 No raw hex / arbitrary colour values used.
 
@@ -114,10 +114,10 @@ Auto-binds on `DOMContentLoaded` to every `.dropdown` on the page.
 
 - **Trigger reuses Button.** The trigger is `.btn .btn--secondary .dropdown__trigger`. The Dropdown-specific class only adds chevron rotation; all sizing / padding / typography come from Button.
 - **Selected item state — three valid signals:** the CSS treats `.dropdown__item--selected`, `[aria-selected="true"]`, and `[aria-current="page"]` identically. Use whichever fits the consumer's semantics best (`aria-current` for navigation menus, `aria-selected` for option pickers, the modifier class for static demos).
-- **Checkbox variant composes the existing Checkbox component.** No checkbox markup is duplicated — the same `.checkbox / .checkbox__input / .checkbox__indicator / .checkbox__label / .checkbox__label-text` classes are used. Dropdown only adds `padding: var(--ai-spacing-3) 0` to each row via a scoped rule.
+- **Checkbox variant composes the existing Checkbox component.** No checkbox markup is duplicated — the same `.checkbox / .checkbox__input / .checkbox__indicator / .checkbox__label / .checkbox__label-text` classes are used. Dropdown only adds `padding: var(--ao-spacing-3) 0` to each row via a scoped rule.
 - **Profile avatar** uses a plain `<img class="dropdown__profile-avatar">` rather than the Avatar component — Avatar is sized at 24/32/40/56/80px and clips with a circle. The dropdown profile shows only a 40px circular image (no checkmark, no notification dot, no portrait wrapping), so an `<img>` is sufficient and lighter.
 - **Search variant 2px item gap** was collapsed to 0 in the build — see Token Gaps.
-- **Sign out item** in With Header is a standard `.dropdown__item` — same 8px py, 12px px, and `--ai-radius-md` as every other row. (Earlier Figma revisions had this row at 6px py + radius-sm; the current design unifies it.)
+- **Sign out item** in With Header is a standard `.dropdown__item` — same 8px py, 12px px, and `--ao-radius-md` as every other row. (Earlier Figma revisions had this row at 6px py + radius-sm; the current design unifies it.)
 
 ## Dependencies
 

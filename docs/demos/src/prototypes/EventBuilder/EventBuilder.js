@@ -548,7 +548,7 @@
       state.innerHTML = accepted
         ? '<i data-lucide="check" aria-hidden="true"></i> Added'
         : '<i data-lucide="x" aria-hidden="true"></i> Dismissed';
-      state.style.color = accepted ? '' : 'var(--ai-text-contrast)';
+      state.style.color = accepted ? '' : 'var(--ao-text-contrast)';
       show(state);
     }
 

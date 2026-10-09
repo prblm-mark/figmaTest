@@ -11,9 +11,9 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
   overflow: clip;
 }
 
@@ -26,7 +26,7 @@
 }
 
 .acc__item + .acc__item {
-  border-top: 1px solid var(--ai-border-secondary);
+  border-top: 1px solid var(--ao-border-secondary);
 }
 
 /* ── Heading wrapper (semantic h-tag wrap) ─────────── */
@@ -43,21 +43,21 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  min-height: var(--ai-spacing-10);  /* 56px */
-  padding: 0 var(--ai-spacing-6);
-  background-color: var(--ai-surface-minimal);
+  min-height: var(--ao-spacing-10);  /* 56px */
+  padding: 0 var(--ao-spacing-6);
+  background-color: var(--ao-surface-minimal);
   border: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-sm);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-sm);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
   text-align: left;
   cursor: pointer;
 }
 
 .acc__trigger:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: -2px;
 }
 
@@ -68,10 +68,10 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-contrast);
-  transition: transform var(--ai-transition-default);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-contrast);
+  transition: transform var(--ao-transition-default);
 }
 
 .acc__chevron [data-lucide] {
@@ -87,18 +87,18 @@
 
 .acc__panel {
   display: none;
-  padding: var(--ai-spacing-5) var(--ai-spacing-6) var(--ai-spacing-6);
-  background-color: var(--ai-surface-primary);
-  border-top: 1px solid var(--ai-border-secondary);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-secondary);
+  padding: var(--ao-spacing-5) var(--ao-spacing-6) var(--ao-spacing-6);
+  background-color: var(--ao-surface-primary);
+  border-top: 1px solid var(--ao-border-secondary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
 }
 
 .acc__panel > * + * {
-  margin-top: var(--ai-spacing-3);
+  margin-top: var(--ao-spacing-3);
 }
 
 .acc__panel p {
@@ -112,15 +112,15 @@
 /* ── Size: sm ───────────────────────────────────────── */
 
 .acc--sm .acc__trigger {
-  height: var(--ai-spacing-8);  /* 40px fixed */
-  padding: 0 var(--ai-spacing-5);
-  font-size: var(--ai-font-fixed-xs);
+  height: var(--ao-spacing-8);  /* 40px fixed */
+  padding: 0 var(--ao-spacing-5);
+  font-size: var(--ao-font-fixed-xs);
 }
 
 .acc--sm .acc__panel {
-  padding: var(--ai-spacing-5);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-sm);
+  padding: var(--ao-spacing-5);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-sm);
 }
 
 /* ── Type: Separated Cards ──────────────────────────── */
@@ -128,7 +128,7 @@
 .acc--separated {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   background-color: transparent;
   border: 0;
   border-radius: 0;
@@ -137,20 +137,20 @@
 }
 
 .acc--separated .acc__item {
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   overflow: clip;
 }
 
 .acc--separated .acc__item + .acc__item {
-  border-top: 1px solid var(--ai-border-secondary);
+  border-top: 1px solid var(--ao-border-secondary);
 }
 
 /* When closed in separated mode, the whole card is grey (matches the trigger bg) */
 .acc--separated .acc__item:not(.acc__item--open) {
-  background-color: var(--ai-surface-minimal);
+  background-color: var(--ao-surface-minimal);
 }
 
 /* ── Type: Flush — no outer card, divider-only ───── */
@@ -158,34 +158,34 @@
 .acc--flush {
   background-color: transparent;
   border: 0;
-  border-top: 1px solid var(--ai-border-secondary);
-  border-bottom: 1px solid var(--ai-border-secondary);
+  border-top: 1px solid var(--ao-border-secondary);
+  border-bottom: 1px solid var(--ao-border-secondary);
   border-radius: 0;
   padding: 0;
 }
 
 .acc--flush .acc__trigger {
   background-color: transparent;
-  padding: var(--ai-spacing-5) 0;
+  padding: var(--ao-spacing-5) 0;
 }
 
 .acc--flush .acc__panel {
-  padding: 0 0 var(--ai-spacing-5);
+  padding: 0 0 var(--ao-spacing-5);
   background-color: transparent;
   border-top: 0;
 }
 
 .acc--flush.acc--sm .acc__trigger {
-  padding: var(--ai-spacing-4) 0;
+  padding: var(--ao-spacing-4) 0;
 }
 
 .acc--flush.acc--sm .acc__panel {
-  padding: 0 0 var(--ai-spacing-4);
+  padding: 0 0 var(--ao-spacing-4);
 }
 
 /* ── Type: Nested — composition only, no extra CSS ── */
 /* A nested accordion is just an .acc placed inside .acc__panel.
    The panel adds gap so paragraph + nested accordion stack with breathing room. */
 .acc__panel .acc {
-  margin-top: var(--ai-spacing-4);
+  margin-top: var(--ao-spacing-4);
 }

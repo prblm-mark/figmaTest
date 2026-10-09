@@ -35,8 +35,8 @@ figma.connect(
   {
     props: {
       // One RoomCard per plan, in Figma's Room-Selector-Bar slot. Cards are pinned to
-      // --ai-size-5 (280px) on desktop and grow from RoomCard's own 240px floor on mobile,
-      // capped at --ai-size-6. The bar is a scrollbar-less carousel when there are more plans
+      // --ao-size-5 (280px) on desktop and grow from RoomCard's own 240px floor on mobile,
+      // capped at --ao-size-6. The bar is a scrollbar-less carousel when there are more plans
       // than fit: touch swipes, and SeatingHeader.js adds mouse drag.
       //
       // The toolbar's toggle is Toggle at xs, label-less, and needs Toggle.js to flip.

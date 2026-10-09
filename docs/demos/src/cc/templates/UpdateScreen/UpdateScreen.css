@@ -10,18 +10,18 @@
 /* Gap between the warning, the result banner and the two sections. 16px is the
  * record screens' card gap (RecordScreen.css). */
 .cc-control__page.cc-update {
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
 }
 
 /* Top-level cards: border/card + shadow/2xs in standard width, flat in full width.
  * The same rule as RecordScreen.css, because this page reuses RecordSection. */
 .cc-control:not([data-cc-width="full"]) .cc-update .record-section {
-  border-color: var(--ai-border-card);
-  box-shadow: var(--ai-shadow-2xs);
+  border-color: var(--ao-border-card);
+  box-shadow: var(--ao-shadow-2xs);
 }
 
 .cc-control:not([data-cc-width="full"]) .cc-update .record-section__header {
-  border-bottom-color: var(--ai-border-card);
+  border-bottom-color: var(--ao-border-card);
 }
 
 /* ── Action row: label | description | Run ───────────────────────────────
@@ -32,7 +32,7 @@
   flex-direction: column;
   align-items: flex-start;
   /* 8px: FieldRow's stacked label → value gap */
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 /* The action column. Usually just a Run button, but Clear Cache puts its zone picker
@@ -42,7 +42,7 @@
   display: flex;
   align-items: center;
   flex: 0 0 auto;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   margin: 0;
 }
 
@@ -50,13 +50,13 @@
 .cc-update__counts {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
 }
 
 /* Clear Cache's zone picker: a compact sm Select beside Run, with no visible label (the row
  * says what it is, and the trigger carries aria-label="Zone to clear"). 160px = size-2. */
 .cc-update__zone {
-  inline-size: var(--ai-size-2);
+  inline-size: var(--ao-size-2);
 }
 
 /* The result banner slot takes no space until an update has run. */
@@ -66,10 +66,10 @@
 
 .cc-update__confirm-text {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
 }
 
 /* Full width: flush, as on the record screens. The sections take RecordSection
@@ -91,35 +91,35 @@
   flex-direction: column;
   align-self: stretch;
   /* 8px: the value column's own gap */
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 .cc-update__status-line {
   display: flex;
   align-items: center;
   /* 6px: `.field-row__tags` */
-  gap: var(--ai-spacing-2);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-secondary);
+  gap: var(--ao-spacing-2);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
   font-variant-numeric: tabular-nums;
 }
 
 .cc-update__progress {
   display: flex;
   inline-size: 100%;
-  block-size: var(--ai-spacing-2);
-  border-radius: var(--ai-radius-full);
-  background-color: var(--ai-surface-contrast);
+  block-size: var(--ao-spacing-2);
+  border-radius: var(--ao-radius-full);
+  background-color: var(--ao-surface-contrast);
   overflow: hidden;
 }
 
 .cc-update__progress-fill {
   inline-size: var(--cc-update-progress, 0%);
   block-size: 100%;
-  background-color: var(--ai-surface-brand);
-  transition: inline-size var(--ai-transition-default);
+  background-color: var(--ao-surface-brand);
+  transition: inline-size var(--ao-transition-default);
 }
 
 @media (prefers-reduced-motion: reduce) {

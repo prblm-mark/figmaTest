@@ -1197,10 +1197,10 @@
     (function () {
       const cs = getComputedStyle(document.documentElement);
       const tok = (n, fb) => (cs.getPropertyValue(n).trim() || fb);
-      const brand = tok('--ai-surface-brand', '#0071d8');
-      const success = tok('--ai-surface-success', '#30cb90');
-      const text = tok('--ai-text-contrast', '#67676c');
-      const grid = tok('--ai-border-secondary', '#e2e2e3');
+      const brand = tok('--ao-surface-brand', '#0071d8');
+      const success = tok('--ao-surface-success', '#30cb90');
+      const text = tok('--ao-text-contrast', '#67676c');
+      const grid = tok('--ao-border-secondary', '#e2e2e3');
 
       Chart.defaults.font.family = 'Inter, sans-serif';
       Chart.defaults.font.size = 12;

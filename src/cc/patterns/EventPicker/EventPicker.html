@@ -20,52 +20,52 @@
   <link rel="stylesheet" href="EventPicker.css" />
   <style>
     body {
-      padding: var(--ai-spacing-7);
-      background: var(--ai-surface-minimal);
+      padding: var(--ao-spacing-7);
+      background: var(--ao-surface-minimal);
       display: flex;
       flex-direction: column;
-      gap: var(--ai-spacing-7);
+      gap: var(--ao-spacing-7);
       min-height: 100vh;
     }
     .demo-section {
-      padding: var(--ai-spacing-7);
-      background: var(--ai-surface-primary);
-      border-radius: var(--ai-radius-md);
-      box-shadow: var(--ai-shadow-sm);
+      padding: var(--ao-spacing-7);
+      background: var(--ao-surface-primary);
+      border-radius: var(--ao-radius-md);
+      box-shadow: var(--ao-shadow-sm);
       display: flex;
       flex-direction: column;
-      gap: var(--ai-spacing-5);
+      gap: var(--ao-spacing-5);
       align-items: flex-start;
     }
     .demo-section h2 {
       margin: 0;
-      font-family: var(--ai-font-title);
-      font-size: var(--ai-font-fixed-sm);
-      font-weight: var(--ai-font-semibold);
-      color: var(--ai-text-primary);
+      font-family: var(--ao-font-title);
+      font-size: var(--ao-font-fixed-sm);
+      font-weight: var(--ao-font-semibold);
+      color: var(--ao-text-primary);
     }
     .demo-note {
       margin: 0;
-      max-width: var(--ai-size-11);
-      font-family: var(--ai-font-body);
-      font-size: var(--ai-font-fixed-xxs);
-      line-height: var(--ai-leading-sm);
-      color: var(--ai-text-secondary);
+      max-width: var(--ao-size-11);
+      font-family: var(--ao-font-body);
+      font-size: var(--ao-font-fixed-xxs);
+      line-height: var(--ao-leading-sm);
+      color: var(--ao-text-secondary);
     }
     .demo-log {
-      font-family: var(--ai-font-body);
-      font-size: var(--ai-font-fixed-xxs);
-      color: var(--ai-text-contrast);
+      font-family: var(--ao-font-body);
+      font-size: var(--ao-font-fixed-xxs);
+      color: var(--ao-text-contrast);
     }
   </style>
 </head>
 <body>
 
-  <h1 style="margin: 0; font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-2xl);
-             font-weight: var(--ai-font-bold); color: var(--ai-text-primary);">EventPicker <span
-      style="font-size: var(--ai-font-fixed-xs); font-weight: var(--ai-font-regular);
-             color: var(--ai-text-contrast);">Control Centre · Tier=Pattern · Figma 3108:6662</span></h1>
-  <p class="demo-note" style="margin-top: calc(var(--ai-spacing-6) * -1);">
+  <h1 style="margin: 0; font-family: var(--ao-font-title); font-size: var(--ao-font-fixed-2xl);
+             font-weight: var(--ao-font-bold); color: var(--ao-text-primary);">EventPicker <span
+      style="font-size: var(--ao-font-fixed-xs); font-weight: var(--ao-font-regular);
+             color: var(--ao-text-contrast);">Control Centre · Tier=Pattern · Figma 3108:6662</span></h1>
+  <p class="demo-note" style="margin-top: calc(var(--ao-spacing-6) * -1);">
     Device=Mobile is handled by <code>@media (max-width: 767px)</code> — resize the viewport below
     768px to see the stacked card layout. Selecting an event emits
     <code>event-picker:select</code>; Cancel / close emit <code>event-picker:close</code>.

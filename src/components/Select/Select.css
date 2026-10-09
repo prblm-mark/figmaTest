@@ -13,16 +13,16 @@
 .sel {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   position: relative; /* anchor for popover */
 }
 
 .sel__label {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-primary);
 }
 
 /* ── Trigger button (Default / Disabled / Underline) ── */
@@ -31,42 +31,42 @@
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   width: 100%;
-  min-height: var(--ai-spacing-8);
-  padding: 0 var(--ai-spacing-4) 0 var(--ai-spacing-5);
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  min-height: var(--ao-spacing-8);
+  padding: 0 var(--ao-spacing-4) 0 var(--ao-spacing-5);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
   text-align: left;
   cursor: pointer;
-  transition: border-color var(--ai-transition-default),
-              box-shadow var(--ai-transition-default);
+  transition: border-color var(--ao-transition-default),
+              box-shadow var(--ao-transition-default);
 }
 
 .sel__control:hover {
-  border-color: var(--ai-border-brand);
+  border-color: var(--ao-border-brand);
 }
 
 /* Use :focus (not :focus-visible) so click also triggers the ring,
    matching Input's :focus-within behaviour. */
 .sel__control:focus {
-  border-color: var(--ai-border-brand);
-  box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 95%, transparent);
+  border-color: var(--ao-border-brand);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px color-mix(in srgb, var(--ao-surface-brand-soft) 95%, transparent);
   outline: none;
 }
 
 /* Open state (popover visible) keeps the focus ring on the trigger */
 .sel--open .sel__control {
-  border-color: var(--ai-border-brand);
-  box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 95%, transparent);
+  border-color: var(--ao-border-brand);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px color-mix(in srgb, var(--ao-surface-brand-soft) 95%, transparent);
 }
 
 /* Light-mode focus ring is 70% (matches Input); dark mode keeps the softer 30%
@@ -74,8 +74,8 @@
 [data-theme="dark"] .sel__control:focus,
 [data-theme="dark"] .sel--open .sel__control,
 [data-theme="dark"] .sel-category:focus-within {
-  box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 30%, transparent);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px color-mix(in srgb, var(--ao-surface-brand-soft) 30%, transparent);
 }
 
 .sel--open .sel__chevron {
@@ -95,10 +95,10 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-contrast);
-  transition: transform var(--ai-transition-default);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-contrast);
+  transition: transform var(--ao-transition-default);
 }
 
 .sel__chevron [data-lucide] {
@@ -113,7 +113,7 @@
 .sel--label-left {
   flex-direction: row;
   align-items: center;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
 }
 
 .sel--label-left .sel__label {
@@ -134,24 +134,24 @@
 /* ── Size: sm ─────────────────────────────────────── */
 
 .sel__control--sm {
-  min-height: var(--ai-spacing-7);  /* 32px */
-  padding: 0 var(--ai-spacing-3) 0 var(--ai-spacing-4);
-  font-size: var(--ai-font-fixed-xxs);
+  min-height: var(--ao-spacing-7);  /* 32px */
+  padding: 0 var(--ao-spacing-3) 0 var(--ao-spacing-4);
+  font-size: var(--ao-font-fixed-xxs);
 }
 
 /* ── Type: Disabled ────────────────────────────────── */
 
 .sel__control:disabled,
 .sel__control--disabled {
-  background-color: var(--ai-surface-minimal);
-  color: var(--ai-text-contrast);
+  background-color: var(--ao-surface-minimal);
+  color: var(--ao-text-contrast);
   cursor: not-allowed;
   opacity: 0.7;
 }
 
 .sel__control:disabled:hover,
 .sel__control--disabled:hover {
-  border-color: var(--ai-border-secondary);
+  border-color: var(--ao-border-secondary);
 }
 
 /* ── Type: Underline ──────────────────────────────── */
@@ -159,7 +159,7 @@
 .sel__control--underline {
   background-color: transparent;
   border: 0;
-  border-bottom: 2px solid var(--ai-border-secondary);
+  border-bottom: 2px solid var(--ao-border-secondary);
   border-radius: 0;
   padding-left: 0;
   padding-right: 0;
@@ -167,13 +167,13 @@
 
 .sel__control--underline:hover {
   border-color: transparent;
-  border-bottom-color: var(--ai-border-brand);
+  border-bottom-color: var(--ao-border-brand);
 }
 
 .sel__control--underline:focus,
 .sel--open .sel__control--underline {
   border-color: transparent;
-  border-bottom-color: var(--ai-border-brand);
+  border-bottom-color: var(--ao-border-brand);
   box-shadow: none;
 }
 
@@ -186,12 +186,12 @@
   left: 0;
   z-index: 10;
   width: 100%;
-  margin-top: var(--ai-spacing-2);
+  margin-top: var(--ao-spacing-2);
   list-style: none;
-  padding: var(--ai-spacing-2);
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  padding: var(--ao-spacing-2);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   max-height: 16rem;
   overflow-y: auto;
@@ -205,20 +205,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   width: 100%;
-  min-height: var(--ai-spacing-7);
-  padding: var(--ai-spacing-2) var(--ai-spacing-3);
+  min-height: var(--ao-spacing-7);
+  padding: var(--ao-spacing-2) var(--ao-spacing-3);
   background: transparent;
   border: 0;
-  border-radius: var(--ai-radius-sm);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  color: var(--ai-text-primary);
+  border-radius: var(--ao-radius-sm);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  color: var(--ao-text-primary);
   text-align: left;
   cursor: pointer;
-  transition: background-color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default);
 }
 
 /* Option label. Long options (full URLs) truncate inside the menu rather than widening it past
@@ -234,18 +234,18 @@
 }
 
 .sel__menu-item:hover {
-  background-color: var(--ai-surface-minimal);
+  background-color: var(--ao-surface-minimal);
 }
 
 .sel__menu-item--selected {
-  background-color: var(--ai-surface-minimal);
-  font-weight: var(--ai-font-medium);
+  background-color: var(--ao-surface-minimal);
+  font-weight: var(--ao-font-medium);
 }
 
 .sel__menu-item [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-surface-brand);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-surface-brand);
   flex-shrink: 0;
 }
 
@@ -254,10 +254,10 @@
 .sel__list {
   list-style: none;
   margin: 0;
-  padding: var(--ai-spacing-2);
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  padding: var(--ao-spacing-2);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
   display: flex;
   flex-direction: column;
   gap: 1px;
@@ -266,27 +266,27 @@
 .sel__list-item {
   display: flex;
   align-items: center;
-  min-height: var(--ai-spacing-8);
-  padding: var(--ai-spacing-2) var(--ai-spacing-3);
+  min-height: var(--ao-spacing-8);
+  padding: var(--ao-spacing-2) var(--ao-spacing-3);
   background-color: transparent;
   border: 0;
-  border-radius: var(--ai-radius-sm);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  border-radius: var(--ao-radius-sm);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
   cursor: pointer;
-  transition: background-color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default);
 }
 
 .sel__list-item:hover {
-  background-color: var(--ai-surface-minimal);
+  background-color: var(--ao-surface-minimal);
 }
 
 .sel__list-item--selected {
-  background-color: var(--ai-surface-minimal);
-  font-weight: var(--ai-font-medium);
+  background-color: var(--ao-surface-minimal);
+  font-weight: var(--ao-font-medium);
 }
 
 /* ── Type: Category Dropdown — segmented (left + right) ── */
@@ -298,17 +298,17 @@
   display: flex;
   align-items: stretch;
   width: 100%;
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  transition: border-color var(--ai-transition-default),
-              box-shadow var(--ai-transition-default);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  transition: border-color var(--ao-transition-default),
+              box-shadow var(--ao-transition-default);
 }
 
 .sel-category:focus-within {
-  border-color: var(--ai-border-brand);
-  box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 95%, transparent);
+  border-color: var(--ao-border-brand);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px color-mix(in srgb, var(--ao-surface-brand-soft) 95%, transparent);
 }
 
 /* Group wraps each segment + its menu, providing the popover anchor */
@@ -319,15 +319,15 @@
 }
 
 .sel-category__group:first-child {
-  border-top-left-radius: var(--ai-radius-md);
-  border-bottom-left-radius: var(--ai-radius-md);
+  border-top-left-radius: var(--ao-radius-md);
+  border-bottom-left-radius: var(--ao-radius-md);
   overflow: hidden; /* clip the first segment bg to rounded corner */
 }
 
 .sel-category__group:last-child {
   flex: 1;
-  border-top-right-radius: var(--ai-radius-md);
-  border-bottom-right-radius: var(--ai-radius-md);
+  border-top-right-radius: var(--ao-radius-md);
+  border-bottom-right-radius: var(--ao-radius-md);
   overflow: hidden;
 }
 
@@ -341,70 +341,70 @@
 .sel-category__value {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  min-height: var(--ai-spacing-8);
+  gap: var(--ao-spacing-2);
+  min-height: var(--ao-spacing-8);
   background: transparent;
   border: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-primary);
   cursor: pointer;
 }
 
 .sel-category__category {
-  background-color: var(--ai-surface-minimal);
-  border-right: 1px solid var(--ai-border-secondary);
-  padding: 0 var(--ai-spacing-4);
-  font-weight: var(--ai-font-medium);
+  background-color: var(--ao-surface-minimal);
+  border-right: 1px solid var(--ao-border-secondary);
+  padding: 0 var(--ao-spacing-4);
+  font-weight: var(--ao-font-medium);
 }
 
 .sel-category__category:hover {
-  background-color: var(--ai-surface-secondary);
+  background-color: var(--ao-surface-secondary);
 }
 
 .sel-category__group--open .sel-category__category {
-  background-color: var(--ai-surface-secondary);
+  background-color: var(--ao-surface-secondary);
 }
 
 .sel-category__flag {
-  font-size: var(--ai-font-fixed-md);
+  font-size: var(--ao-font-fixed-md);
   line-height: 1;
   flex-shrink: 0;
 }
 
 .sel-category__category [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-contrast);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-contrast);
   flex-shrink: 0;
 }
 
 .sel-category__value {
   width: 100%;
   justify-content: space-between;
-  padding: 0 var(--ai-spacing-4) 0 var(--ai-spacing-5);
-  font-weight: var(--ai-font-regular);
+  padding: 0 var(--ao-spacing-4) 0 var(--ao-spacing-5);
+  font-weight: var(--ao-font-regular);
 }
 
 .sel-category__value:hover {
-  background-color: var(--ai-surface-minimal);
+  background-color: var(--ao-surface-minimal);
 }
 
 .sel-category__group--open .sel-category__value {
-  background-color: var(--ai-surface-minimal);
+  background-color: var(--ao-surface-minimal);
 }
 
 .sel-category__value [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-contrast);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-contrast);
   flex-shrink: 0;
-  transition: transform var(--ai-transition-default);
+  transition: transform var(--ao-transition-default);
 }
 
 .sel-category__category [data-lucide]:last-child,
 .sel-category__value [data-lucide]:last-child {
-  transition: transform var(--ai-transition-default);
+  transition: transform var(--ao-transition-default);
 }
 
 .sel-category__group--open .sel-category__category [data-lucide]:last-child,
@@ -417,16 +417,16 @@
 .sel-category__menu {
   display: none;
   position: absolute;
-  top: calc(100% + var(--ai-spacing-2));
+  top: calc(100% + var(--ao-spacing-2));
   left: 0;
   z-index: 10;
   min-width: 100%;
   list-style: none;
   margin: 0;
-  padding: var(--ai-spacing-2);
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  padding: var(--ao-spacing-2);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   max-height: 16rem;
   overflow-y: auto;
@@ -445,44 +445,44 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   width: 100%;
-  min-height: var(--ai-spacing-7);
-  padding: var(--ai-spacing-2) var(--ai-spacing-3);
+  min-height: var(--ao-spacing-7);
+  padding: var(--ao-spacing-2) var(--ao-spacing-3);
   background: transparent;
   border: 0;
-  border-radius: var(--ai-radius-sm);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  color: var(--ai-text-primary);
+  border-radius: var(--ao-radius-sm);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  color: var(--ao-text-primary);
   text-align: left;
   cursor: pointer;
   white-space: nowrap;
-  transition: background-color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default);
 }
 
 .sel-category__menu-item:hover {
-  background-color: var(--ai-surface-minimal);
+  background-color: var(--ao-surface-minimal);
 }
 
 .sel-category__menu-item--selected {
-  background-color: var(--ai-surface-minimal);
-  font-weight: var(--ai-font-medium);
+  background-color: var(--ao-surface-minimal);
+  font-weight: var(--ao-font-medium);
 }
 
 .sel-category__menu-item [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-surface-brand);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-surface-brand);
   flex-shrink: 0;
 }
 
 .sel-category__menu-flag {
-  font-size: var(--ai-font-fixed-md);
+  font-size: var(--ao-font-fixed-md);
   line-height: 1;
   flex-shrink: 0;
-  margin-right: var(--ai-spacing-2);
+  margin-right: var(--ao-spacing-2);
 }
 
 /* sm: tighten heights and font sizes on segmented */
@@ -492,23 +492,23 @@
 
 .sel-category--sm .sel-category__category,
 .sel-category--sm .sel-category__value {
-  min-height: var(--ai-spacing-7);
-  font-size: var(--ai-font-fixed-xxs);
+  min-height: var(--ao-spacing-7);
+  font-size: var(--ao-font-fixed-xxs);
 }
 
 .sel-category--sm .sel-category__category {
-  padding: 0 var(--ai-spacing-3);
+  padding: 0 var(--ao-spacing-3);
 }
 
 .sel-category--sm .sel-category__value {
-  padding: 0 var(--ai-spacing-3) 0 var(--ai-spacing-4);
+  padding: 0 var(--ao-spacing-3) 0 var(--ao-spacing-4);
 }
 
 
 /* ── Size=sm: the MENU was never sized with the control ──
  *
- * `.sel__control--sm` drops to --ai-font-fixed-xxs (12px) but the options
- * stayed at --ai-font-fixed-xs (14px), so every small select opened a menu
+ * `.sel__control--sm` drops to --ao-font-fixed-xxs (12px) but the options
+ * stayed at --ao-font-fixed-xs (14px), so every small select opened a menu
  * whose text was bigger than the field that summoned it (designer,
  * 2026-09-22). The menu is a SIBLING of the control, not a child, so it never
  * inherited the size — `:has()` is what lets the pair stay one component
@@ -518,5 +518,5 @@
  * matches the trigger by value; if the two ever diverge, the trigger above is
  * the one to keep it in step with. */
 .sel:has(.sel__control--sm) .sel__menu-item {
-  font-size: var(--ai-font-fixed-3xs);
+  font-size: var(--ao-font-fixed-3xs);
 }

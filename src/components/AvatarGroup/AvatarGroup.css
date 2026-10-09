@@ -14,18 +14,18 @@
   min-width: 0;
 }
 
-/* 2px ring — Figma: border-2 border/--ai-surface-primary on every member, counter included.
+/* 2px ring — Figma: border-2 border/--ao-surface-primary on every member, counter included.
  * border-box keeps the member at 32px, so the photo is clipped inside the ring. */
 .avatar-group > .avatar {
   /* The ring is the colour of the surface the group sits on, looked up by AvatarGroup.js
      (--ring-surface), so it separates the overlaps on any card, tint or theme; surface-primary
      until the script has run (designer, 2026-10-07). */
-  border: 2px solid var(--ring-surface, var(--ai-surface-primary));
+  border: 2px solid var(--ring-surface, var(--ao-surface-primary));
 }
 
 /* -8 overlap — Figma places members at x = 0, 24, 48 … on a 32px avatar. */
 .avatar-group > .avatar + .avatar {
-  margin-inline-start: calc(var(--ai-spacing-3) * -1);
+  margin-inline-start: calc(var(--ao-spacing-3) * -1);
 }
 
 /* The "+N" counter is Avatar Type=Initials; its text is the count, never initials. */
@@ -43,24 +43,24 @@ button.avatar-group__more {
 /* The toggle's "+N" is smaller than the static counter's Initials Size=2 (14px) — designer,
  * 2026-10-07. Specificity beats Avatar's `.avatar--size-2.avatar--initials`. */
 .avatar-group > button.avatar--size-2.avatar-group__more {
-  font-size: var(--ai-font-fixed-3xs);
+  font-size: var(--ao-font-fixed-3xs);
 }
 
 button.avatar-group__more:hover {
-  background-color: var(--ai-surface-info);
-  color: var(--ai-text-invert);
+  background-color: var(--ao-surface-info);
+  color: var(--ao-text-invert);
 }
 
 button.avatar-group__more:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
 }
 
 /* Glyph members (Placeholder type) draw their icon at size-sm inside a group, not Avatar's
  * Size=2 default of md (designer, 2026-10-07). Targets the svg Lucide swaps in for the <i>. */
 .avatar-group > .avatar--size-2.avatar--placeholder svg {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 /* Toggle faces: "+N" when collapsed, a chevron ("show less") when expanded. */
@@ -70,14 +70,14 @@ button.avatar-group__more:focus-visible {
 }
 
 .avatar-group__more-less {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 /* A long group wraps rather than overflowing its column. */
 .avatar-group--wrap {
   flex-wrap: wrap;
-  row-gap: var(--ai-spacing-2);
+  row-gap: var(--ao-spacing-2);
 }
 
 /* Held-back members. `.avatar` sets display:inline-flex, which beats the UA's [hidden] rule. */

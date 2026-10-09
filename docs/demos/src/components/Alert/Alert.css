@@ -11,7 +11,7 @@
  *   - Floating : pill (radius-full), "New" badge + message + arrow icon
  *   - Fixed    : full-width bar, 3px top border, no radius
  *
- * Tokens — every type uses its semantic `--ai-{surface,text,border}-{type}` set;
+ * Tokens — every type uses its semantic `--ao-{surface,text,border}-{type}` set;
  * Danger maps to the `error` namespace. CTA button bg is contextually overridden
  * to the type's surface colour (Case B — Button stays primary-blue elsewhere).
  *
@@ -24,15 +24,15 @@
 .alert {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   width: 100%;
-  padding: var(--ai-spacing-4) var(--ai-spacing-5);
-  border: 1px solid var(--ai-border-info);
+  padding: var(--ao-spacing-4) var(--ao-spacing-5);
+  border: 1px solid var(--ao-border-info);
   container-type: inline-size;
-  border-radius: var(--ai-radius-md);
-  background-color: var(--ai-surface-info-soft);
-  color: var(--ai-text-info);
-  font-family: var(--ai-font-body);
+  border-radius: var(--ao-radius-md);
+  background-color: var(--ao-surface-info-soft);
+  color: var(--ao-text-info);
+  font-family: var(--ao-font-body);
   /* Figma binds `min-h-[48px]` (raw, not a token) on the wrapper. We drop
    * it here because `container-type: inline-size` on the alert causes
    * Chromium to resolve the intrinsic block-size as if the element had no
@@ -47,7 +47,7 @@
 .alert__header {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   width: 100%;
 }
 
@@ -62,8 +62,8 @@
 
 .alert__icon [data-lucide],
 .alert__close [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 .alert__close {
@@ -76,8 +76,8 @@
 .alert__text {
   flex: 1;
   min-width: 0;
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-md);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
   color: inherit;
 }
 
@@ -86,11 +86,11 @@
 }
 
 .alert__title {
-  font-weight: var(--ai-font-bold);
+  font-weight: var(--ao-font-bold);
 }
 
 .alert__title + .alert__message {
-  font-weight: var(--ai-font-medium);
+  font-weight: var(--ao-font-medium);
 }
 
 /* Links inside an alert take the alert's own colour, bold — never base.css's brand link colour,
@@ -99,11 +99,11 @@
 .alert a,
 .alert a:hover {
   color: inherit;
-  font-weight: var(--ai-font-bold);
+  font-weight: var(--ao-font-bold);
 }
 
 .alert__message {
-  font-weight: var(--ai-font-medium);
+  font-weight: var(--ao-font-medium);
 }
 
 /* ── Body block (Default style — list + CTA) ───── */
@@ -111,52 +111,52 @@
 .alert__body {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   width: 100%;
 }
 
 .alert__list {
   margin: 0;
-  padding-left: var(--ai-spacing-6);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-md);
+  padding-left: var(--ao-spacing-6);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
   color: inherit;
 }
 
 .alert__list li {
-  font-weight: var(--ai-font-regular);
+  font-weight: var(--ao-font-regular);
 }
 
 /* ── Type variants (colour palette) ────────────── */
 
 .alert--info {
-  background-color: var(--ai-surface-info-soft);
-  border-color: var(--ai-border-info);
-  color: var(--ai-text-info);
+  background-color: var(--ao-surface-info-soft);
+  border-color: var(--ao-border-info);
+  color: var(--ao-text-info);
 }
 
 .alert--success {
-  background-color: var(--ai-surface-success-soft);
-  border-color: var(--ai-border-success);
-  color: var(--ai-text-success);
+  background-color: var(--ao-surface-success-soft);
+  border-color: var(--ao-border-success);
+  color: var(--ao-text-success);
 }
 
 .alert--danger {
-  background-color: var(--ai-surface-error-soft);
-  border-color: var(--ai-border-error);
-  color: var(--ai-text-error);
+  background-color: var(--ao-surface-error-soft);
+  border-color: var(--ao-border-error);
+  color: var(--ao-text-error);
 }
 
 .alert--warning {
-  background-color: var(--ai-surface-warning-soft);
-  border-color: var(--ai-border-warning);
-  color: var(--ai-text-warning);
+  background-color: var(--ao-surface-warning-soft);
+  border-color: var(--ao-border-warning);
+  color: var(--ao-text-warning);
 }
 
 .alert--neutral {
-  background-color: var(--ai-surface-neutral-soft);
-  border-color: var(--ai-border-neutral);
-  color: var(--ai-text-neutral);
+  background-color: var(--ao-surface-neutral-soft);
+  border-color: var(--ao-border-neutral);
+  color: var(--ao-text-neutral);
 }
 
 /* ── Style: CTA (single-row inline CTA button) ── */
@@ -172,13 +172,13 @@
 
 .alert--cta .alert__header {
   align-items: center;
-  /* CTA gap between icon | text-area | close = --ai-spacing-4 (12px).
-   * Default style uses --ai-spacing-3 (8px) — kept on the base rule. */
-  gap: var(--ai-spacing-4);
+  /* CTA gap between icon | text-area | close = --ao-spacing-4 (12px).
+   * Default style uses --ao-spacing-3 (8px) — kept on the base rule. */
+  gap: var(--ao-spacing-4);
 }
 
 .alert--cta .alert__text {
-  line-height: var(--ai-leading-sm);
+  line-height: var(--ao-leading-sm);
 }
 
 .alert--cta .alert__cta-area {
@@ -186,7 +186,7 @@
   flex: 1;
   min-width: 0;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 @container (max-width: 767px) {
@@ -195,14 +195,14 @@
   }
   .alert--cta .alert__icon {
     /* 2px optical pad to align the 16px icon to the title baseline when the
-     * header switches to flex-start. Figma binds `--ai-spacing-0.5` (no
+     * header switches to flex-start. Figma binds `--ao-spacing-0.5` (no
      * matching semantic token exists) — treated as an optical exception. */
     padding-top: 2px;
   }
   .alert--cta .alert__cta-area {
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--ai-spacing-4);
+    gap: var(--ao-spacing-4);
   }
 }
 
@@ -211,34 +211,34 @@
 .alert--floating {
   flex-direction: row;
   align-items: center;
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-2) var(--ai-spacing-4) var(--ai-spacing-2) var(--ai-spacing-2);
-  border-radius: var(--ai-radius-full);
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-2) var(--ao-spacing-4) var(--ao-spacing-2) var(--ao-spacing-2);
+  border-radius: var(--ao-radius-full);
 }
 
 .alert__badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: var(--ai-spacing-7);
-  padding: 0 var(--ai-spacing-3);
-  background-color: var(--ai-surface-info);
-  border-radius: var(--ai-radius-full);
-  color: var(--ai-text-invert);
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-md);
+  height: var(--ao-spacing-7);
+  padding: 0 var(--ao-spacing-3);
+  background-color: var(--ao-surface-info);
+  border-radius: var(--ao-radius-full);
+  color: var(--ao-text-invert);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-md);
   flex-shrink: 0;
 }
 
 .alert--floating .alert__text {
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-md);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-md);
 }
 
-.alert--floating.alert--success .alert__badge { background-color: var(--ai-surface-success); }
-.alert--floating.alert--neutral .alert__badge { background-color: var(--ai-surface-neutral); }
+.alert--floating.alert--success .alert__badge { background-color: var(--ao-surface-success); }
+.alert--floating.alert--neutral .alert__badge { background-color: var(--ao-surface-neutral); }
 
 .alert--floating .alert__arrow {
   display: inline-flex;
@@ -249,36 +249,36 @@
 }
 
 .alert--floating .alert__arrow [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 /* ── Style: Fixed (full-width bar, top border) ── */
 
 .alert--fixed {
   border: none;
-  border-top: 3px solid var(--ai-border-info);
+  border-top: 3px solid var(--ao-border-info);
   border-radius: 0;
 }
 
-.alert--fixed.alert--success { border-top-color: var(--ai-border-success); }
-.alert--fixed.alert--danger { border-top-color: var(--ai-border-error); }
-.alert--fixed.alert--warning { border-top-color: var(--ai-border-warning); }
-.alert--fixed.alert--neutral { border-top-color: var(--ai-border-neutral); }
+.alert--fixed.alert--success { border-top-color: var(--ao-border-success); }
+.alert--fixed.alert--danger { border-top-color: var(--ao-border-error); }
+.alert--fixed.alert--warning { border-top-color: var(--ao-border-warning); }
+.alert--fixed.alert--neutral { border-top-color: var(--ao-border-neutral); }
 
 /* ── Case B: CTA button bg follows the Type ───── */
 /* Code Connect maps the inline button to btn--primary btn--sm, but Figma
- * paints its bg with the type's --ai-surface-{type} (5 different colours).
+ * paints its bg with the type's --ao-surface-{type} (5 different colours).
  * Scoped here per parent type so the base Button stays primary-blue. */
 
 .alert .alert__cta-btn,
 .alert--info .alert__cta-btn {
-  background-color: var(--ai-surface-info);
+  background-color: var(--ao-surface-info);
   border-color: transparent;
   align-self: flex-start;
 }
 
-.alert--success .alert__cta-btn { background-color: var(--ai-surface-success); }
-.alert--danger .alert__cta-btn { background-color: var(--ai-surface-error); }
-.alert--warning .alert__cta-btn { background-color: var(--ai-surface-warning); }
-.alert--neutral .alert__cta-btn { background-color: var(--ai-surface-neutral); }
+.alert--success .alert__cta-btn { background-color: var(--ao-surface-success); }
+.alert--danger .alert__cta-btn { background-color: var(--ao-surface-error); }
+.alert--warning .alert__cta-btn { background-color: var(--ao-surface-warning); }
+.alert--neutral .alert__cta-btn { background-color: var(--ao-surface-neutral); }

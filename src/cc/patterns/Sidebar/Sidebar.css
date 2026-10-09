@@ -13,7 +13,7 @@
  *   Desktop = 40 (button) + 8×2 (padding) = 56
  *   Mobile  = 40 (button) + 6×2 (padding) = 52
  *
- * Default icon colour is the dusty `--ai-icon-invert-secondary`. Only the
+ * Default icon colour is the dusty `--ao-icon-invert-secondary`. Only the
  * Selected/Active workspace button promotes its icon to `--cc-mainmenu-icon`.
  */
 
@@ -21,9 +21,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: var(--ai-spacing-10);                    /* 56 — 40 button + 8 padding × 2 */
-  gap: var(--ai-spacing-3);                       /* 8 — Desktop */
-  padding: var(--ai-spacing-4) var(--ai-spacing-3); /* 12 / 8 — Desktop */
+  width: var(--ao-spacing-10);                    /* 56 — 40 button + 8 padding × 2 */
+  gap: var(--ao-spacing-3);                       /* 8 — Desktop */
+  padding: var(--ao-spacing-4) var(--ao-spacing-3); /* 12 / 8 — Desktop */
   background-color: var(--cc-mainmenu-primary-bg);
   flex-shrink: 0;
   height: 100%;
@@ -31,10 +31,10 @@
 
 /* Mobile: 52 wide (40 + 6 × 2), tighter gap (6) and tighter horizontal padding (6). */
 .cc-sidebar--mobile {
-  width: calc(var(--ai-spacing-8) + var(--ai-spacing-2) * 2);  /* 52 — no direct token */
-  gap: var(--ai-spacing-2);
-  padding-left: var(--ai-spacing-2);
-  padding-right: var(--ai-spacing-2);
+  width: calc(var(--ao-spacing-8) + var(--ao-spacing-2) * 2);  /* 52 — no direct token */
+  gap: var(--ao-spacing-2);
+  padding-left: var(--ao-spacing-2);
+  padding-right: var(--ao-spacing-2);
 }
 
 /* ── Brand cell at top of the rail ─────────────────── */
@@ -43,8 +43,8 @@
    The CSS `mask` paints the affinoMark.svg in --cc-mainmenu-icon. */
 .cc-sidebar__brand {
   flex-shrink: 0;
-  width: var(--ai-spacing-8);                     /* 40 */
-  min-height: var(--ai-spacing-12);               /* 72 — Desktop */
+  width: var(--ao-spacing-8);                     /* 40 */
+  min-height: var(--ao-spacing-12);               /* 72 — Desktop */
   background-color: var(--cc-mainmenu-icon);
   -webkit-mask: url('../../../../img/affinoMark.svg') no-repeat center center;
   mask: url('../../../../img/affinoMark.svg') no-repeat center center;
@@ -55,7 +55,7 @@
 }
 
 .cc-sidebar--mobile .cc-sidebar__brand {
-  min-height: var(--ai-spacing-8);                /* 40 — Mobile */
+  min-height: var(--ao-spacing-8);                /* 40 — Mobile */
   -webkit-mask-size: 24px auto;                   /* brand asset size — allowed */
   mask-size: 24px auto;
 }
@@ -66,7 +66,7 @@
  * buttons remain aligned with the menu content. Mobile menus drop the
  * wordmark already, so the mobile rail mark stays. */
 .cc-sidebar__brand {
-  transition: opacity var(--ai-transition-default);
+  transition: opacity var(--ao-transition-default);
 }
 
 .cc-sidebar-menu:has(.cc-menu[data-cc-panel]:not([hidden])) .cc-sidebar:not(.cc-sidebar--mobile) .cc-sidebar__brand {
@@ -78,17 +78,17 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-spacing-8);                     /* 40 */
-  height: var(--ai-spacing-8);
+  width: var(--ao-spacing-8);                     /* 40 */
+  height: var(--ao-spacing-8);
   border: 0;
   background: transparent;
-  border-radius: var(--ai-radius-md);
-  /* Default icon colour: dusty --ai-icon-invert-secondary. The active
+  border-radius: var(--ao-radius-md);
+  /* Default icon colour: dusty --ao-icon-invert-secondary. The active
    * workspace button below promotes this to --cc-mainmenu-icon. */
-  color: var(--ai-icon-invert-secondary);
+  color: var(--ao-icon-invert-secondary);
   cursor: pointer;
   flex-shrink: 0;
-  transition: background-color var(--ai-transition-default), color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default), color var(--ao-transition-default);
 }
 
 .cc-sidebar__btn:hover {
@@ -105,6 +105,6 @@
 }
 
 .cc-sidebar__btn [data-lucide] {
-  width: var(--ai-icon-size-md);                  /* 20 */
-  height: var(--ai-icon-size-md);
+  width: var(--ao-icon-size-md);                  /* 20 */
+  height: var(--ao-icon-size-md);
 }

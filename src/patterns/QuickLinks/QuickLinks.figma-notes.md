@@ -8,11 +8,11 @@
 
 | Figma property | CSS token |
 |---|---|
-| Heading font | `--ai-font-body`, `--ai-font-semibold`, `--ai-font-fixed-xs` |
-| Heading line-height | `--ai-leading-md` |
-| Heading color | `--ai-text-primary` |
-| Heading→list gap | `--ai-spacing-4` |
-| List gap | `--ai-spacing-3` |
+| Heading font | `--ao-font-body`, `--ao-font-semibold`, `--ao-font-fixed-xs` |
+| Heading line-height | `--ao-leading-md` |
+| Heading color | `--ao-text-primary` |
+| Heading→list gap | `--ao-spacing-4` |
+| List gap | `--ao-spacing-3` |
 | Layout | flex-wrap row |
 
 ## Composition

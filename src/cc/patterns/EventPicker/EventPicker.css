@@ -22,11 +22,11 @@
 
 /* Figma's shell adds a hairline border and uses shadow-md, where the base Modal
  * has no border and uses shadow-lg. Background stays Modal's
- * --ai-surface-elevated-1: identical to Figma's --ai-surface-primary in light
+ * --ao-surface-elevated-1: identical to Figma's --ao-surface-primary in light
  * (#ffffff) but correctly lighter in dark, and Figma has no dark variant. */
 .modal.event-picker {
-  border: 1px solid var(--ai-border-secondary);
-  box-shadow: var(--ai-shadow-md);
+  border: 1px solid var(--ao-border-secondary);
+  box-shadow: var(--ao-shadow-md);
 }
 
 /* ── Filters: predictive search + Live checkbox ──────────── */
@@ -34,9 +34,9 @@
 .event-picker__filters {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
-  padding: var(--ai-spacing-5) var(--ai-spacing-6);
-  border-bottom: 1px solid var(--ai-border-secondary);
+  gap: var(--ao-spacing-4);
+  padding: var(--ao-spacing-5) var(--ao-spacing-6);
+  border-bottom: 1px solid var(--ao-border-secondary);
   flex-shrink: 0;
 }
 
@@ -45,63 +45,63 @@
 .event-picker__list {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-5) var(--ai-spacing-6);
-  /* Figma caps the scroll region at 360px; --ai-size-7 (384px) is the nearest
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-5) var(--ao-spacing-6);
+  /* Figma caps the scroll region at 360px; --ao-size-7 (384px) is the nearest
    * token and was approved in place of an untokenised value. */
-  max-height: var(--ai-size-7);
+  max-height: var(--ao-size-7);
   overflow-y: auto;
   overscroll-behavior: contain;
   flex: 1;
   scrollbar-width: thin;
-  scrollbar-color: var(--ai-surface-secondary) transparent;
+  scrollbar-color: var(--ao-surface-secondary) transparent;
 }
 
 /* Group heading — "Last used" / "Latest events".
  * Figma gives the first group 4px top padding and each subsequent one 16px. */
 .event-picker__group {
   margin: 0;
-  padding-top: var(--ai-spacing-5);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-xs);
-  letter-spacing: var(--ai-tracking-7);
+  padding-top: var(--ao-spacing-5);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-xs);
+  letter-spacing: var(--ao-tracking-7);
   text-transform: uppercase;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 .event-picker__group:first-child {
-  padding-top: var(--ai-spacing-1);
+  padding-top: var(--ao-spacing-1);
 }
 
 /* ── Event row (contextual overrides on .action-card) ────── */
 
 /* ActionCard supplies surface, border, radius, padding, min-height and hover.
- * Figma tightens the gap from the base --ai-spacing-6 to --ai-spacing-5. */
+ * Figma tightens the gap from the base --ao-spacing-6 to --ao-spacing-5. */
 .action-card.event-picker__event {
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
   text-align: left;
   cursor: pointer;
   flex-shrink: 0;
 }
 
 .event-picker__event:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
 }
 
 /* Pinned (last-used) event carries NO distinct styling — it is identified by the
  * "Last used" group heading above it and by its position at the top of the list.
  * This is a deliberate deviation from Figma (node 3087:5104 tints the card with
- * --ai-surface-brand-soft-extra and promotes its border to --ai-border-brand);
+ * --ao-surface-brand-soft-extra and promotes its border to --ao-border-brand);
  * removed at the designer's request 2026-07-28. The `--pinned` class is kept as a
  * markup hook for the host app. */
 
 .event-picker__event-main {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
   flex: 1;
   min-width: 0;
 }
@@ -109,16 +109,16 @@
 .event-picker__event-head {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   flex-wrap: wrap;
 }
 
 .event-picker__event-name {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-sm);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-sm);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
 }
 
 /* Date · Location · Attendees */
@@ -126,24 +126,24 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: var(--ai-spacing-1) var(--ai-spacing-4);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-secondary);
+  gap: var(--ao-spacing-1) var(--ao-spacing-4);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
 }
 
 .event-picker__meta-item {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
 }
 
 .event-picker__meta-item [data-lucide] {
-  width: var(--ai-icon-size-xs);
-  height: var(--ai-icon-size-xs);
-  color: var(--ai-icon-contrast);
+  width: var(--ao-icon-size-xs);
+  height: var(--ao-icon-size-xs);
+  color: var(--ao-icon-contrast);
   flex-shrink: 0;
 }
 
@@ -153,47 +153,47 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: var(--ai-spacing-2);
-  min-width: var(--ai-size-1); /* 128px */
+  gap: var(--ao-spacing-2);
+  min-width: var(--ao-size-1); /* 128px */
   flex-shrink: 0;
 }
 
 .event-picker__plans {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-medium);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-primary);
+  gap: var(--ao-spacing-2);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-medium);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-primary);
 }
 
 .event-picker__plans [data-lucide] {
-  width: var(--ai-icon-size-xs);
-  height: var(--ai-icon-size-xs);
-  color: var(--ai-icon-contrast);
+  width: var(--ao-icon-size-xs);
+  height: var(--ao-icon-size-xs);
+  color: var(--ao-icon-contrast);
   flex-shrink: 0;
 }
 
 /* No plans yet — Figma drops the count to the muted text token. */
 .event-picker__plans--none {
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 .event-picker__seated {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: var(--ai-spacing-1);
-  width: var(--ai-size-1); /* 128px */
+  gap: var(--ao-spacing-1);
+  width: var(--ao-size-1); /* 128px */
 }
 
 .event-picker__seated-track {
   width: 100%;
-  height: var(--ai-spacing-1); /* 4px */
-  background: var(--ai-surface-secondary);
-  border-radius: var(--ai-radius-full);
+  height: var(--ao-spacing-1); /* 4px */
+  background: var(--ao-surface-secondary);
+  border-radius: var(--ao-radius-full);
   overflow: hidden;
 }
 
@@ -202,16 +202,16 @@
   height: 100%;
   /* --event-picker-seated is a per-row data value, not a style decision */
   width: var(--event-picker-seated, 0%);
-  background: var(--ai-surface-success);
-  border-radius: var(--ai-radius-full);
+  background: var(--ao-surface-success);
+  border-radius: var(--ao-radius-full);
 }
 
 .event-picker__seated-label {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-secondary);
   white-space: nowrap;
 }
 
@@ -221,9 +221,9 @@
   /* No horizontal padding — the highlight sits mid-word, so padding would
    * push the following characters out of place. */
   padding: 0;
-  background: var(--ai-surface-brand-soft);
-  border-radius: var(--ai-radius-sm);
-  color: var(--ai-text-primary);
+  background: var(--ao-surface-brand-soft);
+  border-radius: var(--ao-radius-sm);
+  color: var(--ao-text-primary);
 }
 
 /* ── Type=Event Picker (no results) ──────────────────────── */
@@ -232,8 +232,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-9) var(--ai-spacing-6);
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-9) var(--ao-spacing-6);
   text-align: center;
 }
 
@@ -241,39 +241,39 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-spacing-8); /* 40px */
-  height: var(--ai-spacing-8);
-  border-radius: var(--ai-radius-full);
-  background: var(--ai-surface-minimal);
-  color: var(--ai-icon-contrast);
+  width: var(--ao-spacing-8); /* 40px */
+  height: var(--ao-spacing-8);
+  border-radius: var(--ao-radius-full);
+  background: var(--ao-surface-minimal);
+  color: var(--ao-icon-contrast);
 }
 
 .event-picker__empty-icon [data-lucide] {
-  width: var(--ai-icon-size-md);
-  height: var(--ai-icon-size-md);
+  width: var(--ao-icon-size-md);
+  height: var(--ao-icon-size-md);
 }
 
 .event-picker__empty-title {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
 }
 
 .event-picker__empty-desc {
   margin: 0;
-  max-width: var(--ai-size-6); /* 320px */
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-secondary);
+  max-width: var(--ao-size-6); /* 320px */
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
 }
 
 .event-picker__empty-desc strong {
-  font-weight: var(--ai-font-bold);
+  font-weight: var(--ao-font-bold);
 }
 
 /* ── Footer (contextual override on .modal__footer) ─────── */
@@ -284,11 +284,11 @@
 }
 
 .event-picker__count {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-secondary);
 }
 
 /* ── Device=Mobile ──────────────────────────────────────── */
@@ -298,7 +298,7 @@
   .action-card.event-picker__event {
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--ai-spacing-3);
+    gap: var(--ao-spacing-3);
   }
 
   /* Stats wrap below the name + meta here, so they read as a separate row. */
@@ -306,8 +306,8 @@
     align-items: flex-start;
     min-width: 0;
     width: 100%;
-    border-top: 1px solid var(--ai-border-secondary);
-    padding-top: var(--ai-spacing-3);
+    border-top: 1px solid var(--ao-border-secondary);
+    padding-top: var(--ao-spacing-3);
   }
 
   .event-picker__seated {
@@ -328,30 +328,30 @@
   .event-picker__filters,
   .event-picker__list,
   .event-picker__empty {
-    padding: var(--ai-spacing-5);
+    padding: var(--ao-spacing-5);
   }
 
   /* ══ Mobile type (2026-09-14) ════════════════════════════════════════════
    * Read off this component's OWN Mobile variant, `3108:6658` — which is not what this file's
-   * notes have said. They recorded the event name as `--ai-font-fixed-sm` (16) at BOTH sizes; the
+   * notes have said. They recorded the event name as `--ao-font-fixed-sm` (16) at BOTH sizes; the
    * variant actually draws **14**, and has done in every row. Corrected here and in the notes.
    *
    * The variant is internally inconsistent on ONE point and it is worth knowing which way it was
    * read: the pinned first row's name sits in a 20-tall box (`3087:5961`) where every other row is
    * 24 (`3087:6000`), i.e. leading-sm against leading-md. Both are 14px, so the SIZE is not in
    * doubt; only the first row's leading differs, which reads as drift on that one row rather than
-   * a rule. Leading is left at `--ai-leading-md` for all of them.
+   * a rule. Leading is left at `--ao-leading-md` for all of them.
    *
-   * The Cancel button is `--ai-font-fixed-2xs` (13) in the variant's footer (`3087:6173`), where
-   * Modal's own mobile block takes footer buttons to `--ai-font-fluid-xxs` (12). Scoped to this
+   * The Cancel button is `--ao-font-fixed-2xs` (13) in the variant's footer (`3087:6173`), where
+   * Modal's own mobile block takes footer buttons to `--ao-font-fluid-xxs` (12). Scoped to this
    * pattern's footer rather than changed in Modal, because 13 is what EventPicker's frames show
    * and nothing was read for the other dialogs — and 13 is no Button size at all, so it is a
    * contextual override either way. Flagged in the notes. */
   .event-picker__event-name {
-    font-size: var(--ai-font-fixed-xs);   /* 14 — was --ai-font-fixed-sm (16) */
+    font-size: var(--ao-font-fixed-xs);   /* 14 — was --ao-font-fixed-sm (16) */
   }
 
   .event-picker__footer .btn {
-    font-size: var(--ai-font-fixed-2xs);  /* 13 — Modal's mobile footer gives 12 */
+    font-size: var(--ao-font-fixed-2xs);  /* 13 — Modal's mobile footer gives 12 */
   }
 }

@@ -5,11 +5,11 @@
  * Three axes: State (Default | Hover) × Type (Default | Warning) × Size (Default | sm).
  *
  * - Default Default:   transparent bg, Regular text
- * - Hover Default:     --ai-surface-secondary bg, Medium text
+ * - Hover Default:     --ao-surface-secondary bg, Medium text
  * - Default Warning:   transparent bg, Regular text (visually identical to Default Default)
- * - Hover Warning:     --ai-surface-error bg, Semibold white text (destructive)
- * - Size=sm (.dropdown-item--sm): vertical padding --ai-spacing-2 (6px) vs
- *   --ai-spacing-3 (8px) → 36px row vs 40px. Horizontal padding/gap/font/radius unchanged.
+ * - Hover Warning:     --ao-surface-error bg, Semibold white text (destructive)
+ * - Size=sm (.dropdown-item--sm): vertical padding --ao-spacing-2 (6px) vs
+ *   --ao-spacing-3 (8px) → 36px row vs 40px. Horizontal padding/gap/font/radius unchanged.
  *
  * Optional trailing tick (.dropdown-item__check): a brand-blue check pushed to
  * the right edge, marking a selected row in the Filter-views Dropdown. This is
@@ -24,37 +24,37 @@
 .dropdown-item {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3); /* 8px */
+  gap: var(--ao-spacing-3); /* 8px */
   width: 100%;
-  padding: var(--ai-spacing-3) var(--ai-spacing-4); /* 8px / 12px */
-  border-radius: var(--ai-radius-md);
+  padding: var(--ao-spacing-3) var(--ao-spacing-4); /* 8px / 12px */
+  border-radius: var(--ao-radius-md);
   background: transparent;
   border: 0;
-  color: var(--ai-text-primary);
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-md);
+  color: var(--ao-text-primary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-regular);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
   text-align: left;
   cursor: pointer;
-  transition: background-color var(--ai-transition-default),
-              color var(--ai-transition-default),
-              font-weight var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default),
+              color var(--ao-transition-default),
+              font-weight var(--ao-transition-default);
 }
 
 .dropdown-item [data-lucide] {
   flex-shrink: 0;
-  width: var(--ai-icon-size-sm); /* 16px */
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-contrast);
+  width: var(--ao-icon-size-sm); /* 16px */
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-contrast);
 }
 
 /* ── Size=sm ──────────────────────────────────────────── */
 /* Figma 2955:6736 — only vertical padding differs from Default. */
 
 .dropdown-item--sm {
-  padding-top: var(--ai-spacing-2); /* 6px */
-  padding-bottom: var(--ai-spacing-2);
+  padding-top: var(--ao-spacing-2); /* 6px */
+  padding-bottom: var(--ao-spacing-2);
 }
 
 /* ── Size=xs ──────────────────────────────────────────── */
@@ -68,9 +68,9 @@
  * from Size=xs rows. */
 
 .dropdown-item--xs {
-  padding: var(--ai-spacing-1) var(--ai-spacing-3); /* 4px / 8px -> 4+24+4 = 32px */
-  font-size: var(--ai-font-fixed-2xs);              /* 13px */
-  font-weight: var(--ai-font-medium);
+  padding: var(--ao-spacing-1) var(--ao-spacing-3); /* 4px / 8px -> 4+24+4 = 32px */
+  font-size: var(--ao-font-fixed-2xs);              /* 13px */
+  font-weight: var(--ao-font-medium);
 }
 
 /* The LEADING icon only. `:not()` is load-bearing: Figma keeps the trailing tick at 16px on
@@ -79,9 +79,9 @@
  * `.dropdown-item--warning:hover [data-lucide]` rule below — equal specificity, and that one
  * is further down the file, so a warning row's icon still goes white on hover. */
 .dropdown-item--xs [data-lucide]:not(.dropdown-item__check) {
-  width: var(--ai-icon-size-xs);  /* 12px */
-  height: var(--ai-icon-size-xs);
-  color: var(--ai-icon-primary);
+  width: var(--ao-icon-size-xs);  /* 12px */
+  height: var(--ao-icon-size-xs);
+  color: var(--ao-icon-primary);
 }
 
 /* ── Trailing tick (selected, Filter-views style) ─────── */
@@ -91,7 +91,7 @@
 
 .dropdown-item .dropdown-item__check {
   margin-left: auto;
-  color: var(--ai-surface-brand);
+  color: var(--ao-surface-brand);
 }
 
 /* ── Stable-width label ───────────────────────────────── */
@@ -110,7 +110,7 @@
 
 .dropdown-item span[data-text]::before {
   content: attr(data-text);
-  font-weight: var(--ai-font-medium);
+  font-weight: var(--ao-font-medium);
   height: 0;
   visibility: hidden;
   overflow: hidden;
@@ -120,23 +120,23 @@
 
 /* Warning items hover to Semibold (heavier than Medium) — reserve that width. */
 .dropdown-item--warning span[data-text]::before {
-  font-weight: var(--ai-font-semibold);
+  font-weight: var(--ao-font-semibold);
 }
 
 /* ── Hover (Default type) ────────────────────────────── */
 
 .dropdown-item:hover,
 .dropdown-item.is-hover {
-  background-color: var(--ai-surface-secondary);
-  font-weight: var(--ai-font-medium);
+  background-color: var(--ao-surface-secondary);
+  font-weight: var(--ao-font-medium);
 }
 
 /* An item rendered as an <a> (a menu entry that navigates) must not pick up base.css's global
  * `a:hover` teal + underline — the Button / RecordTabs rule: components that are links never do.
- * Figma's Hover text stays --ai-text-primary. `:where(a)` keeps this at (0,2,0): it outranks `a:hover` (0,1,1), and Warning's own
+ * Figma's Hover text stays --ao-text-primary. `:where(a)` keeps this at (0,2,0): it outranks `a:hover` (0,1,1), and Warning's own
  * hover colour below still wins by source order. */
 .dropdown-item:where(a):hover {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
   text-decoration: none;
 }
 
@@ -145,8 +145,8 @@
 .dropdown-item--selected,
 .dropdown-item[aria-selected="true"],
 .dropdown-item[aria-current="page"] {
-  background-color: var(--ai-surface-secondary);
-  font-weight: var(--ai-font-medium);
+  background-color: var(--ao-surface-secondary);
+  font-weight: var(--ao-font-medium);
 }
 
 /* ── Type=Warning ────────────────────────────────────── */
@@ -154,9 +154,9 @@
 
 .dropdown-item--warning:hover,
 .dropdown-item--warning.is-hover {
-  background-color: var(--ai-surface-error);
+  background-color: var(--ao-surface-error);
   color: #ffffff; /* Neutral/0 — primitive, approved (theme-invariant white on red bg) */
-  font-weight: var(--ai-font-semibold);
+  font-weight: var(--ao-font-semibold);
 }
 
 .dropdown-item--warning:hover [data-lucide],
@@ -167,12 +167,12 @@
 /* ── Focus ───────────────────────────────────────────── */
 
 .dropdown-item:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: -2px;
 }
 
 .dropdown-item--warning:focus-visible {
-  outline-color: var(--ai-border-error, var(--ai-surface-error));
+  outline-color: var(--ao-border-error, var(--ao-surface-error));
 }
 
 /* ── Disabled ────────────────────────────────────────── */

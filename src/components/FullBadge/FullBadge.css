@@ -16,24 +16,24 @@
 .full-badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
   /* Never shrink — it is a fixed label sharing a flex row with a growing text node. */
   flex-shrink: 0;
   /* Defensive: harmless on the <span> this ships as, but a caller reaching for a <p>
    * would otherwise inherit block margins and push the row out of alignment. */
   margin: 0;
-  padding-inline: var(--ai-spacing-2);
-  padding-block: var(--ai-spacing-0-5);
-  border-radius: var(--ai-radius-full);
-  background-color: var(--ai-surface-success);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-6xs);
-  font-weight: var(--ai-font-bold);
+  padding-inline: var(--ao-spacing-2);
+  padding-block: var(--ao-spacing-0-5);
+  border-radius: var(--ao-radius-full);
+  background-color: var(--ao-surface-success);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-6xs);
+  font-weight: var(--ao-font-bold);
   line-height: normal;
   text-transform: uppercase;
   /* Designer addition — Figma sets no tracking. 9px bold uppercase sets very tight. */
-  letter-spacing: var(--ai-tracking-7);
-  color: var(--ai-text-invert);
+  letter-spacing: var(--ao-tracking-7);
+  color: var(--ao-text-invert);
 }
 
 /* Figma draws the check at 7x7, which was illegible: Lucide renders on a 24-unit
@@ -44,8 +44,8 @@
 .full-badge [data-lucide],
 .full-badge svg {
   /* 7px — Figma `3615:110605`. A RAW VALUE, explicitly approved by the designer 2026-09-11 in
-   * preference to adding an `--ai-icon-size-2xs` token. Nothing on the `--ai-*` scale is 7px, and
-   * the smallest icon token (`--ai-icon-size-xs`) is 12px, which will not sit inside a 15px badge.
+   * preference to adding an `--ao-icon-size-2xs` token. Nothing on the `--ao-*` scale is 7px, and
+   * the smallest icon token (`--ao-icon-size-xs`) is 12px, which will not sit inside a 15px badge.
    *
    * Recorded as an APPROVED EXCEPTION, not inlined on a "one-off" judgement — the distinction
    * matters, because an unrecorded one-off is exactly how hardcoded dimensions accumulate. The

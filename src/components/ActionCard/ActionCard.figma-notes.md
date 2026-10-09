@@ -6,19 +6,19 @@
 
 | Node ID | Variant name | Notes |
 |---|---|---|
-| `2930:5756` | Action=Button, State=Default | Border `--ai-border-secondary` |
-| `2930:5753` | Action=Button, State=Hover | Border `--ai-border-primary` |
-| `2930:5755` | Action=Right Chevron, State=Default | Border `--ai-border-secondary` |
-| `2930:5754` | Action=Right Chevron, State=Hover | Border `--ai-border-primary` |
+| `2930:5756` | Action=Button, State=Default | Border `--ao-border-secondary` |
+| `2930:5753` | Action=Button, State=Hover | Border `--ao-border-primary` |
+| `2930:5755` | Action=Right Chevron, State=Default | Border `--ao-border-secondary` |
+| `2930:5754` | Action=Right Chevron, State=Hover | Border `--ao-border-primary` |
 
 ## Variant × State Matrix
 
 | Action | States | Trailing element |
 |---|---|---|
 | Button | Default, Hover | Button — Type=Tertiary, Size=xs (`btn btn--tertiary btn--xs`), Plus icon + "add" |
-| Right Chevron | Default, Hover | `chevron-right` icon, 16px, `--ai-icon-secondary` |
+| Right Chevron | Default, Hover | `chevron-right` icon, 16px, `--ao-icon-secondary` |
 
-`State=Hover` is a pure CSS `:hover` (border darkens `--ai-border-secondary` → `--ai-border-primary`) — no JS.
+`State=Hover` is a pure CSS `:hover` (border darkens `--ao-border-secondary` → `--ao-border-primary`) — no JS.
 
 ## CSS Class Mapping
 
@@ -37,26 +37,26 @@
 
 | Figma variable | CSS variable | Role |
 |---|---|---|
-| `--ai-surface-primary` | `--ai-surface-primary` | Card background (#fff) |
-| `--ai-border-secondary` | `--ai-border-secondary` | Default border (#e2e2e3) |
-| `--ai-border-primary` | `--ai-border-primary` | Hover border (#1b1b1f) |
-| `--ai-spacing-6` | `--ai-spacing-6` | Gap between title and action (24px) |
-| `--ai-spacing-10` | `--ai-spacing-10` | Fixed card height (56px) |
-| `--ai-spacing-4` | `--ai-spacing-4` | Card padding (12px) |
-| `--ai-radius-md` | `--ai-radius-md` | Card corner radius (8px) |
-| `--ai-font-title` | `--ai-font-title` | Title font family (Inter) |
-| `--ai-font-medium` | `--ai-font-medium` | Title weight (500) |
-| `--ai-font-fixed-xs` | `--ai-font-fixed-xs` | Title size (14px) |
-| `--ai-leading-sm` | `--ai-leading-sm` | Title line height (20px) |
-| `--ai-tracking-5` | `--ai-tracking-5` | Title letter-spacing (~0.2px) |
-| `--ai-text-primary` | `--ai-text-primary` | Title colour (#212123) |
-| `--ai-icon-size-sm` | `--ai-icon-size-sm` | Chevron size (16px) |
-| `--ai-icon-secondary` | `--ai-icon-secondary` | Chevron colour (#67676c) |
+| `--ao-surface-primary` | `--ao-surface-primary` | Card background (#fff) |
+| `--ao-border-secondary` | `--ao-border-secondary` | Default border (#e2e2e3) |
+| `--ao-border-primary` | `--ao-border-primary` | Hover border (#1b1b1f) |
+| `--ao-spacing-6` | `--ao-spacing-6` | Gap between title and action (24px) |
+| `--ao-spacing-10` | `--ao-spacing-10` | Fixed card height (56px) |
+| `--ao-spacing-4` | `--ao-spacing-4` | Card padding (12px) |
+| `--ao-radius-md` | `--ao-radius-md` | Card corner radius (8px) |
+| `--ao-font-title` | `--ao-font-title` | Title font family (Inter) |
+| `--ao-font-medium` | `--ao-font-medium` | Title weight (500) |
+| `--ao-font-fixed-xs` | `--ao-font-fixed-xs` | Title size (14px) |
+| `--ao-leading-sm` | `--ao-leading-sm` | Title line height (20px) |
+| `--ao-tracking-5` | `--ao-tracking-5` | Title letter-spacing (~0.2px) |
+| `--ao-text-primary` | `--ao-text-primary` | Title colour (#212123) |
+| `--ao-icon-size-sm` | `--ao-icon-size-sm` | Chevron size (16px) |
+| `--ao-icon-secondary` | `--ao-icon-secondary` | Chevron colour (#67676c) |
 
 ## Token Gaps
 - None outstanding. Resolved during build (2026-06-12):
-  - Card height was `h-[54px]` (no token) → designer updated Figma to `--ai-spacing-10` (56px).
-  - `--ai-icon-size-xs` (12px, used by the xs Button) was missing → designer exported the new scale token; `npm run tokens` now emits it.
+  - Card height was `h-[54px]` (no token) → designer updated Figma to `--ao-spacing-10` (56px).
+  - `--ao-icon-size-xs` (12px, used by the xs Button) was missing → designer exported the new scale token; `npm run tokens` now emits it.
 
 ## Dependencies
 - **Button** (`btn btn--tertiary btn--xs`). The Action=Button trailing element is a Button
@@ -66,7 +66,7 @@
 ## Notes
 - Card `width` is fluid (`100%`) — Figma's `376px` is the frame width; ActionCards stretch to
   their container. The title uses `flex: 1` + `min-width: 0` + ellipsis to truncate.
-- Height is fixed via `min-height: --ai-spacing-10` so both Action variants share the same row
+- Height is fixed via `min-height: --ao-spacing-10` so both Action variants share the same row
   height (the Chevron variant's content alone is shorter).
 - Interaction is not exposed by `get_design_context`. Implemented per intent: Action=Button is a
   container `<div>` whose action is the inner "+ add" button; Action=Right Chevron is a whole-card
@@ -77,8 +77,8 @@
 
 | Element | Token |
 |---|---|
-| `__text` gap | `--ai-spacing-1` |
-| `__desc` | `--ai-font-title`, `--ai-font-fixed-2xs`, `--ai-font-regular`, `--ai-leading-sm`, `--ai-text-secondary` (the Modal subtitle's type, the nearest supporting line in the kit) |
+| `__text` gap | `--ao-spacing-1` |
+| `__desc` | `--ao-font-title`, `--ao-font-fixed-2xs`, `--ao-font-regular`, `--ao-leading-sm`, `--ao-text-secondary` (the Modal subtitle's type, the nearest supporting line in the kit) |
 | `--disabled` | opacity 0.5, no hover border change, `cursor: not-allowed` |
 
 ## Figma build 2026-09-30

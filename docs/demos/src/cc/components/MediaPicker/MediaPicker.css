@@ -7,20 +7,20 @@
 .media-picker {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
 .media-picker__thumb {
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  width: var(--ai-spacing-10);
-  height: var(--ai-spacing-10);
+  width: var(--ao-spacing-10);
+  height: var(--ao-spacing-10);
   overflow: hidden;
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);   /* designer amend 2026-09-29 (was radius-sm) — matches the inputs */
-  background-color: var(--ai-surface-minimal);
-  color: var(--ai-icon-secondary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);   /* designer amend 2026-09-29 (was radius-sm) — matches the inputs */
+  background-color: var(--ao-surface-minimal);
+  color: var(--ao-icon-secondary);
 }
 
 /* The thumbnail is a button too — clicking the image, or the empty placeholder, opens the media
@@ -30,22 +30,22 @@ button.media-picker__thumb {
   padding: 0;
   font: inherit;
   cursor: pointer;
-  transition: border-color var(--ai-transition-default);
+  transition: border-color var(--ao-transition-default);
 }
 
 button.media-picker__thumb:hover {
-  border-color: var(--ai-border-brand);
+  border-color: var(--ao-border-brand);
 }
 
 button.media-picker__thumb:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
 }
 
 .media-picker__thumb [data-lucide],
 .media-picker__thumb svg {
-  width: var(--ai-icon-size-md);
-  height: var(--ai-icon-size-md);
+  width: var(--ao-icon-size-md);
+  height: var(--ao-icon-size-md);
 }
 
 .media-picker__thumb img {
@@ -57,7 +57,7 @@ button.media-picker__thumb:focus-visible {
 .media-picker__actions {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
 }
 
 /* Empty vs filled (designer, 2026-09-29): an empty slot offers Choose file; only a slot holding

@@ -20,23 +20,23 @@
     body { container-type: inline-size; container-name: cs-page; }
     body {
       margin: 0;
-      padding: var(--ai-spacing-7);
-      background: var(--ai-surface-minimal);
-      font-family: var(--ai-font-body);
-      color: var(--ai-text-primary);
+      padding: var(--ao-spacing-7);
+      background: var(--ao-surface-minimal);
+      font-family: var(--ao-font-body);
+      color: var(--ao-text-primary);
     }
-    h1 { font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xl); margin: 0 0 var(--ai-spacing-2); }
+    h1 { font-family: var(--ao-font-title); font-size: var(--ao-font-fixed-xl); margin: 0 0 var(--ao-spacing-2); }
     h2 {
-      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-md);
-      margin: var(--ai-spacing-8) 0 var(--ai-spacing-1);
+      font-family: var(--ao-font-title); font-size: var(--ao-font-fixed-md);
+      margin: var(--ao-spacing-8) 0 var(--ao-spacing-1);
     }
-    .lede { color: var(--ai-text-contrast); font-size: var(--ai-font-fixed-xs); margin: 0 0 var(--ai-spacing-5); max-width: 70ch; }
+    .lede { color: var(--ao-text-contrast); font-size: var(--ao-font-fixed-xs); margin: 0 0 var(--ao-spacing-5); max-width: 70ch; }
     /* The card is fluid and fills its cell, so the demo supplies the container: the
-       tables grid it lives in. --ai-size-5 (280px) tracks Figma's 289px closely. */
+       tables grid it lives in. --ao-size-5 (280px) tracks Figma's 289px closely. */
     .table-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(var(--ai-size-4), var(--ai-size-5)));
-      gap: var(--ai-spacing-5);
+      grid-template-columns: repeat(auto-fill, minmax(var(--ao-size-4), var(--ao-size-5)));
+      gap: var(--ao-spacing-5);
       align-items: start;
     }
     /* ── Mobile preview ──────────────────────────────────────────────────────
@@ -45,19 +45,19 @@
        outer window is — which is the only way to show the mobile rendering without
        duplicating markup or inventing a --mobile modifier. */
     .mobile-preview {
-      display: flex; flex-direction: column; gap: var(--ai-spacing-3);
+      display: flex; flex-direction: column; gap: var(--ao-spacing-3);
       inline-size: fit-content;
     }
     .mobile-preview__frame {
       inline-size: 390px; /* iPhone-class viewport — a device width, not a design token */
       block-size: 700px;
-      border: 1px solid var(--ai-border-secondary);
-      border-radius: var(--ai-radius-lg);
-      background: var(--ai-surface-primary);
+      border: 1px solid var(--ao-border-secondary);
+      border-radius: var(--ao-radius-lg);
+      background: var(--ao-surface-primary);
     }
     .mobile-preview__caption {
-      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xxs);
-      color: var(--ai-text-contrast); margin: 0;
+      font-family: var(--ao-font-title); font-size: var(--ao-font-fixed-xxs);
+      color: var(--ao-text-contrast); margin: 0;
     }
     /* Inside the frame: hide this section so it cannot load itself, and drop the page
        intro so the components start at the top. */
@@ -243,7 +243,7 @@
   </article>
   </div>
   <h2>State=Selected</h2>
-<p class="lede">A two-property delta on every Type: background drops to <code>--ai-surface-minimal</code> and the border goes <code>--ai-border-brand</code>.</p>
+<p class="lede">A two-property delta on every Type: background drops to <code>--ao-surface-minimal</code> and the border goes <code>--ao-border-brand</code>.</p>
   <div class="table-grid">
   <article class="table-card table-card--selected">
     <div class="table-card__header">

@@ -39,7 +39,7 @@
  *   · The pool container keeps .sp-panel, because `.sp-panel.sp-drop` is the
  *     only drop-target feedback the pool has.
  *
- * Everything is gated behind @media (min-width: 1024px). Below --ai-bp-lg the
+ * Everything is gated behind @media (min-width: 1024px). Below --ao-bp-lg the
  * alt states fall back to the page-scroll layout they inherit, which already
  * works — a fixed-height three-pane shell would fail WCAG 1.4.10 Reflow at 400%
  * zoom (CLAUDE.md §9).
@@ -91,8 +91,8 @@
   .sp-shell__work {
     min-height: 0;
     display: grid;
-    gap: var(--ai-spacing-5);
-    padding: var(--ai-spacing-5) var(--ai-spacing-6);
+    gap: var(--ao-spacing-5);
+    padding: var(--ao-spacing-5) var(--ao-spacing-6);
   }
 
   /* The pane is the container queried by the grid/seat list inside it. An
@@ -104,9 +104,9 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    border: 1px solid var(--ai-border-secondary);
-    border-radius: var(--ai-radius-lg);
-    background: var(--ai-surface-primary);
+    border: 1px solid var(--ao-border-secondary);
+    border-radius: var(--ao-radius-lg);
+    background: var(--ao-surface-primary);
     container-type: inline-size;
     container-name: sp-pane;
   }
@@ -153,7 +153,7 @@
     flex: 1;
     min-height: 0;
     overflow-y: auto;
-    margin-top: var(--ai-spacing-4);
+    margin-top: var(--ao-spacing-4);
     scrollbar-width: thin;
   }
 
@@ -175,22 +175,22 @@
   .sp-shell .sp-eventbar {
     border-width: 0 0 1px;
     border-radius: 0;
-    padding: var(--ai-spacing-4) var(--ai-spacing-6);
+    padding: var(--ao-spacing-4) var(--ao-spacing-6);
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    gap: var(--ai-spacing-4) var(--ai-spacing-5);
+    gap: var(--ao-spacing-4) var(--ao-spacing-5);
   }
 
   .sp-shell .sp-eventbar__top { grid-column: 1 / -1; }
   .sp-shell .sp-plans { grid-column: 1; margin-top: 0; }
 
   .sp-shell .sp-eventbar__name {
-    font-size: var(--ai-font-fixed-md);
+    font-size: var(--ao-font-fixed-md);
   }
 
   .sp-shell .sp-eventbar__meta {
-    margin-top: var(--ai-spacing-1);
+    margin-top: var(--ao-spacing-1);
   }
 
   /* The arrows are the desktop affordance for the rooms track — touch swipes
@@ -203,10 +203,10 @@
   .sp-shell__actionbar {
     display: flex;
     align-items: center;
-    gap: var(--ai-spacing-4);
-    padding: var(--ai-spacing-3) var(--ai-spacing-6);
-    border-bottom: 1px solid var(--ai-border-secondary);
-    background: var(--ai-surface-primary);
+    gap: var(--ao-spacing-4);
+    padding: var(--ao-spacing-3) var(--ao-spacing-6);
+    border-bottom: 1px solid var(--ao-border-secondary);
+    background: var(--ao-surface-primary);
   }
 
   .sp-shell__actionbar .sp-toolbar {
@@ -223,32 +223,32 @@
     flex: none;
     display: flex;
     align-items: center;
-    gap: var(--ai-spacing-3);
-    padding: var(--ai-spacing-4) var(--ai-spacing-5);
-    border-bottom: 1px solid var(--ai-border-secondary);
+    gap: var(--ao-spacing-3);
+    padding: var(--ao-spacing-4) var(--ao-spacing-5);
+    border-bottom: 1px solid var(--ao-border-secondary);
   }
 
   .sp-shell__pane-title {
     flex: 1;
     min-width: 0;
     margin: 0;
-    font-family: var(--ai-font-title);
-    font-size: var(--ai-font-fixed-sm);
-    font-weight: var(--ai-font-semibold);
-    line-height: var(--ai-leading-sm);
-    color: var(--ai-text-primary);
+    font-family: var(--ao-font-title);
+    font-size: var(--ao-font-fixed-sm);
+    font-weight: var(--ao-font-semibold);
+    line-height: var(--ao-leading-sm);
+    color: var(--ao-text-primary);
   }
 
   .sp-shell__pane-search {
     flex: none;
-    width: var(--ai-size-2);
+    width: var(--ao-size-2);
   }
 
   .sp-shell__pane-foot {
     flex: none;
-    padding: var(--ai-spacing-3) var(--ai-spacing-5);
-    border-top: 1px solid var(--ai-border-secondary);
-    background: var(--ai-surface-minimal);
+    padding: var(--ao-spacing-3) var(--ao-spacing-5);
+    border-top: 1px solid var(--ao-border-secondary);
+    background: var(--ao-surface-minimal);
   }
 
   .sp-shell__pane-foot .sp-grid__note {
@@ -264,8 +264,8 @@
 
   .sp-shell .sp-seat,
   .sp-shell .sp-person {
-    padding: var(--ai-spacing-2) var(--ai-spacing-3);
-    margin-bottom: var(--ai-spacing-1);
+    padding: var(--ao-spacing-2) var(--ao-spacing-3);
+    margin-bottom: var(--ao-spacing-1);
   }
 
   /* Seat rows become grid cells, so the list can go multi-column where there is
@@ -283,7 +283,7 @@
   .sp-shell [data-sp-seatlist] {
     display: grid;
     grid-template-columns: minmax(0, 100%);
-    gap: var(--ai-spacing-2);
+    gap: var(--ao-spacing-2);
     align-content: start;
   }
 
@@ -297,7 +297,7 @@
      bar but `dragstart` does not, so this is the tap/keyboard path's problem. */
   body.sp-shell:has(.sp-place:not([hidden])) [data-sp-seatlist],
   body.sp-shell:has(.sp-place:not([hidden])) .sp-tray__list {
-    padding-bottom: var(--ai-spacing-10);
+    padding-bottom: var(--ao-spacing-10);
   }
 
   /* ==========================================================================
@@ -310,8 +310,8 @@
 
   .sp-shell__list [data-sp-grid] {
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--ai-spacing-2);
-    padding: var(--ai-spacing-4);
+    gap: var(--ao-spacing-2);
+    padding: var(--ao-spacing-4);
   }
 
   .sp-shell__list .sp-table {
@@ -320,10 +320,10 @@
     grid-template-areas:
       "head head"
       "foot dots";
-    row-gap: var(--ai-spacing-2);
-    column-gap: var(--ai-spacing-3);
+    row-gap: var(--ao-spacing-2);
+    column-gap: var(--ao-spacing-3);
     align-items: center;
-    padding: var(--ai-spacing-3);
+    padding: var(--ao-spacing-3);
     border-left-width: 1px;
   }
 
@@ -338,7 +338,7 @@
   /* The tier reads as a suffix on one line rather than a stacked caption */
   .sp-shell__list .sp-table__tier {
     display: inline;
-    margin: 0 0 0 var(--ai-spacing-2);
+    margin: 0 0 0 var(--ao-spacing-2);
   }
 
   /* The fill badge lives INSIDE .sp-table__head, so placing the sponsor in the
@@ -410,20 +410,20 @@
      ========================================================================== */
 
   .sp-shell--alt1 .sp-shell__work {
-    --sp-list-floor: var(--ai-size-2);
-    --sp-detail-want: var(--ai-size-6);
+    --sp-list-floor: var(--ao-size-2);
+    --sp-detail-want: var(--ao-size-6);
     grid-template-columns:
       minmax(var(--sp-list-floor), 1fr)
-      var(--ai-spacing-1)
-      var(--sp-detail-w, minmax(var(--ai-size-6), var(--sp-detail-want)))
-      var(--ai-spacing-1)
-      var(--sp-pool-w, var(--ai-size-6));
+      var(--ao-spacing-1)
+      var(--sp-detail-w, minmax(var(--ao-size-6), var(--sp-detail-want)))
+      var(--ao-spacing-1)
+      var(--sp-pool-w, var(--ao-size-6));
   }
 
   @media (min-width: 1152px) {
     .sp-shell--alt1 .sp-shell__work {
-      --sp-list-floor: var(--ai-size-7);
-      --sp-detail-want: var(--ai-size-7);
+      --sp-list-floor: var(--ao-size-7);
+      --sp-detail-want: var(--ao-size-7);
     }
   }
 
@@ -442,11 +442,11 @@
     position: relative;
     padding: 0;
     border: none;
-    border-radius: var(--ai-radius-full);
-    background: var(--ai-border-secondary);
+    border-radius: var(--ao-radius-full);
+    background: var(--ao-border-secondary);
     cursor: col-resize;
     touch-action: none;   /* or the pointer stream is stolen by panning */
-    transition: background var(--ai-transition-fast);
+    transition: background var(--ao-transition-fast);
   }
 
   /* The grab zone, reaching 6px into the gap on each side. On the pseudo so the
@@ -455,18 +455,18 @@
     content: '';
     position: absolute;
     inset-block: 0;
-    inset-inline: calc(-1 * var(--ai-spacing-3));
+    inset-inline: calc(-1 * var(--ao-spacing-3));
   }
 
   .sp-shell__resize:hover,
   .sp-shell__resize:focus-visible,
   .sp-shell__resize[data-sp-resizing] {
-    background: var(--ai-surface-brand);
+    background: var(--ao-surface-brand);
   }
 
   .sp-shell__resize:focus-visible {
-    outline: 2px solid var(--ai-surface-brand);
-    outline-offset: var(--ai-spacing-1);
+    outline: 2px solid var(--ao-surface-brand);
+    outline-offset: var(--ao-spacing-1);
   }
 
   /* While a column is being dragged, nothing else should highlight, select text
@@ -487,7 +487,7 @@
   .sp-shell__list .sp-shell__pane-search {
     flex: 1;
     width: auto;
-    min-width: var(--ai-size-1);
+    min-width: var(--ao-size-1);
   }
 
   /* ---- list / grid toggle (both worklists) --------------------------------- */
@@ -495,15 +495,15 @@
   .sp-shell__viewtoggle {
     flex: none;
     display: flex;
-    gap: var(--ai-spacing-1);
+    gap: var(--ao-spacing-1);
   }
 
   /* -soft-extra rather than -soft: the brand icon on #f0f3ff measures ~4.9:1
      against ~3.5:1 on the stronger tint, and 3:1 is the floor for a UI glyph. */
   .sp-shell__viewtoggle .sp-iconbtn[aria-pressed="true"] {
-    border-color: var(--ai-border-brand);
-    background: var(--ai-surface-brand-soft-extra);
-    color: var(--ai-icon-brand);
+    border-color: var(--ao-border-brand);
+    background: var(--ao-surface-brand-soft-extra);
+    color: var(--ao-icon-brand);
   }
 
   /* GRID VIEW, shared by both worklists — scoped to body.sp-shell rather than to
@@ -526,19 +526,19 @@
      208px — the track stayed 240 and the grid overflowed sideways inside a pane
      that clips. min() lets the single column shrink to the pane instead. */
   body.sp-shell[data-sp-view="grid"] .sp-shell__list [data-sp-grid] {
-    grid-template-columns: repeat(auto-fill, minmax(min(var(--ai-size-4), 100%), 1fr));
-    gap: var(--ai-spacing-4);
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--ao-size-4), 100%), 1fr));
+    gap: var(--ao-spacing-4);
   }
 
   body.sp-shell[data-sp-view="grid"] .sp-shell__list .sp-table {
     display: block;
-    padding: var(--ai-spacing-4);
+    padding: var(--ao-spacing-4);
     border-left-width: 3px;
   }
 
   body.sp-shell[data-sp-view="grid"] .sp-shell__list .sp-table__tier {
     display: block;
-    margin: var(--ai-spacing-1) 0 0;
+    margin: var(--ao-spacing-1) 0 0;
   }
 
   body.sp-shell[data-sp-view="grid"] .sp-shell__list .sp-table__dots {
@@ -563,7 +563,7 @@
   @container sp-pane (min-width: 580px) {
     .sp-shell--alt1 [data-sp-seatlist],
     .sp-shell--alt1b [data-sp-seatlist] {
-      grid-template-columns: repeat(2, minmax(0, calc(50% - var(--ai-spacing-2) / 2)));
+      grid-template-columns: repeat(2, minmax(0, calc(50% - var(--ao-spacing-2) / 2)));
     }
   }
 
@@ -586,7 +586,7 @@
      ========================================================================== */
 
   .sp-shell--alt1b .sp-shell__work {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) var(--ai-size-6);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) var(--ao-size-6);
   }
 
   /* Below ~380px of pane the row has no room for it, same as alt1. */
@@ -610,7 +610,7 @@
     .sp-shell--alt1b .sp-shell__list .sp-table__sponsor {
       display: flex;
       grid-area: spon;
-      max-width: var(--ai-size-2);
+      max-width: var(--ao-size-2);
       margin: 0;
       white-space: nowrap;
       overflow: hidden;
@@ -630,7 +630,7 @@
      ========================================================================== */
 
   .sp-shell--alt3 .sp-shell__work {
-    grid-template-columns: minmax(0, 1fr) var(--ai-size-6);
+    grid-template-columns: minmax(0, 1fr) var(--ao-size-6);
   }
 
   /* The drawer is a full-width child of the one-column grid, sitting directly
@@ -641,9 +641,9 @@
      anyway: it spans the list pane, so the seat columns below query `sp-pane`,
      which the pane already declares. */
   .sp-shell--alt3 [data-sp-acc-drawer] {
-    border: 1px solid var(--ai-border-brand);
-    border-radius: var(--ai-radius-md);
-    background: var(--ai-surface-primary);
+    border: 1px solid var(--ao-border-brand);
+    border-radius: var(--ao-radius-md);
+    background: var(--ao-surface-primary);
   }
 
   /* Capped so a 10-seat table cannot push the other 39 rows off screen.
@@ -652,7 +652,7 @@
      panel collapsed to head+foot and the drawer rendered as a 4px hairline. */
   .sp-shell--alt3 [data-sp-acc-drawer] .sp-panel__body {
     flex: none;
-    max-height: var(--ai-size-7);
+    max-height: var(--ao-size-7);
     overflow-y: auto;
   }
 
@@ -665,19 +665,19 @@
   /* The rows pane is wide, so seats go 2 or 3 across inside the drawer */
   @container sp-pane (min-width: 620px) {
     .sp-shell--alt3 [data-sp-seatlist] {
-      grid-template-columns: repeat(2, minmax(0, calc(50% - var(--ai-spacing-2) / 2)));
+      grid-template-columns: repeat(2, minmax(0, calc(50% - var(--ao-spacing-2) / 2)));
     }
   }
 
   @container sp-pane (min-width: 940px) {
     .sp-shell--alt3 [data-sp-seatlist] {
-      grid-template-columns: repeat(3, minmax(0, calc(100% / 3 - var(--ai-spacing-2) * 2 / 3)));
+      grid-template-columns: repeat(3, minmax(0, calc(100% / 3 - var(--ao-spacing-2) * 2 / 3)));
     }
   }
 
   /* The row that is open reads as the head of its drawer */
   .sp-shell--alt3 .sp-table.sp-table--selected {
-    border-color: var(--ai-border-brand);
+    border-color: var(--ao-border-brand);
   }
 
   /* ~990px of width means the whole row fits on ONE line, so unlike alt1 the
@@ -685,13 +685,13 @@
   .sp-shell--alt3 .sp-shell__list .sp-table {
     grid-template-columns: minmax(0, 1fr) auto auto auto;
     grid-template-areas: "head spon foot dots";
-    column-gap: var(--ai-spacing-5);
+    column-gap: var(--ao-spacing-5);
     row-gap: 0;
   }
 
   .sp-shell--alt3 .sp-shell__list .sp-table__sponsor {
     grid-area: spon;
-    max-width: var(--ai-size-2);
+    max-width: var(--ao-size-2);
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
@@ -725,34 +725,34 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ai-spacing-3) var(--ai-spacing-4);
+  gap: var(--ao-spacing-3) var(--ao-spacing-4);
 }
 
 .sp-shell .sp-plans__actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   margin-left: auto;          /* actions sit opposite the title, same row */
 }
 
 .sp-shell .sp-plans__scroller {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  margin-top: var(--ai-spacing-4);
+  gap: var(--ao-spacing-2);
+  margin-top: var(--ao-spacing-4);
 }
 
 .sp-shell .sp-plans__track {
   flex: 1;
   min-width: 0;
   display: flex;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   overflow-x: auto;
   /* padding + equal negative margin: room for a card's focus ring and hover
      shadow without insetting the first card from the pane edge */
-  padding: var(--ai-spacing-1);
-  margin: calc(-1 * var(--ai-spacing-1));
+  padding: var(--ao-spacing-1);
+  margin: calc(-1 * var(--ao-spacing-1));
   scroll-behavior: smooth;
   scrollbar-width: none;
 }
@@ -828,7 +828,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
 @media (max-width: 639px) {
@@ -843,7 +843,7 @@
      right-aligned the filter against the TITLE — the stray indent in the mobile
      screenshot that started this work. */
   .sp-shell .sp-toolbar__spacer { display: none; }
-  .sp-shell .sp-toolbar { row-gap: var(--ai-spacing-3); }
+  .sp-shell .sp-toolbar { row-gap: var(--ao-spacing-3); }
 
   /* The count is already repeated in the pane head, so the title may wrap for
      nothing. One line, ellipsised. */
@@ -864,11 +864,11 @@
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
-    gap: var(--ai-spacing-3);
-    padding: var(--ai-spacing-3) var(--ai-spacing-4);
-    border-top: 1px solid var(--ai-border-secondary);
-    background: var(--ai-surface-primary);
-    box-shadow: var(--ai-shadow-md);
+    gap: var(--ao-spacing-3);
+    padding: var(--ao-spacing-3) var(--ao-spacing-4);
+    border-top: 1px solid var(--ao-border-secondary);
+    background: var(--ao-surface-primary);
+    box-shadow: var(--ao-shadow-md);
   }
 
   /* Each cell is a full-width target; the split wrap has to stretch too, or the
@@ -884,11 +884,11 @@
   /* The menu must open UPWARDS out of a docked bar. */
   .sp-shell .sp-toolbar__actions .sp-split__menu {
     top: auto;
-    bottom: calc(100% + var(--ai-spacing-2));
+    bottom: calc(100% + var(--ao-spacing-2));
   }
 
   /* Nothing may sit under the bar. */
-  .sp-shell { padding-bottom: var(--ai-spacing-12); }
+  .sp-shell { padding-bottom: var(--ao-spacing-12); }
 }
 
 /* ============================================================================
@@ -911,7 +911,7 @@
    ============================================================================ */
 
 /* ============================================================================
-   MOBILE — worklist v1 only, below --ai-bp-lg
+   MOBILE — worklist v1 only, below --ao-bp-lg
    ----------------------------------------------------------------------------
    Mark, 2026-07-31: "we need to work on the mobile (<1024) now where the drag
    and drop wont work… can we remove the attendees as we can[t] drag and drop so
@@ -950,7 +950,7 @@
 
   .sp-shell--alt1 .sp-eventbar,
   .sp-shell--alt1 .sp-shell__actionbar {
-    padding: var(--ai-spacing-4) var(--ai-spacing-5);
+    padding: var(--ao-spacing-4) var(--ao-spacing-5);
     border-radius: 0;
   }
 
@@ -959,54 +959,54 @@
   }
 
   .sp-shell--alt1 .sp-shell__actionbar {
-    border-bottom: 1px solid var(--ai-border-secondary);
-    background: var(--ai-surface-primary);
+    border-bottom: 1px solid var(--ao-border-secondary);
+    background: var(--ao-surface-primary);
   }
 
   /* the pane stops being a card and becomes the page */
   .sp-shell--alt1 .sp-shell__pane {
     border: none;
     border-radius: 0;
-    background: var(--ai-surface-primary);
+    background: var(--ao-surface-primary);
   }
 
   .sp-shell--alt1 .sp-shell__pane-head {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--ai-spacing-3);
-    padding: var(--ai-spacing-4) var(--ai-spacing-5);
-    border-bottom: 1px solid var(--ai-border-secondary);
+    gap: var(--ao-spacing-3);
+    padding: var(--ao-spacing-4) var(--ao-spacing-5);
+    border-bottom: 1px solid var(--ao-border-secondary);
   }
 
   .sp-shell--alt1 .sp-shell__pane-title {
     flex: none;
     margin: 0;
-    font-family: var(--ai-font-title);
-    font-size: var(--ai-font-fixed-sm);
-    font-weight: var(--ai-font-semibold);
-    color: var(--ai-text-primary);
+    font-family: var(--ao-font-title);
+    font-size: var(--ao-font-fixed-sm);
+    font-weight: var(--ao-font-semibold);
+    color: var(--ao-text-primary);
   }
 
   /* the search takes the rest of the first line; the toggle follows it */
   .sp-shell--alt1 .sp-shell__pane-search {
     flex: 1;
-    min-width: var(--ai-size-1);
+    min-width: var(--ao-size-1);
   }
 
   .sp-shell--alt1 .sp-shell__pane-echo {
     flex: none;
     order: 9;                     /* last, on its own line if the head wraps */
-    font-family: var(--ai-font-body);
-    font-size: var(--ai-font-fixed-xxs);
-    font-weight: var(--ai-font-medium);
-    color: var(--ai-text-contrast);
+    font-family: var(--ao-font-body);
+    font-size: var(--ao-font-fixed-xxs);
+    font-weight: var(--ao-font-medium);
+    color: var(--ao-text-contrast);
   }
 
   .sp-shell--alt1 .sp-shell__pane-foot {
-    padding: var(--ai-spacing-3) var(--ai-spacing-5);
-    border-top: 1px solid var(--ai-border-secondary);
-    background: var(--ai-surface-minimal);
+    padding: var(--ao-spacing-3) var(--ao-spacing-5);
+    border-top: 1px solid var(--ao-border-secondary);
+    background: var(--ao-surface-minimal);
   }
 
   .sp-shell--alt1 .sp-shell__pane-foot .sp-grid__note {
@@ -1039,11 +1039,11 @@
      currentColor is opaque without hardcoding one. */
   .sp-shell--alt1 .sp-plans__track[data-sp-plans-more] {
     mask-image: linear-gradient(to right, currentColor
-                calc(100% - var(--ai-spacing-9)), transparent);
+                calc(100% - var(--ao-spacing-9)), transparent);
   }
 
   .sp-shell--alt1 .sp-plans {
-    margin-top: var(--ai-spacing-3);
+    margin-top: var(--ao-spacing-3);
   }
 
   /* THE LIST/GRID TOGGLE GOES (Mark, 2026-07-31: "it becomes redundant"). It is:
@@ -1065,8 +1065,8 @@
   /* 2 — one table per row, and the drawer sits immediately after the open one */
   .sp-shell--alt1 [data-sp-grid] {
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--ai-spacing-3);
-    padding: var(--ai-spacing-4) var(--ai-spacing-5);
+    gap: var(--ao-spacing-3);
+    padding: var(--ao-spacing-4) var(--ao-spacing-5);
   }
 
   /* Edge to edge, as asked: the negative inline margins cancel exactly the side
@@ -1074,12 +1074,12 @@
      100vw (that counts the scrollbar and overflows). Square sides for the same
      reason — a radius at the screen edge reads as a mistake. */
   .sp-shell--alt1 [data-sp-acc-drawer] {
-    margin-top: calc(-1 * var(--ai-spacing-3));   /* sit against its own row */
-    margin-inline: calc(-1 * var(--ai-spacing-5));
-    border-block: 1px solid var(--ai-border-brand);
+    margin-top: calc(-1 * var(--ao-spacing-3));   /* sit against its own row */
+    margin-inline: calc(-1 * var(--ao-spacing-5));
+    border-block: 1px solid var(--ao-border-brand);
     border-top: none;
     border-radius: 0;
-    background: var(--ai-surface-primary);
+    background: var(--ao-surface-primary);
   }
 
   .sp-shell--alt1 [data-sp-acc-drawer] .sp-panel {
@@ -1095,12 +1095,12 @@
      value to start from. */
   .sp-shell--alt1 [data-sp-acc-drawer][data-sp-collapsing] {
     overflow: hidden;
-    transition: height var(--ai-transition-slow);
+    transition: height var(--ao-transition-slow);
   }
 
   /* the open row reads as the head of its drawer */
   .sp-shell--alt1 .sp-table.sp-table--selected {
-    border-color: var(--ai-border-brand);
+    border-color: var(--ao-border-brand);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
   }
@@ -1117,7 +1117,7 @@
   .sp-shell--alt1 [data-sp-seatlist] {
     display: grid;
     grid-template-columns: minmax(0, 100%);
-    gap: var(--ai-spacing-2);
+    gap: var(--ao-spacing-2);
     max-height: none;
     overflow: visible;
   }

@@ -2,19 +2,19 @@
  * Figma node: 4218:4680 — "IconNavigation" pattern, CC Hybrid file.
  * Single variant (Tier=Pattern). A full-width strip holding nine icon+label
  * module shortcuts (Publish, Promote, Social, Media, Structure, Design,
- * Commerce, Analyse, Settings), distributed across a 768-wide (--ai-size-11)
+ * Commerce, Analyse, Settings), distributed across a 768-wide (--ao-size-11)
  * centred row.
  *
- * Background: Figma binds --ai-surface-minimal, but per user direction the
+ * Background: Figma binds --ao-surface-minimal, but per user direction the
  * strip uses --cc-actions-menu-secondary-bg (pairs with the CC ActionsMenu).
  *
  * Icons: the nine brand glyphs are the exact Figma SVGs, stored in
- * img/cc-nav/ and painted via CSS `mask` in --ai-text-secondary (matching the
+ * img/cc-nav/ and painted via CSS `mask` in --ao-text-secondary (matching the
  * affinoMark/affinoLogo convention in Sidebar.css / Menu.css). This keeps the
  * artwork theme-aware (CC light/dark) instead of baking the stroke colour in.
  *
  * Interaction (per user): each item is an <a> with a subtle hover that darkens
- * icon + label to --ai-text-primary. Figma defines no Selected/Active variant,
+ * icon + label to --ao-text-primary. Figma defines no Selected/Active variant,
  * so no current-page state is implemented.
  */
 
@@ -23,21 +23,21 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--ai-spacing-4) 0;                 /* py 12, full-width strip */
+  padding: var(--ao-spacing-4) 0;                 /* py 12, full-width strip */
   width: 100%;
   background-color: var(--cc-actions-menu-secondary-bg);
-  font-family: var(--ai-font-title);
+  font-family: var(--ao-font-title);
 }
 
-/* The centred, distributed row of items — caps at 768 (--ai-size-11). */
+/* The centred, distributed row of items — caps at 768 (--ao-size-11). */
 .cc-icon-nav__list {
   display: flex;
   align-items: stretch;
   justify-content: space-between;
-  gap: var(--ai-spacing-7);
-  padding: 0 var(--ai-spacing-7);                 /* px 32 */
+  gap: var(--ao-spacing-7);
+  padding: 0 var(--ao-spacing-7);                 /* px 32 */
   width: 100%;
-  max-width: var(--ai-size-11);                   /* 768 */
+  max-width: var(--ao-size-11);                   /* 768 */
   margin: 0;
   list-style: none;
 }
@@ -52,7 +52,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--ai-spacing-3);                        /* 8 */
+  gap: var(--ao-spacing-3);                        /* 8 */
   text-decoration: none;
   color: inherit;
 }
@@ -68,7 +68,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: var(--ai-spacing-9);                     /* 48 */
+  height: var(--ao-spacing-9);                     /* 48 */
 }
 
 /* Each glyph is the exact Figma SVG painted via mask. Widths/heights are
@@ -78,14 +78,14 @@
 .cc-icon-nav__icon {
   display: block;
   flex-shrink: 0;
-  background-color: var(--ai-text-secondary);
+  background-color: var(--ao-text-secondary);
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-position: center;
   mask-position: center;
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
-  transition: background-color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default);
 }
 
 /* ── Per-icon brand glyphs (exact Figma SVGs, brand-asset dimensions) ── */
@@ -137,13 +137,13 @@
 
 .cc-icon-nav__label {
   margin: 0;
-  font-weight: var(--ai-font-medium);
-  font-size: var(--ai-font-fixed-xxs);             /* 12 */
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-xxs);             /* 12 */
   line-height: 1.4;
   letter-spacing: 0.36px;                          /* optical — allowed raw px */
   text-align: center;
-  color: var(--ai-text-secondary);
-  transition: color var(--ai-transition-default);
+  color: var(--ao-text-secondary);
+  transition: color var(--ao-transition-default);
 }
 
 /* ── Labels-hidden mode ───────────────────────────────────────────
@@ -154,16 +154,16 @@
   display: none;
 }
 
-/* ── Hover (per user): darken glyph + label to --ai-text-primary ── */
+/* ── Hover (per user): darken glyph + label to --ao-text-primary ── */
 .cc-icon-nav__link:hover .cc-icon-nav__icon {
-  background-color: var(--ai-text-primary);
+  background-color: var(--ao-text-primary);
 }
 .cc-icon-nav__link:hover .cc-icon-nav__label {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 .cc-icon-nav__link:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
-  border-radius: var(--ai-radius-sm);
+  border-radius: var(--ao-radius-sm);
 }

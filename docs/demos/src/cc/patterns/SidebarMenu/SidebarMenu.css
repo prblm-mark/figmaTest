@@ -11,7 +11,7 @@
   display: inline-flex;
   align-items: stretch;
   height: 100%;
-  font-family: var(--ai-font-body);
+  font-family: var(--ao-font-body);
   /* Positioning context for the hover-flyout menu (.cc-menu--floating). */
   position: relative;
 }
@@ -22,5 +22,5 @@
  * NOT [hidden]; rail-only state stays shadowless. Dark mode overrides
  * the token to `none` in css/tokens-shadows.css. */
 .cc-sidebar-menu:has(.cc-menu:not([hidden])) {
-  box-shadow: var(--ai-shadow-cc-rail);
+  box-shadow: var(--ao-shadow-cc-rail);
 }

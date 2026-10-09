@@ -39,44 +39,44 @@ SearchInput is a Tier=Component design-system component for search-style input c
 
 | Property | Token | Value |
 |---|---|---|
-| Field bg | `--ai-surface-primary` | #ffffff |
-| Field border | `--ai-border-secondary` | #e2e2e3 |
-| Field radius | `--ai-radius-md` | 8px |
-| Field height (Default) | `--ai-spacing-8` | 40px |
-| Field height (sm) | `--ai-spacing-7` | 32px |
-| Basic field padding-left | `--ai-spacing-4` | 12px |
-| Basic field padding-right (inset action) | `--ai-spacing-1` | 4px |
-| Field gap | `--ai-spacing-3` | 8px |
-| Input font | `--ai-font-title` regular + `--ai-font-fixed-xs` | Inter 400 / 14px |
-| Input text | `--ai-text-primary` | #212123 |
-| Placeholder | `--ai-text-contrast` | #67676c |
-| Inset action height | `--ai-spacing-7` | 32px |
-| Inset action padding | `--ai-spacing-4` (12px) | |
-| Inset action font | `--ai-font-title` semibold + `--ai-font-fixed-xxs` | Inter 600 / 12px |
-| Standalone Split button height | `--ai-spacing-8` | 40px |
-| Standalone button padding | `--ai-spacing-5` | 16px |
-| Standalone button font | `--ai-font-title` semibold + `--ai-font-fixed-xs` | Inter 600 / 14px |
-| Action bg | `--ai-surface-brand` | #0071d8 |
-| Action hover bg | `--ai-btn-primary-bg-hover` | #3a8fff |
-| Action text | `--ai-btn-primary-text` | #ffffff |
-| Group dropdown bg | `--ai-surface-minimal` | #f6f6f7 |
-| Group dropdown hover bg | `--ai-surface-secondary` | #e2e2e3 |
-| Group dropdown padding | `--ai-spacing-4` (12px) | |
-| Group dropdown gap | `--ai-spacing-2` | 6px |
-| Group dropdown font | `--ai-font-title` medium + `--ai-font-fixed-xs` | Inter 500 / 14px |
-| Group divider | `--ai-border-secondary` (1px) | between dropdown and field |
-| Group field padding | `--ai-spacing-5` | 16px |
-| Group action padding | `--ai-spacing-5` | 16px |
-| Mic button hover bg | `--ai-surface-minimal` | #f6f6f7 |
-| Icon size | `--ai-icon-size-sm` | 16px |
-| Icon color | `--ai-icon-contrast` | #929295 |
-| Flag font | `--ai-font-fixed-md` | 18px |
-| Focus halo | `--ai-surface-brand-soft` | brand contrast |
-| Split gap | `--ai-spacing-3` | 8px |
+| Field bg | `--ao-surface-primary` | #ffffff |
+| Field border | `--ao-border-secondary` | #e2e2e3 |
+| Field radius | `--ao-radius-md` | 8px |
+| Field height (Default) | `--ao-spacing-8` | 40px |
+| Field height (sm) | `--ao-spacing-7` | 32px |
+| Basic field padding-left | `--ao-spacing-4` | 12px |
+| Basic field padding-right (inset action) | `--ao-spacing-1` | 4px |
+| Field gap | `--ao-spacing-3` | 8px |
+| Input font | `--ao-font-title` regular + `--ao-font-fixed-xs` | Inter 400 / 14px |
+| Input text | `--ao-text-primary` | #212123 |
+| Placeholder | `--ao-text-contrast` | #67676c |
+| Inset action height | `--ao-spacing-7` | 32px |
+| Inset action padding | `--ao-spacing-4` (12px) | |
+| Inset action font | `--ao-font-title` semibold + `--ao-font-fixed-xxs` | Inter 600 / 12px |
+| Standalone Split button height | `--ao-spacing-8` | 40px |
+| Standalone button padding | `--ao-spacing-5` | 16px |
+| Standalone button font | `--ao-font-title` semibold + `--ao-font-fixed-xs` | Inter 600 / 14px |
+| Action bg | `--ao-surface-brand` | #0071d8 |
+| Action hover bg | `--ao-btn-primary-bg-hover` | #3a8fff |
+| Action text | `--ao-btn-primary-text` | #ffffff |
+| Group dropdown bg | `--ao-surface-minimal` | #f6f6f7 |
+| Group dropdown hover bg | `--ao-surface-secondary` | #e2e2e3 |
+| Group dropdown padding | `--ao-spacing-4` (12px) | |
+| Group dropdown gap | `--ao-spacing-2` | 6px |
+| Group dropdown font | `--ao-font-title` medium + `--ao-font-fixed-xs` | Inter 500 / 14px |
+| Group divider | `--ao-border-secondary` (1px) | between dropdown and field |
+| Group field padding | `--ao-spacing-5` | 16px |
+| Group action padding | `--ao-spacing-5` | 16px |
+| Mic button hover bg | `--ao-surface-minimal` | #f6f6f7 |
+| Icon size | `--ao-icon-size-sm` | 16px |
+| Icon color | `--ao-icon-contrast` | #929295 |
+| Flag font | `--ao-font-fixed-md` | 18px |
+| Focus halo | `--ao-surface-brand-soft` | brand contrast |
+| Split gap | `--ao-spacing-3` | 8px |
 
 ## Token Gaps
 
-None — all colour, spacing, typography, and radius values resolve to existing `--ai-*` tokens.
+None — all colour, spacing, typography, and radius values resolve to existing `--ao-*` tokens.
 
 ## Icons
 
@@ -96,7 +96,7 @@ None — SearchInput is self-contained. The action buttons are styled inline rat
 
 - Three structural patterns:
   - `.search` — single bordered field with optional inset action(s)
-  - `.search-split` — `.search` field + standalone `.search-split__btn` separated by `--ai-spacing-3`
+  - `.search-split` — `.search` field + standalone `.search-split__btn` separated by `--ao-spacing-3`
   - `.search-group` — segmented control where dropdowns + field + action share a single border with internal dividers
 - Voice Search has TWO trailing buttons inside one `.search`: a borderless `.search__icon-btn` (mic) followed by the inset `.search__action` (Search). Both fit inside the 40px field height.
 - Advanced uses two `.search-group__dropdown` segments (one with `--right` modifier so the divider sits on the left edge instead of the right).

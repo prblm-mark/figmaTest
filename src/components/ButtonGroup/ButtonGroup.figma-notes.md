@@ -47,19 +47,19 @@ Groups buttons with collapsed borders and shared border-radius. A layout wrapper
 
 | Property | Token | Value |
 |----------|-------|-------|
-| Border radius (outer corners) | `--ai-radius-md` | 0.5rem |
+| Border radius (outer corners) | `--ao-radius-md` | 0.5rem |
 | Border collapse | `margin-left: -1px` / `margin-top: -1px` | — |
-| Brand bg | `--ai-btn-primary-bg` | via Button tokens |
-| Brand text | `--ai-btn-primary-text` | via Button tokens |
-| Brand inner border | `--ai-surface-brand-dark` | #0054a3 |
-| Dropdown menu bg | `--ai-surface-primary` | #FFFFFF |
-| Dropdown menu border | `--ai-border-secondary` | #D1D5DB |
-| Dropdown menu shadow | `--ai-shadow-md` | — |
-| Dropdown menu radius | `--ai-radius-md` | 0.5rem |
-| Dropdown menu offset | `--ai-spacing-2` | 0.375rem |
-| Menu item padding | `--ai-spacing-3` / `--ai-spacing-5` | 0.5rem / 1rem |
-| Menu item font | `--ai-font-body` / `--ai-font-fixed-xs` | Inter / 0.875rem |
-| Menu item hover bg | `--ai-surface-minimal` | #f3f4f6 |
+| Brand bg | `--ao-btn-primary-bg` | via Button tokens |
+| Brand text | `--ao-btn-primary-text` | via Button tokens |
+| Brand inner border | `--ao-surface-brand-dark` | #0054a3 |
+| Dropdown menu bg | `--ao-surface-primary` | #FFFFFF |
+| Dropdown menu border | `--ao-border-secondary` | #D1D5DB |
+| Dropdown menu shadow | `--ao-shadow-md` | — |
+| Dropdown menu radius | `--ao-radius-md` | 0.5rem |
+| Dropdown menu offset | `--ao-spacing-2` | 0.375rem |
+| Menu item padding | `--ao-spacing-3` / `--ao-spacing-5` | 0.5rem / 1rem |
+| Menu item font | `--ao-font-body` / `--ao-font-fixed-xs` | Inter / 0.875rem |
+| Menu item hover bg | `--ao-surface-minimal` | #f3f4f6 |
 
 ## Dependencies
 
@@ -84,8 +84,8 @@ identical before and after (label half 102.5×40, chevron 42×40, join −1px,
 radii 8/0 and 0/8).
 
 **Consumers keep only what is genuinely theirs** — the chevron half's inline
-padding, which differs by surface (`--ai-spacing-4` on the FilterBar,
-`--ai-spacing-2` on the Seating Planner toolbar), and any panel sizing.
+padding, which differs by surface (`--ao-spacing-4` on the FilterBar,
+`--ao-spacing-2` on the Seating Planner toolbar), and any panel sizing.
 
 ### The menu is Dropdown's, not ButtonGroup's
 

@@ -8,12 +8,12 @@
 
 | State | Node ID | Bg | Label colour | Icon / chevron colour | Chevron |
 |---|---|---|---|---|---|
-| Default | 4057:2801 | transparent | `--ai-text-invert-secondary` | `--ai-icon-invert-secondary` | optional chevron-down (submenu triggers only) |
-| Hover | 4057:2811 | `--cc-mainmenu-primary-bg` | `--ai-text-invert-secondary` (unchanged) | `--ai-icon-invert-secondary` (unchanged) | chevron-down |
-| Selected | 4057:2830 | `--cc-mainmenu-primary-bg` | `--ai-text-invert` (brightened) | `--cc-mainmenu-icon` (brightened) | no rotation |
-| Expanded | 4057:2830 (variant) | `--cc-mainmenu-primary-bg` | `--ai-text-invert` (brightened) | `--cc-mainmenu-icon` (brightened) | chevron-down flipped via `scaleY(-1)` |
+| Default | 4057:2801 | transparent | `--ao-text-invert-secondary` | `--ao-icon-invert-secondary` | optional chevron-down (submenu triggers only) |
+| Hover | 4057:2811 | `--cc-mainmenu-primary-bg` | `--ao-text-invert-secondary` (unchanged) | `--ao-icon-invert-secondary` (unchanged) | chevron-down |
+| Selected | 4057:2830 | `--cc-mainmenu-primary-bg` | `--ao-text-invert` (brightened) | `--cc-mainmenu-icon` (brightened) | no rotation |
+| Expanded | 4057:2830 (variant) | `--cc-mainmenu-primary-bg` | `--ao-text-invert` (brightened) | `--cc-mainmenu-icon` (brightened) | chevron-down flipped via `scaleY(-1)` |
 
-**State colour rule:** Hover keeps the Default "dusty" label/icon pair and only adds the bg highlight. Selected and Expanded brighten BOTH the label (`--ai-text-invert`) and the icon/chevron (`--cc-mainmenu-icon`). Expanded additionally rotates the chevron.
+**State colour rule:** Hover keeps the Default "dusty" label/icon pair and only adds the bg highlight. Selected and Expanded brighten BOTH the label (`--ao-text-invert`) and the icon/chevron (`--cc-mainmenu-icon`). Expanded additionally rotates the chevron.
 
 ## CSS classes
 
@@ -31,20 +31,20 @@
 | Property | Token |
 |---|---|
 | Container width | `100%` — fills the parent list/container so the hover/selected bg spans the full row. |
-| Container min-height | `--ai-spacing-8` (40) |
-| Padding | `--ai-spacing-3` `--ai-spacing-4` (8 / 12) |
-| Gap (icon ↔ label / label ↔ chevron) | `--ai-spacing-3` (8) |
-| Border radius | `--ai-radius-md` (8) |
-| Font family | `--ai-font-body` |
-| Font weight | `--ai-font-medium` |
-| Font size | `--ai-font-fixed-xs` (14) |
-| Tracking | `--ai-tracking-4` (0) |
-| Default label colour | `--ai-text-invert-secondary` |
-| Default icon / chevron colour | `--ai-icon-invert-secondary` |
-| Selected / Expanded label colour | `--ai-text-invert` |
+| Container min-height | `--ao-spacing-8` (40) |
+| Padding | `--ao-spacing-3` `--ao-spacing-4` (8 / 12) |
+| Gap (icon ↔ label / label ↔ chevron) | `--ao-spacing-3` (8) |
+| Border radius | `--ao-radius-md` (8) |
+| Font family | `--ao-font-body` |
+| Font weight | `--ao-font-medium` |
+| Font size | `--ao-font-fixed-xs` (14) |
+| Tracking | `--ao-tracking-4` (0) |
+| Default label colour | `--ao-text-invert-secondary` |
+| Default icon / chevron colour | `--ao-icon-invert-secondary` |
+| Selected / Expanded label colour | `--ao-text-invert` |
 | Selected / Expanded icon / chevron colour | `--cc-mainmenu-icon` |
 | Hover / Selected / Expanded bg | `--cc-mainmenu-primary-bg` |
-| Icon size | `--ai-icon-size-sm` (16) |
+| Icon size | `--ao-icon-size-sm` (16) |
 
 ## Dependencies
 

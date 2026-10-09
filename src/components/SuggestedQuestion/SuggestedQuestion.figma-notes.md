@@ -24,24 +24,24 @@
 
 | Property | Token | Value |
 |---|---|---|
-| Background | `--ai-surface-contrast` | #F6F6F7 |
-| Border radius | `--ai-radius-lg` | 1rem |
-| Padding | `--ai-spacing-5` | 1rem |
-| Icon-to-text gap | `--ai-spacing-3` | 0.5rem |
-| Title-to-subtitle gap | `--ai-spacing-1` | 0.25rem |
+| Background | `--ao-surface-contrast` | #F6F6F7 |
+| Border radius | `--ao-radius-lg` | 1rem |
+| Padding | `--ao-spacing-5` | 1rem |
+| Icon-to-text gap | `--ao-spacing-3` | 0.5rem |
+| Title-to-subtitle gap | `--ao-spacing-1` | 0.25rem |
 | Icon | `message-circle-question` (Lucide) | — |
-| Icon size | `--ai-icon-size-md` | 1.25rem (20px) |
-| Icon color | `--ai-icon-primary` | #1F2A37 |
-| Title font-family | `--ai-font-title` | Inter |
-| Title font-weight | `--ai-font-semibold` | 600 |
-| Title font-size | `--ai-font-fixed-xs` | 0.875rem |
-| Title line-height | `--ai-leading-sm` | 1.25rem |
-| Title color | `--ai-text-primary` | #1F2A37 |
-| Subtitle font-family | `--ai-font-body` | Inter |
-| Subtitle font-weight | `--ai-font-regular` | 400 |
-| Subtitle font-size | `--ai-font-fixed-xxs` | 0.75rem |
+| Icon size | `--ao-icon-size-md` | 1.25rem (20px) |
+| Icon color | `--ao-icon-primary` | #1F2A37 |
+| Title font-family | `--ao-font-title` | Inter |
+| Title font-weight | `--ao-font-semibold` | 600 |
+| Title font-size | `--ao-font-fixed-xs` | 0.875rem |
+| Title line-height | `--ao-leading-sm` | 1.25rem |
+| Title color | `--ao-text-primary` | #1F2A37 |
+| Subtitle font-family | `--ao-font-body` | Inter |
+| Subtitle font-weight | `--ao-font-regular` | 400 |
+| Subtitle font-size | `--ao-font-fixed-xxs` | 0.75rem |
 | Subtitle line-height | `1.5` | — |
-| Subtitle color | `--ai-text-contrast` | #6B7280 |
+| Subtitle color | `--ao-text-contrast` | #6B7280 |
 
 ## Layout
 
@@ -51,9 +51,9 @@
 
 ## Interaction
 
-- Hover: background transitions to `--ai-surface-minimal`
+- Hover: background transitions to `--ao-surface-minimal`
 - Click: populates MessageInput and auto-submits (handled by parent ChatMain JS)
-- Transition: `--ai-transition-default` (150ms ease)
+- Transition: `--ao-transition-default` (150ms ease)
 
 ## Dependencies
 

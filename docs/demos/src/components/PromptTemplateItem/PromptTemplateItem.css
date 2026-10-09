@@ -8,14 +8,14 @@
 .prompt-template-item {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-lg);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-lg);
   cursor: pointer;
-  transition: border-color var(--ai-transition-default);
+  transition: border-color var(--ao-transition-default);
 }
 
 .prompt-template-item:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
 }
 
@@ -24,91 +24,91 @@
 .prompt-template-item__header {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-5);
-  padding: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
+  padding: var(--ao-spacing-5);
 }
 
 /* 24px prompt icon (left) */
 .prompt-template-item__icon[data-lucide] {
   flex-shrink: 0;
-  width: var(--ai-icon-size-lg);
-  height: var(--ai-icon-size-lg);
-  color: var(--ai-icon-primary);
+  width: var(--ao-icon-size-lg);
+  height: var(--ao-icon-size-lg);
+  color: var(--ao-icon-primary);
 }
 
 /* Title label */
 .prompt-template-item__title {
   flex: 1;
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-primary);
 }
 
 /* Chevron button — 24×24 container, 16px icon
-   Note: --ai-spacing-6 (1.5rem = 24px) is used for the container dimensions;
-   the icon inside uses --ai-icon-size-sm (1rem = 16px). */
+   Note: --ao-spacing-6 (1.5rem = 24px) is used for the container dimensions;
+   the icon inside uses --ao-icon-size-sm (1rem = 16px). */
 .prompt-template-item__chevron-btn {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-spacing-6);
-  height: var(--ai-spacing-6);
+  width: var(--ao-spacing-6);
+  height: var(--ao-spacing-6);
   padding: 0;
   border: none;
-  border-radius: var(--ai-radius-md);
+  border-radius: var(--ao-radius-md);
   background: none;
   cursor: pointer;
-  color: var(--ai-icon-contrast);
-  transition: background-color var(--ai-transition-default);
+  color: var(--ao-icon-contrast);
+  transition: background-color var(--ao-transition-default);
 }
 
 .prompt-template-item__chevron-btn:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
 }
 
 .prompt-template-item__chevron-btn [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  transition: transform var(--ai-transition-default);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  transition: transform var(--ao-transition-default);
 }
 
 /* ─── Description section (hidden until expanded) ─────────────────────────── */
 
 .prompt-template-item__details {
   display: none;
-  border-top: 1px solid var(--ai-surface-contrast);
-  padding: var(--ai-spacing-5);
+  border-top: 1px solid var(--ao-surface-contrast);
+  padding: var(--ao-spacing-5);
 }
 
 .prompt-template-item__description {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-weight: var(--ao-font-regular);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
 }
 
 /* ─── Hover ───────────────────────────────────────────────────────────────── */
 
 /* Whole-item hover: border darkens to primary (Figma: Type=Hover, node 178:3388) */
 .prompt-template-item:hover {
-  border-color: var(--ai-border-invert);
+  border-color: var(--ao-border-invert);
 }
 
 /* Chevron-only hover: expand button gets a grey bg (Figma: Chevron Hover, node 78:2879) */
 .prompt-template-item__chevron-btn:hover {
-  background-color: var(--ai-surface-secondary);
+  background-color: var(--ao-surface-secondary);
 }
 
 /* ─── Selected ────────────────────────────────────────────────────────────── */
 
 .prompt-template-item--selected {
-  border-color: var(--ai-border-invert);
+  border-color: var(--ao-border-invert);
 }
 
 /* ─── Expanded ────────────────────────────────────────────────────────────── */

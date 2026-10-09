@@ -12,27 +12,27 @@
    inner `__layout`, not the page: the page is the cs-page container and cannot query itself. */
 .cc-api-help__layout {
   display: grid;
-  grid-template-columns: var(--ai-size-4) minmax(0, 1fr);
+  grid-template-columns: var(--ao-size-4) minmax(0, 1fr);
   align-items: start;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
 }
 
 .cc-api-help__content {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
   min-inline-size: 0;
 }
 
 /* Top-level cards: border/card + shadow/2xs in standard width, flat in full width (the CC
    top-level card rule, as UpdateScreen applies it). */
 .cc-control:not([data-cc-width="full"]) .cc-api-help .record-section {
-  border-color: var(--ai-border-card);
-  box-shadow: var(--ai-shadow-2xs);
+  border-color: var(--ao-border-card);
+  box-shadow: var(--ao-shadow-2xs);
 }
 
 .cc-control:not([data-cc-width="full"]) .cc-api-help .record-section__header {
-  border-bottom-color: var(--ai-border-card);
+  border-bottom-color: var(--ao-border-card);
 }
 
 /* ── On this page ──────────────────────────────────────────
@@ -47,10 +47,10 @@
 .cc-api-help__toc-list {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
   margin: 0;
   /* 8px: DropdownItem's own row padding — the links read as a menu */
-  padding: var(--ai-spacing-3);
+  padding: var(--ao-spacing-3);
   list-style: none;
 }
 
@@ -59,30 +59,30 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-3) var(--ai-spacing-4);
-  border-radius: var(--ai-radius-md);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-secondary);
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-3) var(--ao-spacing-4);
+  border-radius: var(--ao-radius-md);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
   text-decoration: none;
-  transition: background-color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default);
 }
 
 /* Hover is the row's background only. base.css gives every <a> a brand colour and an underline on
    hover; a menu row must not inherit that (agreed rule for CC menu links), so both are reset. */
 .cc-api-help__toc-link:hover {
-  background-color: var(--ai-surface-secondary);
-  color: var(--ai-text-primary);
+  background-color: var(--ao-surface-secondary);
+  color: var(--ao-text-primary);
   text-decoration: none;
 }
 
 /* The section in view (scroll-spy in ApiProfileHelp.js): DropdownItem's selected treatment. */
 .cc-api-help__toc-link[aria-current="true"] {
-  background-color: var(--ai-surface-secondary);
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-primary);
+  background-color: var(--ao-surface-secondary);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
 }
 
 .cc-api-help__count {
@@ -92,10 +92,10 @@
 /* ── Section body ──────────────────────────────────────────
    RecordSection's body, with its 24px row gap between blocks. Text is FieldRow's value style. */
 .cc-api-help__body {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
 }
 
 .cc-api-help__p,
@@ -104,27 +104,27 @@
 }
 
 .cc-api-help__desc {
-  color: var(--ai-text-secondary);
+  color: var(--ao-text-secondary);
 }
 
 /* Subheads inside a card: FieldRow's label style (title, semibold, xs). */
 .cc-api-help__h3,
 .cc-api-help__h4 {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  letter-spacing: var(--ai-tracking-4);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  letter-spacing: var(--ao-tracking-4);
+  color: var(--ao-text-primary);
 }
 
 /* An endpoint's name: one step up, Contract Analysis's table title. */
 .cc-api-help__h3 {
-  font-size: var(--ai-font-fixed-sm);
+  font-size: var(--ao-font-fixed-sm);
 }
 
 .cc-api-help__h4 {
-  font-size: var(--ai-font-fixed-xs);
+  font-size: var(--ao-font-fixed-xs);
 }
 
 /* ── Endpoints ─────────────────────────────────────────────
@@ -133,13 +133,13 @@
 .cc-api-help__endpoint {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   min-inline-size: 0;
 }
 
 .cc-api-help__endpoint + .cc-api-help__endpoint {
-  padding-block-start: var(--ai-spacing-6);
-  border-block-start: 1px solid var(--ai-border-secondary);
+  padding-block-start: var(--ao-spacing-6);
+  border-block-start: 1px solid var(--ao-border-secondary);
 }
 
 /* Method + path. 8px gap = the badge-to-text gap of the listing's type cell (spacing-3). */
@@ -147,12 +147,12 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   margin: 0;
 }
 
 .cc-api-help__route--title .cc-api-help__path {
-  font-size: var(--ai-font-fixed-sm);
+  font-size: var(--ao-font-fixed-sm);
 }
 
 .cc-api-help__method {
@@ -166,34 +166,34 @@
 .cc-api-help__value,
 .cc-api-help__name,
 .cc-api-help__code {
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-medium);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
   overflow-wrap: anywhere;
 }
 
 .cc-api-help__path,
 .cc-api-help__value,
 .cc-api-help__name {
-  padding: var(--ai-spacing-1) var(--ai-spacing-3);
-  border-radius: var(--ai-radius-sm);
-  background-color: var(--ai-surface-secondary);
+  padding: var(--ao-spacing-1) var(--ao-spacing-3);
+  border-radius: var(--ao-radius-sm);
+  background-color: var(--ao-surface-secondary);
 }
 
 /* A parameter name inside running text stays inline and tighter: 2px / 6px (spacing-1 / -2). */
 .cc-api-help__name {
-  padding: 0 var(--ai-spacing-2);
+  padding: 0 var(--ao-spacing-2);
 }
 
 /* Worked examples (the signature calculation, the error responses): one line per classic <p>,
    so the block wraps long hashes rather than scrolling. Padding 12 / 16 = Datatables' toolbar. */
 .cc-api-help__code {
   margin: 0;
-  padding: var(--ai-spacing-4) var(--ai-spacing-5);
-  border-radius: var(--ai-radius-md);
-  background-color: var(--ai-surface-secondary);
+  padding: var(--ao-spacing-4) var(--ao-spacing-5);
+  border-radius: var(--ao-radius-md);
+  background-color: var(--ao-surface-secondary);
   white-space: pre-wrap;
 }
 
@@ -203,14 +203,14 @@
 .cc-api-help__list {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   margin: 0;
-  padding-inline-start: var(--ai-spacing-5);
+  padding-inline-start: var(--ao-spacing-5);
   list-style: square;
 }
 
 .cc-api-help__list .cc-api-help__list {
-  margin-block-start: var(--ai-spacing-3);
+  margin-block-start: var(--ao-spacing-3);
 }
 
 .cc-api-help__nested {
@@ -223,7 +223,7 @@
 .cc-api-help__kvlist {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -231,14 +231,14 @@
 
 .cc-api-help__kv {
   display: grid;
-  grid-template-columns: var(--ai-size-2) minmax(0, 1fr);
+  grid-template-columns: var(--ao-size-2) minmax(0, 1fr);
   align-items: start;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 .cc-api-help__key {
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-primary);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
 }
 
 /* The value column's own block: a code value hugs its text, but may wrap across lines. */
@@ -253,37 +253,37 @@
 }
 
 .cc-api-help__empty {
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 /* Status and Method are words, not code: plain text in the value column. */
 .cc-api-help__text {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 /* "Request" / "Response" (and "… parameters"): a group with its label above the rows. */
 .cc-api-help__group {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 .cc-api-help__list > .cc-api-help__group {
   list-style: none;
-  margin-inline-start: calc(-1 * var(--ai-spacing-5));
+  margin-inline-start: calc(-1 * var(--ao-spacing-5));
 }
 
 .cc-api-help__label {
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-primary);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
 }
 
 /* Lookups' links to other CC screens. Brand text, as a text link elsewhere in CC. */
 .cc-api-help__link {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  color: var(--ai-text-brand);
+  gap: var(--ao-spacing-2);
+  color: var(--ao-text-brand);
   text-decoration: none;
 }
 
@@ -293,8 +293,8 @@
 
 .cc-api-help__link svg,
 .cc-api-help__link [data-lucide] {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
 }
 
 /* ── Narrow page column: one Select, not the rail ──────────
@@ -335,7 +335,7 @@
     content: "";
     position: absolute;
     z-index: -1;
-    inset: calc(-1 * var(--ai-spacing-6)) calc(-1 * var(--ai-spacing-6)) calc(-1 * var(--ai-spacing-3));
+    inset: calc(-1 * var(--ao-spacing-6)) calc(-1 * var(--ao-spacing-6)) calc(-1 * var(--ao-spacing-3));
     background-color: var(--cc-ui-primary-bg);
   }
 }
@@ -351,7 +351,7 @@
 .cc-api-help__jump-current {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   min-inline-size: 0;
 }
 
@@ -360,7 +360,7 @@
 @container record-section (max-width: 559px) {
   .cc-api-help__kv {
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--ai-spacing-2);
+    gap: var(--ao-spacing-2);
   }
 
   .cc-api-help__kv > .cc-api-help__kvlist {
@@ -378,5 +378,5 @@
    row is selected (measured: the selected row's chip sat a tick's width to the left). */
 .cc-api-help__jump .sel__menu-item:not(.sel__menu-item--selected)::after {
   content: "";
-  flex: 0 0 var(--ai-icon-size-sm);
+  flex: 0 0 var(--ao-icon-size-sm);
 }

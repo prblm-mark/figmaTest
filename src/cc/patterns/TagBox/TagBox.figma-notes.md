@@ -24,9 +24,9 @@
 
 | Property | Token |
 |---|---|
-| box | --ai-surface-primary, 1px --ai-border-secondary, --ai-radius-md, padding --ai-spacing-3, min-height --ai-spacing-8 |
-| tag gap | --ai-spacing-2 |
-| box → Select | --ai-spacing-3 |
+| box | --ao-surface-primary, 1px --ao-border-secondary, --ao-radius-md, padding --ao-spacing-3, min-height --ao-spacing-8 |
+| tag gap | --ao-spacing-2 |
+| box → Select | --ao-spacing-3 |
 
 ## Token Gaps & Decisions
 Designer 2026-09-28: show SELECTED items only, as a tag box (replaced the draft's always-open list). Select opens the existing FilterDropdowns Multi Select Modal (`3039:5630`), pre-ticked; Apply writes ticked rows back (TagBox.js). Modal rows are demo data (backend).

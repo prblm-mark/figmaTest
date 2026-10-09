@@ -8,11 +8,11 @@
 
 | Node | Variant | Background | Text | CSS modifier |
 |---|---|---|---|---|
-| 68:4508 | Type=Success | `Aqua/500` → `--ai-surface-success` | `--ai-btn-primary-text` | _(base `.pill`)_ |
-| 68:4502 | Type=Default | `--ai-surface-invert` | `--ai-text-invert` | `.pill--default` |
-| 68:4504 | Type=Contrast | `--ai-surface-contrast` | `--ai-text-primary` | `.pill--contrast` |
-| 68:4511 | Type=Warning | `--ai-surface-error` | `--ai-btn-primary-text`* | `.pill--warning` |
-| 68:4515 | Type=Brand | `--ai-surface-brand` | `--ai-btn-primary-text`* | `.pill--brand` |
+| 68:4508 | Type=Success | `Aqua/500` → `--ao-surface-success` | `--ao-btn-primary-text` | _(base `.pill`)_ |
+| 68:4502 | Type=Default | `--ao-surface-invert` | `--ao-text-invert` | `.pill--default` |
+| 68:4504 | Type=Contrast | `--ao-surface-contrast` | `--ao-text-primary` | `.pill--contrast` |
+| 68:4511 | Type=Warning | `--ao-surface-error` | `--ao-btn-primary-text`* | `.pill--warning` |
+| 68:4515 | Type=Brand | `--ao-surface-brand` | `--ao-btn-primary-text`* | `.pill--brand` |
 
 ## CSS Class Mapping
 
@@ -29,33 +29,33 @@
 
 | Property | Figma variable | CSS variable |
 |---|---|---|
-| Background (Success) | `Aqua/500` → `--ai-surface-success` | `--ai-surface-success` |
-| Background (Default) | `--ai-surface-invert` | `--ai-surface-invert` |
-| Background (Contrast) | `--ai-surface-contrast` | `--ai-surface-contrast` |
-| Background (Warning) | `--ai-surface-error` | `--ai-surface-error` |
-| Background (Brand) | `--ai-surface-brand` | `--ai-surface-brand` |
-| Text color (Success) | `--ai-text-invert` | `--ai-btn-primary-text`* |
-| Text color (Default) | `--ai-text-invert` | `--ai-text-invert` |
-| Text color (Contrast) | `--ai-text-primary` | `--ai-text-primary` |
-| Text color (Warning) | `--ai-text-invert` | `--ai-btn-primary-text`* |
-| Text color (Brand) | `--ai-text-invert` | `--ai-btn-primary-text`* |
-| Height | `h-[24px]` = `--ai-spacing-6` | `--ai-spacing-6` |
-| Horizontal padding | `--ai-spacing-3` | `--ai-spacing-3` |
-| Border radius | `--ai-radius-full` | `--ai-radius-full` |
-| Font size | `--ai-font-fixed-xxs` | `--ai-font-fixed-xxs` |
-| Font weight | `--ai-font-medium` | `--ai-font-medium` |
-| Line height | `--ai-leading-xs` | `--ai-leading-xs` |
+| Background (Success) | `Aqua/500` → `--ao-surface-success` | `--ao-surface-success` |
+| Background (Default) | `--ao-surface-invert` | `--ao-surface-invert` |
+| Background (Contrast) | `--ao-surface-contrast` | `--ao-surface-contrast` |
+| Background (Warning) | `--ao-surface-error` | `--ao-surface-error` |
+| Background (Brand) | `--ao-surface-brand` | `--ao-surface-brand` |
+| Text color (Success) | `--ao-text-invert` | `--ao-btn-primary-text`* |
+| Text color (Default) | `--ao-text-invert` | `--ao-text-invert` |
+| Text color (Contrast) | `--ao-text-primary` | `--ao-text-primary` |
+| Text color (Warning) | `--ao-text-invert` | `--ao-btn-primary-text`* |
+| Text color (Brand) | `--ao-text-invert` | `--ao-btn-primary-text`* |
+| Height | `h-[24px]` = `--ao-spacing-6` | `--ao-spacing-6` |
+| Horizontal padding | `--ao-spacing-3` | `--ao-spacing-3` |
+| Border radius | `--ao-radius-full` | `--ao-radius-full` |
+| Font size | `--ao-font-fixed-xxs` | `--ao-font-fixed-xxs` |
+| Font weight | `--ao-font-medium` | `--ao-font-medium` |
+| Line height | `--ao-leading-xs` | `--ao-leading-xs` |
 
 ## Token Gaps / Substitutions
 
-*`--ai-text-invert` substituted with `--ai-btn-primary-text` for Success, Warning, and Brand:
+*`--ao-text-invert` substituted with `--ao-btn-primary-text` for Success, Warning, and Brand:
 
-- `--ai-surface-success`, `--ai-surface-error`, and `--ai-surface-brand` are all theme-invariant
+- `--ao-surface-success`, `--ao-surface-error`, and `--ao-surface-brand` are all theme-invariant
   (same colour in light and dark mode).
-- `--ai-text-invert` flips to near-black (`#111928`) in dark mode, which would produce dark
+- `--ao-text-invert` flips to near-black (`#111928`) in dark mode, which would produce dark
   text on a coloured background — failing contrast.
-- `--ai-btn-primary-text` is always `#ffffff` in both themes, preserving white-on-colour legibility.
-- Type=Default uses `--ai-text-invert` correctly: its background (`--ai-surface-invert`) also
+- `--ao-btn-primary-text` is always `#ffffff` in both themes, preserving white-on-colour legibility.
+- Type=Default uses `--ao-text-invert` correctly: its background (`--ao-surface-invert`) also
   inverts in dark mode, so the combination stays legible in both themes.
 
 ## Notes

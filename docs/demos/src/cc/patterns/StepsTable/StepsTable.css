@@ -14,23 +14,23 @@
 
 .steps-table--full {
   border-width: 0 0 1px;
-  border-radius: var(--ai-radius-none);
+  border-radius: var(--ao-radius-none);
 }
 
 .steps-table__details-toggle {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-secondary);
+  gap: var(--ao-spacing-3);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
 }
 
 /* Mobile (designer amend, 2026-09-30): the label steps down to 2xs; the rest is unchanged. */
 @container cs-page (max-width: 767px) {
   .steps-table__details-toggle {
-    font-size: var(--ai-font-fixed-2xs);
+    font-size: var(--ao-font-fixed-2xs);
   }
 }
 
@@ -69,9 +69,9 @@
 /* Detail spans every column; the panel starts under the Order column (Figma StepRow
    Expanded: Detail padding-left spacing-9 = the checkbox column). StepDetail pads itself. */
 .steps-table .datatables__row-detail__cell {
-  padding: 0 0 0 var(--ai-spacing-9);
+  padding: 0 0 0 var(--ao-spacing-9);
   white-space: normal;
-  background-color: var(--ai-datatable-table-expanded-bg);
+  background-color: var(--ao-datatable-table-expanded-bg);
 }
 
 /* Horizontal scroll: the step content is pinned to the visible width (ListingScreen.css), and a
@@ -83,7 +83,7 @@
 
 [data-overflow="scroll"] .steps-table .datatables__detail-extra {
   inline-size: var(--cc-listing-view-w, 100%);
-  padding-inline-start: var(--ai-spacing-9);
+  padding-inline-start: var(--ao-spacing-9);
 }
 
 /* Column sizing (the table resizing rule): Title takes the spare width and ellipsises;
@@ -102,8 +102,8 @@
 .steps-table__title {
   display: block;
   overflow: hidden;
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-primary);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
   text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -112,26 +112,26 @@
 .steps-table__empty,
 .steps-table__live {
   display: inline-flex;
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
-.steps-table__empty { color: var(--ai-icon-contrast); }
-.steps-table__live { color: var(--ai-text-success); }
+.steps-table__empty { color: var(--ao-icon-contrast); }
+.steps-table__live { color: var(--ao-text-success); }
 
 /* ── StepDetail ───────────────────────────────────── */
 
 .step-detail {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-4) var(--ao-spacing-5);
 }
 
 .step-detail__media {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -140,68 +140,68 @@
 .step-detail__chip {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  padding: var(--ai-spacing-1) var(--ai-spacing-3);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-sm);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  gap: var(--ao-spacing-2);
+  padding: var(--ao-spacing-1) var(--ao-spacing-3);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-sm);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
 }
 
 .step-detail__chip [data-lucide],
 .step-detail__chip svg {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 .step-detail__body {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-2);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
+  gap: var(--ao-spacing-2);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
 }
 
 .step-detail__body p {
   margin: 0;
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-secondary);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
 }
 
 .step-detail__body h4 {
   margin: 0;
-  font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-lg);
-  color: var(--ai-text-primary);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-lg);
+  color: var(--ao-text-primary);
 }
 
 .step-detail__link {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-brand);
+  gap: var(--ao-spacing-2);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-brand);
   text-decoration: none;
 }
 
 .step-detail__link [data-lucide],
 .step-detail__link svg {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
-/* Author chip — `btn btn--tertiary btn--sm` plus the subtle `--ai-border-secondary` line the
+/* Author chip — `btn btn--tertiary btn--sm` plus the subtle `--ao-border-secondary` line the
  * listing rows' account chip carries (Case B contextual override, designer 2026-09-28).
  * Tertiary's own border tokens are transparent in every mode, so the border is restated for
  * hover and focus: `.btn--tertiary:hover` sets the transparent hover token at (0,2,0). */
 .steps-table__author-chip,
 .steps-table__author-chip:hover,
 .steps-table__author-chip:focus-visible {
-  border-color: var(--ai-border-secondary);
+  border-color: var(--ao-border-secondary);
 }

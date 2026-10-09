@@ -17,17 +17,17 @@
 
 | Figma property | CSS token | Value |
 |---|---|---|
-| Container gap | `--ai-spacing-3` | 8px |
-| Title row gap | `--ai-spacing-3` | 8px |
+| Container gap | `--ao-spacing-3` | 8px |
+| Title row gap | `--ao-spacing-3` | 8px |
 | Avatar size | 24×24px inline SVG | — |
-| Title font | `--ai-font-title` + `--ai-font-bold` + `--ai-font-fixed-md` | Inter Bold 18px |
-| Title color | `--ai-text-primary` | #1f2a37 |
-| Title letter-spacing | `--ai-tracking-3` | -0.0125em |
-| Subtitle font | `--ai-font-body` + `--ai-font-regular` + `--ai-font-fixed-sm` | Inter Regular 16px |
-| Subtitle color | `--ai-text-secondary` | #4b5563 |
-| Subtitle line-height | `--ai-leading-md` | 1.5rem (24px) |
-| Subtitle letter-spacing | `--ai-tracking-4` | 0em |
-| Subtitle stage 3 weight | `--ai-font-medium` | 500 |
+| Title font | `--ao-font-title` + `--ao-font-bold` + `--ao-font-fixed-md` | Inter Bold 18px |
+| Title color | `--ao-text-primary` | #1f2a37 |
+| Title letter-spacing | `--ao-tracking-3` | -0.0125em |
+| Subtitle font | `--ao-font-body` + `--ao-font-regular` + `--ao-font-fixed-sm` | Inter Regular 16px |
+| Subtitle color | `--ao-text-secondary` | #4b5563 |
+| Subtitle line-height | `--ao-leading-md` | 1.5rem (24px) |
+| Subtitle letter-spacing | `--ao-tracking-4` | 0em |
+| Subtitle stage 3 weight | `--ao-font-medium` | 500 |
 
 ## GSAP animation
 

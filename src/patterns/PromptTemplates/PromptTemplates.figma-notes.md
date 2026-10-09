@@ -22,21 +22,21 @@ Single variant only.
 
 | Figma variable | CSS token | Role |
 |---|---|---|
-| `--ai-spacing-5` | `--ai-spacing-5` | Gap between heading and list |
-| `--ai-spacing-3` | `--ai-spacing-3` | Gap between list items |
-| `--ai-font-title` | `--ai-font-title` | Title font family |
-| `--ai-font-bold` | `--ai-font-bold` | Title weight |
-| `--ai-font-fixed-sm` | `--ai-font-fixed-sm` | Title font size |
-| `--ai-leading-xs` | `--ai-leading-xs` | Title line height |
-| `--ai-text-primary` | `--ai-text-primary` | Title colour |
-| `--ai-font-body` | `--ai-font-body` | Description font family |
-| `--ai-font-regular` | `--ai-font-regular` | Description weight |
-| `--ai-font-fixed-xs` | `--ai-font-fixed-xs` | Description font size |
-| `--ai-leading-md` | `--ai-leading-md` | Description line height |
-| `--ai-text-contrast` | `--ai-text-contrast` | Description colour |
+| `--ao-spacing-5` | `--ao-spacing-5` | Gap between heading and list |
+| `--ao-spacing-3` | `--ao-spacing-3` | Gap between list items |
+| `--ao-font-title` | `--ao-font-title` | Title font family |
+| `--ao-font-bold` | `--ao-font-bold` | Title weight |
+| `--ao-font-fixed-sm` | `--ao-font-fixed-sm` | Title font size |
+| `--ao-leading-xs` | `--ao-leading-xs` | Title line height |
+| `--ao-text-primary` | `--ao-text-primary` | Title colour |
+| `--ao-font-body` | `--ao-font-body` | Description font family |
+| `--ao-font-regular` | `--ao-font-regular` | Description weight |
+| `--ao-font-fixed-xs` | `--ao-font-fixed-xs` | Description font size |
+| `--ao-leading-md` | `--ao-leading-md` | Description line height |
+| `--ao-text-contrast` | `--ao-text-contrast` | Description colour |
 
 ## Token Gaps
-None — all design values map to `--ai-*` semantic tokens.
+None — all design values map to `--ao-*` semantic tokens.
 
 ## Dependencies
 - `PromptTemplateItem` — individual list items

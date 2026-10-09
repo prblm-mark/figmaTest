@@ -3,9 +3,9 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--ai-surface-secondary);
-  padding: var(--ai-spacing-8) var(--ai-spacing-6);
-  font-family: var(--ai-font-body);
+  background: var(--ao-surface-secondary);
+  padding: var(--ao-spacing-8) var(--ao-spacing-6);
+  font-family: var(--ao-font-body);
 }
 
 .bc-page {
@@ -14,44 +14,44 @@ body {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-8);
+  gap: var(--ao-spacing-8);
 }
 
 .bc-page__title {
   margin: 0;
-  font-size: var(--ai-font-fluid-2xl);
-  font-weight: var(--ai-font-bold);
-  color: var(--ai-text-primary);
-  line-height: var(--ai-leading-md);
+  font-size: var(--ao-font-fluid-2xl);
+  font-weight: var(--ao-font-bold);
+  color: var(--ao-text-primary);
+  line-height: var(--ao-leading-md);
 }
 
 .bc-page__intro {
   margin: 0;
-  font-size: var(--ai-font-fixed-sm);
-  color: var(--ai-text-contrast);
-  line-height: var(--ai-leading-md);
+  font-size: var(--ao-font-fixed-sm);
+  color: var(--ao-text-contrast);
+  line-height: var(--ao-leading-md);
 }
 
 .bc-section {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 .bc-section__label {
   margin: 0;
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-contrast);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-contrast);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
 .bc-section__caption {
-  margin: 0 0 var(--ai-spacing-2) 0;
-  font-size: var(--ai-font-fixed-xs);
-  color: var(--ai-text-secondary);
-  line-height: var(--ai-leading-sm);
+  margin: 0 0 var(--ao-spacing-2) 0;
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-secondary);
+  line-height: var(--ao-leading-sm);
 }
 
 /* ── Breadcrumb base ───────────────────────────── */
@@ -60,60 +60,60 @@ body {
   display: inline-flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   margin: 0;
   padding: 0;
   list-style: none;
-  font-size: var(--ai-font-fixed-xs);
+  font-size: var(--ao-font-fixed-xs);
 }
 
 .crumbs__item {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
 }
 
 .crumbs__link {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  color: var(--ai-text-contrast);
+  gap: var(--ao-spacing-2);
+  color: var(--ao-text-contrast);
   text-decoration: none;
-  font-weight: var(--ai-font-medium);
-  transition: color var(--ai-transition-default);
+  font-weight: var(--ao-font-medium);
+  transition: color var(--ao-transition-default);
 }
 
 .crumbs__link:hover {
-  color: var(--ai-surface-brand);
+  color: var(--ao-surface-brand);
 }
 
 .crumbs__link [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 .crumbs__current {
-  color: var(--ai-text-primary);
-  font-weight: var(--ai-font-semibold);
+  color: var(--ao-text-primary);
+  font-weight: var(--ao-font-semibold);
 }
 
 .crumbs__sep {
-  color: var(--ai-icon-contrast);
+  color: var(--ao-icon-contrast);
   display: inline-flex;
 }
 
 .crumbs__sep [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 /* ── Solid background ──────────────────────────── */
 
 .crumbs--solid {
-  padding: var(--ai-spacing-3) var(--ai-spacing-5);
-  background: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  padding: var(--ao-spacing-3) var(--ao-spacing-5);
+  background: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
 }
 
 /* ── Dropdown trigger inside crumb ────────────── */
@@ -126,25 +126,25 @@ body {
 .crumbs__dropdown-btn {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   background: transparent;
   border: 0;
   padding: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-medium);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-contrast);
   cursor: pointer;
 }
 
 .crumbs__dropdown-btn:hover {
-  color: var(--ai-surface-brand);
+  color: var(--ao-surface-brand);
 }
 
 .crumbs__dropdown-btn [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  transition: transform var(--ai-transition-default);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  transition: transform var(--ao-transition-default);
 }
 
 .crumbs__dropdown--open .crumbs__dropdown-btn [data-lucide] {
@@ -154,14 +154,14 @@ body {
 .crumbs__menu {
   display: none;
   position: absolute;
-  top: calc(100% + var(--ai-spacing-2));
+  top: calc(100% + var(--ao-spacing-2));
   left: 0;
   z-index: 10;
   min-width: 12rem;
-  padding: var(--ai-spacing-2);
-  background: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  padding: var(--ao-spacing-2);
+  background: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   list-style: none;
   margin: 0;
@@ -175,33 +175,33 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   width: 100%;
-  padding: var(--ai-spacing-2) var(--ai-spacing-3);
+  padding: var(--ao-spacing-2) var(--ao-spacing-3);
   background: transparent;
   border: 0;
-  border-radius: var(--ai-radius-sm);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  color: var(--ai-text-primary);
+  border-radius: var(--ao-radius-sm);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  color: var(--ao-text-primary);
   text-align: left;
   cursor: pointer;
-  transition: background-color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default);
 }
 
 .crumbs__menu-item:hover {
-  background: var(--ai-surface-minimal);
+  background: var(--ao-surface-minimal);
 }
 
 .crumbs__menu-item--selected {
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-surface-brand);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-surface-brand);
 }
 
 .crumbs__menu-item [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 /* ── With prev/next nav buttons ──────────────── */
@@ -210,15 +210,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
 }
 
 .crumbs-pager {
   display: inline-flex;
   align-items: stretch;
-  background: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  background: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
   overflow: hidden;
 }
 
@@ -226,24 +226,24 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-spacing-8);
-  height: var(--ai-spacing-8);
+  width: var(--ao-spacing-8);
+  height: var(--ao-spacing-8);
   background: transparent;
   border: 0;
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
   cursor: pointer;
-  transition: background-color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default);
 }
 
 .crumbs-pager__btn:hover {
-  background: var(--ai-surface-minimal);
+  background: var(--ao-surface-minimal);
 }
 
 .crumbs-pager__btn + .crumbs-pager__btn {
-  border-left: 1px solid var(--ai-border-secondary);
+  border-left: 1px solid var(--ao-border-secondary);
 }
 
 .crumbs-pager__btn [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }

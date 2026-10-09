@@ -17,13 +17,13 @@
   <link rel="stylesheet" href="../../patterns/TagBox/TagBox.css">
   <link rel="stylesheet" href="FieldRow.css">
   <style>
-    body { margin: 0; padding: var(--ai-spacing-7); background: var(--cc-ui-primary-bg); min-height: 100vh; color: var(--ai-text-primary); font-family: var(--ai-font-body); }
-    .demo-section { max-width: var(--demo-w, none); padding: var(--ai-spacing-6); background: var(--ai-surface-primary); border: 1px solid var(--ai-border-secondary); border-radius: var(--ai-radius-lg); margin-bottom: var(--ai-spacing-5); }
+    body { margin: 0; padding: var(--ao-spacing-7); background: var(--cc-ui-primary-bg); min-height: 100vh; color: var(--ao-text-primary); font-family: var(--ao-font-body); }
+    .demo-section { max-width: var(--demo-w, none); padding: var(--ao-spacing-6); background: var(--ao-surface-primary); border: 1px solid var(--ao-border-secondary); border-radius: var(--ao-radius-lg); margin-bottom: var(--ao-spacing-5); }
     .demo-section--bare { background: transparent; border: 0; padding: 0; }
-    .demo-section__title { font-size: var(--ai-font-fixed-xs); font-weight: var(--ai-font-semibold); color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 var(--ai-spacing-5); }
-    .demo-note { margin: 0 0 var(--ai-spacing-5); font-size: var(--ai-font-fixed-xs); color: var(--ai-text-secondary); }
-    .demo-stack { display: flex; flex-direction: column; gap: var(--ai-spacing-5); }
-    .demo-narrow { max-width: var(--ai-size-7); }
+    .demo-section__title { font-size: var(--ao-font-fixed-xs); font-weight: var(--ao-font-semibold); color: var(--ao-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 var(--ao-spacing-5); }
+    .demo-note { margin: 0 0 var(--ao-spacing-5); font-size: var(--ao-font-fixed-xs); color: var(--ao-text-secondary); }
+    .demo-stack { display: flex; flex-direction: column; gap: var(--ao-spacing-5); }
+    .demo-narrow { max-width: var(--ao-size-7); }
   </style>
 <script type="module" src="../../../components/Dropdown/Dropdown.js"></script></head>
 <body>
@@ -69,7 +69,7 @@
           </div></dl>
   </div>
   <div class="demo-section ">
-    <p class="demo-section__title">Layout=Compact · Text, Tags</p><p class="demo-note">Sidebar rows: 12px on a 128px (--ai-size-1) term column.</p>
+    <p class="demo-section__title">Layout=Compact · Text, Tags</p><p class="demo-note">Sidebar rows: 12px on a 128px (--ao-size-1) term column.</p>
     <dl class="demo-stack demo-narrow" style="margin:0"><div class="field-row field-row--compact">
             <dt class="field-row__label">Publisher</dt>
             <dd class="field-row__value">Affino</dd>
@@ -79,7 +79,7 @@
           </div></dl>
   </div>
   <div class="demo-section ">
-    <p class="demo-section__title">Layout=Wide · Edit types (Input, Select, TagBox, Textarea, Media Picker)</p><p class="demo-note">Required adds the red asterisk (--ai-text-error). Helper text is the Input's own help line.</p>
+    <p class="demo-section__title">Layout=Wide · Edit types (Input, Select, TagBox, Textarea, Media Picker)</p><p class="demo-note">Required adds the red asterisk (--ao-text-error). Helper text is the Input's own help line.</p>
     <div class="demo-stack"><div class="field-row field-row--edit">
             <label class="field-row__label" for="f-title-1">Title<span class="field-row__required" aria-hidden="true">*</span></label>
             <div class="field-row__value"><div class="input">

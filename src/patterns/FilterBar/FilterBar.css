@@ -1,4 +1,4 @@
-/* FilterBar — two-row filter toolbar. Uses only --ai-* tokens.
+/* FilterBar — two-row filter toolbar. Uses only --ao-* tokens.
  *
  * Two-row card: row1 = [saved-views | ........ Export  search  kebab],
  *               row2 = [solid FilterItem chips ........ Add Filters].
@@ -16,9 +16,9 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  background: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
   box-sizing: border-box;
   /* No `overflow: hidden` here — the root's own bg + border-radius round the card,
    * and the inter-row divider sits mid-card (clear of the corners), so nothing
@@ -41,12 +41,12 @@
 .filter-bar__row {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-5); /* 16px */
-  padding: var(--ai-spacing-4) var(--ai-spacing-5); /* 12 / 16 */
+  gap: var(--ao-spacing-5); /* 16px */
+  padding: var(--ao-spacing-4) var(--ao-spacing-5); /* 12 / 16 */
 }
 
 .filter-bar__row--top {
-  border-bottom: 1px solid var(--ai-border-secondary);
+  border-bottom: 1px solid var(--ao-border-secondary);
 }
 
 /* Lead area of row1 — holds the views control (or new-view / search fields). */
@@ -55,7 +55,7 @@
   flex: 1 0 0;
   min-width: 0;
   align-items: center;
-  gap: var(--ai-spacing-3); /* 8px */
+  gap: var(--ao-spacing-3); /* 8px */
 }
 
 /* ── Saved-views control (Dropdown w/ field-styled trigger) ── */
@@ -70,8 +70,8 @@
    * Why a cap at all: with `flex-shrink: 0` the 192px trigger overflowed this
    * box and painted over the Export button — trigger ran to 569px while its
    * own box ended at 499.5 in a 562px content column. */
-  flex: 0 1 var(--ai-size-3);
-  max-inline-size: var(--ai-size-3); /* 192px */
+  flex: 0 1 var(--ao-size-3);
+  max-inline-size: var(--ao-size-3); /* 192px */
   min-inline-size: 0;
 }
 
@@ -79,22 +79,22 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   /* Fills the capped wrapper above. No flex shorthand here — .dropdown is a
    * column, so a basis would size the wrong axis. The label ellipsises. */
   inline-size: 100%;
   min-inline-size: 0;
-  min-height: var(--ai-spacing-8); /* 40px */
-  padding: 0 var(--ai-spacing-5); /* 0 16px */
+  min-height: var(--ao-spacing-8); /* 40px */
+  padding: 0 var(--ao-spacing-5); /* 0 16px */
   margin: 0;
-  background: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs); /* 14px */
-  font-weight: var(--ai-font-regular); /* views trigger is regular weight */
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  background: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs); /* 14px */
+  font-weight: var(--ao-font-regular); /* views trigger is regular weight */
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
   cursor: pointer;
 }
 
@@ -105,11 +105,11 @@
 }
 
 .filter-bar__views-chevron {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-contrast);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-contrast);
   flex-shrink: 0;
-  transition: transform var(--ai-transition-default);
+  transition: transform var(--ao-transition-default);
 }
 
 .filter-bar__views.is-open .filter-bar__views-chevron {
@@ -136,16 +136,16 @@
 
 .filter-bar__rename {
   position: absolute;
-  inset: var(--ai-spacing-1) var(--ai-spacing-3);
+  inset: var(--ao-spacing-1) var(--ao-spacing-3);
   z-index: 1;
   box-sizing: border-box;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  color: var(--ai-text-primary);
-  background: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-brand);
-  border-radius: var(--ai-radius-sm);
-  padding: 0 var(--ai-spacing-2);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-primary);
+  background: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-brand);
+  border-radius: var(--ao-radius-sm);
+  padding: 0 var(--ao-spacing-2);
   outline: none;
 }
 
@@ -179,24 +179,24 @@
 }
 
 /* The chevron half carries an icon and no label, so it does not want the
- * label half's inline padding. --ai-spacing-4 matches what Figma binds on
+ * label half's inline padding. --ao-spacing-4 matches what Figma binds on
  * Secondary / Action. */
 .filter-bar__export-more.btn {
-  padding-inline: var(--ai-spacing-4);
+  padding-inline: var(--ao-spacing-4);
 }
 
 /* Panel sized as Figma's export list (160 wide, 8px padding) rather than
  * Dropdown's 240/12 default. */
 .filter-bar__export .dropdown__panel {
-  min-width: var(--ai-size-2);
-  padding: var(--ai-spacing-3);
+  min-width: var(--ao-size-2);
+  padding: var(--ao-spacing-3);
 }
 
 /* ── Actions (search icon + kebab) ───────────────────── */
 .filter-bar__actions {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   flex-shrink: 0;
 }
 
@@ -208,13 +208,13 @@
   padding: 0;
   border: 0;
   background: none;
-  color: var(--ai-icon-contrast);
+  color: var(--ao-icon-contrast);
   cursor: pointer;
 }
 
 .filter-bar__icon-btn [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 .filter-bar__menu {
@@ -225,8 +225,8 @@
 .filter-bar__menu .dropdown__panel {
   left: auto;
   right: 0;
-  /* Figma's List frame for this menu (3645:158885) binds --ai-spacing-3 (8px),
-   * where the generic .dropdown__panel uses --ai-spacing-4 (12px). Scoped
+  /* Figma's List frame for this menu (3645:158885) binds --ao-spacing-3 (8px),
+   * where the generic .dropdown__panel uses --ao-spacing-4 (12px). Scoped
    * rather than changed on the shared panel, which every other dropdown uses.
    *
    * It was load-bearing while the rows were Size=sm: a 16px leading icon plus
@@ -235,25 +235,25 @@
    * (60px row instead of 36px). The rows are Size=xs now — 13px text and a
    * 12px icon — so it clears comfortably at either padding. Kept because 8px
    * is what Figma draws, not because it is still holding the layout up. */
-  padding: var(--ai-spacing-3);
+  padding: var(--ao-spacing-3);
 }
 
 /* ── Ghost buttons inside the saved-views menu ───────────
  * The row menu (Rename / Copy / Delete) and the "New view" footer are
  * `btn--tertiary`, which in the CC theme is NOT a ghost button: the CC token
- * set gives `--ai-btn-tertiary-bg` a solid #e7edf0 at REST and a *lighter*
+ * set gives `--ao-btn-tertiary-bg` a solid #e7edf0 at REST and a *lighter*
  * #f2f4f5 on hover, so the ladder runs backwards and every one of these
  * rendered as a permanent grey pill (designer, 2026-09-17: "none of the
  * buttons in the view dropdown should have a bg by default, they should only
  * be visible on mouseover").
  *
  * Restored here to the behaviour the `.dropdown-item` rows in the same panel
- * already have — transparent at rest, `--ai-surface-secondary` on hover, which
+ * already have — transparent at rest, `--ao-surface-secondary` on hover, which
  * is the same #e7edf0 the buttons were showing at rest. So the grey is not
  * removed, it is moved to where it belongs.
  *
  * Focus-visible is aligned to hover deliberately: left alone it would inherit
- * the lighter `--ai-btn-tertiary-bg-hover`, so a keyboard user would get a
+ * the lighter `--ao-btn-tertiary-bg-hover`, so a keyboard user would get a
  * weaker highlight than a mouse user on the same control.
  *
  * SCOPED, and it should not have to be. The real issue is the CC values for
@@ -263,10 +263,10 @@
  * This is now the FOURTH independent workaround for the same token bug:
  * `.cc-header .btn--tertiary` (Header.css) and two selector groups in
  * AiAssistant.css already force transparent, and AiAssistant restores the
- * grey on hover with `var(--ai-btn-tertiary-bg)` — the same move as here,
+ * grey on hover with `var(--ao-btn-tertiary-bg)` — the same move as here,
  * arrived at separately. Four components patching one token is the signal
  * that the token is wrong, not the components. Flagged for the designer:
- * giving `--ai-btn-tertiary-bg` the transparent value in CC that it already
+ * giving `--ao-btn-tertiary-bg` the transparent value in CC that it already
  * has in the base theme, and letting hover carry the grey, makes all four
  * blocks redundant. That is the outcome to aim for. */
 
@@ -276,7 +276,7 @@
 
 .filter-bar__views .btn--tertiary:hover,
 .filter-bar__views .btn--tertiary:focus-visible {
-  background-color: var(--ai-surface-secondary);
+  background-color: var(--ao-surface-secondary);
 }
 
 /* ── Chip picker (the dropdown a chip opens) ────────────
@@ -294,7 +294,7 @@
  * radius and shadow — so this wrapper deliberately adds none. Nesting the
  * card inside a `.dropdown__panel` would draw both.
  *
- * Offset and layer match `.dropdown__panel` (`--ai-spacing-3`, z-index 10)
+ * Offset and layer match `.dropdown__panel` (`--ao-spacing-3`, z-index 10)
  * so every popover in the bar sits on one convention. */
 
 .filter-bar__chip {
@@ -313,7 +313,7 @@
 
 .filter-bar__panel {
   position: absolute;
-  inset-block-start: calc(100% + var(--ai-spacing-3));
+  inset-block-start: calc(100% + var(--ao-spacing-3));
   inset-inline-start: 0;
   z-index: 10;
 }
@@ -332,7 +332,7 @@
   min-width: 0;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ai-spacing-2); /* 6px — chip gap at all screen sizes */
+  gap: var(--ao-spacing-2); /* 6px — chip gap at all screen sizes */
 }
 
 .filter-bar__add {
@@ -348,14 +348,14 @@
   padding: 0;
   border: 0;
   background: none;
-  color: var(--ai-icon-contrast);
+  color: var(--ao-icon-contrast);
   cursor: pointer;
   flex-shrink: 0;
 }
 
 .filter-bar__back [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 .filter-bar__search {
@@ -397,9 +397,9 @@
 @container cs-page (min-width: 768px) {
   .filter-bar__search-bar {
     display: block;
-    flex: 0 1 var(--ai-size-3);
-    inline-size: var(--ai-size-3); /* 192px */
-    max-inline-size: var(--ai-size-3);
+    flex: 0 1 var(--ao-size-3);
+    inline-size: var(--ao-size-3); /* 192px */
+    max-inline-size: var(--ao-size-3);
     min-inline-size: 0;
   }
 
@@ -412,9 +412,9 @@
 /* ── New View mode ───────────────────────────────────── */
 .filter-bar__new-view {
   display: none;
-  flex: 0 1 var(--ai-size-3);
-  inline-size: var(--ai-size-3); /* 192px */
-  max-inline-size: var(--ai-size-3);
+  flex: 0 1 var(--ao-size-3);
+  inline-size: var(--ao-size-3); /* 192px */
+  max-inline-size: var(--ao-size-3);
   min-inline-size: 0;
 }
 
@@ -489,9 +489,9 @@
 .filter-bar__views-trigger:focus-visible,
 .filter-bar__icon-btn:focus-visible,
 .filter-bar__back:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
-  border-radius: var(--ai-radius-sm);
+  border-radius: var(--ao-radius-sm);
 }
 
 /* ── Mobile (Device=Mobile): Export collapses out of the bar (per Figma) ── */
@@ -501,13 +501,13 @@
   }
 
   /* Even padding on both rows at mobile. Figma's mobile frames say
-     --ai-spacing-4 (12px); the designer took it to --ai-spacing-3 (8px) on
+     --ao-spacing-4 (12px); the designer took it to --ao-spacing-3 (8px) on
      2026-09-21 after seeing it on a phone, where the chips are the content and
      the frame around them was taking room they needed. An instruction that
      overrides the frames, not a reading of them — so Figma wants updating
      rather than this line being "corrected" back to 12. */
   .filter-bar__row {
-    padding: var(--ai-spacing-3);
+    padding: var(--ao-spacing-3);
   }
 
   /* New View mode: let the field flex (basis 0, then grow) so it shrinks to make
@@ -521,9 +521,9 @@
   /* The "Create" CTA uses the small button at mobile (Figma mobile New View
    * variant 2977:3806 — button/sm). Mirrors .btn--sm (radius unchanged = md). */
   .filter-bar__create {
-    padding: 0 var(--ai-spacing-4);
-    min-height: var(--ai-spacing-7);
-    font-size: var(--ai-font-fluid-xxs);
+    padding: 0 var(--ao-spacing-4);
+    min-height: var(--ao-spacing-7);
+    font-size: var(--ao-font-fluid-xxs);
   }
 
   /* Save View: on mobile the CTA sits after "Add Filters" in the wrapping chip flow
@@ -537,7 +537,7 @@
    * row 1 between the views dropdown and the kebab. Per Figma the views control hugs
    * its content (~136px, not the 192px field) and all three gaps are 8px. */
   .filter-bar--alt-search .filter-bar__row--top {
-    gap: var(--ai-spacing-5); /* 16px between the views control and the search field */
+    gap: var(--ao-spacing-5); /* 16px between the views control and the search field */
   }
 
   .filter-bar--alt-search .filter-bar__lead {

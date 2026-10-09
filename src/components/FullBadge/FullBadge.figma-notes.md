@@ -42,30 +42,30 @@ against Figma's 45**.
 
 | Property | Figma `3615:110609` | Code was | Resolution |
 |---|---|---|---|
-| gap | `border/width/border-3` = 3px | `--ai-spacing-1` = 4px | **Figma binding fixed** — see below |
+| gap | `border/width/border-3` = 3px | `--ao-spacing-1` = 4px | **Figma binding fixed** — see below |
 | check icon | 7px | 10px, hardcoded | **new token** — see below |
 
-Everything else matched exactly: `--ai-surface-success`, `--ai-spacing-2` inline, `--ai-spacing-0-5`
-block, `--ai-radius-full`, and the full type stack (`--ai-font-title` / `--ai-font-bold` /
-`--ai-font-fixed-6xs` / `--ai-text-invert` / uppercase / `leading: normal`). `--ai-surface-success`
+Everything else matched exactly: `--ao-surface-success`, `--ao-spacing-2` inline, `--ao-spacing-0-5`
+block, `--ao-radius-full`, and the full type stack (`--ao-font-title` / `--ao-font-bold` /
+`--ao-font-fixed-6xs` / `--ao-text-invert` / uppercase / `leading: normal`). `--ao-surface-success`
 is `#30a46c` in **all three modes** — light, dark and CC — so the green is theme-invariant and
 matches Figma's value precisely.
 
 #### The gap was a Figma-side binding slip
 
 Figma bound **`border/width/border-3`** — a *border-width* primitive — as the flex gap. A border
-width driving spacing is semantically wrong, and it is why the code deviated to `--ai-spacing-1` in
-the first place. Designer's call (2026-09-11): **fix the binding in Figma** to `--ai-spacing-1`
+width driving spacing is semantically wrong, and it is why the code deviated to `--ao-spacing-1` in
+the first place. Designer's call (2026-09-11): **fix the binding in Figma** to `--ao-spacing-1`
 rather than propagate 3px into code. **No code change** — the CSS was already right, and it is the
 source that moves.
 
 #### The icon is now 7px, as an explicitly approved raw value
 
-Figma draws the check at **7px**. Nothing on the `--ai-*` scale is 7px, and the smallest icon token
-(`--ai-icon-size-xs`) is 12px, which will not sit inside a 15px badge. The code meanwhile carried a
+Figma draws the check at **7px**. Nothing on the `--ao-*` scale is 7px, and the smallest icon token
+(`--ao-icon-size-xs`) is 12px, which will not sit inside a 15px badge. The code meanwhile carried a
 **hardcoded 10px**, which was a governance violation predating this audit.
 
-The first decision (2026-09-11) was to add an `--ai-icon-size-2xs` token. That was then **revised the
+The first decision (2026-09-11) was to add an `--ao-icon-size-2xs` token. That was then **revised the
 same day**: the designer approved a **raw 7px** instead, on the grounds that it is a single use.
 That is a legitimate resolution of the hardcoded-dimension rule — the rule's own remedies are
 "add a token / approve a `calc()` / **approve as a primitive**", and the stop exists to force the
@@ -116,7 +116,7 @@ Measured on the component's own demo, with Inter actually loaded:
 Height is now exact. The badge was **49.9** wide before this change, so the icon accounts for the
 full 3px improvement. The residual ~1.9px is entirely the two documented *CSS-leads-Figma* items:
 the gap is 4px against Figma's 3px (and Figma is being corrected to 4, which closes 1px of it), and
-`--ai-tracking-7` adds letter-spacing Figma does not set. Once the gap binding lands, Figma reads 46
+`--ao-tracking-7` adds letter-spacing Figma does not set. Once the gap binding lands, Figma reads 46
 and code 46.9.
 
 > **Beware measuring this in a bare probe.** A minimal test page without the real font stack
@@ -141,16 +141,16 @@ contrast question below and the check-icon sizing live in one file rather than t
 
 | Figma | CSS | Role |
 |---|---|---|
-| `--ai-surface-success` | `background-color` | |
-| `--ai-text-invert` | `color` | was the `Grey/0` primitive in Figma |
-| `--ai-radius-full` | `border-radius` | |
-| `--ai-spacing-2` | `padding-inline` (6px) | |
-| `--ai-spacing-0-5` | `padding-block` (2px) | |
-| `--ai-spacing-1` | `gap` (4px) | Figma bound `border/width/border-3` — see below |
-| `--ai-font-title` | `font-family` | |
-| `--ai-font-fixed-6xs` | `font-size` (9px) | the token added 2026-08-25 |
-| `--ai-font-bold` | `font-weight` | |
-| `--ai-tracking-7` | `letter-spacing` | CSS leads Figma — see below |
+| `--ao-surface-success` | `background-color` | |
+| `--ao-text-invert` | `color` | was the `Grey/0` primitive in Figma |
+| `--ao-radius-full` | `border-radius` | |
+| `--ao-spacing-2` | `padding-inline` (6px) | |
+| `--ao-spacing-0-5` | `padding-block` (2px) | |
+| `--ao-spacing-1` | `gap` (4px) | Figma bound `border/width/border-3` — see below |
+| `--ao-font-title` | `font-family` | |
+| `--ao-font-fixed-6xs` | `font-size` (9px) | the token added 2026-08-25 |
+| `--ao-font-bold` | `font-weight` | |
+| `--ao-tracking-7` | `letter-spacing` | CSS leads Figma — see below |
 
 ## Token gaps and decisions
 
@@ -158,17 +158,17 @@ Resolved with the designer 2026-08-25 rather than invented.
 
 | Figma | Decision |
 |---|---|
-| `gap` bound to `border/width/border-3` (3px) | **`--ai-spacing-1`** (4px). A border-width token driving a flex gap, and 3px matches no spacing step. Figma updated. |
-| label `9px`, unbound | **New token `--ai-font-fixed-6xs`**, created in Figma and re-exported the same day. |
-| `Grey/0` primitive (`#ffffff`) | **`--ai-text-invert`**, which is exactly `#ffffff`. |
-| check icon `7×7` | **Raw 7×7 + `stroke-width: 5.7`, designer-approved 2026-09-11.** Was a raw 10×10; no icon token fits, the smallest (`--ai-icon-size-xs`) being 12px. A token (`--ai-icon-size-2xs`) was briefly agreed and then revised the same day to an approved raw value, on the grounds of a single use. The stroke change is not optional — see the component section above. |
+| `gap` bound to `border/width/border-3` (3px) | **`--ao-spacing-1`** (4px). A border-width token driving a flex gap, and 3px matches no spacing step. Figma updated. |
+| label `9px`, unbound | **New token `--ao-font-fixed-6xs`**, created in Figma and re-exported the same day. |
+| `Grey/0` primitive (`#ffffff`) | **`--ao-text-invert`**, which is exactly `#ffffff`. |
+| check icon `7×7` | **Raw 7×7 + `stroke-width: 5.7`, designer-approved 2026-09-11.** Was a raw 10×10; no icon token fits, the smallest (`--ao-icon-size-xs`) being 12px. A token (`--ao-icon-size-2xs`) was briefly agreed and then revised the same day to an approved raw value, on the grounds of a single use. The stroke change is not optional — see the component section above. |
 
 ## Two places the CSS leads Figma
 
 | Property | Figma | CSS |
 |---|---|---|
 | check icon | `7×7`, default stroke | `7×7`, **`stroke-width: 5.7`** — size now MATCHES Figma (2026-09-11); only the stroke leads |
-| label `letter-spacing` | **not set** | **`--ai-tracking-7`** (0.05em) |
+| label `letter-spacing` | **not set** | **`--ao-tracking-7`** (0.05em) |
 
 **The check had to grow to stay legible.** Lucide renders on a 24-unit viewBox, so its default
 `stroke-width: 2` thins to roughly 0.6px once scaled to 7px — a hairline that all but disappeared
@@ -186,7 +186,7 @@ the 1px gap difference (Figma being corrected to 4px) plus the letter-spacing Fi
 
 ## Accessibility — one open item
 
-**White on `--ai-surface-success` measures 3.16:1**, under the 4.5:1 WCAG AA requires for 9px bold
+**White on `--ao-surface-success` measures 3.16:1**, under the 4.5:1 WCAG AA requires for 9px bold
 text. It needs either a darker success or a dark label — a palette decision, not something this
 component can fix. **Deliberately left open** at the designer's direction 2026-08-25; tracked with
 the other unresolved pairs in `docs/contrast-audit.md`.

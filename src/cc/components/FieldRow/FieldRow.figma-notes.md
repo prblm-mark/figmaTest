@@ -35,17 +35,17 @@
 
 | Property | Token |
 |---|---|
-| label column | --ai-size-3 (192) Wide · --ai-size-1 (128) Compact |
-| gap | --ai-spacing-5 Wide · --ai-spacing-4 Compact |
-| label | --ai-font-fixed-xs SemiBold (designer amend 2026-09-29, was Medium — flag for Figma) --ai-leading-sm --ai-text-primary (amend 2026-09-29, was text-secondary) --ai-tracking-4 |
-| value | --ai-font-fixed-xs Regular --ai-leading-md --ai-text-primary |
-| compact text | --ai-font-fixed-xxs --ai-leading-xs (term --ai-text-contrast) |
-| edit label offset | padding-top --ai-spacing-4 (centres on the 40px control) |
-| required | --ai-text-error |
-| tags gap | --ai-spacing-2 |
+| label column | --ao-size-3 (192) Wide · --ao-size-1 (128) Compact |
+| gap | --ao-spacing-5 Wide · --ao-spacing-4 Compact |
+| label | --ao-font-fixed-xs SemiBold (designer amend 2026-09-29, was Medium — flag for Figma) --ao-leading-sm --ao-text-primary (amend 2026-09-29, was text-secondary) --ao-tracking-4 |
+| value | --ao-font-fixed-xs Regular --ao-leading-md --ao-text-primary |
+| compact text | --ao-font-fixed-xxs --ao-leading-xs (term --ao-text-contrast) |
+| edit label offset | padding-top --ao-spacing-4 (centres on the 40px control) |
+| required | --ao-text-error |
+| tags gap | --ao-spacing-2 |
 
 ## Token Gaps & Decisions
-Designer decisions 2026-09-28: label weight Medium (draft mixed Medium/SemiBold); label column `--ai-size-3` 192 (draft raw 200); values `--ai-text-primary` (draft `Dark Blue/800` primitive); row gap `--ai-spacing-5` (lives on RecordSection). Sidebar term column `--ai-size-1` is uniform across panels (draft sized per panel). Figma variant text is NOT a shared TEXT property — linked text syncs across variants.
+Designer decisions 2026-09-28: label weight Medium (draft mixed Medium/SemiBold); label column `--ao-size-3` 192 (draft raw 200); values `--ao-text-primary` (draft `Dark Blue/800` primitive); row gap `--ao-spacing-5` (lives on RecordSection). Sidebar term column `--ao-size-1` is uniform across panels (draft sized per panel). Figma variant text is NOT a shared TEXT property — linked text syncs across variants.
 
 ## Notes
 - Built 2026-09-28 from the View & Edit kit (section `3861:1902`, CC Light mode). The kit was
@@ -61,7 +61,7 @@ Nine Figma variants (`3904:16242`… one per Wide Type): label over value, gap `
 ## Code-first kinds from Article 10007 (2026-09-29) — FLAG FOR FIGMA
 Not in the Figma set yet; built to fill the framework with a real article (RecordScreen/record_10007.py):
 `Type=Rich` (view `.field-row__rich` — h2 `fixed-sm` / h3 `fixed-xs` semibold, blockquote 2px
-`--ai-border-brand` left rule + `spacing-4` inset, blocks `spacing-4` apart), `Type=Checkbox`
+`--ao-border-brand` left rule + `spacing-4` inset, blocks `spacing-4` apart), `Type=Checkbox`
 (`.field-row--check`, label padding 0, centred), `Type=Date / Datetime` (DatePicker field), `Type=Lookup`
 (`.field-row__lookup`: input + Secondary Select, gap `spacing-3`), `Type=Image` (`.field-row__image`:
 MediaPicker then `.field-row__image-options` grid of Alt text / Caption / Alignment radios / Width select,
@@ -70,7 +70,7 @@ token; the arrangements are proposals for the designer.
 
 ## Image options layout (designer, 2026-09-29)
 
-`.field-row__image-options` is **1 column by default** and **2 columns** (Alt text | Caption, then Alignment | Width) at `@container field-image (min-width: 560px)`. `.field-row__image` is its own container, because the record's value column, not the section, decides the fit: at a 1459 viewport the section is about 1000 but the value column is about 400. Keying on the section gave 175px cells and overlapping Alignment segments (designer screenshot, 2026-09-29). Alignment (`field-align` container, content-box thresholds) tightens its segments below 270 and goes icon-only below 222, keeping each label visually hidden so every radio still has a name. **Alignment is a SegmentedControl** (`.seg-control.field-row__align`, `data-seg-control`) with icon + text: `align-left` / `align-center` / `align-right` plus Left / Center / Right. It replaced three radios (designer, 2026-09-29) and is the editor-standard alignment control. At 40px (`--ai-spacing-8`) it sits level with Width without any centring rule. It is still a radiogroup for assistive tech (roving tabindex, arrow keys). **Code-first: Figma still draws radios, so flag it for Figma.**
+`.field-row__image-options` is **1 column by default** and **2 columns** (Alt text | Caption, then Alignment | Width) at `@container field-image (min-width: 560px)`. `.field-row__image` is its own container, because the record's value column, not the section, decides the fit: at a 1459 viewport the section is about 1000 but the value column is about 400. Keying on the section gave 175px cells and overlapping Alignment segments (designer screenshot, 2026-09-29). Alignment (`field-align` container, content-box thresholds) tightens its segments below 270 and goes icon-only below 222, keeping each label visually hidden so every radio still has a name. **Alignment is a SegmentedControl** (`.seg-control.field-row__align`, `data-seg-control`) with icon + text: `align-left` / `align-center` / `align-right` plus Left / Center / Right. It replaced three radios (designer, 2026-09-29) and is the editor-standard alignment control. At 40px (`--ao-spacing-8`) it sits level with Width without any centring rule. It is still a radiogroup for assistive tech (roving tabindex, arrow keys). **Code-first: Figma still draws radios, so flag it for Figma.**
 
 The **thumbnail** kind (`alt_only`, i.e. a field with no alignment or width: Thumbnail and Alternative Thumbnail) shows **Alt text only**, in `.field-row__image-options--single`, which is always one column. Content images (Main Image, Intro, Image Top, Image 1/2) keep all four options (designer, 2026-09-29).
 
@@ -88,9 +88,9 @@ Asked by Luismi: article 245's Summary filled a screen and a half on the View. M
 | Rule | Value |
 |---|---|
 | Which rows | every Wide view row of Type=Paragraph (Summary, Teaser, Page Description, custom text) and Type=Rich (Main Body, Introduction…). Not Compact (sidebar), not Edit, not Media. |
-| When | Paragraph after **6 lines**, Rich after **12** (× `--ai-leading-md`). Only when the text really runs past the limit; short values are unchanged and get no button. |
+| When | Paragraph after **6 lines**, Rich after **12** (× `--ao-leading-md`). Only when the text really runs past the limit; short values are unchanged and get no button. |
 | Collapsed look | capped height, the last line faded (two lines for Rich, whose cut can land in a paragraph gap). The fade is an alpha `mask-image` (`currentColor` → `transparent`), so it needs no gradient colour token and works on any surface. |
-| Toggle | Button Secondary xs (as "Image details"), `--ai-spacing-3` above it: `chevron-down` "Show more" ⇄ "Show less" (the chevron rotates), `aria-expanded`. |
+| Toggle | Button Secondary xs (as "Image details"), `--ao-spacing-3` above it: `chevron-down` "Show more" ⇄ "Show less" (the chevron rotates), `aria-expanded`. |
 | Memory | none: every value starts collapsed. |
 
 `FieldRow.js` enhances the server-rendered markup: it wraps the value in `.field-row__clamp-body`,

@@ -19,8 +19,8 @@
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--ai-spacing-3); /* 8px between buttons */
-  padding: var(--ai-spacing-4) var(--ai-spacing-3); /* 12px / 8px */
+  gap: var(--ao-spacing-3); /* 8px between buttons */
+  padding: var(--ao-spacing-4) var(--ao-spacing-3); /* 12px / 8px */
   background-color: var(--cc-actions-menu-primary-bg);
 }
 
@@ -30,22 +30,22 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-spacing-8); /* 40px */
-  height: var(--ai-spacing-8);
+  width: var(--ao-spacing-8); /* 40px */
+  height: var(--ao-spacing-8);
   flex-shrink: 0;
   padding: 0;
   background: transparent;
   border: 0;
-  border-radius: var(--ai-radius-md);
+  border-radius: var(--ao-radius-md);
   color: var(--cc-actions-menu-icon);
   cursor: pointer;
-  transition: background-color var(--ai-transition-default),
-              color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default),
+              color var(--ao-transition-default);
 }
 
 .actions-menu__btn [data-lucide] {
-  width: var(--ai-icon-size-md); /* 20px */
-  height: var(--ai-icon-size-md);
+  width: var(--ao-icon-size-md); /* 20px */
+  height: var(--ao-icon-size-md);
 }
 
 /* ── Hover / active (also force-able via .is-hover for demos) ─── */
@@ -60,7 +60,7 @@
 /* ── Focus ───────────────────────────────────────────── */
 
 .actions-menu__btn:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: -2px;
 }
 

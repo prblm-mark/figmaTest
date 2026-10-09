@@ -13,10 +13,10 @@
 | Figma property | CSS token | Value |
 |---|---|---|
 | Container max-width | `48rem` | 768px |
-| Sources margin-top | `--ai-spacing-5` | 16px |
-| Skeletons gap | `--ai-spacing-6` | 24px |
-| Skeletons margin-top | `--ai-spacing-8` | 40px |
-| Answer margin-top | `--ai-spacing-7` | 32px |
+| Sources margin-top | `--ao-spacing-5` | 16px |
+| Skeletons gap | `--ao-spacing-6` | 24px |
+| Skeletons margin-top | `--ao-spacing-8` | 40px |
+| Answer margin-top | `--ao-spacing-7` | 32px |
 
 ## Master Timeline (8s)
 

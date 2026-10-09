@@ -5,7 +5,7 @@ import figma, { html } from '@figma/code-connect/html'
 // full-width) on a centred card, under the Affino wordmark + title. Renders
 // under [data-brand="cc"]. The Device axis (Desktop/Mobile) is handled
 // responsively at the 768px breakpoint inside the template — no separate
-// variants in code. Inputs + checkbox box use a scoped --ai-surface-input
+// variants in code. Inputs + checkbox box use a scoped --ao-surface-input
 // override. Form is a visual mock — see HANDOVER.md → Login.
 figma.connect(
   'https://www.figma.com/design/ETKqleZdpertwFEo40YB5n/Affino-CC-Hybrid--Design-System?node-id=4254-11692',

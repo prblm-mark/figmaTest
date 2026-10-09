@@ -3,7 +3,7 @@
    ----------------------------------------------------------------------------
    Styles for toolbar-compare.html only. Like states.html this is NAVIGATION,
    not a screen: it is never captured to Figma, so it does not need to be a
-   pixel match for anything — but it still uses only --ai-* tokens, because a
+   pixel match for anything — but it still uses only --ao-* tokens, because a
    review page that breaks the rules is a bad advert for them.
 
    The iframe width is a deliberate hardcode: 390px is a device width being
@@ -11,58 +11,58 @@
    ============================================================================ */
 
 .cmp {
-  max-width: var(--ai-size-13);
+  max-width: var(--ao-size-13);
   margin: 0 auto;
-  padding: var(--ai-spacing-7) var(--ai-spacing-5) var(--ai-spacing-13);
+  padding: var(--ao-spacing-7) var(--ao-spacing-5) var(--ao-spacing-13);
 }
 
-.cmp__head { margin-bottom: var(--ai-spacing-7); }
+.cmp__head { margin-bottom: var(--ao-spacing-7); }
 
 .cmp__title {
-  margin: 0 0 var(--ai-spacing-3);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fluid-xl);
-  font-weight: var(--ai-font-bold);
-  color: var(--ai-text-primary);
+  margin: 0 0 var(--ao-spacing-3);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fluid-xl);
+  font-weight: var(--ao-font-bold);
+  color: var(--ao-text-primary);
 }
 
 .cmp__lede,
 .cmp__p {
-  margin: 0 0 var(--ai-spacing-4);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-sm);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-secondary);
+  margin: 0 0 var(--ao-spacing-4);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-sm);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
 }
 
-.cmp__lede { font-size: var(--ai-font-fixed-md); }
+.cmp__lede { font-size: var(--ao-font-fixed-md); }
 
 .cmp__p--note {
-  padding: var(--ai-spacing-4);
-  border-left: 3px solid var(--ai-border-brand);
-  border-radius: var(--ai-radius-sm);
-  background: var(--ai-surface-secondary);
+  padding: var(--ao-spacing-4);
+  border-left: 3px solid var(--ao-border-brand);
+  border-radius: var(--ao-radius-sm);
+  background: var(--ao-surface-secondary);
 }
 
-.cmp__section { margin-bottom: var(--ai-spacing-9); }
+.cmp__section { margin-bottom: var(--ao-spacing-9); }
 
 .cmp__h2 {
-  margin: 0 0 var(--ai-spacing-4);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-lg);
-  font-weight: var(--ai-font-bold);
-  color: var(--ai-text-primary);
+  margin: 0 0 var(--ao-spacing-4);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-lg);
+  font-weight: var(--ao-font-bold);
+  color: var(--ao-text-primary);
 }
 
 .cmp__h3 {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
-  margin: 0 0 var(--ai-spacing-3);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-md);
-  font-weight: var(--ai-font-bold);
-  color: var(--ai-text-primary);
+  gap: var(--ao-spacing-3);
+  margin: 0 0 var(--ao-spacing-3);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-md);
+  font-weight: var(--ao-font-bold);
+  color: var(--ao-text-primary);
 }
 
 /* ---------------------------------------------------------------- the table */
@@ -70,39 +70,39 @@
 /* Wide content scrolls inside its own container rather than the page. */
 .cmp__tablewrap {
   overflow-x: auto;
-  margin-bottom: var(--ai-spacing-4);
+  margin-bottom: var(--ao-spacing-4);
 }
 
 .cmp__table {
   width: 100%;
   border-collapse: collapse;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
 }
 
 .cmp__table th,
 .cmp__table td {
-  padding: var(--ai-spacing-3) var(--ai-spacing-4);
-  border-bottom: 1px solid var(--ai-border-secondary);
+  padding: var(--ao-spacing-3) var(--ao-spacing-4);
+  border-bottom: 1px solid var(--ao-border-secondary);
   text-align: left;
   white-space: nowrap;
-  color: var(--ai-text-secondary);
+  color: var(--ao-text-secondary);
 }
 
 .cmp__table thead th {
-  font-weight: var(--ai-font-bold);
-  color: var(--ai-text-primary);
+  font-weight: var(--ao-font-bold);
+  color: var(--ao-text-primary);
 }
 
 .cmp__table tbody th {
-  font-weight: var(--ai-font-medium);
-  color: var(--ai-text-primary);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-primary);
 }
 
 .cmp__row--good td,
-.cmp__row--good th { background: var(--ai-surface-success-soft); }
+.cmp__row--good th { background: var(--ao-surface-success-soft); }
 
-.cmp__dim { color: var(--ai-text-contrast);   /* the DS has no -tertiary; -contrast IS the dimmer text semantic */ }
+.cmp__dim { color: var(--ao-text-contrast);   /* the DS has no -tertiary; -contrast IS the dimmer text semantic */ }
 
 /* --------------------------------------------------------------- the frames */
 
@@ -121,17 +121,17 @@
 .cmp__grid {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
 }
 
 .cmp__frame {
   flex: none;
   width: max-content;
   margin: 0;
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
   overflow: hidden;
-  background: var(--ai-surface-primary);
+  background: var(--ao-surface-primary);
 }
 
 /* ------------------------------------------------------------ width switcher */
@@ -140,42 +140,42 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ai-spacing-3);
-  margin-bottom: var(--ai-spacing-5);
+  gap: var(--ao-spacing-3);
+  margin-bottom: var(--ao-spacing-5);
 }
 
 .cmp__widths-label {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-medium);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-secondary);
 }
 
 .cmp__wbtn[aria-pressed="true"] {
-  border-color: var(--ai-border-brand);
-  color: var(--ai-text-brand);
+  border-color: var(--ao-border-brand);
+  color: var(--ao-text-brand);
 }
 
 .cmp__measured {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-contrast);
 }
 
 .cmp__cap {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-3) var(--ai-spacing-4);
-  border-bottom: 1px solid var(--ai-border-secondary);
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-3) var(--ao-spacing-4);
+  border-bottom: 1px solid var(--ao-border-secondary);
 }
 
 .cmp__link {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-medium);
-  color: var(--ai-text-brand);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-brand);
 }
 
 /* A device viewport under review — test data, not design values. 844 is the
@@ -193,33 +193,33 @@
 .cmp__opts {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
 }
 
 .cmp__opt {
-  padding: var(--ai-spacing-5);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  background: var(--ai-surface-primary);
+  padding: var(--ao-spacing-5);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-primary);
 }
 
-.cmp__opt--rec { border-color: var(--ai-border-brand); }
+.cmp__opt--rec { border-color: var(--ao-border-brand); }
 
 .cmp__list {
   margin: 0;
-  padding-left: var(--ai-spacing-5);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-secondary);
+  padding-left: var(--ao-spacing-5);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
 }
 
-.cmp__list li + li { margin-top: var(--ai-spacing-3); }
+.cmp__list li + li { margin-top: var(--ao-spacing-3); }
 
 .cmp code {
-  padding: 0 var(--ai-spacing-1);
-  border-radius: var(--ai-radius-sm);
-  background: var(--ai-surface-secondary);
+  padding: 0 var(--ao-spacing-1);
+  border-radius: var(--ao-radius-sm);
+  background: var(--ao-surface-secondary);
   /* TOKEN GAP: no mono family in the DS — logged in SeatingPlanner.token-gaps.md */
   font-family: monospace;
   font-size: 0.9em;

@@ -35,29 +35,29 @@ by user instruction (behaviour to be specced later).
 ## Token Mapping
 | Figma variable | CSS token | Role |
 |---|---|---|
-| `--ai-surface-primary` | `--ai-surface-primary` | Card background |
-| `--ai-radius-lg` (16) | `--ai-radius-lg` | Card radius |
-| `--ai-size-6` (320) | `--ai-size-6` | Card width |
-| `light/shadow-md` | `--ai-shadow-md` | Card drop shadow (offset 0,2 / blur 10) |
-| `--ai-border-secondary` | `--ai-border-secondary` | Header bottom divider (1px) |
-| `--ai-spacing-4` (12) | `--ai-spacing-4` | Header padding |
-| `--ai-spacing-5` (16) | `--ai-spacing-5` | Header gap; body padding + gap |
-| `--ai-spacing-3` (8) | `--ai-spacing-3` | Brand gap; intro paragraph gap (see Gaps) |
-| `--ai-spacing-7` (32) | `--ai-spacing-7` | AI badge size |
-| `--ai-radius-md` (8) | `--ai-radius-md` | AI badge radius |
+| `--ao-surface-primary` | `--ao-surface-primary` | Card background |
+| `--ao-radius-lg` (16) | `--ao-radius-lg` | Card radius |
+| `--ao-size-6` (320) | `--ao-size-6` | Card width |
+| `light/shadow-md` | `--ao-shadow-md` | Card drop shadow (offset 0,2 / blur 10) |
+| `--ao-border-secondary` | `--ao-border-secondary` | Header bottom divider (1px) |
+| `--ao-spacing-4` (12) | `--ao-spacing-4` | Header padding |
+| `--ao-spacing-5` (16) | `--ao-spacing-5` | Header gap; body padding + gap |
+| `--ao-spacing-3` (8) | `--ao-spacing-3` | Brand gap; intro paragraph gap (see Gaps) |
+| `--ao-spacing-7` (32) | `--ao-spacing-7` | AI badge size |
+| `--ao-radius-md` (8) | `--ao-radius-md` | AI badge radius |
 | `--cc-actions-menu-secondary-bg` | `--cc-actions-menu-secondary-bg` | AI badge background |
 | `--cc-actions-menu-icon` | `--cc-actions-menu-icon` | AI badge sparkles colour |
-| `--ai-icon-size-sm` (16) | `--ai-icon-size-sm` | Badge icon size |
-| `--ai-font-fixed-xs` (14) + `--ai-font-semibold` + `--ai-leading-md` (24) | same | Title type |
-| `--ai-text-primary` | `--ai-text-primary` | Title colour |
-| `--ai-font-fixed-xs` (14) + `--ai-font-regular` | same | Intro type — **user override** to fixed-xs (Figma bound `--ai-font-fluid-sm`) |
-| `--ai-text-secondary` | `--ai-text-secondary` | Intro colour |
-| `--ai-btn-primary-*` | (Button component) | Launch button |
-| `--ai-btn-tertiary-*` | (Button component) | Close button |
+| `--ao-icon-size-sm` (16) | `--ao-icon-size-sm` | Badge icon size |
+| `--ao-font-fixed-xs` (14) + `--ao-font-semibold` + `--ao-leading-md` (24) | same | Title type |
+| `--ao-text-primary` | `--ao-text-primary` | Title colour |
+| `--ao-font-fixed-xs` (14) + `--ao-font-regular` | same | Intro type — **user override** to fixed-xs (Figma bound `--ao-font-fluid-sm`) |
+| `--ao-text-secondary` | `--ao-text-secondary` | Intro colour |
+| `--ao-btn-primary-*` | (Button component) | Launch button |
+| `--ao-btn-tertiary-*` | (Button component) | Close button |
 
 ## Token Gaps
-- **Intro paragraph gap = 7px in Figma** (`mb-[7px]`), no `--ai-spacing-*` token equals 7.
-  **Resolved (user, 2026-06-03):** use `--ai-spacing-3` (8px), the nearest token.
+- **Intro paragraph gap = 7px in Figma** (`mb-[7px]`), no `--ao-spacing-*` token equals 7.
+  **Resolved (user, 2026-06-03):** use `--ao-spacing-3` (8px), the nearest token.
 - Intro `line-height: 1.5` — Figma `leading-[1.5]` unitless ratio (not a px leading token);
   kept as the ratio, same approach as IconNavigation labels.
 
@@ -70,7 +70,7 @@ by user instruction (behaviour to be specced later).
 - Badge glyph is a standard `sparkles` (Lucide), not a bespoke brand SVG. Sized via
   `.cc-assistant-popover__badge [data-lucide]` (Lucide swaps the `<i>` for `<svg>`, so the
   size selector targets `[data-lucide]`, the project convention — not `i`).
-- **Close button bg (scoped override):** in the CC brand `--ai-btn-tertiary-bg` is a visible
+- **Close button bg (scoped override):** in the CC brand `--ao-btn-tertiary-bg` is a visible
   grey (`#e5e9eb`), so `.cc-assistant-popover__close` forces `background-color: transparent`
   by default (user, 2026-06-03). Hover/active still come from `btn--tertiary`.
 - Body has a **hidden** "Title" text node in Figma (`4218:5308`) — only the subtext renders.

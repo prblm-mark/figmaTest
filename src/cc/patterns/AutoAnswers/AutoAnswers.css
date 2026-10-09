@@ -1,8 +1,8 @@
 /* AutoAnswers — AI auto-answer card for support forums (Tier: pattern)
  *
- * Theme-agnostic: built entirely with --ai-* semantic tokens so it adapts to
+ * Theme-agnostic: built entirely with --ao-* semantic tokens so it adapts to
  * whatever brand wrapper it sits under (currently Control Centre via
- * [data-brand="cc"], which resolves the --ai-* tokens to the teal palette).
+ * [data-brand="cc"], which resolves the --ao-* tokens to the teal palette).
  *
  * Assumes base.css + tokens.css are already loaded by the page.
  *
@@ -30,28 +30,28 @@
 /* ── State themes (set palette custom props) ────────── */
 .cc-auto-answer--processing,
 .cc-auto-answer--suggested {
-  --cc-aa-surface: var(--ai-surface-info-soft);
-  --cc-aa-border: var(--ai-border-info);
-  --cc-aa-accent: var(--ai-text-info);
+  --cc-aa-surface: var(--ao-surface-info-soft);
+  --cc-aa-border: var(--ao-border-info);
+  --cc-aa-accent: var(--ao-text-info);
 }
 
 .cc-auto-answer--no-answer,
 .cc-auto-answer--inadequate {
-  --cc-aa-surface: var(--ai-surface-neutral-soft);
-  --cc-aa-border: var(--ai-border-neutral);
-  --cc-aa-accent: var(--ai-text-neutral);
+  --cc-aa-surface: var(--ao-surface-neutral-soft);
+  --cc-aa-border: var(--ao-border-neutral);
+  --cc-aa-accent: var(--ao-text-neutral);
 }
 
 .cc-auto-answer--complete {
-  --cc-aa-surface: var(--ai-surface-success-soft);
-  --cc-aa-border: var(--ai-border-success);
-  --cc-aa-accent: var(--ai-text-success);
+  --cc-aa-surface: var(--ao-surface-success-soft);
+  --cc-aa-border: var(--ao-border-success);
+  --cc-aa-accent: var(--ao-text-success);
 }
 
 .cc-auto-answer--partial {
-  --cc-aa-surface: var(--ai-surface-warning-soft);
-  --cc-aa-border: var(--ai-border-warning);
-  --cc-aa-accent: var(--ai-text-warning);
+  --cc-aa-surface: var(--ao-surface-warning-soft);
+  --cc-aa-border: var(--ao-border-warning);
+  --cc-aa-accent: var(--ao-text-warning);
 }
 
 /* ── Card (the visible surface) ─────────────────────── */
@@ -60,29 +60,29 @@
 .cc-auto-answer__card {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
   width: 100%;
   box-sizing: border-box;
-  padding: var(--ai-spacing-6);
+  padding: var(--ao-spacing-6);
   background-color: var(--cc-aa-surface);
   border: 1px solid var(--cc-aa-border);
-  border-radius: var(--ai-radius-lg);
-  font-family: var(--ai-font-title);
-  color: var(--ai-text-primary);
+  border-radius: var(--ao-radius-lg);
+  font-family: var(--ao-font-title);
+  color: var(--ao-text-primary);
 }
 
 /* ── Header (icon + title [+ pill]) ─────────────────── */
 .cc-auto-answer__header {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   width: 100%;
 }
 
 .cc-auto-answer__heading {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   flex: 1 1 auto;
   min-width: 0;
 }
@@ -94,16 +94,16 @@
 }
 
 .cc-auto-answer__icon svg {
-  width: var(--ai-icon-size-md);
-  height: var(--ai-icon-size-md);
+  width: var(--ao-icon-size-md);
+  height: var(--ao-icon-size-md);
 }
 
 .cc-auto-answer__title {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fixed-sm);
-  line-height: var(--ai-leading-md);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fixed-sm);
+  line-height: var(--ao-leading-md);
   color: var(--cc-aa-accent);
 }
 
@@ -113,9 +113,9 @@
 .cc-auto-answer__title--gradient {
   background-image: linear-gradient(
     90deg,
-    var(--ai-surface-info) 25%,
+    var(--ao-surface-info) 25%,
     #2dc0df 50%, /* approved cyan gradient stop — no semantic token (user-approved) */
-    var(--ai-surface-info) 75%
+    var(--ao-surface-info) 75%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -133,14 +133,14 @@
  * Figma fill = border-info @ 50% alpha; reproduced with color-mix. */
 .cc-auto-answer__pill {
   flex-shrink: 0;
-  padding: var(--ai-spacing-1) var(--ai-spacing-4);
-  border-radius: var(--ai-radius-full);
-  background-color: color-mix(in srgb, var(--ai-border-info) 50%, transparent);
-  color: var(--ai-text-info);
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-medium);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-sm);
+  padding: var(--ao-spacing-1) var(--ao-spacing-4);
+  border-radius: var(--ao-radius-full);
+  background-color: color-mix(in srgb, var(--ao-border-info) 50%, transparent);
+  color: var(--ao-text-info);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
   white-space: nowrap;
 }
 
@@ -148,22 +148,22 @@
 .cc-auto-answer__body {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   width: 100%;
   box-sizing: border-box;
-  padding: var(--ai-spacing-6);
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  padding: var(--ao-spacing-6);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
 }
 
 .cc-auto-answer__text {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-sm);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-regular);
+  font-size: var(--ao-font-fixed-sm);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
 }
 
 /* NoAnswer paragraph carries an optical tracking value in Figma (both breakpoints) */
@@ -173,16 +173,16 @@
 
 .cc-auto-answer__list {
   margin: 0;
-  padding-inline-start: var(--ai-spacing-6);
+  padding-inline-start: var(--ao-spacing-6);
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   list-style: decimal;
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-sm);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-regular);
+  font-size: var(--ao-font-fixed-sm);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
 }
 
 /* Inline code snippet. Figma uses Inter Medium (title), not monospace.
@@ -191,14 +191,14 @@
   align-self: flex-start;
   max-width: 100%;
   margin: 0;
-  padding: var(--ai-spacing-1) var(--ai-spacing-3);
-  border-radius: var(--ai-radius-sm);
-  background-color: var(--ai-surface-secondary);
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-medium);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-secondary);
+  padding: var(--ao-spacing-1) var(--ao-spacing-3);
+  border-radius: var(--ao-radius-sm);
+  background-color: var(--ao-surface-secondary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
   overflow-wrap: anywhere;
 }
 
@@ -208,7 +208,7 @@
 .cc-auto-answer__actions {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   width: 100%;
 }
 
@@ -216,25 +216,25 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--ai-spacing-3);
-  min-height: var(--ai-spacing-8); /* 40px fixed height from Figma */
-  padding: 0 var(--ai-spacing-5);
+  gap: var(--ao-spacing-3);
+  min-height: var(--ao-spacing-8); /* 40px fixed height from Figma */
+  padding: 0 var(--ao-spacing-5);
   border: 1px solid transparent;
-  border-radius: var(--ai-radius-md);
-  font-family: var(--ai-font-body);
-  font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fluid-xs);
-  line-height: var(--ai-leading-xs);
+  border-radius: var(--ao-radius-md);
+  font-family: var(--ao-font-body);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fluid-xs);
+  line-height: var(--ao-leading-xs);
   white-space: nowrap;
   cursor: pointer;
-  transition: filter var(--ai-transition-default),
-              background-color var(--ai-transition-default),
-              border-color var(--ai-transition-default);
+  transition: filter var(--ao-transition-default),
+              background-color var(--ao-transition-default),
+              border-color var(--ao-transition-default);
 }
 
 .cc-auto-answer__action svg {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 .cc-auto-answer__action:hover {
@@ -246,33 +246,33 @@
 }
 
 .cc-auto-answer__action:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
 }
 
 .cc-auto-answer__action--positive {
-  background-color: var(--ai-surface-success);
-  border-color: var(--ai-btn-primary-border);
-  color: var(--ai-btn-primary-text);
+  background-color: var(--ao-surface-success);
+  border-color: var(--ao-btn-primary-border);
+  color: var(--ao-btn-primary-text);
 }
 
 .cc-auto-answer__action--caution {
-  background-color: var(--ai-surface-warning-soft);
-  border-color: var(--ai-border-warning);
-  color: var(--ai-text-warning);
+  background-color: var(--ao-surface-warning-soft);
+  border-color: var(--ao-border-warning);
+  color: var(--ao-text-warning);
 }
 
 .cc-auto-answer__action--negative {
-  background-color: var(--ai-surface-error-soft);
-  border-color: var(--ai-border-error);
-  color: var(--ai-text-error);
+  background-color: var(--ao-surface-error-soft);
+  border-color: var(--ao-border-error);
+  color: var(--ao-text-error);
 }
 
 /* ── Status footer (complete / partial / inadequate) ── */
 .cc-auto-answer__status {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   width: 100%;
   color: var(--cc-aa-accent);
 }
@@ -283,16 +283,16 @@
 }
 
 .cc-auto-answer__status-icon svg {
-  width: var(--ai-icon-size-md);
-  height: var(--ai-icon-size-md);
+  width: var(--ao-icon-size-md);
+  height: var(--ao-icon-size-md);
 }
 
 .cc-auto-answer__status-text {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-sm);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-regular);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
   letter-spacing: -0.1504px; /* optical, from Figma */
   color: inherit;
 }
@@ -301,7 +301,7 @@
 .cc-auto-answer__processing {
   display: flex;
   align-items: flex-start;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   width: 100%;
 }
 
@@ -311,25 +311,25 @@
 .cc-auto-answer__spinner {
   display: inline-flex;
   flex-shrink: 0;
-  color: var(--ai-surface-brand); /* info-theme accent; Figma asset colour not exposed */
+  color: var(--ao-surface-brand); /* info-theme accent; Figma asset colour not exposed */
   animation: cc-auto-answer-spin 1s linear infinite;
 }
 
 .cc-auto-answer__spinner svg {
-  width: var(--ai-icon-size-md);
-  height: var(--ai-icon-size-md);
+  width: var(--ao-icon-size-md);
+  height: var(--ao-icon-size-md);
 }
 
 .cc-auto-answer__processing-text {
   flex: 1 1 auto;
   min-width: 0;
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-sm);
-  line-height: var(--ai-leading-md);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-regular);
+  font-size: var(--ao-font-fixed-sm);
+  line-height: var(--ao-leading-md);
   letter-spacing: -0.3125px; /* optical, from Figma */
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 @keyframes cc-auto-answer-spin {
@@ -349,14 +349,14 @@
 /* Queries the .cc-auto-answer container; rules target its DESCENDANTS only. */
 @container cc-auto-answer (max-width: 767px) {
   .cc-auto-answer__card {
-    padding: var(--ai-spacing-5);
+    padding: var(--ao-spacing-5);
   }
 
   /* Header stacks: icon+title row above, pill below (Figma 2802:6351) */
   .cc-auto-answer__header {
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--ai-spacing-4);
+    gap: var(--ao-spacing-4);
   }
 
   .cc-auto-answer__heading {
@@ -364,46 +364,46 @@
   }
 
   .cc-auto-answer__title {
-    font-size: var(--ai-font-fixed-xs);
+    font-size: var(--ao-font-fixed-xs);
   }
 
   .cc-auto-answer__body {
-    padding: var(--ai-spacing-5);
+    padding: var(--ao-spacing-5);
   }
 
   .cc-auto-answer__text,
   .cc-auto-answer__list {
-    font-size: var(--ai-font-fixed-xs);
+    font-size: var(--ao-font-fixed-xs);
   }
 
   .cc-auto-answer__list {
-    line-height: var(--ai-leading-sm);
+    line-height: var(--ao-leading-sm);
   }
 
   /* NoAnswer paragraph tightens to leading-sm below MD (Figma 2802:6340) */
   .cc-auto-answer--no-answer .cc-auto-answer__text {
-    line-height: var(--ai-leading-sm);
+    line-height: var(--ao-leading-sm);
   }
 
   .cc-auto-answer__pill {
-    font-size: var(--ai-font-fixed-xxs);
+    font-size: var(--ao-font-fixed-xxs);
   }
 
   .cc-auto-answer__processing-text {
-    font-size: var(--ai-font-fixed-xs);
-    line-height: var(--ai-leading-sm);
+    font-size: var(--ao-font-fixed-xs);
+    line-height: var(--ao-leading-sm);
   }
 
   /* Action buttons stack vertically + drop to the sm size (Figma button/sm) */
   .cc-auto-answer__actions {
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--ai-spacing-3);
+    gap: var(--ao-spacing-3);
   }
 
   .cc-auto-answer__action {
-    min-height: var(--ai-spacing-7);
-    padding: 0 var(--ai-spacing-4);
-    font-size: var(--ai-font-fluid-xxs);
+    min-height: var(--ao-spacing-7);
+    padding: 0 var(--ao-spacing-4);
+    font-size: var(--ao-font-fluid-xxs);
   }
 }

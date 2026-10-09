@@ -22,8 +22,8 @@
 
 | Property | Token |
 |---|---|
-| gap | --ai-spacing-4 |
-| divider | 1px --ai-border-secondary + padding-top --ai-spacing-4 |
+| gap | --ao-spacing-4 |
+| divider | 1px --ao-border-secondary + padding-top --ao-spacing-4 |
 
 ## Token Gaps & Decisions
 Expand all lives on the FactPanel action (`[data-advisory-expand-all]`).

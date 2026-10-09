@@ -24,15 +24,15 @@
 
 | Property | Token |
 |---|---|
-| thumb size | --ai-spacing-12 (72) |
-| thumb border / radius / bg | --ai-border-secondary / --ai-radius-sm / --ai-surface-minimal |
-| gap thumb→list | --ai-spacing-4 |
-| list divider + padding | 1px --ai-border-secondary / --ai-spacing-4 |
-| column / row gap | --ai-spacing-4 / --ai-spacing-0-5 |
-| text | --ai-font-fixed-xxs, --ai-leading-xs, Regular; term --ai-text-contrast, value --ai-text-primary |
+| thumb size | --ao-spacing-12 (72) |
+| thumb border / radius / bg | --ao-border-secondary / --ao-radius-sm / --ao-surface-minimal |
+| gap thumb→list | --ao-spacing-4 |
+| list divider + padding | 1px --ao-border-secondary / --ao-spacing-4 |
+| column / row gap | --ao-spacing-4 / --ao-spacing-0-5 |
+| text | --ao-font-fixed-xxs, --ao-leading-xs, Regular; term --ao-text-contrast, value --ao-text-primary |
 
 ## Token Gaps & Decisions
-Draft thumb bg was `--ai-btn-secondary-bg-hover` (borrowed) → `--ai-surface-minimal` (same value in CC). Draft 12px text was raw → `--ai-font-fixed-xxs`.
+Draft thumb bg was `--ao-btn-secondary-bg-hover` (borrowed) → `--ao-surface-minimal` (same value in CC). Draft 12px text was raw → `--ao-font-fixed-xxs`.
 
 ## Notes
 - Built 2026-09-28 from the View & Edit kit (section `3861:1902`, CC Light mode). The kit was

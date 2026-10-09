@@ -8,8 +8,8 @@
    gap for gap (12px rows = the listing column's gap, 24px columns = RecordSection's padding). */
 .cc-api-test__fields {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--ai-size-4)), 1fr));
-  gap: var(--ai-spacing-4) var(--ai-spacing-6);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--ao-size-4)), 1fr));
+  gap: var(--ao-spacing-4) var(--ao-spacing-6);
 }
 
 /* JSON bodies span the form. Text in the code style (AutoAnswers' snippet, as the API help uses),
@@ -19,17 +19,17 @@
 }
 
 .cc-api-test__json {
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-medium);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-secondary);
 }
 
 /* Time Stamp / Signature / MD5: the values Sign fills. A secondary-surface band, padded like
    Datatables' toolbar (12 / 16), so it reads as "generated for you" rather than "type here". */
 .cc-api-test__signing {
-  padding: var(--ai-spacing-4) var(--ai-spacing-5);
-  border-radius: var(--ai-radius-md);
-  background-color: var(--ai-surface-secondary);
+  padding: var(--ao-spacing-4) var(--ao-spacing-5);
+  border-radius: var(--ao-radius-md);
+  background-color: var(--ao-surface-secondary);
 }
 
 /* Sign, then Send request. 8px = UpdateScreen's action gap. */
@@ -37,7 +37,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 /* "Use different credentials" and "Request headers": a plain disclosure in FieldRow's label style. */
@@ -45,23 +45,23 @@
 .cc-api-test__sent {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
 .cc-api-test__override[open] > .cc-api-test__summary,
 .cc-api-test__sent[open] > .cc-api-test__summary {
-  margin-block-end: var(--ai-spacing-4);
+  margin-block-end: var(--ao-spacing-4);
 }
 
 .cc-api-test__summary {
   inline-size: fit-content;
   cursor: pointer;
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-secondary);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-secondary);
 }
 
 .cc-api-test__summary:hover {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 /* The response: status Badge + the request line, then the body. Divided from the form by the card's
@@ -69,25 +69,25 @@
 .cc-api-test__response {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
-  padding-block-start: var(--ai-spacing-4);
-  border-block-start: 1px solid var(--ai-border-secondary);
+  gap: var(--ao-spacing-4);
+  padding-block-start: var(--ao-spacing-4);
+  border-block-start: 1px solid var(--ao-border-secondary);
 }
 
 .cc-api-test__response-head {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 .cc-api-test__response-msg {
-  color: var(--ai-text-error);
+  color: var(--ao-text-error);
 }
 
 .cc-api-test__mock {
   margin: 0;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 /* The Create signature card's warning sits first in its form. */

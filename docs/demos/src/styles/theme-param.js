@@ -4,7 +4,7 @@
  * than flashing the wrong one first.
  *
  * `data-theme` on <html> is how this system switches theme: setting it re-resolves every
- * `--ai-*` colour and nothing else has to change. "light" is the ABSENCE of the attribute, so
+ * `--ao-*` colour and nothing else has to change. "light" is the ABSENCE of the attribute, so
  * choosing light means removing it, not setting it to "light".
  *
  * ONE STORAGE KEY, SHARED. The choice persists in localStorage under 'demo-theme' — the same

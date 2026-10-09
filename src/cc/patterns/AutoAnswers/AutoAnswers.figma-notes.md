@@ -2,7 +2,7 @@
 
 AI auto-answer card for support forums. Tier: **pattern**. Currently a Control
 Centre component (`[data-brand="cc"]`), but built theme-agnostically with
-`--ai-*` semantic tokens so it can be re-parented to another brand theme later.
+`--ao-*` semantic tokens so it can be re-parented to another brand theme later.
 
 ## Figma Node
 
@@ -41,7 +41,7 @@ returns in every loaded state (it's only authored in non-processing headers).
 The body row is the status text only. Animations (all CSS, halted by
 `prefers-reduced-motion: reduce`): the spinner spins (`cc-auto-answer-spin` 1s)
 and the "AI Assistant is thinking…" title runs a left→right shimmer — a brighter
-`#2dc0df` band sweeping across the `--ai-surface-info` base via animated
+`#2dc0df` band sweeping across the `--ao-surface-info` base via animated
 `background-position` + text clip (`cc-auto-answer-shimmer` 2.4s).
 
 **Responsive = container-query based.** The root `.cc-auto-answer` is the query
@@ -54,12 +54,12 @@ whatever column it's dropped into. Container split is mandatory: an element with
 the container (never the same element). See `feedback_container_self_query_trap`.
 Below MD the header switches to `flex-direction: column` (icon+title row above,
 "Awaiting Feedback" pill below — Figma 2802:6351, node 2789:5172) and the action
-buttons drop to the **sm** size (`min-height: --ai-spacing-7` 32px, `padding: 0
---ai-spacing-4`, `font-size: --ai-font-fluid-xxs` 12px — Figma `button/sm`) while
-also stacking. The title also drops to `--ai-font-fixed-xs` (14px) below MD
+buttons drop to the **sm** size (`min-height: --ao-spacing-7` 32px, `padding: 0
+--ao-spacing-4`, `font-size: --ao-font-fluid-xxs` 12px — Figma `button/sm`) while
+also stacking. The title also drops to `--ao-font-fixed-xs` (14px) below MD
 (per NoAnswer mobile 2802:6340; applied globally — note SuggestedAnswer mobile
 shows 16px in Figma, standardised to 14px per design direction), and the
-NoAnswer paragraph tightens to `--ai-leading-sm`. Demo wraps ALL variants in one
+NoAnswer paragraph tightens to `--ao-leading-sm`. Demo wraps ALL variants in one
 resizable frame (`resize: horizontal`) + width presets so the whole set
 transitions together, without resizing the viewport.
 
@@ -91,46 +91,46 @@ transitions together, without resizing the viewport.
 
 | Figma | CSS variable | Role |
 |---|---|---|
-| surface/{info,success,warning,neutral}-soft | `--ai-surface-*-soft` | card bg per state |
-| border/{info,success,warning,neutral} | `--ai-border-*` | card border per state |
-| text/{info,success,warning,neutral} | `--ai-text-*` (`--cc-aa-accent`) | title + icon + status |
-| surface/primary | `--ai-surface-primary` | inner body bg |
-| border/secondary | `--ai-border-secondary` | inner body border |
-| surface/secondary | `--ai-surface-secondary` | code snippet bg |
-| text/primary, text/secondary | `--ai-text-primary`, `--ai-text-secondary` | body / code text |
+| surface/{info,success,warning,neutral}-soft | `--ao-surface-*-soft` | card bg per state |
+| border/{info,success,warning,neutral} | `--ao-border-*` | card border per state |
+| text/{info,success,warning,neutral} | `--ao-text-*` (`--cc-aa-accent`) | title + icon + status |
+| surface/primary | `--ao-surface-primary` | inner body bg |
+| border/secondary | `--ao-border-secondary` | inner body border |
+| surface/secondary | `--ao-surface-secondary` | code snippet bg |
+| text/primary, text/secondary | `--ao-text-primary`, `--ao-text-secondary` | body / code text |
 | surface/success, btn-primary-text, btn-primary-border | action `--positive` | solid success button |
 | surface/warning-soft + border/warning + text/warning | action `--caution` | soft warning button |
 | surface/error-soft + border/error + text/error | action `--negative` | soft error button |
-| radius/lg, radius/md, radius/sm, radius/full | `--ai-radius-*` | card / body / code / pill |
-| spacing 1/3/4/5/6/8 | `--ai-spacing-*` | gaps, padding, button height (8 = 40px) |
-| font/title, font/body | `--ai-font-title`, `--ai-font-body` | text vs buttons |
-| fixed-sm/fixed-xs/fixed-xxs, fluid-xs | `--ai-font-*` | type ramp (desktop→mobile) |
-| leading md/sm/xs | `--ai-leading-*` | line heights |
-| icon 20px / 16px | `--ai-icon-size-md` / `--ai-icon-size-sm` | header+footer / button icons |
+| radius/lg, radius/md, radius/sm, radius/full | `--ao-radius-*` | card / body / code / pill |
+| spacing 1/3/4/5/6/8 | `--ao-spacing-*` | gaps, padding, button height (8 = 40px) |
+| font/title, font/body | `--ao-font-title`, `--ao-font-body` | text vs buttons |
+| fixed-sm/fixed-xs/fixed-xxs, fluid-xs | `--ao-font-*` | type ramp (desktop→mobile) |
+| leading md/sm/xs | `--ao-leading-*` | line heights |
+| icon 20px / 16px | `--ao-icon-size-md` / `--ao-icon-size-sm` | header+footer / button icons |
 
 ## Token Gaps & Normalisations (user decision: normalise to nearest token)
 
 Figma authored the variants with drifting raw values; all normalised:
 
-- **Outer card radius:** `10px` (Complete/Inadequate) → `--ai-radius-lg` (16px), the value used by the other 4 states.
-- **Inner body radius:** `10px` (Suggested/NoAnswer) → `--ai-radius-md` (8px).
-- **Inner body padding:** `18px` (Complete/NoAnswer) → `--ai-spacing-6` (24px desktop) / `--ai-spacing-5` (16px mobile).
-- **Inadequate/Partial outer padding:** `26px` → `--ai-spacing-6` (24px).
-- **NoAnswer outer gap:** `10px` → `--ai-spacing-5` (16px).
-- **Code snippet font-size:** `15px` → `--ai-font-fixed-xs` (14px) — matches the mobile value Figma already used.
-- **"Awaiting Feedback" pill bg:** `rgba(153,200,209,0.5)` (= border-info @ 50%) → `color-mix(in srgb, var(--ai-border-info) 50%, transparent)`.
+- **Outer card radius:** `10px` (Complete/Inadequate) → `--ao-radius-lg` (16px), the value used by the other 4 states.
+- **Inner body radius:** `10px` (Suggested/NoAnswer) → `--ao-radius-md` (8px).
+- **Inner body padding:** `18px` (Complete/NoAnswer) → `--ao-spacing-6` (24px desktop) / `--ao-spacing-5` (16px mobile).
+- **Inadequate/Partial outer padding:** `26px` → `--ao-spacing-6` (24px).
+- **NoAnswer outer gap:** `10px` → `--ao-spacing-5` (16px).
+- **Code snippet font-size:** `15px` → `--ao-font-fixed-xs` (14px) — matches the mobile value Figma already used.
+- **"Awaiting Feedback" pill bg:** `rgba(153,200,209,0.5)` (= border-info @ 50%) → `color-mix(in srgb, var(--ao-border-info) 50%, transparent)`.
 - **Processing gradient stop `#2dc0df`:** no semantic token; **user-approved** as a documented raw value in `--gradient` title.
 
 ## Notes
 
-- **Font family:** Figma binds `--ai-font-title` to ALL text (titles, body, list,
-  code, status) and `--ai-font-body` only to the buttons. Both resolve to Inter in
+- **Font family:** Figma binds `--ao-font-title` to ALL text (titles, body, list,
+  code, status) and `--ao-font-body` only to the buttons. Both resolve to Inter in
   this system, so there is no visual difference — tokens used exactly as authored.
 - **Action buttons are NOT Button-component variants** (user decision: scope
   locally). They form a status-button family: positive = solid success,
   caution = soft warning, negative = soft error. Hover uses a `filter: brightness`
   (no new colour tokens); focus-visible uses the standard brand outline.
-- **Spinner colour** (`--ai-surface-brand`) is a chosen info-theme accent — the
+- **Spinner colour** (`--ao-surface-brand`) is a chosen info-theme accent — the
   Figma spinner asset's fill is not exposed in `get_design_context`.
 - **Width:** Figma frames are 960px (desktop) / 360–407px (mobile); these are
   layout-frame widths, not a component constraint — the card is fluid (`width:100%`)

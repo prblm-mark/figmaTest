@@ -25,7 +25,7 @@
 | Property | Token |
 |---|---|
 | Display | `flex` (row) |
-| Background | `--ai-surface-primary` |
+| Background | `--ao-surface-primary` |
 | Width/Height | `100%` / `100%` |
 | Overflow | `hidden` |
 | Position | `relative` |
@@ -35,8 +35,8 @@
 |---|---|---|
 | Display | `none` (hidden by default) | `flex` (always shown) |
 | Position | `absolute` (when open) | `static` (inline) |
-| Width | Inherited from `.chat-sidebar` (`--ai-size-5` = 280px) | Same |
-| Shadow | `--ai-shadow-xl` (when open) | None |
+| Width | Inherited from `.chat-sidebar` (`--ao-size-5` = 280px) | Same |
+| Shadow | `--ao-shadow-xl` (when open) | None |
 | z-index | `20` (when open) | Auto |
 
 ### Main `.ai-chat__main`
@@ -61,7 +61,7 @@
 
 | Property | Figma value | Resolution |
 |---|---|---|
-| Mobile sidebar shadow | `4px 4px 6px rgba(0,0,0,0.1)` | Used `--ai-shadow-xl` as closest approximation |
+| Mobile sidebar shadow | `4px 4px 6px rgba(0,0,0,0.1)` | Used `--ao-shadow-xl` as closest approximation |
 
 ---
 

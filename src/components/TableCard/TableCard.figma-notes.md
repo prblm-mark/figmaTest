@@ -92,11 +92,11 @@ Confirmed with the designer 2026-08-25 — the same contract as RoomCard and Att
 
 | | Background | Border |
 |---|---|---|
-| Default | `--ai-surface-primary` | 1px solid `--ai-border-secondary` |
-| Selected | `--ai-surface-minimal` | 1px solid `--ai-border-brand` |
+| Default | `--ao-surface-primary` | 1px solid `--ao-border-secondary` |
+| Selected | `--ao-surface-minimal` | 1px solid `--ao-border-brand` |
 
 Read from the Selected variant's design context, **not inferred** — `get_variable_defs` on
-`3470:85479` returns *both* `--ai-surface-primary` and `--ai-surface-minimal`, so the variable list
+`3470:85479` returns *both* `--ao-surface-primary` and `--ao-surface-minimal`, so the variable list
 alone could not settle which one the card takes.
 
 ## Device=Mobile deltas
@@ -105,48 +105,48 @@ Two come from Figma (verified against `3484:188923`); the third is a designer ad
 
 | Property | Desktop | Mobile | Source |
 |---|---|---|---|
-| card `padding` | `--ai-spacing-5` (16px) | `--ai-spacing-4` (12px) | Figma |
-| name `font-size` | `--ai-font-fixed-sm` (16px) | `--ai-font-fixed-xs` (14px) | Figma |
-| `__sponsor` `padding-block-start` | `--ai-spacing-2` (6px) | **`--ai-spacing-0-5`** (2px), both breakpoints | **designer, 2026-09-10** — see the amendment below |
+| card `padding` | `--ao-spacing-5` (16px) | `--ao-spacing-4` (12px) | Figma |
+| name `font-size` | `--ao-font-fixed-sm` (16px) | `--ao-font-fixed-xs` (14px) | Figma |
+| `__sponsor` `padding-block-start` | `--ao-spacing-2` (6px) | **`--ao-spacing-0-5`** (2px), both breakpoints | **designer, 2026-09-10** — see the amendment below |
 
 Figma keeps the sponsor row's 6px padding at both breakpoints; it was tightened to 4px on mobile,
 where the smaller 14px title leaves the row looking loosely attached to it. Measured: the sponsor row
 goes 22px → 20px and the header 42px → 38px, with desktop untouched.
 
 Bar, legend, swatches, badge and buttons are identical between breakpoints. Note the
-`min-inline-size` stays `--ai-size-4` (240px) at both — **unlike RoomCard**, whose min-width steps
+`min-inline-size` stays `--ao-size-4` (240px) at both — **unlike RoomCard**, whose min-width steps
 280 → 240.
 
 ## Token mapping
 
 | Figma | CSS | Role |
 |---|---|---|
-| `--ai-surface-primary` / `--ai-surface-minimal` | `background-color` | per state |
-| `--ai-border-secondary` / `--ai-border-brand` | `border-color` | per state |
-| `--ai-border-secondary` | the two rules | resolved via `get_variable_defs` on `3470:85258` |
-| `--ai-radius-lg` | card `border-radius` (16px) | |
-| `light/shadow-xxs` → `--ai-shadow-2xs` | card `box-shadow` | |
-| `--ai-spacing-5` / `--ai-spacing-4` | card `padding` desktop / mobile | |
-| `--ai-spacing-4` | card `gap` (12px) | |
-| `--ai-size-4` | card `min-inline-size` (240px, both breakpoints) | |
-| `--ai-spacing-0` | title-group `gap` (0) | |
-| `--ai-font-fixed-sm` / `-xs` | table name, desktop / mobile | |
-| `--ai-spacing-2` | sponsor row `gap` + `padding-block-start` (6px) | |
-| `--ai-icon-size-sm` | sponsor icon (16px) | via `get_variable_defs` on `3476:106260` |
-| `--ai-icon-contrast` | sponsor icon colour | same fetch |
-| `--ai-font-fixed-xxs` | sponsor name, seated count (12px) | |
-| `--ai-leading-xs` | sponsor name `line-height` | |
-| `--ai-text-primary` / `--ai-text-contrast` / `--ai-text-secondary` | name / sponsor + legend / count | |
-| `--ai-spacing-3` | bar `block-size` (8px), viz `gap`, legend `column-gap`, footer count `gap` | |
-| `--ai-spacing-px` | bar segment `gap` (1px) | |
-| `--ai-radius-sm` | bar `border-radius` (4px) | |
-| `--ai-spacing-0-5` | legend `row-gap` (2px) | |
-| `--ai-radius-xs` | legend swatch `border-radius` (2px) | **token added for this build** |
+| `--ao-surface-primary` / `--ao-surface-minimal` | `background-color` | per state |
+| `--ao-border-secondary` / `--ao-border-brand` | `border-color` | per state |
+| `--ao-border-secondary` | the two rules | resolved via `get_variable_defs` on `3470:85258` |
+| `--ao-radius-lg` | card `border-radius` (16px) | |
+| `light/shadow-xxs` → `--ao-shadow-2xs` | card `box-shadow` | |
+| `--ao-spacing-5` / `--ao-spacing-4` | card `padding` desktop / mobile | |
+| `--ao-spacing-4` | card `gap` (12px) | |
+| `--ao-size-4` | card `min-inline-size` (240px, both breakpoints) | |
+| `--ao-spacing-0` | title-group `gap` (0) | |
+| `--ao-font-fixed-sm` / `-xs` | table name, desktop / mobile | |
+| `--ao-spacing-2` | sponsor row `gap` + `padding-block-start` (6px) | |
+| `--ao-icon-size-sm` | sponsor icon (16px) | via `get_variable_defs` on `3476:106260` |
+| `--ao-icon-contrast` | sponsor icon colour | same fetch |
+| `--ao-font-fixed-xxs` | sponsor name, seated count (12px) | |
+| `--ao-leading-xs` | sponsor name `line-height` | |
+| `--ao-text-primary` / `--ao-text-contrast` / `--ao-text-secondary` | name / sponsor + legend / count | |
+| `--ao-spacing-3` | bar `block-size` (8px), viz `gap`, legend `column-gap`, footer count `gap` | |
+| `--ao-spacing-px` | bar segment `gap` (1px) | |
+| `--ao-radius-sm` | bar `border-radius` (4px) | |
+| `--ao-spacing-0-5` | legend `row-gap` (2px) | |
+| `--ao-radius-xs` | legend swatch `border-radius` (2px) | **token added for this build** |
 | `--sp-attendee` / `--sp-vip` / `--sp-speaker` / `--sp-sponsor` | bar segments + legend swatches | |
-| `--ai-surface-contrast` | empty segment + swatch | |
-| `--ai-font-fixed-6xs` | legend text (9px) | |
-| `--ai-font-bold` / `-medium` / `-regular` | name / sponsor + count / legend | |
-| `--ai-spacing-1` | legend-item `gap`, actions `gap` (4px) | |
+| `--ao-surface-contrast` | empty segment + swatch | |
+| `--ao-font-fixed-6xs` | legend text (9px) | |
+| `--ao-font-bold` / `-medium` / `-regular` | name / sponsor + count / legend | |
+| `--ao-spacing-1` | legend-item `gap`, actions `gap` (4px) | |
 
 ## Token gaps and decisions
 
@@ -154,11 +154,11 @@ Resolved with the designer 2026-08-25 rather than invented.
 
 | Figma | Decision |
 |---|---|
-| `--ai-font-fixed-6xs` (a **font-size** token) bound as the 9px gap between bar and legend, **and** as the legend's column gap | **Snapped to `--ai-spacing-3`** (8px). A 1px change that stops a type token driving layout. **Figma has since followed** — the bar-to-legend gap now measures 8px there too. |
-| legend swatch `border-radius: 2px`, unbound | **New token `--ai-radius-xs`** (2px), created in Figma by the designer. `--ai-radius-sm` (4px) would visibly round an 8px square. Re-exported and confirmed 2026-08-25 — `VariableID:3534:102610` in `FigmaTokens/Scale/Scale.tokens.json`. |
-| card `width: 289px` | **Dropped.** The card is fluid and fills its grid cell. 289px has no token; the bound `min-width` does (`--ai-size-4`). |
+| `--ao-font-fixed-6xs` (a **font-size** token) bound as the 9px gap between bar and legend, **and** as the legend's column gap | **Snapped to `--ao-spacing-3`** (8px). A 1px change that stops a type token driving layout. **Figma has since followed** — the bar-to-legend gap now measures 8px there too. |
+| legend swatch `border-radius: 2px`, unbound | **New token `--ao-radius-xs`** (2px), created in Figma by the designer. `--ao-radius-sm` (4px) would visibly round an 8px square. Re-exported and confirmed 2026-08-25 — `VariableID:3534:102610` in `FigmaTokens/Scale/Scale.tokens.json`. |
+| card `width: 289px` | **Dropped.** The card is fluid and fills its grid cell. 289px has no token; the bound `min-width` does (`--ao-size-4`). |
 | sponsor row `height: 22px` | **Dropped as derivable** — it was exactly the 16px icon plus the 6px `padding-top`, so the content defines it. Now measures **18px** on desktop after the 2026-09-10 padding change, which is the derivation doing its job rather than a value to chase. |
-| `line` node stroke, invisible in design context | **`--ai-border-secondary`**, resolved by calling `get_variable_defs` on the node itself (`3470:85258`). Not a gap — just hidden behind an SVG asset. |
+| `line` node stroke, invisible in design context | **`--ao-border-secondary`**, resolved by calling `get_variable_defs` on the node itself (`3470:85258`). Not a gap — just hidden behind an SVG asset. |
 
 ## The header restructure (2026-08-25)
 
@@ -169,7 +169,7 @@ width, and added the title-to-pill clearance that the first build had flagged as
 |---|---|---|
 | `Header-Section` | **row** — title column beside the pill | **column** |
 | `Title-Label-Group` | **column** — title above the sponsor row | **row** — title beside the pill |
-| tier pill | sibling of the title group, `gap: 0` | **inside the title row, `gap: --ai-spacing-4`** (12px) |
+| tier pill | sibling of the title group, `gap: 0` | **inside the title row, `gap: --ao-spacing-4`** (12px) |
 | sponsor row | nested in the title column, `88px` wide | **full-width sibling below the title row** |
 | frame name | `Paragraph` | `Sponsor` |
 | table name | `white-space: nowrap`, no overflow | **no `nowrap` — it wraps** ← *reversed 2026-09-10, see below* |
@@ -194,7 +194,7 @@ intended answer to a long name — **but it was restored on 2026-09-10 at the de
 | Element | Property | Figma | CSS |
 |---|---|---|---|
 | `__sponsor-name` | truncation | `white-space: nowrap` + `shrink-0` | **+ `overflow: hidden`, `text-overflow: ellipsis`** |
-| `__legend-item` | `font-weight` | `--ai-font-regular` | **`--ai-font-medium`** |
+| `__legend-item` | `font-weight` | `--ao-font-regular` | **`--ao-font-medium`** |
 
 **The sponsor name needs somewhere to stop.** Figma pairs `nowrap` with `shrink-0`, which overflows
 rather than truncating. The full-width row gives a long name far more room than before, but it still
@@ -224,10 +224,10 @@ variants carry is how the TableType Code Connect went wrong in wave 1.
 ## Cross-component findings
 
 - **TableType is unchanged, by decision — and the size drift has since closed.** When first built,
-  Figma's instance rendered at `--ai-font-fixed-6xs` (9px); as of the header restructure it reads
-  `--ai-font-fixed-5xs` (10px), matching the component, and the pill grew 34×17 → 36×18 accordingly.
-  Only `--ai-tracking-6` vs the component's `--ai-tracking-7`, and `font-semibold` vs
-  `--ai-font-bold`, still differ — the two amends the designer made in wave 1. The call 2026-08-25
+  Figma's instance rendered at `--ao-font-fixed-6xs` (9px); as of the header restructure it reads
+  `--ao-font-fixed-5xs` (10px), matching the component, and the pill grew 34×17 → 36×18 accordingly.
+  Only `--ao-tracking-6` vs the component's `--ao-tracking-7`, and `font-semibold` vs
+  `--ao-font-bold`, still differ — the two amends the designer made in wave 1. The call 2026-08-25
   was that **the component is the source of truth** and Figma should follow, so nothing was changed. Its colour model was
   verified correct in passing: Figma's `#b2d5e2` border, `#005777` text and white-80%-over-`#00749e`
   fill are exactly what TableType's three `color-mix()` formulas produce.
@@ -254,7 +254,7 @@ variants carry is how the TableType Code Connect went wrong in wave 1.
 Worth recording, because it cost a wrong guess: the Style Dictionary build reads
 `FigmaTokens/Scale/Scale.tokens.json` and `FigmaTokens/Semantic/*`. The **top-level**
 `FigmaTokens/Light.tokens.json`, `Dark.tokens.json` and `Primitive.tokens.json` are *not* build
-sources, despite also containing radius entries — they are legacy files. `--ai-radius-xs` was
+sources, despite also containing radius entries — they are legacy files. `--ao-radius-xs` was
 briefly hand-added to all three; only the Scale one had any effect, and removing the other two left
 `css/tokens.css` byte-identical. **Radius comes from Scale alone.**
 
@@ -271,7 +271,7 @@ briefly hand-added to all three; only the Scale one had any effect, and removing
   `--sponsor`. Worth renaming the Figma layers.
 - **No hover, focus, pressed or disabled variants** exist in the set. The action buttons get Button's
   own states; nothing else was invented.
-- **No dark-mode variant.** Every colour is a theme-aware `--ai-*` token except the `--sp-*` role
+- **No dark-mode variant.** Every colour is a theme-aware `--ao-*` token except the `--sp-*` role
   colours, which are **not** theme-aware — so the bar and legend will not adapt under
   `[data-theme="dark"]`. Not designed or reviewed.
 
@@ -317,11 +317,11 @@ as before.
 
 ## Sponsor row padding: 2px on desktop (designer, 2026-09-10)
 
-`.table-card__sponsor` takes **`padding-block-start: var(--ai-spacing-0-5)`** (2px). Figma binds
-`--ai-spacing-2` (6px) — confirmed on the sponsor row's own variable defs (`3476:106259`) rather
+`.table-card__sponsor` takes **`padding-block-start: var(--ao-spacing-0-5)`** (2px). Figma binds
+`--ao-spacing-2` (6px) — confirmed on the sponsor row's own variable defs (`3476:106259`) rather
 than inferred. A deliberate divergence; **Figma wants updating.**
 
-The `gap` is untouched at `--ai-spacing-2`. Figma binds the same token to both, but only the
+The `gap` is untouched at `--ao-spacing-2`. Figma binds the same token to both, but only the
 padding was asked about and the two do different jobs: one sets the row's distance from the title,
 the other the icon's distance from the name.
 
@@ -340,12 +340,12 @@ that sentence is now historical, and its own sponsor row is unaffected.
 
 ### The mobile override is gone, so both breakpoints are 2px
 
-There had been a narrow override of `--ai-spacing-1` (4px), added 2026-08-25 because *"the smaller
+There had been a narrow override of `--ao-spacing-1` (4px), added 2026-08-25 because *"the smaller
 14px title leaves the sponsor row looking loosely attached to it"*. Once desktop moved to 2px that
 made **mobile looser than desktop** — the reverse of its own purpose — so it was flagged and then
 dropped at the designer's request the same day.
 
-**One value now, at every width: 2px.** Figma keeps `--ai-spacing-2` (6px) at both and wants
+**One value now, at every width: 2px.** Figma keeps `--ao-spacing-2` (6px) at both and wants
 updating.
 
 Left as a comment in the block rather than silently deleted, because the mobile value was a

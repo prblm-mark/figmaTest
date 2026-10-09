@@ -57,9 +57,9 @@
  * sidebar if it is removed while "simplifying" the wrapper.
  */
 .crs-record {
-  --crs-aside-w: var(--ai-size-6);      /* 320px — model A */
-  --crs-col-gap: var(--ai-spacing-6);
-  --crs-label-w: var(--ai-size-3);      /* 192px label gutter */
+  --crs-aside-w: var(--ao-size-6);      /* 320px — model A */
+  --crs-col-gap: var(--ao-spacing-6);
+  --crs-label-w: var(--ao-size-3);      /* 192px label gutter */
 
   display: grid;
   grid-template-columns: minmax(0, 1fr);   /* stacked by default (mobile-first) */
@@ -73,7 +73,7 @@
 .crs-aside {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
   min-inline-size: 0;
 }
 
@@ -81,7 +81,7 @@
  * property rather than a modifier on .crs-aside, because the width is consumed
  * by the PARENT's grid-template-columns — a class on the aside could not set
  * it without :has(). */
-.crs-record--aside-all { --crs-aside-w: var(--ai-size-7); }   /* 384px */
+.crs-record--aside-all { --crs-aside-w: var(--ao-size-7); }   /* 384px */
 
 /* .cc-control__page ESTABLISHES cs-page, so it cannot query it for its own
  * properties (the bug documented at ControlScreen.css:493-502). .crs-record is
@@ -127,50 +127,50 @@
   container-type: inline-size;
   container-name: crs-card;
 
-  background: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  background: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
 }
 
 .crs-card__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-4);
-  padding: var(--ai-spacing-5) var(--ai-spacing-6);
-  border-bottom: 1px solid var(--ai-border-secondary);
+  gap: var(--ao-spacing-4);
+  padding: var(--ao-spacing-5) var(--ao-spacing-6);
+  border-bottom: 1px solid var(--ao-border-secondary);
 }
 
 .crs-card__title {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
 }
 
 .crs-card__head-link,
 .crs-fact__more {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-medium);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-brand);
+  gap: var(--ao-spacing-2);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-medium);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-brand);
   text-decoration: none;
   white-space: nowrap;
 }
 
 .crs-card__head-link [data-lucide],
 .crs-fact__more [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
-.crs-card__body { padding: var(--ai-spacing-6); }
+.crs-card__body { padding: var(--ao-spacing-6); }
 
 /* A body whose child brings its own edge treatment (a table, a tab panel). */
 .crs-card__body--flush { padding: 0; }
@@ -179,7 +179,7 @@
 .crs-panel {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
 }
 
 /* ══ Field list ═══════════════════════════════════════════════════════════
@@ -194,58 +194,58 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
 }
 
 .crs-field {
   display: grid;
   grid-template-columns: var(--crs-label-w) minmax(0, 1fr);
-  column-gap: var(--ai-spacing-5);
-  row-gap: var(--ai-spacing-2);
+  column-gap: var(--ao-spacing-5);
+  row-gap: var(--ao-spacing-2);
   align-items: start;
 }
 
 .crs-field__label {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  letter-spacing: var(--ai-tracking-7);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  letter-spacing: var(--ao-tracking-7);
   text-transform: uppercase;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
   /* Optical: seats the 12px caps on the 14px value's first baseline. */
-  padding-block-start: var(--ai-spacing-0-5);
+  padding-block-start: var(--ao-spacing-0-5);
 }
 
-.crs-field__req { color: var(--ai-text-error); }
+.crs-field__req { color: var(--ao-text-error); }
 
 .crs-field__value {
   margin: 0;
   min-inline-size: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
   /* Long relation names and URLs wrap inside the column instead of widening
      it — the failure Datatables.css:1188 fixes for catalogue names. */
   overflow-wrap: break-word;
-  /* TOKEN GAP: reading measure. The --ai-size-* scale is px-only and the
+  /* TOKEN GAP: reading measure. The --ao-size-* scale is px-only and the
      system has no ch/measure token. See ControlRecordScreen.token-gaps.md. */
   max-inline-size: 78ch;
 }
 
-.crs-field__value > p { margin: 0 0 var(--ai-spacing-4); }
+.crs-field__value > p { margin: 0 0 var(--ao-spacing-4); }
 .crs-field__value > p:last-child { margin-bottom: 0; }
 
 .crs-field__help {
   grid-column: 2;
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
 }
 
 .crs-field--full { grid-template-columns: minmax(0, 1fr); }
@@ -254,9 +254,9 @@
 /* Edit: a 40px control needs the label nudged down to read as its label rather
    than as a heading floating above it. align-items stays start, so a textarea
    row does not drag the label to its middle. */
-[data-mode="edit"] .crs-field__label { padding-block-start: var(--ai-spacing-4); }
+[data-mode="edit"] .crs-field__label { padding-block-start: var(--ao-spacing-4); }
 [data-mode="edit"] .crs-field--full .crs-field__label,
-[data-mode="edit"] .crs-field--textarea .crs-field__label { padding-block-start: var(--ai-spacing-0-5); }
+[data-mode="edit"] .crs-field--textarea .crs-field__label { padding-block-start: var(--ao-spacing-0-5); }
 
 /* Stack the label above the value.
  *
@@ -273,38 +273,38 @@
   .crs-field__help { grid-column: 1; }
   .crs-field__label,
   [data-mode="edit"] .crs-field__label { padding-block-start: 0; }
-  .crs-fields { gap: var(--ai-spacing-6); }
+  .crs-fields { gap: var(--ao-spacing-6); }
 }
 
 /* ══ Value treatments ═════════════════════════════════════════════════════ */
 
-.crs-empty { color: var(--ai-text-contrast); }
+.crs-empty { color: var(--ao-text-contrast); }
 
 .crs-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
 }
 
 .crs-bool {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  color: var(--ai-text-contrast);
+  gap: var(--ao-spacing-2);
+  color: var(--ao-text-contrast);
 }
-.crs-bool--on { color: var(--ai-text-primary); }
+.crs-bool--on { color: var(--ao-text-primary); }
 .crs-bool [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-secondary);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-secondary);
 }
-.crs-bool--on [data-lucide] { color: var(--ai-icon-primary); }
+.crs-bool--on [data-lucide] { color: var(--ao-icon-primary); }
 
 /* Media (thumbnail + its metadata). */
 .crs-media {
   display: flex;
   align-items: flex-start;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   min-inline-size: 0;
 }
 
@@ -313,16 +313,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-spacing-10);
-  height: var(--ai-spacing-10);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-sm);
-  background: var(--ai-surface-minimal);
+  width: var(--ao-spacing-10);
+  height: var(--ao-spacing-10);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-sm);
+  background: var(--ao-surface-minimal);
 }
 .crs-media__thumb [data-lucide] {
-  width: var(--ai-icon-size-md);
-  height: var(--ai-icon-size-md);
-  color: var(--ai-icon-secondary);
+  width: var(--ao-icon-size-md);
+  height: var(--ao-icon-size-md);
+  color: var(--ao-icon-secondary);
 }
 
 .crs-media__meta {
@@ -330,13 +330,13 @@
   min-inline-size: 0;
   display: grid;
   grid-template-columns: max-content 1fr;
-  column-gap: var(--ai-spacing-4);
-  row-gap: var(--ai-spacing-1);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
+  column-gap: var(--ao-spacing-4);
+  row-gap: var(--ao-spacing-1);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
 }
 .crs-media__meta > div { display: contents; }
-.crs-media__meta dt { color: var(--ai-text-contrast); }
+.crs-media__meta dt { color: var(--ao-text-contrast); }
 /* A grid item's min-width defaults to auto = min-content, and a filename is
  * one unbreakable token — so without these the max-content gutter plus the
  * filename push the whole card 25px past the column. Measured at a 500px
@@ -347,13 +347,13 @@
   margin: 0;
   min-inline-size: 0;
   overflow-wrap: anywhere;
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 .crs-media__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
 }
 
 /* ══ Right sidebar ════════════════════════════════════════════════════════
@@ -362,24 +362,24 @@
  * testing — see the verification note in the plan.
  */
 .crs-fact {
-  background: var(--ai-surface-minimal);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  padding: var(--ai-spacing-5);
+  background: var(--ao-surface-minimal);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  padding: var(--ao-spacing-5);
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
 .crs-fact__title {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-xs);
-  letter-spacing: var(--ai-tracking-7);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-xs);
+  letter-spacing: var(--ao-tracking-7);
   text-transform: uppercase;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 /* Reuses the .datatables__detail-list idiom verbatim — short labels, a
@@ -390,16 +390,16 @@
   margin: 0;
   display: grid;
   grid-template-columns: max-content 1fr;
-  column-gap: var(--ai-spacing-4);
-  row-gap: var(--ai-spacing-3);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
+  column-gap: var(--ao-spacing-4);
+  row-gap: var(--ao-spacing-3);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
 }
 .crs-fact__item { display: contents; }
-.crs-fact__item dt { color: var(--ai-text-contrast); }
+.crs-fact__item dt { color: var(--ao-text-contrast); }
 .crs-fact__item dd {
   margin: 0;
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
   overflow-wrap: break-word;
 }
 
@@ -412,25 +412,25 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 .crs-advice__item {
   display: flex;
   align-items: flex-start;
-  gap: var(--ai-spacing-2);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-primary);
+  gap: var(--ao-spacing-2);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-primary);
 }
 .crs-advice__item [data-lucide] {
   flex: 0 0 auto;
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  /* TOKEN GAP: no --ai-icon-warning exists, so this borrows the text-family
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  /* TOKEN GAP: no --ao-icon-warning exists, so this borrows the text-family
      warning. Logged in ControlRecordScreen.token-gaps.md — note that the
      capture rebind picks a token family from node type (vector -> icon/*), so
      this hex will not resolve inside the icon family. */
-  color: var(--ai-text-warning);
+  color: var(--ao-text-warning);
 }
 
 /* Compressed summary rows — model B's answer to a wide block. */
@@ -440,18 +440,18 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 .crs-mini__row {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: var(--ai-spacing-4);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
+  gap: var(--ao-spacing-4);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
 }
 .crs-mini__name {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
   min-inline-size: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -459,7 +459,7 @@
 }
 .crs-mini__meta {
   flex: 0 0 auto;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 /* ══ Tabs (model A) ═══════════════════════════════════════════════════════
@@ -469,43 +469,43 @@
 .crs-tabs {
   display: flex;
   align-items: stretch;
-  gap: var(--ai-spacing-1);
-  background: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  padding: 0 var(--ai-spacing-5);
+  gap: var(--ao-spacing-1);
+  background: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  padding: 0 var(--ao-spacing-5);
   overflow-x: auto;
 }
 
 .crs-tab {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  padding: var(--ai-spacing-3) var(--ai-spacing-4);
+  gap: var(--ao-spacing-2);
+  padding: var(--ao-spacing-3) var(--ao-spacing-4);
   border: 0;
   border-bottom: 2px solid transparent;
   background: transparent;
   cursor: pointer;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
   white-space: nowrap;
-  transition: color var(--ai-transition-default),
-              border-color var(--ai-transition-default);
+  transition: color var(--ao-transition-default),
+              border-color var(--ao-transition-default);
 }
 
-.crs-tab:hover { color: var(--ai-text-secondary); }
+.crs-tab:hover { color: var(--ao-text-secondary); }
 
 .crs-tab--active {
-  color: var(--ai-text-brand);
-  border-bottom-color: var(--ai-surface-brand);
-  font-weight: var(--ai-font-medium);
+  color: var(--ao-text-brand);
+  border-bottom-color: var(--ao-surface-brand);
+  font-weight: var(--ao-font-medium);
 }
 
 .crs-tab:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: -2px;
 }
 
@@ -513,13 +513,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: var(--ai-spacing-6);
-  padding: 0 var(--ai-spacing-2);
-  border-radius: var(--ai-radius-full);
-  background: var(--ai-surface-minimal);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-contrast);
+  min-width: var(--ao-spacing-6);
+  padding: 0 var(--ao-spacing-2);
+  border-radius: var(--ao-radius-full);
+  background: var(--ao-surface-minimal);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-contrast);
 }
 
 /* ══ Evidence panels ══════════════════════════════════════════════════════ */
@@ -527,62 +527,62 @@
 .crs-metrics {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--ai-spacing-7);
-  margin-bottom: var(--ai-spacing-6);
+  gap: var(--ao-spacing-7);
+  margin-bottom: var(--ao-spacing-6);
 }
 
 .crs-metric__label {
-  margin: 0 0 var(--ai-spacing-1);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-xs);
-  letter-spacing: var(--ai-tracking-7);
+  margin: 0 0 var(--ao-spacing-1);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-xs);
+  letter-spacing: var(--ao-tracking-7);
   text-transform: uppercase;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 /* The emphasised number. Not .chart__big (20px) and not .stat-card__value
  * (16px) — neither is this, and .stat-card drags an icon tile with it. */
 .crs-stat {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-4xl);
-  font-weight: var(--ai-font-bold);
-  line-height: var(--ai-leading-lg);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-4xl);
+  font-weight: var(--ao-font-bold);
+  line-height: var(--ao-leading-lg);
+  color: var(--ao-text-primary);
 }
 
 .crs-spark {
   display: flex;
   align-items: flex-end;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   /* TOKEN GAP: sparkline height — see token-gaps.md. */
   height: 72px;
 }
 .crs-spark > span {
   flex: 1 1 0;
   min-inline-size: 0;
-  background: var(--ai-surface-brand);
-  border-radius: var(--ai-radius-xs);
+  background: var(--ao-surface-brand);
+  border-radius: var(--ao-radius-xs);
 }
 
 .crs-panel__note {
-  margin: var(--ai-spacing-3) 0 0;
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  margin: var(--ao-spacing-3) 0 0;
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
 }
 
 .crs-panel__sub {
-  margin: var(--ai-spacing-6) 0 var(--ai-spacing-4);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-xs);
-  letter-spacing: var(--ai-tracking-7);
+  margin: var(--ao-spacing-6) 0 var(--ao-spacing-4);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-xs);
+  letter-spacing: var(--ao-tracking-7);
   text-transform: uppercase;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 .crs-person {
@@ -593,15 +593,15 @@
      it. Same reset here. */
   white-space: normal;
 }
-.crs-person__name { color: var(--ai-text-primary); }
+.crs-person__name { color: var(--ao-text-primary); }
 .crs-person__role {
-  font-size: var(--ai-font-fixed-xxs);
-  color: var(--ai-text-contrast);
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-contrast);
 }
 
 /* The child listing scrolls in place rather than running the page to 23 rows. */
 .crs-scroll {
-  /* TOKEN GAP: the --ai-size-* scale jumps 384 -> 448 -> 640; ~10 rows wants
+  /* TOKEN GAP: the --ao-size-* scale jumps 384 -> 448 -> 640; ~10 rows wants
      480. See token-gaps.md. */
   max-height: 480px;
   overflow-y: auto;

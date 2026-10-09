@@ -12,9 +12,9 @@
  * scroll wrap respects the rounded corners. */
 
 .table-wrap {
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
   overflow: hidden;
 }
 
@@ -32,32 +32,32 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-family: var(--ai-font-title);
+  font-family: var(--ao-font-title);
 }
 
 .table thead th {
   /* Designer, 2026-09-18: 16px all round, up from 8px vertical. Horizontal was
-     already --ai-spacing-5, so this only changes the header's height. */
-  padding: var(--ai-spacing-5) var(--ai-spacing-5);
-  background-color: var(--ai-surface-minimal);
-  border-bottom: 1px solid var(--ai-border-secondary);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-secondary);
+     already --ao-spacing-5, so this only changes the header's height. */
+  padding: var(--ao-spacing-5) var(--ao-spacing-5);
+  background-color: var(--ao-surface-minimal);
+  border-bottom: 1px solid var(--ao-border-secondary);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
   text-align: left;
   text-transform: uppercase;
-  letter-spacing: var(--ai-tracking-7);
+  letter-spacing: var(--ao-tracking-7);
   white-space: nowrap;
 }
 
 .table tbody td {
-  padding: var(--ai-spacing-4) var(--ai-spacing-5);
-  border-bottom: 1px solid var(--ai-border-secondary);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  padding: var(--ao-spacing-4) var(--ao-spacing-5);
+  border-bottom: 1px solid var(--ao-border-secondary);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
   white-space: nowrap;
 }
 
@@ -75,14 +75,14 @@
 /* ── Type=Striped ─────────────────────────────────────── */
 
 .table--striped tbody tr:nth-child(even) {
-  background-color: var(--ai-surface-minimal);
+  background-color: var(--ao-surface-minimal);
 }
 
 /* ── Type=Border (vertical cell separators) ──────────── */
 
 .table--bordered thead th:not(:last-child),
 .table--bordered tbody td:not(:last-child) {
-  border-right: 1px solid var(--ai-border-secondary);
+  border-right: 1px solid var(--ao-border-secondary);
 }
 
 /* ── Mobile / narrow-viewport overflow ────────────────

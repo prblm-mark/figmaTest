@@ -66,13 +66,13 @@ Figma's Silver text to the derived value, or reinstate an override here.
 
 | Figma | CSS | Role |
 |---|---|---|
-| `--ai-spacing-0-5` | `padding` block | 2px vertical |
-| `--ai-spacing-3` | `padding` inline | 8px horizontal |
-| `--ai-radius-full` | `border-radius` | fully rounded |
-| `--ai-font-title` | `font-family` | Inter |
-| `--ai-font-bold` | `font-weight` | 700 — **CSS leads Figma**, see below |
-| `--ai-font-fixed-6xs` | `font-size` | 9px — **CSS leads Figma**, see below |
-| `--ai-tracking-7` | `letter-spacing` | 0.05em — **CSS leads Figma**, see below |
+| `--ao-spacing-0-5` | `padding` block | 2px vertical |
+| `--ao-spacing-3` | `padding` inline | 8px horizontal |
+| `--ao-radius-full` | `border-radius` | fully rounded |
+| `--ao-font-title` | `font-family` | Inter |
+| `--ao-font-bold` | `font-weight` | 700 — **CSS leads Figma**, see below |
+| `--ao-font-fixed-6xs` | `font-size` | 9px — **CSS leads Figma**, see below |
+| `--ao-tracking-7` | `letter-spacing` | 0.05em — **CSS leads Figma**, see below |
 | (none) | `border-width: 1px` | allowed raw-px exception |
 
 ### Typography: the CSS deliberately leads Figma
@@ -81,9 +81,9 @@ Amended 2026-08-25 at the designer's request, ahead of Figma being updated to ma
 
 | Property | Figma still has | CSS now uses |
 |---|---|---|
-| `font-size` | `--ai-font-fixed-5xs` (10px) | **`--ai-font-fixed-6xs` (9px)** — 2026-09-10 |
-| `font-weight` | `--ai-font-semibold` (600) | **`--ai-font-bold` (700)** |
-| `letter-spacing` | `--ai-tracking-5` (0.0125em) | **`--ai-tracking-7` (0.05em)** |
+| `font-size` | `--ao-font-fixed-5xs` (10px) | **`--ao-font-fixed-6xs` (9px)** — 2026-09-10 |
+| `font-weight` | `--ao-font-semibold` (600) | **`--ao-font-bold` (700)** |
+| `letter-spacing` | `--ao-tracking-5` (0.0125em) | **`--ao-tracking-7` (0.05em)** |
 
 **Do not "correct" these back from a Figma fetch.** A future audit that re-reads
 `get_design_context` will see 600 / 0.0125em and flag the CSS as wrong — it is not. Figma is the
@@ -98,7 +98,7 @@ picker-set runtime values rather than design values:
 `#00749e` VIP · `#991b1b` Head Table · `#d97706` Gold · `#abb2b8` Silver · `#a07553` Bronze
 
 The compositing bases `#ffffff` and `#000000` are also raw, deliberately. They are **not**
-`--ai-surface-primary` / a text token: Figma composites against pure white, and using a
+`--ao-surface-primary` / a text token: Figma composites against pure white, and using a
 theme-aware token would change the formula in dark mode and break the match.
 
 ### Divergence from the `--sp-*` seating palette — worth reconciling in Figma
@@ -134,8 +134,8 @@ component — six table tiers in the tokens, five in the component.
 - **No interactive states in Figma** — no hover, focus, selected or disabled variants exist, so
   none are implemented.
 - **Figma's inline px fallbacks are off by one** in the design-context output:
-  `px-[var(--ai-spacing-3,9px)]` where the token is 8px, and
-  `py-[var(--ai-spacing-0-5,3px)]` where the token is 2px. The tokens are authoritative and were
+  `px-[var(--ao-spacing-3,9px)]` where the token is 8px, and
+  `py-[var(--ao-spacing-0-5,3px)]` where the token is 2px. The tokens are authoritative and were
   used; the built height matches Figma's 18px exactly, which confirms the tokens are right and
   the fallbacks are the artefact.
 - **Axis-name discrepancy in tooling:** `list_file_components_for_code_connect` reports the axis
@@ -146,8 +146,8 @@ component — six table tiers in the tokens, five in the component.
 
 ### Font size dropped to 9px, and the pill got shorter with it (designer, 2026-09-10)
 
-*"Change the font size to 6xs on the table type pills."* Done — `--ai-font-fixed-5xs` (10px) →
-`--ai-font-fixed-6xs` (9px). Figma still binds 5xs, so this is the third property on which this
+*"Change the font size to 6xs on the table type pills."* Done — `--ao-font-fixed-5xs` (10px) →
+`--ao-font-fixed-6xs` (9px). Figma still binds 5xs, so this is the third property on which this
 component's CSS leads the design; the table above lists all three together.
 
 **Consequence worth knowing before a Figma sync:** the pill's height is padding-driven — nothing

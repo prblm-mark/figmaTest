@@ -5,43 +5,43 @@
 /* Set on the container with data-brand-theme (detected by brand-colors.js) */
 
 [data-brand-theme="dark"] {
-  --_brand-text: var(--ai-chat-brand);
-  --_brand-bg: color-mix(in srgb, var(--ai-chat-brand) 8%, var(--ai-surface-primary));
-  --_brand-border: color-mix(in srgb, var(--ai-chat-brand) 30%, var(--ai-surface-primary));
-  --_brand-bg-hover: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-surface-primary));
-  --_brand-border-hover: color-mix(in srgb, var(--ai-chat-brand) 50%, var(--ai-surface-primary));
+  --_brand-text: var(--ao-chat-brand);
+  --_brand-bg: color-mix(in srgb, var(--ao-chat-brand) 8%, var(--ao-surface-primary));
+  --_brand-border: color-mix(in srgb, var(--ao-chat-brand) 30%, var(--ao-surface-primary));
+  --_brand-bg-hover: color-mix(in srgb, var(--ao-chat-brand) 15%, var(--ao-surface-primary));
+  --_brand-border-hover: color-mix(in srgb, var(--ao-chat-brand) 50%, var(--ao-surface-primary));
 
   /* TODO [brand-override]: msg bubble colors derived from brand.
      Currently set directly — revisit with explicit user-override pattern
-     (e.g. var(--ai-chat-msg-bg-override, var(--_brand-msg-bg))) when
+     (e.g. var(--ao-chat-msg-bg-override, var(--_brand-msg-bg))) when
      client customisation ships. */
-  --ai-chat-msg-bg: color-mix(in srgb, var(--ai-chat-brand) 8%, var(--ai-surface-primary));
-  --ai-chat-msg-text: color-mix(in srgb, var(--ai-chat-brand) 50%, black);
+  --ao-chat-msg-bg: color-mix(in srgb, var(--ao-chat-brand) 8%, var(--ao-surface-primary));
+  --ao-chat-msg-text: color-mix(in srgb, var(--ao-chat-brand) 50%, black);
 }
 
 [data-brand-theme="light"] {
-  --_brand-text: color-mix(in srgb, var(--ai-chat-brand) 50%, black);
-  --_brand-bg: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-surface-primary));
-  --_brand-border: var(--ai-chat-brand);
-  --_brand-bg-hover: color-mix(in srgb, var(--ai-chat-brand) 25%, var(--ai-surface-primary));
-  --_brand-border-hover: color-mix(in srgb, var(--ai-chat-brand) 80%, black);
+  --_brand-text: color-mix(in srgb, var(--ao-chat-brand) 50%, black);
+  --_brand-bg: color-mix(in srgb, var(--ao-chat-brand) 15%, var(--ao-surface-primary));
+  --_brand-border: var(--ao-chat-brand);
+  --_brand-bg-hover: color-mix(in srgb, var(--ao-chat-brand) 25%, var(--ao-surface-primary));
+  --_brand-border-hover: color-mix(in srgb, var(--ao-chat-brand) 80%, black);
 
   /* TODO [brand-override]: see note above */
-  --ai-chat-msg-bg: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-surface-primary));
-  --ai-chat-msg-text: color-mix(in srgb, var(--ai-chat-brand) 35%, black);
+  --ao-chat-msg-bg: color-mix(in srgb, var(--ao-chat-brand) 15%, var(--ao-surface-primary));
+  --ao-chat-msg-text: color-mix(in srgb, var(--ao-chat-brand) 35%, black);
 }
 
 /* Dark mode: stronger brand tint + lighter text for readability */
 [data-theme="dark"][data-brand-theme="dark"] {
-  --_brand-text: color-mix(in srgb, var(--ai-chat-brand) 45%, white);
-  --_brand-bg: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-surface-primary));
-  --_brand-border: color-mix(in srgb, var(--ai-chat-brand) 40%, var(--ai-surface-primary));
-  --_brand-bg-hover: color-mix(in srgb, var(--ai-chat-brand) 22%, var(--ai-surface-primary));
-  --_brand-border-hover: color-mix(in srgb, var(--ai-chat-brand) 55%, var(--ai-surface-primary));
+  --_brand-text: color-mix(in srgb, var(--ao-chat-brand) 45%, white);
+  --_brand-bg: color-mix(in srgb, var(--ao-chat-brand) 15%, var(--ao-surface-primary));
+  --_brand-border: color-mix(in srgb, var(--ao-chat-brand) 40%, var(--ao-surface-primary));
+  --_brand-bg-hover: color-mix(in srgb, var(--ao-chat-brand) 22%, var(--ao-surface-primary));
+  --_brand-border-hover: color-mix(in srgb, var(--ao-chat-brand) 55%, var(--ao-surface-primary));
 
   /* TODO [brand-override]: see note above */
-  --ai-chat-msg-bg: color-mix(in srgb, var(--ai-chat-brand) 50%, var(--ai-surface-primary));
-  --ai-chat-msg-text: var(--ai-text-primary);
+  --ao-chat-msg-bg: color-mix(in srgb, var(--ao-chat-brand) 50%, var(--ao-surface-primary));
+  --ao-chat-msg-text: var(--ao-text-primary);
 }
 
 /* ── Base ──────────────────────────────────────────────── */
@@ -49,20 +49,20 @@
 .sources-link {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-3) var(--ao-spacing-5);
   max-width: 100%;
   border: 1px solid;
-  border-radius: var(--ai-radius-full);
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-medium);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
+  border-radius: var(--ao-radius-full);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
-  transition: background-color var(--ai-transition-default),
-              border-color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default),
+              border-color var(--ao-transition-default);
 }
 
 .sources-link__text {
@@ -74,8 +74,8 @@
 }
 
 .sources-link [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
   flex-shrink: 0;
 }
 
@@ -94,7 +94,7 @@ a.sources-link--primary:hover {
 }
 
 a.sources-link--link:hover {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 /* ── Primary variant (brand-colored, dynamic) ─────────── */
@@ -117,16 +117,16 @@ a.sources-link--link:hover {
 /* ── Link variant (neutral) ───────────────────────────── */
 
 .sources-link--link {
-  background: var(--ai-surface-contrast);
-  border-color: var(--ai-border-secondary);
-  color: var(--ai-text-primary);
+  background: var(--ao-surface-contrast);
+  border-color: var(--ao-border-secondary);
+  color: var(--ao-text-primary);
 }
 
 .sources-link--link [data-lucide] {
-  color: var(--ai-icon-secondary);
+  color: var(--ao-icon-secondary);
 }
 
 .sources-link--link:hover {
-  background: var(--ai-surface-minimal);
-  border-color: var(--ai-border-secondary);
+  background: var(--ao-surface-minimal);
+  border-color: var(--ao-border-secondary);
 }

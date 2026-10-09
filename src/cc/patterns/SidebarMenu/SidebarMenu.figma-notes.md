@@ -28,12 +28,12 @@ The composite itself is purely a layout shell. All visuals come from the two chi
 display: inline-flex;
 align-items: stretch;
 height: 100%;
-font-family: var(--ai-font-body);
+font-family: var(--ao-font-body);
 position: relative; /* anchor for the hover-flyout overlay menu */
 
 /* Right-edge shadow only when a menu panel is docked open. */
 .cc-sidebar-menu:has(.cc-menu:not([hidden])) {
-  box-shadow: var(--ai-shadow-cc-rail);
+  box-shadow: var(--ao-shadow-cc-rail);
 }
 ```
 
@@ -43,7 +43,7 @@ The composite owns one token (added 2026-06-01):
 
 | Token | Light value | Dark value | Where |
 |---|---|---|---|
-| `--ai-shadow-cc-rail` | `4px 0 4px rgba(0, 0, 0, 0.2)` | `none` | `css/tokens-shadows.css` |
+| `--ao-shadow-cc-rail` | `4px 0 4px rgba(0, 0, 0, 0.2)` | `none` | `css/tokens-shadows.css` |
 
 Figma node 4167:4735 (SidebarMenu instance, light mode) binds `drop-shadow(4px 0 4px rgba(0,0,0,0.2))` directly as a raw rgba — no token on the Figma side. The composite uses `box-shadow` (visually equivalent for an opaque rectangle, cheaper to render than `filter: drop-shadow`).
 

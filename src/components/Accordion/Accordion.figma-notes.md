@@ -38,39 +38,39 @@ Accordion is a Tier=Component design-system component. Each item has a header (t
 
 | Property | Token | Value |
 |---|---|---|
-| Container bg | `--ai-surface-primary` | #ffffff |
-| Container border | `--ai-border-secondary` | #e2e2e3 |
-| Container radius | `--ai-radius-md` | 8px |
+| Container bg | `--ao-surface-primary` | #ffffff |
+| Container border | `--ao-border-secondary` | #e2e2e3 |
+| Container radius | `--ao-radius-md` | 8px |
 | Container inner padding | `1px` | spacing/px (raw — optical inner offset) |
-| Trigger bg | `--ai-surface-minimal` | #f6f6f7 |
-| Trigger hover bg | `--ai-surface-secondary` | #e2e2e3 |
-| Trigger height (Default) | `--ai-spacing-10` | 56px |
-| Trigger height (sm) | `--ai-spacing-8` | 40px |
-| Trigger padding (Default) | `--ai-spacing-5` v / `--ai-spacing-6` h | 16/24px |
-| Trigger padding (sm) | `--ai-spacing-5` | 16px |
-| Trigger font | `--ai-font-title` `--ai-font-semibold` | Inter 600 |
-| Trigger size (Default) | `--ai-font-fixed-sm` | 16px |
-| Trigger size (sm) | `--ai-font-fixed-xs` | 14px |
-| Trigger color | `--ai-text-primary` | #212123 |
-| Item separator | `--ai-border-secondary` | 1px |
-| Panel bg | `--ai-surface-primary` | #ffffff (inherits container) |
-| Panel border-top | `--ai-border-secondary` | 1px |
-| Panel padding (Default) | `--ai-spacing-5` t / `--ai-spacing-6` h+b | 16/24/24px |
-| Panel padding (sm) | `--ai-spacing-5` | 16px all |
-| Panel text | `--ai-text-secondary` | #3c3c3f |
-| Panel size (Default) | `--ai-font-fixed-xs` | 14px |
-| Panel size (sm) | `--ai-font-fixed-xxs` | 12px |
-| Panel line-height (Default) | `--ai-leading-md` | 24px |
-| Panel line-height (sm) | `--ai-leading-sm` | 20px |
-| Chevron icon size | `--ai-icon-size-sm` | 16px |
-| Chevron color | `--ai-icon-contrast` | #929295 |
-| Separated card gap | `--ai-spacing-3` | 8px |
+| Trigger bg | `--ao-surface-minimal` | #f6f6f7 |
+| Trigger hover bg | `--ao-surface-secondary` | #e2e2e3 |
+| Trigger height (Default) | `--ao-spacing-10` | 56px |
+| Trigger height (sm) | `--ao-spacing-8` | 40px |
+| Trigger padding (Default) | `--ao-spacing-5` v / `--ao-spacing-6` h | 16/24px |
+| Trigger padding (sm) | `--ao-spacing-5` | 16px |
+| Trigger font | `--ao-font-title` `--ao-font-semibold` | Inter 600 |
+| Trigger size (Default) | `--ao-font-fixed-sm` | 16px |
+| Trigger size (sm) | `--ao-font-fixed-xs` | 14px |
+| Trigger color | `--ao-text-primary` | #212123 |
+| Item separator | `--ao-border-secondary` | 1px |
+| Panel bg | `--ao-surface-primary` | #ffffff (inherits container) |
+| Panel border-top | `--ao-border-secondary` | 1px |
+| Panel padding (Default) | `--ao-spacing-5` t / `--ao-spacing-6` h+b | 16/24/24px |
+| Panel padding (sm) | `--ao-spacing-5` | 16px all |
+| Panel text | `--ao-text-secondary` | #3c3c3f |
+| Panel size (Default) | `--ao-font-fixed-xs` | 14px |
+| Panel size (sm) | `--ao-font-fixed-xxs` | 12px |
+| Panel line-height (Default) | `--ao-leading-md` | 24px |
+| Panel line-height (sm) | `--ao-leading-sm` | 20px |
+| Chevron icon size | `--ao-icon-size-sm` | 16px |
+| Chevron color | `--ao-icon-contrast` | #929295 |
+| Separated card gap | `--ao-spacing-3` | 8px |
 | Separated card shadow | `0 1px 3px rgba(0,0,0,0.05)` | static (raw — card elevation) |
-| Nested gap from paragraph | `--ai-spacing-4` | 12px (`margin-top` on `.acc__panel .acc`) |
+| Nested gap from paragraph | `--ao-spacing-4` | 12px (`margin-top` on `.acc__panel .acc`) |
 
 ## Token Gaps
 
-None — all colour, spacing, typography, and radius values resolve to existing `--ai-*` tokens. The `1px` inner padding and the raw separated-card box-shadow are optical/structural values per CLAUDE rules and don't require tokens.
+None — all colour, spacing, typography, and radius values resolve to existing `--ao-*` tokens. The `1px` inner padding and the raw separated-card box-shadow are optical/structural values per CLAUDE rules and don't require tokens.
 
 ## Icons
 

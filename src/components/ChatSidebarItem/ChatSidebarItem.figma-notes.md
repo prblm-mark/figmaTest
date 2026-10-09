@@ -66,41 +66,41 @@ Dark Mode is handled by `data-sidebar-theme="light|dark"` (luminance-based), not
 
 | Property | Token | Value |
 |---|---|---|
-| Height | `--ai-spacing-7` | 32px |
-| Horizontal padding | `--ai-spacing-3` | 8px |
-| Internal gap | `--ai-spacing-2` | 6px |
-| Border radius | `--ai-radius-md` | 8px |
-| Font family | `--ai-font-body` | Inter |
-| Font weight | `--ai-font-regular` | 400 |
-| Font size | `--ai-font-fixed-xs` | 14px |
-| Line height | `--ai-leading-md` | 24px |
-| Text color | `var(--ai-chat-sidebar-text)` | Computed |
-| Selected text | `var(--ai-chat-sidebar-selected-text)` | Computed — 15% darker/lighter |
+| Height | `--ao-spacing-7` | 32px |
+| Horizontal padding | `--ao-spacing-3` | 8px |
+| Internal gap | `--ao-spacing-2` | 6px |
+| Border radius | `--ao-radius-md` | 8px |
+| Font family | `--ao-font-body` | Inter |
+| Font weight | `--ao-font-regular` | 400 |
+| Font size | `--ao-font-fixed-xs` | 14px |
+| Line height | `--ao-leading-md` | 24px |
+| Text color | `var(--ao-chat-sidebar-text)` | Computed |
+| Selected text | `var(--ao-chat-sidebar-selected-text)` | Computed — 15% darker/lighter |
 | Default bg | `transparent` | Inherits sidebar bg |
-| Hover bg | `var(--ai-chat-sidebar-hover-bg)` | Computed — 8% overlay |
-| Selected bg | `var(--ai-chat-sidebar-active-bg)` | Computed — 12% overlay |
-| Fade gradient width | `--ai-spacing-10` | 56px |
-| Ellipsis button size | `--ai-spacing-7` | 32px |
-| Pin icon size | `--ai-icon-size-sm` | 16px |
-| Ellipsis icon size | `--ai-icon-size-sm` | 16px |
+| Hover bg | `var(--ao-chat-sidebar-hover-bg)` | Computed — 8% overlay |
+| Selected bg | `var(--ao-chat-sidebar-active-bg)` | Computed — 12% overlay |
+| Fade gradient width | `--ao-spacing-10` | 56px |
+| Ellipsis button size | `--ao-spacing-7` | 32px |
+| Pin icon size | `--ao-icon-size-sm` | 16px |
+| Ellipsis icon size | `--ao-icon-size-sm` | 16px |
 
 ### Type=Action tokens
 
 | Property | Token | Value |
 |---|---|---|
-| Height | `--ai-spacing-7` | 32px |
-| Horizontal padding | `--ai-spacing-4` | 12px |
-| Internal gap | `--ai-spacing-3` | 8px |
-| Border radius | `--ai-radius-md` | 8px |
-| Font family | `--ai-font-body` | Inter |
-| Font weight | `--ai-font-semibold` | 600 |
-| Font size | `--ai-font-fluid-xxs` | 12px |
-| Line height | `--ai-leading-xs` | 16px |
-| Icon | `message-square` (Lucide) | 16px (`--ai-icon-size-sm`) |
-| Text color | `var(--ai-chat-sidebar-text)` | Computed |
-| Default bg | `transparent` (`--ai-chat-sidebar-bg`) | Base sidebar color |
-| Hover bg | `var(--ai-chat-sidebar-hover-bg)` | Computed — 8% overlay |
-| Selected bg | `var(--ai-chat-sidebar-active-bg)` | Computed — 12% overlay |
+| Height | `--ao-spacing-7` | 32px |
+| Horizontal padding | `--ao-spacing-4` | 12px |
+| Internal gap | `--ao-spacing-3` | 8px |
+| Border radius | `--ao-radius-md` | 8px |
+| Font family | `--ao-font-body` | Inter |
+| Font weight | `--ao-font-semibold` | 600 |
+| Font size | `--ao-font-fluid-xxs` | 12px |
+| Line height | `--ao-leading-xs` | 16px |
+| Icon | `message-square` (Lucide) | 16px (`--ao-icon-size-sm`) |
+| Text color | `var(--ao-chat-sidebar-text)` | Computed |
+| Default bg | `transparent` (`--ao-chat-sidebar-bg`) | Base sidebar color |
+| Hover bg | `var(--ao-chat-sidebar-hover-bg)` | Computed — 8% overlay |
+| Selected bg | `var(--ao-chat-sidebar-active-bg)` | Computed — 12% overlay |
 | Text content | "New Chat" | From Figma |
 
 ## Computed token implementation
@@ -158,8 +158,8 @@ The hover and selected backgrounds are **computed tokens** — Figma defines the
 
 ## Transition
 
-Background color: `--ai-transition-default` (150ms ease).
-Actions opacity: `--ai-transition-default` (150ms ease).
+Background color: `--ao-transition-default` (150ms ease).
+Actions opacity: `--ao-transition-default` (150ms ease).
 
 ## Notes
 

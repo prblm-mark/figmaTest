@@ -20,16 +20,16 @@
 
 | State | Trigger | Visual | Notes |
 |---|---|---|---|
-| Initial | — | `--ai-surface-contrast` track, knob left | Inactive resting state |
-| Active | `.toggle-ds--active` class + `aria-pressed="true"` | `--ai-surface-brand` track, knob slides right | Toggled via JS click handler |
+| Initial | — | `--ao-surface-contrast` track, knob left | Inactive resting state |
+| Active | `.toggle-ds--active` class + `aria-pressed="true"` | `--ao-surface-brand` track, knob slides right | Toggled via JS click handler |
 | Disabled | `.toggle-ds--disabled` class | 50% opacity, `cursor: not-allowed` | Works with both active and inactive |
 
 ### Optional elements
 
 | Element | Class | Visibility | Notes |
 |---|---|---|---|
-| Label text | `.toggle-ds__label` | Always shown | SM: `--ai-font-fixed-xs`; Default/LG: `--ai-font-fixed-sm` |
-| Helper text | `.toggle-ds__helper` | Optional | SM: `--ai-font-fixed-xxs`; Default/LG: `--ai-font-fixed-xs`. Remove from HTML to hide |
+| Label text | `.toggle-ds__label` | Always shown | SM: `--ao-font-fixed-xs`; Default/LG: `--ao-font-fixed-sm` |
+| Helper text | `.toggle-ds__helper` | Optional | SM: `--ao-font-fixed-xxs`; Default/LG: `--ao-font-fixed-xs`. Remove from HTML to hide |
 
 ### Usage examples
 
@@ -130,20 +130,20 @@
 
 | Figma Property       | CSS Token                        |
 | -------------------- | -------------------------------- |
-| Track bg (inactive)  | `--ai-surface-contrast`          |
-| Track bg (active)    | `--ai-surface-brand`             |
-| Knob bg              | `--ai-surface-primary`           |
-| Track/knob radius    | `--ai-radius-full`               |
-| Focus ring inner     | `--ai-surface-primary`           |
-| Focus ring outer     | `--ai-surface-brand-soft`    |
-| Label text color     | `--ai-text-primary`              |
-| Helper text color    | `--ai-text-contrast`             |
-| SM label font size   | `--ai-font-fixed-xs`             |
-| SM helper font size  | `--ai-font-fixed-xxs`            |
-| Default/LG label     | `--ai-font-fixed-sm`             |
-| Default/LG helper    | `--ai-font-fixed-xs`             |
-| Wrapper gap          | `--ai-spacing-3`                 |
-| Transition           | `--ai-transition-default`        |
+| Track bg (inactive)  | `--ao-surface-contrast`          |
+| Track bg (active)    | `--ao-surface-brand`             |
+| Knob bg              | `--ao-surface-primary`           |
+| Track/knob radius    | `--ao-radius-full`               |
+| Focus ring inner     | `--ao-surface-primary`           |
+| Focus ring outer     | `--ao-surface-brand-soft`    |
+| Label text color     | `--ao-text-primary`              |
+| Helper text color    | `--ao-text-contrast`             |
+| SM label font size   | `--ao-font-fixed-xs`             |
+| SM helper font size  | `--ao-font-fixed-xxs`            |
+| Default/LG label     | `--ao-font-fixed-sm`             |
+| Default/LG helper    | `--ao-font-fixed-xs`             |
+| Wrapper gap          | `--ao-spacing-3`                 |
+| Transition           | `--ao-transition-default`        |
 
 ## Notes
 

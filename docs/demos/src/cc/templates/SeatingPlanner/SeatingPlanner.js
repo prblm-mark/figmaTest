@@ -576,7 +576,7 @@
    * needs the same behaviour (designer, 2026-09-10), so it is a function of (handle, panel,
    * property) called twice rather than the same forty lines pasted with two names changed. */
 
-  /* Custom properties resolve to the AUTHORED string, so --ai-size-5 reads back as "17.5rem" and
+  /* Custom properties resolve to the AUTHORED string, so --ao-size-5 reads back as "17.5rem" and
    * parseFloat gives 17.5, not 280. Convert through the root font size rather than hardcoding 16
    * — a user with a larger default font would otherwise get wrong bounds. */
   function tokenPx(name) {
@@ -592,7 +592,7 @@
   function makeResizable(handle, panel, prop) {
     if (!handle || !panel) return;
 
-    /* MIN is --ai-size-5 (280) since 2026-09-10, RAISED from --ai-size-4 (240) at the designer's
+    /* MIN is --ao-size-5 (280) since 2026-09-10, RAISED from --ao-size-4 (240) at the designer's
      * request that the detail sheet have a 280 floor.
      *
      * Worth flagging rather than burying: 240 was NOT invented — it appears in Frame 245's own
@@ -606,7 +606,7 @@
      * sheets now use it independently, so both at maximum would leave the listing very narrow;
      * that combination is part of the same open question. */
     function bounds() {
-      var min = tokenPx('--ai-size-5');
+      var min = tokenPx('--ao-size-5');
       var max = Math.max(min, plan.getBoundingClientRect().width / 2);
       return { min: min, max: max };
     }
@@ -656,7 +656,7 @@
     handle.addEventListener('keydown', function (event) {
       if (isStacked()) return;
       var b = bounds();
-      var step = tokenPx('--ai-spacing-5');           /* 16px per press */
+      var step = tokenPx('--ao-spacing-5');           /* 16px per press */
       var k = event.key;
       if (k === 'ArrowLeft')       setWidth(currentWidth() + step);
       else if (k === 'ArrowRight') setWidth(currentWidth() - step);
@@ -689,7 +689,7 @@
         setWidth(seed);
       } else {
         var b0 = bounds();
-        handle.setAttribute('aria-valuenow', String(Math.round(tokenPx('--ai-size-6'))));
+        handle.setAttribute('aria-valuenow', String(Math.round(tokenPx('--ao-size-6'))));
         handle.setAttribute('aria-valuemin', String(Math.round(b0.min)));
         handle.setAttribute('aria-valuemax', String(Math.round(b0.max)));
       }
@@ -834,7 +834,7 @@
 
 /* ══ Chrome shadow on scroll ══════════════════════════════════════════════════════════════
  * This screen deliberately has no header block and no chrome hairline (both designer calls), so
- * nothing separates the chrome from content sliding under it. A `--ai-shadow-sm` that appears
+ * nothing separates the chrome from content sliding under it. A `--ao-shadow-sm` that appears
  * only once the page has actually scrolled gives the separation without adding permanent chrome.
  *
  * Keyed off the PAGE's scrollTop, because that is the scroller that moves content under the

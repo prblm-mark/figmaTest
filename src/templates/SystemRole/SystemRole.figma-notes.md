@@ -12,7 +12,7 @@
 
 | Variant | Node | Size | Padding | Controls | Activation | Notes |
 |---|---|---|---|---|---|---|
-| Default | 163:3894 | 1512×973px | 40px all (`--ai-spacing-8`) | `panel-right-dashed` + `x` (40×40px) | JS `.system-role--open` | Full-screen modal with blurred backdrop |
+| Default | 163:3894 | 1512×973px | 40px all (`--ao-spacing-8`) | `panel-right-dashed` + `x` (40×40px) | JS `.system-role--open` | Full-screen modal with blurred backdrop |
 | Minimised | 169:2466 | 400px w × 1360px h | pt-16 px-24 pb-24 | `maximize-2` + `x` (32×32px) | JS `.system-role--minimised` | Floating compact panel, draggable, left-edge resizable |
 | Mobile | 176:3242 | Full viewport | pt-16 px-24 pb-24 | `panel-right-dashed` + `x` (32×32px) | CSS `@media (max-width: 767px)` | Full-viewport CSS-only layout, no resize/drag, no overlay |
 
@@ -35,7 +35,7 @@
 | Maximize button | `.system-role__maximize-btn` | `maximize-2` icon; hidden in Default via CSS |
 | Close button | `.system-role__close-btn` | `x` icon; always visible |
 | Body | `.system-role__body` | Flex row (Default) → flex column (Minimised) |
-| Prompt area | `.system-role__prompt` | `flex: 1`; bordered with `--ai-surface-contrast` |
+| Prompt area | `.system-role__prompt` | `flex: 1`; bordered with `--ao-surface-contrast` |
 | Textarea | `.system-role__textarea` | `flex: 1`; no border/outline |
 | Sidebar | `.system-role__sidebar` | `width: 400px` (Default) → `width: 100%` (Minimised) |
 | Resize handle (left edge) | `.system-role__resize-handle` | `display: none` (Default) → `display: block` (Minimised) |
@@ -53,26 +53,26 @@
 
 | Property | CSS Variable | Value |
 |---|---|---|
-| Modal background | `--ai-surface-elevated-1` | `#FFFFFF` (light) / `#212123` (dark) |
-| Modal border | `--ai-border-secondary` | `1px solid` |
-| Modal border-radius | `--ai-radius-xl` | `1.5rem` |
-| Default padding | `--ai-spacing-8` | `2.5rem` (40px) |
-| Minimised padding-top | `--ai-spacing-5` | `1rem` (16px) |
-| Minimised padding-left/right/bottom | `--ai-spacing-6` | `1.5rem` (24px) |
-| Top bar / body gap | `--ai-spacing-7` | `2rem` (32px) — matches body column gap so header/controls align over prompt/sidebar |
-| Body gap (prompt ↔ sidebar) | `--ai-spacing-7` | `2rem` (32px) |
-| Sidebar panels gap | `--ai-spacing-7` | `2rem` (32px) |
-| Prompt border color | `--ai-surface-contrast` | `#D1D5DB` |
-| Prompt border-radius | `--ai-radius-lg` | `1rem` |
-| Prompt padding (Default) | `--ai-spacing-6` | `1.5rem` (24px) |
-| Prompt padding (Minimised) | `--ai-spacing-5` | `1rem` (16px) — updated in Figma |
-| Textarea text | `--ai-text-primary` | `#1F2A37` |
-| Textarea font-size | `--ai-font-fixed-xs` | `0.875rem` (14px, fixed — never responsive) |
-| Textarea line-height | `--ai-leading-md` | `1.5rem` |
-| Minimised icon btn size | `--ai-spacing-7` | `2rem` (32px) |
-| Minimised header btn height | `--ai-spacing-7` | `2rem` (32px) |
-| Minimised header btn padding | `--ai-spacing-4` | `0.75rem` (12px) |
-| Minimised header btn font | `--ai-font-fluid-xxs` | `0.75rem` |
+| Modal background | `--ao-surface-elevated-1` | `#FFFFFF` (light) / `#212123` (dark) |
+| Modal border | `--ao-border-secondary` | `1px solid` |
+| Modal border-radius | `--ao-radius-xl` | `1.5rem` |
+| Default padding | `--ao-spacing-8` | `2.5rem` (40px) |
+| Minimised padding-top | `--ao-spacing-5` | `1rem` (16px) |
+| Minimised padding-left/right/bottom | `--ao-spacing-6` | `1.5rem` (24px) |
+| Top bar / body gap | `--ao-spacing-7` | `2rem` (32px) — matches body column gap so header/controls align over prompt/sidebar |
+| Body gap (prompt ↔ sidebar) | `--ao-spacing-7` | `2rem` (32px) |
+| Sidebar panels gap | `--ao-spacing-7` | `2rem` (32px) |
+| Prompt border color | `--ao-surface-contrast` | `#D1D5DB` |
+| Prompt border-radius | `--ao-radius-lg` | `1rem` |
+| Prompt padding (Default) | `--ao-spacing-6` | `1.5rem` (24px) |
+| Prompt padding (Minimised) | `--ao-spacing-5` | `1rem` (16px) — updated in Figma |
+| Textarea text | `--ao-text-primary` | `#1F2A37` |
+| Textarea font-size | `--ao-font-fixed-xs` | `0.875rem` (14px, fixed — never responsive) |
+| Textarea line-height | `--ao-leading-md` | `1.5rem` |
+| Minimised icon btn size | `--ao-spacing-7` | `2rem` (32px) |
+| Minimised header btn height | `--ao-spacing-7` | `2rem` (32px) |
+| Minimised header btn padding | `--ao-spacing-4` | `0.75rem` (12px) |
+| Minimised header btn font | `--ao-font-fluid-xxs` | `0.75rem` |
 
 ## Overview
 
@@ -100,7 +100,7 @@ Shows previously saved prompt versions, each with an author avatar and timestamp
 
 ### Interaction model — radio toggle
 
-- **Click a row** → selects it (green check replaces avatar portrait), loads that row's `data-prompt` into the textarea, marks prompt as "template-linked" (border highlights to `--ai-border-primary`)
+- **Click a row** → selects it (green check replaces avatar portrait), loads that row's `data-prompt` into the textarea, marks prompt as "template-linked" (border highlights to `--ao-border-primary`)
 - **Click the same row again** → deselects it, reverts textarea to last saved value
 - **Click a different row** → deselects previous, selects new one
 - **Selecting a VH row clears any active Prompt Template** (mutual exclusivity)
@@ -109,11 +109,11 @@ Shows previously saved prompt versions, each with an author avatar and timestamp
 
 | State | Background | Border | Avatar |
 |---|---|---|---|
-| Default (unselected) | transparent | transparent | Portrait image, `--ai-surface-elevated-1` ring |
-| Hover | `--ai-surface-elevated-1` | `--ai-border-invert` | Portrait image |
-| Selected | `--ai-surface-elevated-1` | `--ai-border-invert` | Green check circle (`--ai-surface-success`) |
-| Live | `--ai-surface-elevated-2` | none | Portrait image |
-| Selected & Live | `--ai-surface-elevated-2` | none | Green check circle, wider gap (`--ai-spacing-5`) |
+| Default (unselected) | transparent | transparent | Portrait image, `--ao-surface-elevated-1` ring |
+| Hover | `--ao-surface-elevated-1` | `--ao-border-invert` | Portrait image |
+| Selected | `--ao-surface-elevated-1` | `--ao-border-invert` | Green check circle (`--ao-surface-success`) |
+| Live | `--ao-surface-elevated-2` | none | Portrait image |
+| Selected & Live | `--ao-surface-elevated-2` | none | Green check circle, wider gap (`--ao-spacing-5`) |
 
 ### Live row
 
@@ -133,7 +133,7 @@ Shows reusable prompt presets. Each item has an icon, title, and expandable desc
 
 ### Interaction model — radio toggle with accordion
 
-- **Click an item** → selects it (border changes to `--ai-border-invert`), loads the item's description text into the textarea, marks prompt as "template-linked"
+- **Click an item** → selects it (border changes to `--ao-border-invert`), loads the item's description text into the textarea, marks prompt as "template-linked"
 - **Click the same item again** → deselects, reverts textarea to saved value
 - **Click a different item** → deselects previous, selects new
 - **Selecting a template clears any active VH row** (mutual exclusivity)
@@ -159,9 +159,9 @@ Any change to the textarea (including loads from VH/PT) triggers dirty detection
 
 | State | Header buttons shown | Prompt border |
 |---|---|---|
-| Clean | "Make Live" (disabled) | `--ai-border-secondary` (default) |
-| Dirty | "Discard Changes" + "Save" | `--ai-border-secondary` (default) |
-| Template-linked | Per dirty state above | `--ai-border-primary` (highlighted via `.system-role__prompt--template-linked`) |
+| Clean | "Make Live" (disabled) | `--ao-border-secondary` (default) |
+| Dirty | "Discard Changes" + "Save" | `--ao-border-secondary` (default) |
+| Template-linked | Per dirty state above | `--ao-border-primary` (highlighted via `.system-role__prompt--template-linked`) |
 
 - **Discard** → reverts textarea to last saved value, clears dirty + template-linked state
 - **Save** → updates saved value, clears dirty state
@@ -172,11 +172,11 @@ Any change to the textarea (including loads from VH/PT) triggers dirty detection
 
 | Property | Figma value | Decision |
 |---|---|---|
-| Modal box-shadow | `--ai-shadow-xl` | Resolved — uses shadow token |
+| Modal box-shadow | `--ao-shadow-xl` | Resolved — uses shadow token |
 | Backdrop colour (light) | `rgba(27, 27, 31, 0.5)` | Approved — Neutral/900 at 50% opacity |
 | Backdrop colour (dark) | `rgba(0, 0, 0, 0.6)` | Approved — true black at 60% opacity |
 | Backdrop blur | Not specified in tokens | Approved as `blur(2px)` |
-| Textarea text colour | Figma: `text-black` (`#000000`) | Approved substitution: `--ai-text-primary` for dark mode correctness |
+| Textarea text colour | Figma: `text-black` (`#000000`) | Approved substitution: `--ao-text-primary` for dark mode correctness |
 
 ## JS Behaviors
 
@@ -199,7 +199,7 @@ Any change to the textarea (including loads from VH/PT) triggers dirty detection
 
 Minimised mode is triggered by:
 1. `.system-role--minimised` CSS modifier (layout + size overrides)
-2. `data-layout="minimised"` attribute (activates `tokens-minimised.css` — shrinks `--ai-font-fluid-*` tokens)
+2. `data-layout="minimised"` attribute (activates `tokens-minimised.css` — shrinks `--ao-font-fluid-*` tokens)
 
 The header in Minimised mode mirrors the `@media (max-width: 767px)` layout in `Header.css`, but applied via a CSS class selector rather than a media query — allowing the compact layout in a deliberate side-panel context independent of screen width.
 
@@ -229,8 +229,8 @@ Header variant in Figma.
 
 ## Notes
 
-- The `data-layout="minimised"` attribute activates `css/tokens-minimised.css` which shrinks all `--ai-font-fluid-*` tokens to their compact values — no per-property overrides needed for fluid typography.
-- Box-shadow token gap noted for future Figma work: `--ai-shadow-modal` or similar.
+- The `data-layout="minimised"` attribute activates `css/tokens-minimised.css` which shrinks all `--ao-font-fluid-*` tokens to their compact values — no per-property overrides needed for fluid typography.
+- Box-shadow token gap noted for future Figma work: `--ao-shadow-modal` or similar.
 - Drag and resize use `--no-transition` class to suppress CSS transitions during pointer events. Transitions resume on `mouseup`.
 - The right edge of the panel stays fixed during left-edge resize (the panel grows leftward).
 - On minimise, JS sets `modal.style.height = 75vh` and `textarea.style.height = panelHeight/3` to give a concrete starting layout. Both heights are independently resizable afterward.

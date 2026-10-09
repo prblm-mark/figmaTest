@@ -9,33 +9,33 @@
   <link rel="stylesheet" href="Chart.css">
   <style>
     body {
-      padding: var(--ai-spacing-7);
-      background: var(--ai-surface-secondary);
+      padding: var(--ao-spacing-7);
+      background: var(--ao-surface-secondary);
       min-height: 100vh;
       max-width: 60rem;
       margin: 0 auto;
     }
     .demo-section {
-      margin-bottom: var(--ai-spacing-9);
+      margin-bottom: var(--ao-spacing-9);
     }
     .demo-section__title {
-      font-size: var(--ai-font-fixed-xs);
-      font-weight: var(--ai-font-semibold);
-      color: var(--ai-text-contrast);
+      font-size: var(--ao-font-fixed-xs);
+      font-weight: var(--ao-font-semibold);
+      color: var(--ao-text-contrast);
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin: 0 0 var(--ai-spacing-5);
+      margin: 0 0 var(--ao-spacing-5);
     }
     .demo-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: var(--ai-spacing-6);
+      gap: var(--ao-spacing-6);
     }
     h1 {
-      font-size: var(--ai-font-fixed-4xl);
-      font-weight: var(--ai-font-bold);
-      color: var(--ai-text-primary);
-      margin: 0 0 var(--ai-spacing-7);
+      font-size: var(--ao-font-fixed-4xl);
+      font-weight: var(--ao-font-bold);
+      color: var(--ao-text-primary);
+      margin: 0 0 var(--ao-spacing-7);
     }
   </style>
 </head>
@@ -149,11 +149,11 @@
 
     const cs = getComputedStyle(document.documentElement);
     const tok = (n, fb) => (cs.getPropertyValue(n).trim() || fb);
-    const brand = tok('--ai-surface-brand', '#0071d8');
-    const success = tok('--ai-surface-success', '#30cb90');
-    const contrast = tok('--ai-surface-brand-soft', '#bfd1ff');
-    const text = tok('--ai-text-contrast', '#67676c');
-    const grid = tok('--ai-border-secondary', '#e2e2e3');
+    const brand = tok('--ao-surface-brand', '#0071d8');
+    const success = tok('--ao-surface-success', '#30cb90');
+    const contrast = tok('--ao-surface-brand-soft', '#bfd1ff');
+    const text = tok('--ao-text-contrast', '#67676c');
+    const grid = tok('--ao-border-secondary', '#e2e2e3');
 
     Chart.defaults.font.family = 'Inter, sans-serif';
     Chart.defaults.font.size = 12;

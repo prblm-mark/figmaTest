@@ -9,18 +9,18 @@
 .input {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);             /* 8px */
+  gap: var(--ao-spacing-3);             /* 8px */
 }
 
 /* ── Label ───────────────────────────────────────────── */
 
 .input__label {
   display: block;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);   /* 14px — title/xs */
-  font-weight: var(--ai-font-semibold); /* 600 */
-  line-height: var(--ai-leading-xs);     /* 16px */
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);   /* 14px — title/xs */
+  font-weight: var(--ao-font-semibold); /* 600 */
+  line-height: var(--ao-leading-xs);     /* 16px */
+  color: var(--ao-text-primary);
 }
 
 /* ── Label row (optional back button + label) ────────── */
@@ -31,7 +31,7 @@
 .input__label-row {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);             /* 8px */
+  gap: var(--ao-spacing-3);             /* 8px */
 }
 
 .input__label-row .input__label {
@@ -46,30 +46,30 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--ai-spacing-1);
-  padding: var(--ai-spacing-2);          /* 6px */
+  gap: var(--ao-spacing-1);
+  padding: var(--ao-spacing-2);          /* 6px */
   flex-shrink: 0;
-  background-color: var(--ai-btn-secondary-bg);
-  border: 1px solid var(--ai-btn-secondary-border);
-  border-radius: var(--ai-radius-sm);
-  color: var(--ai-btn-secondary-text);
+  background-color: var(--ao-btn-secondary-bg);
+  border: 1px solid var(--ao-btn-secondary-border);
+  border-radius: var(--ao-radius-sm);
+  color: var(--ao-btn-secondary-text);
   cursor: pointer;
-  transition: background-color var(--ai-transition-default),
-              border-color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default),
+              border-color var(--ao-transition-default);
 }
 
 .input__label-back:hover {
-  background-color: var(--ai-btn-secondary-bg-hover);
-  border-color: var(--ai-btn-secondary-border-hover);
+  background-color: var(--ao-btn-secondary-bg-hover);
+  border-color: var(--ao-btn-secondary-border-hover);
 }
 
 .input__label-back:active {
-  background-color: var(--ai-btn-secondary-bg-pressed);
+  background-color: var(--ao-btn-secondary-bg-pressed);
 }
 
 .input__label-back [data-lucide] {
-  width: var(--ai-icon-size-xs);         /* 12px */
-  height: var(--ai-icon-size-xs);
+  width: var(--ao-icon-size-xs);         /* 12px */
+  height: var(--ao-icon-size-xs);
 }
 
 /* ── Field wrapper ───────────────────────────────────── */
@@ -77,32 +77,32 @@
 .input__wrap {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);             /* 8px */
-  min-height: var(--ai-spacing-8);      /* 40px */
-  padding: 0 var(--ai-spacing-4);       /* 0 12px */
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  transition: border-color var(--ai-transition-default),
-              box-shadow var(--ai-transition-default);
+  gap: var(--ao-spacing-3);             /* 8px */
+  min-height: var(--ao-spacing-8);      /* 40px */
+  padding: 0 var(--ao-spacing-4);       /* 0 12px */
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  transition: border-color var(--ao-transition-default),
+              box-shadow var(--ao-transition-default);
 }
 
 .input__wrap:hover {
-  border-color: var(--ai-border-brand);
+  border-color: var(--ao-border-brand);
 }
 
 .input__wrap:focus-within {
-  border-color: var(--ai-border-brand);
-  box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 95%, transparent);
+  border-color: var(--ao-border-brand);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px color-mix(in srgb, var(--ao-surface-brand-soft) 95%, transparent);
   outline: none;
 }
 
 /* Light-mode focus ring is 70%; dark mode keeps the softer 30% (brand-soft is a
    lighter blue in dark, so a strong ring reads as heavy). */
 [data-theme="dark"] .input__wrap:focus-within {
-  box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 30%, transparent);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px color-mix(in srgb, var(--ao-surface-brand-soft) 30%, transparent);
 }
 
 /* Suppress global :focus-visible outline from base.css on child elements */
@@ -114,9 +114,9 @@
 /* ── Icon ────────────────────────────────────────────── */
 
 .input__icon {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-contrast);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-contrast);
   flex-shrink: 0;
 }
 
@@ -128,15 +128,15 @@
   border: none;
   outline: none;
   background: transparent;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);   /* 14px — body/xs */
-  font-weight: var(--ai-font-regular);  /* 400 */
-  line-height: var(--ai-leading-md);     /* 24px */
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);   /* 14px — body/xs */
+  font-weight: var(--ao-font-regular);  /* 400 */
+  line-height: var(--ao-leading-md);     /* 24px */
+  color: var(--ao-text-primary);
 }
 
 .input__control::placeholder {
-  color: var(--ai-text-contrast);       /* --text/contrast-2 resolved to --ai-text-contrast */
+  color: var(--ao-text-contrast);       /* --text/contrast-2 resolved to --ao-text-contrast */
 }
 
 /* ── Clear button ────────────────────────────────────── */
@@ -149,7 +149,7 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  color: var(--ai-icon-contrast);
+  color: var(--ao-icon-contrast);
   flex-shrink: 0;
   line-height: 0;
   visibility: hidden;
@@ -160,25 +160,25 @@
 }
 
 .input__clear [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 /* ── Help text ───────────────────────────────────────── */
 
 .input__help {
-  /* base.css sets `p { margin: 0 0 var(--ai-spacing-5) }`, so this <p> inherited a 16px
+  /* base.css sets `p { margin: 0 0 var(--ao-spacing-5) }`, so this <p> inherited a 16px
    * bottom margin that nothing here reset — adding 16px to the height of EVERY input that
    * shows help or an error text, in every consumer. Found via the Seating Planner's
    * create-plan modal, whose grid rows measured 104/104/120 against Figma's 88/88/104.
    * Same bug class as Badge's <p> (2026-08-25): a component paragraph picking up the
    * page-level margin because the component never zeroed it. */
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);  /* 12px */
-  font-weight: var(--ai-font-regular);  /* 400 */
-  line-height: var(--ai-leading-xs);     /* 16px */
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);  /* 12px */
+  font-weight: var(--ao-font-regular);  /* 400 */
+  line-height: var(--ao-leading-xs);     /* 16px */
+  color: var(--ao-text-secondary);
 }
 
 /* ── Action row ──────────────────────────────────────── */
@@ -208,17 +208,17 @@
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
-  gap: var(--ai-spacing-0-5);            /* 2px */
+  gap: var(--ao-spacing-0-5);            /* 2px */
   padding: 0;
   background: none;
   border: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-4xs);   /* 11px */
-  font-weight: var(--ai-font-medium);
-  line-height: var(--ai-leading-xs);     /* 16px */
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-4xs);   /* 11px */
+  font-weight: var(--ao-font-medium);
+  line-height: var(--ao-leading-xs);     /* 16px */
   letter-spacing: 0.11px;                /* optical tracking from Figma — px exception */
   font-feature-settings: 'case' 1;
-  color: var(--ai-text-brand);
+  color: var(--ao-text-brand);
   white-space: nowrap;
   cursor: pointer;
   text-decoration: none;
@@ -229,43 +229,43 @@
 }
 
 .input__action:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
-  border-radius: var(--ai-radius-sm);
+  border-radius: var(--ao-radius-sm);
 }
 
 /* 12px, not the 16px an icon in a form usually gets: Figma places a 20px Plus component scaled
- * to 12x12 (`Icon/20px/Plus` at w=12 h=12), and `--ai-icon-size-xs` is bound on the node. */
+ * to 12x12 (`Icon/20px/Plus` at w=12 h=12), and `--ao-icon-size-xs` is bound on the node. */
 .input__action [data-lucide],
 .input__action svg {
-  width: var(--ai-icon-size-xs);
-  height: var(--ai-icon-size-xs);
+  width: var(--ao-icon-size-xs);
+  height: var(--ao-icon-size-xs);
   flex-shrink: 0;
 }
 
 /* ── Error state ─────────────────────────────────────── */
 
 .input--error .input__wrap {
-  border-color: var(--ai-border-error);
+  border-color: var(--ao-border-error);
 }
 
 .input--error .input__wrap:hover {
-  border-color: var(--ai-border-error);
+  border-color: var(--ao-border-error);
 }
 
 .input--error .input__wrap:focus-within {
-  border-color: var(--ai-border-error);
-  box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px var(--ai-surface-error-soft); /* red ring, not blue */
+  border-color: var(--ao-border-error);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px var(--ao-surface-error-soft); /* red ring, not blue */
 }
 
 .input--error .input__help {
-  color: var(--ai-text-error);
+  color: var(--ao-text-error);
 }
 
 /* ── Size: sm ────────────────────────────────────────── */
 
-/* No max-width here. A `max-width: var(--ai-size-3)` (192px) lived on this rule until
+/* No max-width here. A `max-width: var(--ao-size-3)` (192px) lived on this rule until
  * 2026-08-25 and was removed at the designer's direction: a SIZE modifier should govern
  * height, padding and typography, not cap width. It had already been worked around in
  * three places — Datatables lifted it in a media query, ControlScreen with an inline
@@ -273,15 +273,15 @@
  * Consumers that want a narrow small input set their own width. */
 .input--sm .input__wrap,
 .input__wrap.input--sm {
-  min-height: var(--ai-spacing-7);      /* 32px */
-  /* Figma binds `--ai-spacing-4` / `--ai-spacing-3` on the sm Field (78:2029). Both were
-   * wrong until 2026-08-28: padding was --ai-spacing-3 (8px) and gap --ai-spacing-2 (6px),
+  min-height: var(--ao-spacing-7);      /* 32px */
+  /* Figma binds `--ao-spacing-4` / `--ao-spacing-3` on the sm Field (78:2029). Both were
+   * wrong until 2026-08-28: padding was --ao-spacing-3 (8px) and gap --ao-spacing-2 (6px),
    * introduced together in 93b1a45b with no Figma citation alongside a `max-width: 192px`
    * that the designer has since removed as an invention. Same commit, same class of error —
    * these two were simply not caught at the same time. 12px also matches the Base padding
    * this file already uses, so the two sizes now differ only in height and typography. */
-  padding: 0 var(--ai-spacing-4);       /* 0 12px */
-  gap: var(--ai-spacing-3);              /* 8px */
+  padding: 0 var(--ao-spacing-4);       /* 0 12px */
+  gap: var(--ao-spacing-3);              /* 8px */
 }
 
 /* ── Size: sm — typography ────────────────────────────
@@ -302,12 +302,12 @@
  * One selector covers both markup patterns: `input--sm` on the container (label is a
  * descendant) and on the wrap itself (Datatables' toolbars, which carry no label). */
 .input--sm .input__label {
-  font-size: var(--ai-font-fixed-2xs);  /* 13px */
+  font-size: var(--ao-font-fixed-2xs);  /* 13px */
 }
 
 .input--sm .input__control {
-  font-size: var(--ai-font-fixed-2xs);  /* 13px */
-  line-height: var(--ai-leading-xs);     /* 16px */
+  font-size: var(--ao-font-fixed-2xs);  /* 13px */
+  line-height: var(--ao-leading-xs);     /* 16px */
 }
 
 /* ── Stepper (number input with − / + buttons) ────────
@@ -323,18 +323,18 @@
  * component would have had to re-implement all five and keep them in sync by hand.
  *
  * Reference mapping — Flowbite's semantic names to ours:
- *   bg-neutral-secondary-medium (buttons)  -> --ai-surface-secondary
- *   hover:bg-neutral-tertiary-medium       -> --ai-surface-contrast
- *   border-default-medium                  -> --ai-border-secondary
- *   h-10 / px-3                            -> --ai-spacing-8 (a 40px square button)
- *   w-4 h-4 icons                          -> --ai-icon-size-sm
- *   text-sm, centred                       -> Input's own --ai-font-fixed-xs
+ *   bg-neutral-secondary-medium (buttons)  -> --ao-surface-secondary
+ *   hover:bg-neutral-tertiary-medium       -> --ao-surface-contrast
+ *   border-default-medium                  -> --ao-border-secondary
+ *   h-10 / px-3                            -> --ao-spacing-8 (a 40px square button)
+ *   w-4 h-4 icons                          -> --ao-icon-size-sm
+ *   text-sm, centred                       -> Input's own --ao-font-fixed-xs
  *   max-w-[9rem]                           -> DROPPED; fluid instead (designer) — 144px
  *                                             matches no token, and the control should fill
  *                                             whatever column holds it.
  *
  * The reference tints the FIELD as well as the buttons. Here only the buttons are tinted and
- * the field stays --ai-surface-primary (designer), so a stepper sitting beside a text Input
+ * the field stays --ao-surface-primary (designer), so a stepper sitting beside a text Input
  * or a Select does not read as a different species of control. */
 
 .input--stepper .input__wrap {
@@ -355,41 +355,41 @@
    * Measured 40x38: the wrap is 40 and the buttons sit INSIDE its 1px border. The reference
    * computes the same way (h-10 inside a bordered container), so this is not a discrepancy. */
   align-self: stretch;
-  inline-size: var(--ai-spacing-8);
+  inline-size: var(--ao-spacing-8);
   padding: 0;
   border: 0;
-  background-color: var(--ai-surface-secondary);
-  color: var(--ai-icon-primary);
+  background-color: var(--ao-surface-secondary);
+  color: var(--ao-icon-primary);
   cursor: pointer;
-  transition: background-color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default);
 }
 
 .input--sm .input__step {
-  inline-size: var(--ai-spacing-7);
+  inline-size: var(--ao-spacing-7);
 }
 
 /* Hairlines between each button and the field. 1px is the border-width exception. */
 .input__step--dec {
-  border-inline-end: 1px solid var(--ai-border-secondary);
+  border-inline-end: 1px solid var(--ao-border-secondary);
 }
 
 .input__step--inc {
-  border-inline-start: 1px solid var(--ai-border-secondary);
+  border-inline-start: 1px solid var(--ao-border-secondary);
 }
 
 .input__step [data-lucide],
 .input__step svg {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
 }
 
 .input__step:hover:not(:disabled) {
-  background-color: var(--ai-surface-contrast);
+  background-color: var(--ao-surface-contrast);
 }
 
 /* At a bound, the button is genuinely unavailable rather than merely styled that way —
  * Input.js disables it, so it also leaves the tab order and reports itself to assistive tech. */
-/* Opacity alone, deliberately: there is no `--ai-icon-disabled` token, and referencing one
+/* Opacity alone, deliberately: there is no `--ao-icon-disabled` token, and referencing one
  * with a fallback would read as though there were. */
 .input__step:disabled {
   cursor: not-allowed;
@@ -401,20 +401,20 @@
  * two — so an inset outline on the focused button is the only thing that tells a keyboard
  * user whether they are about to increment or decrement. */
 .input__step:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: -2px;
 }
 
 .input--stepper .input__control {
   text-align: center;
-  /* The Stepper keeps `--ai-leading-md` (24px) on its number at BOTH sizes — Figma binds it on
+  /* The Stepper keeps `--ao-leading-md` (24px) on its number at BOTH sizes — Figma binds it on
    * the sm variant (3567:105368) exactly as on Base — whereas a plain Input's sm field steps
-   * down to `--ai-leading-xs`. So this re-asserts 24px against the `.input--sm .input__control`
+   * down to `--ao-leading-xs`. So this re-asserts 24px against the `.input--sm .input__control`
    * rule above. It relies on SOURCE ORDER, not specificity: both selectors are two classes, and
    * this block is later in the file. Do not move the stepper block above the size block.
    *
    * The font-size is deliberately NOT re-asserted — 13px at sm is correct for the Stepper too. */
-  line-height: var(--ai-leading-md);     /* 24px */
+  line-height: var(--ao-leading-md);     /* 24px */
   /* Chrome derives a number input's intrinsic width from its `max` attribute's digit count,
    * and with no `max` at all it falls back to a ~20-character default. That intrinsic width
    * became the wrapper's MIN-CONTENT size, so a stepper billed as "fluid" was silently forcing
@@ -437,8 +437,8 @@
   margin: 0;
 }
 
-/* The Stepper binds its help/error text to `--ai-font-fixed-3xs` where a plain Input's help binds
- * `--ai-font-fixed-xxs` (via the `body/xxs` style). Both are 0.75rem / 12px today, in every mode,
+/* The Stepper binds its help/error text to `--ao-font-fixed-3xs` where a plain Input's help binds
+ * `--ao-font-fixed-xxs` (via the `body/xxs` style). Both are 0.75rem / 12px today, in every mode,
  * so this rule is visually inert — which is exactly the point of writing it: the designer
  * confirmed on 2026-08-28 that the Stepper genuinely sits on the `3xs` ramp position, so if the
  * ramp ever moves, `.input__help` renders the size each component asked for instead of silently
@@ -452,11 +452,11 @@
  * No order dependency here, unlike the line-height re-assert above — two classes beats the
  * one-class `.input__help`, so specificity settles it wherever this rule sits.
  *
- * Everything else on this element already agreed and needed no rule: family `--ai-font-body`,
- * weight `--ai-font-regular`, `--ai-leading-xs`, and `--ai-text-secondary` / `--ai-text-error`.
+ * Everything else on this element already agreed and needed no rule: family `--ao-font-body`,
+ * weight `--ao-font-regular`, `--ao-leading-xs`, and `--ao-text-secondary` / `--ao-text-error`.
  * The family only agreed as of the same day — Figma had the Stepper's help and number on
- * `--ai-font-title`, and the designer repointed every non-title element to `--ai-font-body`. */
+ * `--ao-font-title`, and the designer repointed every non-title element to `--ao-font-body`. */
 .input--stepper .input__help {
-  font-size: var(--ai-font-fixed-3xs);  /* 12px */
+  font-size: var(--ao-font-fixed-3xs);  /* 12px */
 }
 

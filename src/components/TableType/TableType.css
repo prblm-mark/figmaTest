@@ -17,13 +17,13 @@
  * approved here (user-approved 2026-08-24) — these are not design values.
  *
  * The compositing bases are pure #ffffff / #000000 because that is what Figma composites
- * against, NOT --ai-surface-primary. Using a theme-aware token would change the formula in
+ * against, NOT --ao-surface-primary. Using a theme-aware token would change the formula in
  * dark mode and break the match.
  *
  * TYPOGRAPHY: the CSS deliberately LEADS Figma on three properties, at the designer's request
  * — font-weight is bold (700) where Figma still has semibold (600), letter-spacing is
- * --ai-tracking-7 (0.05em) where Figma still has --ai-tracking-5 (0.0125em) (both 2026-08-25),
- * and font-size is --ai-font-fixed-6xs (9px) where Figma still has --ai-font-fixed-5xs (10px)
+ * --ao-tracking-7 (0.05em) where Figma still has --ao-tracking-5 (0.0125em) (both 2026-08-25),
+ * and font-size is --ao-font-fixed-6xs (9px) where Figma still has --ao-font-fixed-5xs (10px)
  * (2026-09-10). Figma is to be updated to match. Do not "correct" these back from a Figma
  * fetch. See the dark-mode note in TableType.figma-notes.md.
  *
@@ -39,17 +39,17 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--ai-spacing-0-5) var(--ai-spacing-3);
+  padding: var(--ao-spacing-0-5) var(--ao-spacing-3);
   border: 1px solid color-mix(in srgb, #ffffff 70%, var(--table-type-color));
-  border-radius: var(--ai-radius-full);
+  border-radius: var(--ao-radius-full);
   background-color: color-mix(in srgb, #ffffff 80%, var(--table-type-color));
   color: color-mix(in srgb, #000000 25%, var(--table-type-color));
 
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-6xs);
-  font-weight: var(--ai-font-bold);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-6xs);
+  font-weight: var(--ao-font-bold);
   line-height: normal;
-  letter-spacing: var(--ai-tracking-7);
+  letter-spacing: var(--ao-tracking-7);
   text-transform: uppercase;
   white-space: nowrap;
 }

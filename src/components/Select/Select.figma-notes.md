@@ -13,7 +13,7 @@ Select is a Tier=Component design-system component for picking from a list of va
 | `2527:1994` | Default | Default | Bordered button trigger, value text + chevron |
 | `2527:1996` | Default | sm | 32px height, smaller font |
 | `2755:2337` | Label Left | Default | Label beside control on one row (`gap` 16px); control grows to fill. Same trigger as Default |
-| `2527:1993` | Multiselect | Default | List view — selected items highlighted with `--ai-surface-minimal` bg + medium font weight |
+| `2527:1993` | Multiselect | Default | List view — selected items highlighted with `--ao-surface-minimal` bg + medium font weight |
 | `2527:1992` | Disabled | Default | Greyed bg, muted text, not interactive |
 | `2527:2004` | Disabled | sm | Smaller disabled |
 | `2527:1990` | Category Dropdown | Default | Segmented — flag + country (left) + region select (right) |
@@ -38,39 +38,39 @@ Select is a Tier=Component design-system component for picking from a list of va
 
 | Property | Token | Value |
 |---|---|---|
-| Trigger bg | `--ai-surface-primary` | #ffffff |
-| Trigger border | `--ai-border-secondary` | #e2e2e3 |
-| Trigger radius | `--ai-radius-md` | 8px |
-| Trigger height (Default) | `--ai-spacing-8` | 40px |
-| Trigger height (sm) | `--ai-spacing-7` | 32px |
-| Trigger padding-left (Default) | `--ai-spacing-5` | 16px |
-| Trigger padding-left (sm) | `--ai-spacing-4` | 12px |
-| Trigger padding-right (Default) | `--ai-spacing-4` | 12px |
-| Trigger padding-right (sm) | `--ai-spacing-3` | 8px |
-| Trigger gap | `--ai-spacing-3` | 8px |
-| Hover/focus border | `--ai-border-brand` | #0071d8 |
-| Focus halo | `--ai-surface-brand-soft` | brand contrast |
-| Label font | `--ai-font-title` semibold + `--ai-font-fixed-xs` | Inter 600 / 14px |
-| Value font (Default) | `--ai-font-title` regular + `--ai-font-fixed-xs` | Inter 400 / 14px |
-| Value font (sm) | `--ai-font-title` regular + `--ai-font-fixed-xxs` | Inter 400 / 12px |
-| Value color | `--ai-text-primary` | #212123 |
-| Disabled bg | `--ai-surface-minimal` | #f6f6f7 |
-| Disabled text | `--ai-text-contrast` | #67676c |
-| Underline border | `--ai-border-secondary` (2px) | grey |
-| Underline hover | `--ai-border-brand` (2px) | brand blue |
-| Multiselect list padding | `--ai-spacing-2` | 6px |
-| Multiselect item padding | `--ai-spacing-2` v / `--ai-spacing-3` h | 6/8px |
-| Multiselect item radius | `--ai-radius-sm` | 4px |
-| Multiselect item height | `--ai-spacing-8` | 40px (`min-height`) |
+| Trigger bg | `--ao-surface-primary` | #ffffff |
+| Trigger border | `--ao-border-secondary` | #e2e2e3 |
+| Trigger radius | `--ao-radius-md` | 8px |
+| Trigger height (Default) | `--ao-spacing-8` | 40px |
+| Trigger height (sm) | `--ao-spacing-7` | 32px |
+| Trigger padding-left (Default) | `--ao-spacing-5` | 16px |
+| Trigger padding-left (sm) | `--ao-spacing-4` | 12px |
+| Trigger padding-right (Default) | `--ao-spacing-4` | 12px |
+| Trigger padding-right (sm) | `--ao-spacing-3` | 8px |
+| Trigger gap | `--ao-spacing-3` | 8px |
+| Hover/focus border | `--ao-border-brand` | #0071d8 |
+| Focus halo | `--ao-surface-brand-soft` | brand contrast |
+| Label font | `--ao-font-title` semibold + `--ao-font-fixed-xs` | Inter 600 / 14px |
+| Value font (Default) | `--ao-font-title` regular + `--ao-font-fixed-xs` | Inter 400 / 14px |
+| Value font (sm) | `--ao-font-title` regular + `--ao-font-fixed-xxs` | Inter 400 / 12px |
+| Value color | `--ao-text-primary` | #212123 |
+| Disabled bg | `--ao-surface-minimal` | #f6f6f7 |
+| Disabled text | `--ao-text-contrast` | #67676c |
+| Underline border | `--ao-border-secondary` (2px) | grey |
+| Underline hover | `--ao-border-brand` (2px) | brand blue |
+| Multiselect list padding | `--ao-spacing-2` | 6px |
+| Multiselect item padding | `--ao-spacing-2` v / `--ao-spacing-3` h | 6/8px |
+| Multiselect item radius | `--ao-radius-sm` | 4px |
+| Multiselect item height | `--ao-spacing-8` | 40px (`min-height`) |
 | Multiselect item gap | `1px` | spacing/px (raw) |
-| Multiselect selected bg | `--ai-surface-minimal` | #f6f6f7 |
-| Multiselect selected weight | `--ai-font-medium` | 500 |
-| Category divider | `--ai-border-secondary` (1px right) | grey |
-| Category bg | `--ai-surface-minimal` | #f6f6f7 |
-| Category hover bg | `--ai-surface-secondary` | #e2e2e3 |
-| Category flag font | `--ai-font-fixed-md` | 18px |
-| Chevron icon size | `--ai-icon-size-sm` | 16px |
-| Chevron color | `--ai-icon-contrast` | #929295 |
+| Multiselect selected bg | `--ao-surface-minimal` | #f6f6f7 |
+| Multiselect selected weight | `--ao-font-medium` | 500 |
+| Category divider | `--ao-border-secondary` (1px right) | grey |
+| Category bg | `--ao-surface-minimal` | #f6f6f7 |
+| Category hover bg | `--ao-surface-secondary` | #e2e2e3 |
+| Category flag font | `--ao-font-fixed-md` | 18px |
+| Chevron icon size | `--ao-icon-size-sm` | 16px |
+| Chevron color | `--ao-icon-contrast` | #929295 |
 
 ## Token Gaps
 
@@ -94,7 +94,7 @@ No native `<select>` element used (button-based triggers display the value as vi
 - Country flags use emoji (🇬🇧). For higher-fidelity rendering swap for SVG flags in production.
 - Multiselect is shown in its open/list state. In production a multiselect would also have a button trigger that opens this list — same `.sel__list` rendered in a popover.
 - Underline variant has no horizontal padding so the value aligns flush-left with the parent surface (matches Figma where pl/pr are 0).
-- Disabled `:hover` is suppressed (`border-color: --ai-border-secondary`) to override the brand-border hover.
+- Disabled `:hover` is suppressed (`border-color: --ao-border-secondary`) to override the brand-border hover.
 - **Label Left** (`2755:2337`) only changes the `.sel` wrapper from a column to a horizontal row (`gap` 16px) — the label, control, value, chevron and popover sub-elements are unchanged. Control + menu are wrapped in `.sel__field` (`position: relative`) so the dropdown anchors to the control, not the full row. Reuses the single-select dropdown JS unchanged.
 
 ## Double-include guard (2026-08-27)
@@ -114,8 +114,8 @@ page.
 
 ## Size=sm: the menu was never sized with the control (2026-09-22)
 
-`.sel__control--sm` drops to `--ai-font-fixed-xxs` (12px), but `.sel__menu-item`
-stayed at `--ai-font-fixed-xs` (14px) — so every small select opened a menu
+`.sel__control--sm` drops to `--ao-font-fixed-xxs` (12px), but `.sel__menu-item`
+stayed at `--ao-font-fixed-xs` (14px) — so every small select opened a menu
 whose text was **bigger than the field that summoned it**. Found by the
 designer on the listing screens' bulk-action selects; it affects every `--sm`
 select, not just those.
@@ -126,7 +126,7 @@ needing a second modifier class on the wrapper:
 
 ```css
 .sel:has(.sel__control--sm) .sel__menu-item {
-  font-size: var(--ai-font-fixed-3xs);
+  font-size: var(--ao-font-fixed-3xs);
 }
 ```
 

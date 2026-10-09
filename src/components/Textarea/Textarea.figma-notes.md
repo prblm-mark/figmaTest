@@ -39,20 +39,20 @@ Multi-line text input for longer form content. Mirrors the Input component's tok
 
 | Property | Token | Matches Input? |
 |----------|-------|----------------|
-| Background | `--ai-surface-primary` | Yes |
-| Border | `--ai-border-secondary` | Yes |
-| Border radius | `--ai-radius-md` | Yes |
-| Hover border | `--ai-border-brand` | Yes |
-| Focus ring | `--ai-surface-brand-soft` (3px) | Yes |
-| Error border | `--ai-border-error` | Yes |
-| Error ring | `--ai-surface-error-soft` (3px) | Yes |
-| Disabled bg | `--ai-surface-minimal` | Yes |
-| Label font | `--ai-font-title` / `--ai-font-fixed-xs` / `--ai-font-semibold` | Yes |
-| Control font | `--ai-font-body` / `--ai-font-fixed-xs` / `--ai-font-regular` | Yes |
-| Help font | `--ai-font-body` / `--ai-font-fixed-xxs` / `--ai-font-regular` | Yes |
-| Placeholder | `--ai-text-contrast` | Yes |
-| Padding (base) | `--ai-spacing-4` top/bottom, `--ai-spacing-5` left/right | — |
-| Padding (sm) | `--ai-spacing-3` top/bottom, `--ai-spacing-4` left/right | — |
+| Background | `--ao-surface-primary` | Yes |
+| Border | `--ao-border-secondary` | Yes |
+| Border radius | `--ao-radius-md` | Yes |
+| Hover border | `--ao-border-brand` | Yes |
+| Focus ring | `--ao-surface-brand-soft` (3px) | Yes |
+| Error border | `--ao-border-error` | Yes |
+| Error ring | `--ao-surface-error-soft` (3px) | Yes |
+| Disabled bg | `--ao-surface-minimal` | Yes |
+| Label font | `--ao-font-title` / `--ao-font-fixed-xs` / `--ao-font-semibold` | Yes |
+| Control font | `--ao-font-body` / `--ao-font-fixed-xs` / `--ao-font-regular` | Yes |
+| Help font | `--ao-font-body` / `--ao-font-fixed-xxs` / `--ao-font-regular` | Yes |
+| Placeholder | `--ao-text-contrast` | Yes |
+| Padding (base) | `--ao-spacing-4` top/bottom, `--ao-spacing-5` left/right | — |
+| Padding (sm) | `--ao-spacing-3` top/bottom, `--ao-spacing-4` left/right | — |
 
 ## Dependencies
 

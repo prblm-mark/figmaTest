@@ -9,7 +9,7 @@
 .sources-carousel__track {
   display: flex;
   flex-direction: row;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
@@ -25,7 +25,7 @@
 
 .sources-card {
   container-type: inline-size;
-  flex: 0 0 calc((100% / 1.5) - (var(--ai-spacing-3) * (0.5 / 1.5)));
+  flex: 0 0 calc((100% / 1.5) - (var(--ao-spacing-3) * (0.5 / 1.5)));
   scroll-snap-align: start;
   min-width: 0;
   overflow: hidden;
@@ -40,10 +40,10 @@
 .sources-card__inner {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-4);
-  background-color: var(--ai-src-carousel-card-bg);
-  border-radius: var(--ai-radius-md);
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-4);
+  background-color: var(--ao-src-carousel-card-bg);
+  border-radius: var(--ao-radius-md);
   height: 100%;
 }
 
@@ -52,25 +52,25 @@
 .sources-card__text {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
   flex: 1;
   min-width: 0;
-  line-height: var(--ai-leading-xs);
+  line-height: var(--ao-leading-xs);
 }
 
 .sources-card__category {
-  font-family: var(--ai-font-body);
-  font-weight: var(--ai-font-medium);
-  font-size: var(--ai-font-fixed-xxs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-contrast);
   margin: 0;
 }
 
 .sources-card__title {
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fixed-xs);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-primary);
   margin: 0;
   overflow: hidden;
   display: -webkit-box;
@@ -81,9 +81,9 @@
 /* ── Card thumbnail ──────────────────────────────────── */
 
 .sources-card__thumb {
-  width: var(--ai-spacing-10);
-  height: var(--ai-spacing-10);
-  border-radius: var(--ai-radius-sm);
+  width: var(--ao-spacing-10);
+  height: var(--ao-spacing-10);
+  border-radius: var(--ao-radius-sm);
   object-fit: cover;
   flex-shrink: 0;
 }
@@ -93,7 +93,7 @@
 @container (min-width: 14em) {
   .sources-card__inner {
     flex-direction: row;
-    gap: var(--ai-spacing-5);
+    gap: var(--ao-spacing-5);
     align-items: center;
   }
 
@@ -113,11 +113,11 @@
 }
 
 .sources-carousel__nav--prev {
-  left: calc(-1 * var(--ai-spacing-8));
+  left: calc(-1 * var(--ao-spacing-8));
 }
 
 .sources-carousel__nav--next {
-  right: calc(-1 * var(--ai-spacing-8));
+  right: calc(-1 * var(--ao-spacing-8));
 }
 
 .sources-carousel__nav[disabled] {
@@ -128,7 +128,7 @@
 
 @media (min-width: 640px) {
   .sources-card {
-    flex: 0 0 calc((100% / 2.5) - (var(--ai-spacing-3) * (1.5 / 2.5)));
+    flex: 0 0 calc((100% / 2.5) - (var(--ao-spacing-3) * (1.5 / 2.5)));
   }
 }
 
@@ -136,7 +136,7 @@
 
 @media (min-width: 1024px) {
   .sources-card {
-    flex: 0 0 calc((100% / 3) - (var(--ai-spacing-3) * (2 / 3)));
+    flex: 0 0 calc((100% / 3) - (var(--ao-spacing-3) * (2 / 3)));
   }
 
   .sources-carousel__nav {

@@ -10,11 +10,11 @@
 .prompt-modifier {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
-  padding: var(--ai-spacing-4);
-  background-color: var(--ai-surface-extra-minimal);   /* designer amend 2026-09-29 (was brand-soft-extra) */
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  gap: var(--ao-spacing-4);
+  padding: var(--ao-spacing-4);
+  background-color: var(--ao-surface-extra-minimal);   /* designer amend 2026-09-29 (was brand-soft-extra) */
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
   /* Self-container: its width tracks the section body (fluid), so its descendants may query it. */
   container: prompt-modifier / inline-size;
 }
@@ -22,19 +22,19 @@
 .prompt-modifier__head {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   min-inline-size: 0;
 }
 
 .prompt-modifier__icon {
   display: flex;
   flex-shrink: 0;
-  color: var(--ai-icon-brand);
+  color: var(--ao-icon-brand);
 }
 
 .prompt-modifier__icon svg {
-  inline-size: var(--ai-icon-size-md);
-  block-size: var(--ai-icon-size-md);
+  inline-size: var(--ao-icon-size-md);
+  block-size: var(--ao-icon-size-md);
 }
 
 .prompt-modifier__text {
@@ -42,7 +42,7 @@
   min-inline-size: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
 }
 
 .prompt-modifier__title {
@@ -50,27 +50,27 @@
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: var(--ai-spacing-3);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  gap: var(--ao-spacing-3);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-2xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
 }
 
 .prompt-modifier__fills {
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-regular);
-  color: var(--ai-text-secondary);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-regular);
+  color: var(--ao-text-secondary);
 }
 
 /* One line of the prompt, so the section says what it will ask for without opening it. */
 .prompt-modifier__preview {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-secondary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -81,21 +81,21 @@
 .prompt-modifier__actions {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   flex-shrink: 0;
 }
 
-/* Edit prompt — `btn btn--tertiary btn--sm` plus the subtle `--ai-border-secondary` line the
+/* Edit prompt — `btn btn--tertiary btn--sm` plus the subtle `--ao-border-secondary` line the
  * listing's account chip carries (Case B contextual override, designer 2026-09-29), restated for
  * hover and focus because `.btn--tertiary:hover` sets the transparent hover border at (0,2,0). */
 .prompt-modifier [data-prompt-toggle],
 .prompt-modifier [data-prompt-toggle]:hover,
 .prompt-modifier [data-prompt-toggle]:focus-visible {
-  border-color: var(--ai-border-secondary);
+  border-color: var(--ao-border-secondary);
 }
 
 .prompt-modifier [data-prompt-toggle] svg {
-  transition: transform var(--ai-transition-default);
+  transition: transform var(--ao-transition-default);
 }
 
 .prompt-modifier--open [data-prompt-toggle] svg { transform: rotate(180deg); }
@@ -114,51 +114,51 @@
 .prompt-modifier__body {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 .prompt-modifier__body[hidden] { display: none; }
 
-.prompt-modifier__body .textarea__control { background-color: var(--ai-surface-primary); }
+.prompt-modifier__body .textarea__control { background-color: var(--ao-surface-primary); }
 
 .prompt-modifier__body-foot {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   flex-wrap: wrap;
 }
 
 .prompt-modifier__hint {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-secondary);
 }
 
 .prompt-modifier__status {
   margin: 0;
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  color: var(--ai-text-secondary);
+  gap: var(--ao-spacing-3);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-secondary);
 }
 
 .prompt-modifier__status[hidden] { display: none; }
 
 /* A field Generate just wrote, flashed so the eye finds what changed (cleared by the JS). */
-.prompt-modifier-filled { box-shadow: 0 0 0 2px var(--ai-surface-brand-soft); }
+.prompt-modifier-filled { box-shadow: 0 0 0 2px var(--ao-surface-brand-soft); }
 
 /* Narrow: the actions drop under the text on their own row, LEFT-aligned with the title and
  * preview — indented past the icon by its width + the head gap (designer, 2026-09-29; they were
  * right-aligned). */
 @container prompt-modifier (max-width: 479px) {
   .prompt-modifier__head { flex-wrap: wrap; }
-  .prompt-modifier__text { flex-basis: calc(100% - var(--ai-icon-size-md) - var(--ai-spacing-3)); }
+  .prompt-modifier__text { flex-basis: calc(100% - var(--ao-icon-size-md) - var(--ao-spacing-3)); }
   .prompt-modifier__actions {
     inline-size: 100%;
     justify-content: flex-start;
-    padding-inline-start: calc(var(--ai-icon-size-md) + var(--ai-spacing-3));
+    padding-inline-start: calc(var(--ao-icon-size-md) + var(--ao-spacing-3));
   }
 }
