@@ -44,19 +44,10 @@
       </div>
     </div>
   </div>
-  <p class="lede">Tray of attendees not yet seated, for the Seating Planner.</p>
-  <p class="lede">Composes <strong>AttendeeCard</strong> with <em>both</em> of its booleans off — no
-  seat number and no row actions, since an unseated person has no seat to number and nothing to
-  reorder — and <strong>Input</strong> (<code>input input--sm</code>, label-less, leading search
-  icon). <strong>Presentational only</strong>, no JS: in the real module these rows are the drag
-  <em>sources</em> that the seat rows receive, and the parent owns that.</p>
-  <p class="lede">The Type axis is data. <code>Default</code> is the empty state and
-  <code>Unassiged</code> [sic] is the populated list, so which one renders is markup the caller
-  supplies — there are no Type modifiers, just different children of <code>__body</code>.</p>
+  <p class="lede">The tray of attendees not yet seated, with a search field. Attendees are dragged from here onto seats.</p>
 
   <h2>Both types</h2>
-  <p class="lede">The count pill and the hint line are identical in both; only the body below the
-  search field changes.</p>
+  <p class="lede">Empty and populated.</p>
   <div class="rail">
   <!-- TODO(backend:SeatingPlanner): the tray contents and the count are hardcoded. This list
        is a QUERY, not a stored collection — see seating-unassigned-tray, which already specs it
@@ -182,9 +173,7 @@
   </div>
 
   <h2>Roles</h2>
-  <p class="lede">Row colour comes from AttendeeCard&rsquo;s <code>--sp-*</code> role bindings.
-  Figma&rsquo;s sample covers VIP, Speaker, Sponsor and Attendee; <strong>Host</strong> is shown
-  here too since AttendeeCard supports it and an unseated host is perfectly possible.</p>
+  <p class="lede">Each attendee shows their role colour.</p>
   <div class="rail">
   <section class="unassigned" aria-label="Unassigned attendees">
     <header class="unassigned__header">
@@ -263,10 +252,8 @@
   </section>
   </div>
 
-  <h2>No mobile variant</h2>
-  <p class="lede">The panel has <strong>no separate mobile layout</strong> — it is a fixed
-  <code>--ao-size-6</code> (320px) rail at every width, like TableDetail. On a narrow screen the
-  planner stacks it beneath the tables rather than re-drawing it.</p>
+  <h2>Mobile</h2>
+  <p class="lede">The same panel at every width; on small screens it sits below the tables.</p>
 
   <script src="../../components/ThemeToggle/ThemeToggle.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>

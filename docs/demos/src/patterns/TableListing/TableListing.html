@@ -81,19 +81,10 @@
       </div>
     </div>
   </div>
-  <p class="lede lede--intro">The Seating Planner tables grid and its toolbar. <strong>Tier:
-  Pattern.</strong> Composes <strong>TableCard</strong> (one per table), <strong>Toggle</strong>
-  (<code>toggle--xxs</code>) and <strong>Input</strong> (<code>input--sm</code>, label-less).
-  <strong>Presentational only</strong> — filtering, search and the free-seats toggle are the parent
-  module's job, and there is no JS here.</p>
-  <p class="lede lede--intro">The grid <strong>fits as many columns as the width allows</strong>
-  rather than fixing a count. TableCard has a 240px minimum, so the listing lands on 4 columns at a
-  full desktop width and 1 on a phone, stepping through 3 and 2 in between. <strong>Resize this page
-  to watch the column count change.</strong></p>
+  <p class="lede lede--intro">The Tables grid, with search and an “Only free seats” toggle. The number of columns adapts to the width.</p>
 
-  <h2 class="demo-heading">Tier=Pattern, Device=Desktop</h2>
-  <p class="lede">Thirteen tables, the first selected. Cards here carry neither a sponsor row nor a
-  tier pill — both are <code>hidden</code> on the instances in Figma.</p>
+  <h2 class="demo-heading">Desktop</h2>
+  <p class="lede">Thirteen tables, the first selected.</p>
   <!-- TODO(backend:SeatingPlanner): the table list, the counts and the free-seats filter are
        all hardcoded. Reuses seating-tables-grid for the per-table contract; this pattern adds
        the toolbar. "Only free seats" filters to tables with capacity remaining — derive that
@@ -552,20 +543,16 @@
     </div>
   </section>
 
-  <h2 class="demo-heading">Device=Mobile</h2>
-  <p class="lede"><strong>Shown live in the 390px frame below</strong> — or resize the viewport under
-  768px. The toolbar becomes two rows (title + toggle, then a full-width search), the divider goes,
-  the title drops 18px &rarr; 16px, the root's inline padding tightens 16px &rarr; 12px, and the grid
-  falls to a single column.</p>
+  <h2 class="demo-heading">Mobile</h2>
+  <p class="lede">On mobile the toolbar stacks and the grid becomes one column.</p>
   <div class="mobile-preview">
     <iframe class="mobile-preview__frame" src="TableListing.html?frame=mobile"
             title="Table Listing at a 390px mobile viewport" loading="lazy"></iframe>
-    <p class="mobile-preview__caption">Live 390px viewport &mdash; the same page and the same CSS,
-    rendered in an iframe so <code>@media (max-width: 767px)</code> applies inside it.</p>
+    <p class="mobile-preview__caption">Live 390px preview.</p>
   </div>
 
   <h2 class="demo-heading">Short list</h2>
-  <p class="lede">Four tables, to show the grid with a single full row.</p>
+  <p class="lede">Four tables.</p>
   <section class="table-listing" aria-label="Tables">
     <div class="table-listing__toolbar">
       <div class="table-listing__toolbar-main">

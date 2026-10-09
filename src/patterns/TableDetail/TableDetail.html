@@ -85,21 +85,10 @@
       </div>
     </div>
   </div>
-  <p class="lede lede--intro">Table inspector panel for the Seating Planner — a 320px rail listing every seat at
-  a table. <strong>Tier: Pattern.</strong> Composes <strong>AttendeeCard</strong> (one per seat),
-  <strong>TableType</strong> for the tier pill, and Button via AttendeeCard's Assign action.
-  <strong>Presentational only</strong> — the seat rows are drop targets whose
-  <code>--dragged-over</code> the parent module toggles; nothing here drags, and there is no JS.</p>
-  <p class="lede lede--intro"><strong>The panel fills its column and the seat list scrolls</strong> inside a
-  fixed header. The height comes from the container rather than being pinned, so a twenty-seat
-  table works as well as a ten-seat one. Each demo
-  below is bounded to 560px to show that scroll.</p>
-  <p class="lede lede--intro"><strong>The whole Type axis is data, not CSS.</strong> Default, 2 Roles, All Roles
-  and Full differ only in how many roles the legend lists and how many seats are filled — so there
-  are no Type modifiers, exactly as with TableCard.</p>
+  <p class="lede lede--intro">The table panel: every seat at the table, with a legend of the roles seated. The seat list scrolls.</p>
 
-  <h2>Type=Default</h2>
-  <p class="lede">No legend at all — nothing is seated, so there are no roles to list. Ten Empty seats.</p>
+  <h2>Empty</h2>
+  <p class="lede">An empty table.</p>
   <div class="panel-rail">
   <!-- TODO(backend:SeatingPlanner): table name, tier, sponsor, seated count and every seat
        row are hardcoded → GET /crm/tables/{tableId} returning
@@ -190,8 +179,8 @@
     </div>
   </section>
   </div>
-  <h2>Type=2 Roles</h2>
-  <p class="lede">Two roles seated, so the legend lists exactly those two. Figma names the variant for the count of distinct roles.</p>
+  <h2>Two roles</h2>
+  <p class="lede">Two roles seated.</p>
   <div class="panel-rail">
   <section class="table-detail" aria-label="Table 21 seating detail">
     <header class="table-detail__header">
@@ -318,8 +307,8 @@
     </div>
   </section>
   </div>
-  <h2>Type=All Roles</h2>
-  <p class="lede">All five roles seated with three seats still free — Figma's own sample data.</p>
+  <h2>All roles</h2>
+  <p class="lede">All five roles seated, three seats free.</p>
   <div class="panel-rail">
   <section class="table-detail" aria-label="Table 21 seating detail">
     <header class="table-detail__header">
@@ -544,8 +533,8 @@
     </div>
   </section>
   </div>
-  <h2>Type=Full</h2>
-  <p class="lede">Every seat taken. Structurally identical to All Roles — only the data differs.</p>
+  <h2>Full</h2>
+  <p class="lede">A full table.</p>
   <div class="panel-rail">
   <section class="table-detail" aria-label="Table 21 seating detail">
     <header class="table-detail__header">
@@ -828,17 +817,12 @@
   </section>
   </div>
 
-  <h2>Device=Mobile</h2>
-  <p class="lede"><strong>Shown live in the 390px frame below</strong> — or resize the viewport under 768px. All four mobile variants drop the
-  panel header entirely — no table name, seated count, sponsor or tier pill — and tighten the list:
-  padding 16px &rarr; 8px and the seat gap 8px &rarr; 6px. The mobile screen supplies the table name
-  in its own sheet chrome. Implemented as <code>@media (max-width: 767px)</code>, so the panels above
-  respond on their own.</p>
+  <h2>Mobile</h2>
+  <p class="lede">On mobile the panel drops its header and tightens the list.</p>
   <div class="mobile-preview">
     <iframe class="mobile-preview__frame" src="TableDetail.html?frame=mobile"
             title="Table Detail at a 390px mobile viewport" loading="lazy"></iframe>
-    <p class="mobile-preview__caption">Live 390px viewport &mdash; the same page and the same CSS,
-    rendered in an iframe so <code>@media (max-width: 767px)</code> applies inside it.</p>
+    <p class="mobile-preview__caption">Live 390px preview.</p>
   </div>
 
   <script src="../../components/ThemeToggle/ThemeToggle.js"></script>

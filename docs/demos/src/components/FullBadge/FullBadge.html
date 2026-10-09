@@ -66,22 +66,16 @@
       </div>
     </div>
   </div>
-  <p class="lede">Status pill for a seating container that has reached capacity. Used by
-  <strong>RoomCard</strong> and <strong>TableCard</strong>, where it replaces or sits beside the
-  seats-remaining text once nothing is free.</p>
-  <p class="lede"><strong>Single-purpose by design.</strong> There is exactly one appearance — no
-  variants, sizes or colour modifiers.</p>
+  <p class="lede">Shows that a room or table is full. One appearance, no variants.</p>
 
   <h2>Default</h2>
-  <p class="lede">The whole component: a check and the word FULL, on
-  <code>--ao-surface-success</code>.</p>
+  <p class="lede">The badge.</p>
   <div class="panel">
     <span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span>
   </div>
 
   <h2>In context</h2>
-  <p class="lede">How both consumers use it — beside a seated count in a card footer. It never
-  shrinks, so a growing count beside it cannot squash it.</p>
+  <p class="lede">In a card footer, beside the seat count.</p>
   <p class="demo-row-label">TableCard footer</p>
   <div class="panel">
     <span class="count">10 / 10 seated</span>
@@ -96,9 +90,7 @@
   <!-- internal:start — a design-review aid, not documentation of how the component behaves, so
        the client build strips it. See scripts/build-client.mjs. -->
   <h2>Legibility</h2>
-  <p class="lede">The badge is 9px type with a 10px check — small enough that the check's stroke
-  weight matters. Shown at 1×, 3× and 6× so the icon weight can be judged; the 1× instance is the
-  real rendering, the others are scaled copies.</p>
+  <p class="lede">Enlarged to check the icon.</p>
   <div class="panel zoom">
     <div><span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span></div>
     <div style="zoom: 3"><span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span></div>

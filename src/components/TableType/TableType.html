@@ -69,12 +69,10 @@
       </div>
     </div>
   </div>
-  <p class="lede">Table tier label for the Seating Planner. The tier colour is picked by the user
-  at runtime — one custom property (<code>--table-type-color</code>) drives the background,
-  border and text, so any colour produces a coherent pill.</p>
+  <p class="lede">The table tier pill. Any colour can be picked, and the pill's background, border and text follow it.</p>
 
   <h2>Tier presets</h2>
-  <p class="lede">All five Figma variants. Type = VIP · Head Table · Gold · Silver · Bronze.</p>
+  <p class="lede">The five preset tiers.</p>
   <p class="demo-row-label">On surface-primary</p>
   <div class="demo-row">
     <span class="table-type table-type--vip">VIP</span>
@@ -85,8 +83,7 @@
   </div>
 
   <h2>On a tinted ground</h2>
-  <p class="lede">The pill composites against pure white by design, so it does not adapt to the
-  surface beneath it. Worth checking it still reads on a tinted section background.</p>
+  <p class="lede">On a tinted background.</p>
   <div class="demo-row demo-row--on-tint">
     <span class="table-type table-type--vip">VIP</span>
     <span class="table-type table-type--head-table">Head Table</span>
@@ -95,16 +92,14 @@
     <span class="table-type table-type--bronze">Bronze</span>
   </div>
 
-  <h2>Default, with no modifier</h2>
-  <p class="lede">Falls back to the VIP colour, matching Figma's default variant.</p>
+  <h2>No colour set</h2>
+  <p class="lede">With no colour set it falls back to VIP.</p>
   <div class="demo-row">
     <span class="table-type">No modifier</span>
   </div>
 
-  <h2>Arbitrary colour from a picker</h2>
-  <p class="lede">This is the real usage: the product sets <code>--table-type-color</code> from a
-  colour picker and the three derived paints follow. Change the swatch to confirm the formula
-  holds for any hue.</p>
+  <h2>Any colour</h2>
+  <p class="lede">Pick any colour to see the pill follow it.</p>
   <div class="picker">
     <input type="color" id="tierColor" value="#5c7c2f" aria-label="Tier colour">
     <span class="table-type" id="livePill" style="--table-type-color: #5c7c2f">Press Table</span>
@@ -112,8 +107,7 @@
   </div>
 
   <h2>Long and short labels</h2>
-  <p class="lede">The pill is content-sized with <code>white-space: nowrap</code>, so it grows
-  with its label rather than truncating.</p>
+  <p class="lede">The pill grows with its label.</p>
   <div class="demo-row">
     <span class="table-type table-type--gold">A</span>
     <span class="table-type table-type--gold">Gold</span>

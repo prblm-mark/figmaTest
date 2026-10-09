@@ -50,18 +50,10 @@
       </div>
     </div>
   </div>
-  <p class="lede">The Seating Planner's action confirmation and warning pill.
-  <strong>Tier: Component.</strong> Composes <strong>Button</strong>
-  (<code>btn--secondary btn--xs</code>) for the Undo action.</p>
-  <p class="lede"><strong>A pill, not a notification card.</strong> A bare 20px icon, a
-  status-coloured border on a white ground, an Undo action and no close button — it confirms what
-  just happened and offers to reverse it, rather than sitting on screen waiting to be dismissed.</p>
+  <p class="lede">Confirms an action in the Seating Planner, with an Undo button.</p>
 
-  <h2 class="demo-heading">Type=Success / Type=Error</h2>
-  <p class="lede">The only axis. It sets the border colour and the icon colour — the ground stays
-  white in both, which is what separates this from the Toast card's tinted
-  <code>--color</code> variants. Figma emphasises the subject of the sentence in semibold, carried
-  here by <code>&lt;strong&gt;</code> so the emphasis is in the markup rather than purely visual.</p>
+  <h2 class="demo-heading">Success and error</h2>
+  <p class="lede">Success and error versions.</p>
   <!-- TODO(backend:SeatingPlanner): the messages, the emphasised names and the Undo action are all
        hardcoded. Each toast is raised by a seating action (assign / unassign / move) and its Undo
        must reverse that specific operation, so it needs the operation's id — see
@@ -82,9 +74,8 @@
     </div>
   </div>
 
-  <h2 class="demo-heading">Show Cta = false</h2>
-  <p class="lede">A real boolean property on the Figma component. The CTA is simply absent from the
-  markup — there is no modifier, because the flex row needs no change to close up.</p>
+  <h2 class="demo-heading">Without Undo</h2>
+  <p class="lede">Without the Undo button.</p>
   <div class="demo-stack">
     <div class="seating-toast seating-toast--success" role="status">
       <i class="seating-toast__icon" data-lucide="badge-check" aria-hidden="true"></i>
@@ -98,10 +89,8 @@
     </div>
   </div>
 
-  <h2 class="demo-heading">A long message wraps</h2>
-  <p class="lede">Attendee and table names have no length limit, so the message
-  wraps and the pill grows instead of overflowing. The full radius keeps a two-line pill looking
-  deliberate.</p>
+  <h2 class="demo-heading">Long message</h2>
+  <p class="lede">Long messages wrap.</p>
   <div class="demo-stack">
     <div class="seating-toast seating-toast--success" role="status">
       <i class="seating-toast__icon" data-lucide="badge-check" aria-hidden="true"></i>
@@ -111,9 +100,8 @@
     </div>
   </div>
 
-  <h2 class="demo-heading">In a 320px container</h2>
-  <p class="lede"><code>max-inline-size: 100%</code> means the pill shrinks to its container rather
-  than overflowing it — the Undo button holds its size and the message takes the squeeze.</p>
+  <h2 class="demo-heading">Narrow container</h2>
+  <p class="lede">In a narrow space the message wraps and Undo keeps its size.</p>
   <div class="demo-narrow">
     <div class="seating-toast seating-toast--error" role="alert">
       <i class="seating-toast__icon" data-lucide="triangle-alert" aria-hidden="true"></i>

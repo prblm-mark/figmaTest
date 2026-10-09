@@ -89,23 +89,10 @@
       </div>
     </div>
   </div>
-  <p class="lede lede--intro">Table summary card for the Seating Planner tables grid. Shows a table's name, tier,
-  sponsor and a per-role capacity breakdown. <strong>Presentational only</strong> — the parent module
-  owns selection and toggles <code>--selected</code>; selecting a table is what opens Table Detail.
-  No JS in the component.</p>
-  <p class="lede lede--intro">The header is a <strong>column</strong>: the table name and tier pill share a row
-  with a 12px gap, and the sponsor row sits beneath them spanning the full card width. The name
-  <strong>wraps</strong> rather than truncating.</p>
-  <p class="lede lede--intro">The <strong>whole card is the select trigger</strong>: the table name is a real
-  <code>&lt;button&gt;</code> whose <code>::after</code> stretches over the card, with the edit and
-  delete buttons layered above it so they stay independently clickable. Composes
-  <strong>TableType</strong>, <strong>FullBadge</strong> and <strong>Button</strong>.</p>
-  <p class="lede lede--intro">The capacity bar is <strong>proportional to the seat counts</strong>: each segment
-  carries its count in a <code>--seg</code> custom property and divides the track by
-  <code>flex-grow</code>, so a table's mix of roles is always drawn to scale.</p>
+  <p class="lede lede--intro">A table's summary card in the Tables grid: name, tier, sponsor and a seat breakdown by role. Select a card to open Table Detail.</p>
 
-  <h2>State=Default</h2>
-<p class="lede">Three Types. <strong>The whole Type axis is data, not CSS</strong> — Empty, Populated and Full differ only in how many bar segments and legend rows the caller supplies, and whether the FullBadge is present. Nothing branches on Type, so there are no <code>--empty</code> / <code>--populated</code> / <code>--full</code> modifiers.</p>
+  <h2>Default</h2>
+<p class="lede">Empty, partly seated and full tables.</p>
   <div class="table-grid">
   <!-- TODO(backend:SeatingPlanner): table name, tier, sponsor, per-role seat counts and
        capacity are all hardcoded → GET /crm/plans/{planId}/tables returning
@@ -242,8 +229,8 @@
     </div>
   </article>
   </div>
-  <h2>State=Selected</h2>
-<p class="lede">A two-property delta on every Type: background drops to <code>--ao-surface-minimal</code> and the border goes <code>--ao-border-brand</code>.</p>
+  <h2>Selected</h2>
+<p class="lede">The selected table is highlighted.</p>
   <div class="table-grid">
   <article class="table-card table-card--selected">
     <div class="table-card__header">
@@ -375,7 +362,7 @@
   </article>
   </div>
   <h2>Tier pills</h2>
-<p class="lede">The pill is the <strong>TableType</strong> component, unchanged, and now sits in the title row with a 12px gap. Its tier colour is picked by the user at runtime, so all five presets are shown.</p>
+<p class="lede">The five tier pills.</p>
   <div class="table-grid">
   <article class="table-card">
     <div class="table-card__header">
@@ -561,8 +548,8 @@
     </div>
   </article>
   </div>
-  <h2>Optional sponsor and tier pill</h2>
-<p class="lede">Both are optional and independent: a table can show a sponsor, a tier pill, both or neither.</p>
+  <h2>Optional sponsor and tier</h2>
+<p class="lede">Sponsor and tier pill are both optional.</p>
   <div class="table-grid">
   <article class="table-card">
     <div class="table-card__header">
@@ -693,7 +680,7 @@
   </article>
   </div>
   <h2>Long names</h2>
-<p class="lede">Long names are handled rather than cut off. The table name <strong>wraps</strong> rather than truncating, and the sponsor row spans the full card width instead of the narrow strip beside the pill, so a long sponsor name has room. The pill holds its width and stays on the first line.</p>
+<p class="lede">Long table and sponsor names wrap rather than being cut off.</p>
   <div class="table-grid">
   <article class="table-card">
     <div class="table-card__header">
@@ -788,17 +775,12 @@
   </article>
   </div>
 
-  <h2>Device=Mobile</h2>
-  <p class="lede"><strong>Shown live in the 390px frame below</strong> — or resize the viewport under 768px. Figma's
-  Device axis is a <code>@media (max-width: 767px)</code> rule, not a modifier, so the cards above
-  respond on their own. Only two things change: padding 16px &rarr; 12px and the table name 16px
-  &rarr; 14px. Unlike RoomCard the min-width does <em>not</em> step down, and the bar, legend,
-  swatches, badge and buttons are all identical between breakpoints.</p>
+  <h2>Mobile</h2>
+  <p class="lede">On mobile the card tightens its padding and text size.</p>
   <div class="mobile-preview">
     <iframe class="mobile-preview__frame" src="TableCard.html?frame=mobile"
             title="Table Card at a 390px mobile viewport" loading="lazy"></iframe>
-    <p class="mobile-preview__caption">Live 390px viewport &mdash; the same page and the same CSS,
-    rendered in an iframe so <code>@media (max-width: 767px)</code> applies inside it.</p>
+    <p class="mobile-preview__caption">Live 390px preview.</p>
   </div>
 
   <script src="../../components/ThemeToggle/ThemeToggle.js"></script>
