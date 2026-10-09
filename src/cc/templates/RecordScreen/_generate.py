@@ -289,13 +289,25 @@ for c in contact.CONTACTS:
 # view + the processing actions as working demo modals (OrderView.js). Invented customer.
 pages[order.FILE] = build(
     "Order · View",
-    m.record_header("Order", "Order " + order.ORDER["code"], "view", view_href=order.FILE, edit_href="#",
+    m.record_header("Order", "Order " + order.ORDER["code"], "view", view_href=order.FILE, edit_href="OrderEdit.html",
                     secondary=order.SECONDARY, more=order.KEBAB),
     page(body(order.view_sections(order.ORDER, order.CUSTOMER), order.sidebar(order.ORDER, order.CUSTOMER)),
          mode="view", record_type="order"),
     KIT_JS + '\n  <script src="../../../components/Datatables/DatatablesFit.js"></script>'
            + '\n  <script src="OrderView.js"></script>',
     modals=order.modals(order.ORDER, order.CUSTOMER), crumbs=("Commerce", "Orders", "Order"))
+
+# ── Order Edit (code-first, 2026-10-09): the live OrderProcessingEdit form on the kit. No sidebar; one
+# Details tab to carry the Show help switch (every field has help).
+pages[order.EDIT_FILE] = build(
+    "Order · Edit",
+    m.record_header("Order", "Order " + order.ORDER["code"], "edit", view_href=order.FILE),
+    page(m.record_tabs("details", tabs=[("details", "Details", order.EDIT_FILE)], help_toggle=True)
+         + '<div class="record-screen__body"><div class="record-screen__main">'
+         + order.edit_sections(order.ORDER, order.CUSTOMER) + '</div></div>',
+         sidebar_on=False, mode="edit", record_type="order", help_mode="switch"),
+    KIT_JS + '\n  <script src="OrderEdit.js"></script>',
+    modals=order.edit_modals(), crumbs=("Commerce", "Orders", "Order"))
 
 # ── Import step (designer, 2026-09-30; code-first, flag for Figma) ──
 # The legacy "add Article Step Lookup" form, on the Steps screen: the tabs stay (Details leads back
