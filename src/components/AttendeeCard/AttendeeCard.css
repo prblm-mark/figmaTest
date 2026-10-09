@@ -216,8 +216,7 @@
 }
 
 /* ── Role presets ───────────────────────────────────────────────────────────
- * Bound to the Seating Planner collection. These follow the active
- * data-seating palette (Muted / Radix Soft / Radix Vivid). */
+ * Bound to the Seating Planner collection's single palette (at :root). */
 .attendee-card--attendee { --attendee-card-role: var(--sp-attendee); }
 .attendee-card--vip      { --attendee-card-role: var(--sp-vip); }
 .attendee-card--speaker  { --attendee-card-role: var(--sp-speaker); }
