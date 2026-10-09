@@ -800,6 +800,91 @@
   }
 }
 
+/* ───── Condensed density (2026-10-09) ─────
+ *
+ * `data-cc-density="condensed"` on `.cc-control`, set by control-width.js from the rail's
+ * Minimise button. SPACING ONLY (Mark, 2026-10-09): each target steps one token down the
+ * spacing scale; font sizes, line heights and control heights stay, and so does inline padding,
+ * so band edges keep lining up. No Figma frame yet — a code trial for the designer to judge.
+ *
+ * All in the shell's CSS, because density is a shell mode: Table and Datatables are DS
+ * components also used outside CC. The `.cc-control[...]` prefix also out-specifies the
+ * components' own narrow-width compactions. Anything those already make tighter is guarded so
+ * condensed never makes it looser. */
+
+/* Table rows: 12 → 6 block padding; header 16 → 12. */
+.cc-control[data-cc-density="condensed"] .table tbody td {
+  padding-block: var(--ai-spacing-2);
+}
+
+.cc-control[data-cc-density="condensed"] .table thead th {
+  padding-block: var(--ai-spacing-4);
+}
+
+/* The Orders listing holds a 64px minimum row (Datatables.css), so padding alone does nothing
+   there: condensed steps the minimum to 56 (Mark, 2026-10-09), which keeps avatar rows even.
+   Same unnamed container query as Datatables' own `height: auto` below 768, so that still wins. */
+@container (min-width: 768px) {
+  .cc-control[data-cc-density="condensed"] .datatables--orders .table tbody td {
+    height: var(--ai-spacing-10);
+  }
+}
+
+/* Record field rows: 24 → 16 between rows; section body padding 24 → 16. Wide sections only —
+   below 560 of its own container RecordSection already pads spacing-4. */
+@container record-section (min-width: 560px) {
+  .cc-control[data-cc-density="condensed"] .record-section__body {
+    gap: var(--ai-spacing-5);
+    padding: var(--ai-spacing-5);
+  }
+}
+
+/* Panels: 16 → 12. */
+.cc-control[data-cc-density="condensed"] .fact-panel {
+  padding: var(--ai-spacing-4);
+}
+
+.cc-control[data-cc-density="condensed"] .cc-control__charts {
+  gap: var(--ai-spacing-4);
+  padding: var(--ai-spacing-4);
+}
+
+@container cs-page (min-width: 768px) {
+  .cc-control[data-cc-density="condensed"] .cc-control__cards .stat-card,
+  .cc-control[data-cc-density="condensed"] .cc-control__cards .upgrade-card {
+    padding: var(--ai-spacing-4);
+  }
+  /* Full width keeps the strip's inline spacing-5, so the cells line up with the bands. */
+  .cc-control[data-cc-density="condensed"] .cc-control__page--flush .cc-control__cards .stat-card,
+  .cc-control[data-cc-density="condensed"] .cc-control__page--flush .cc-control__cards .upgrade-card {
+    padding-inline: var(--ai-spacing-5);
+  }
+}
+
+/* Page gap between blocks: 32 → 16. Not on a flush page, which runs its own gaps. */
+.cc-control[data-cc-density="condensed"] .cc-control__page:not(.cc-control__page--flush) {
+  gap: var(--ai-spacing-5);
+}
+
+/* Page padding at standard width: 24 → 16. Desktop only — mobile already pads spacing-4.
+   The right side keeps the house trim against the reserved 15px scrollbar gutter: spacing-0
+   gives 15 against 16 on the left (the mobile rule's reasoning), and coarse pointers, which
+   have no gutter, get the full spacing-5. The Listing's sticky offsets read the top padding
+   from --cc-listing-pad-top, so it follows. */
+@media (min-width: 768px) {
+  .cc-control[data-cc-density="condensed"] .cc-control__page:not(.cc-control__page--flush) {
+    padding: var(--ai-spacing-5) var(--ai-spacing-0) var(--ai-spacing-5) var(--ai-spacing-5);
+  }
+  .cc-control[data-cc-density="condensed"] .cc-listing:not([data-listing-template="full"]) {
+    --cc-listing-pad-top: var(--ai-spacing-5);
+  }
+  @media (pointer: coarse) {
+    .cc-control[data-cc-density="condensed"] .cc-control__page:not(.cc-control__page--flush) {
+      padding-right: var(--ai-spacing-5);
+    }
+  }
+}
+
 /* ───── Device-class swap — stays on viewport @media ─────
  *
  * The Desktop and Mobile SidebarMenu composites are structurally
