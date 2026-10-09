@@ -73,3 +73,34 @@
 
   window.fieldRowClamp = { init: init };
 })();
+
+/* FieldRow — the "Show help" switch (code-first, 2026-10-09; not in Figma yet).
+ *
+ * Every edit row with help carries a help line (`.field-row__help`). On a record screen with
+ * `data-help-mode="switch"` the lines are hidden until the tabs bar's Show help switch
+ * (`[data-record-help]`, DS Toggle) is on; this file keeps `data-help-visible` in step and saves the
+ * choice per viewer. Off by default, as the legacy edit form's hidden help. Mark chose the switch
+ * from four options compared on Contact Edit (2026-10-09).
+ * TODO(backend:RecordScreen) record-help-preference: localStorage stands in for the per-user preference */
+(function () {
+  var KEY = 'cc-help-text';
+
+  function init() {
+    var screen = document.querySelector('[data-help-mode="switch"]');
+    if (!screen) return;
+    var sw = screen.querySelector('[data-record-help]');
+    var on = false;
+    try { on = localStorage.getItem(KEY) === 'on'; } catch (e) { /* storage blocked */ }
+    screen.toggleAttribute('data-help-visible', on);
+    if (sw) { sw.classList.toggle('toggle--active', on); sw.setAttribute('aria-checked', String(on)); }
+    document.addEventListener('toggle:change', function (e) {
+      if (!e.target.closest('[data-record-help]')) return;
+      var v = !!(e.detail && e.detail.active);
+      screen.toggleAttribute('data-help-visible', v);
+      try { localStorage.setItem(KEY, v ? 'on' : 'off'); } catch (err) { /* session only */ }
+    });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();

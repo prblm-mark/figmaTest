@@ -275,3 +275,24 @@ phone range, `.example` email, documentation IP range).
 - Status badge tones: done = success, waiting = warning, moving = info, stopped = neutral
   (`STATUS_TONE` in both the .py and the .js).
 - Backend rows: `order-*` in HANDOVER.md.
+
+## Contact Edit (code-first, 2026-10-09) — no Figma frame
+
+`ContactEdit.html`, generated from `record_contact.edit_sections()`. It follows ArticleEdit's
+pattern (header Cancel · Delete · Save, the Contact tab bar) with **no sidebar** (Mark). Fields,
+order, required marks and help text are verbatim from the live `AfcCommunityMgr/CC/CRMUserDef.cfm`
+(CProperties slot [8] = help, [13] = required), plus its `AvatarField.cfm` and `CountryFields.cfm`
+includes. There are nine sections: Contact Details, Accounts (the contact's accounts as TagBoxes),
+Topics, Social Media, Profile & Subscriptions, Main Address, Additional Information, Job Seeker and
+Service Credits. Custom (a DesignScript include) is not built.
+
+Kit additions:
+- **Help on every edit type.** `edit_row(help_text=)` now renders a help line under any control,
+  not only Input, wired with `aria-describedby`.
+- **The `radio` edit type:** DS Radio options in a wrapping row, aligned as a checkbox row.
+- **The `file_icon=` parameter** for the `file` type (the CV upload uses `file-text`).
+- **"Show help" switch:** `record_tabs(help_toggle=True)` + `page(help_mode="switch")`. Help lines are
+  hidden until the switch is on, which is saved per viewer (FieldRow.js). Mark chose it on
+  2026-10-09 from four options compared on this screen. The rejected three were an info button that
+  revealed the line, the same button with a tooltip, and help on focus. ArticleEdit sets no mode, so
+  its help line always shows, as before.

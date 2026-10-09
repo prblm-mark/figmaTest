@@ -284,3 +284,33 @@
 .field-row__value[data-expanded] > .field-row__clamp-toggle svg {
   transform: rotate(180deg);
 }
+
+/* ══ Edit help text — the "Show help" switch (code-first 2026-10-09) — NOT in Figma yet, flagged ═══
+ * Most CC edit screens carry help on nearly every field (Contact: 58 of 60; the Article is the
+ * exception). Every edit row with help has a help line under its control (`.field-row__help`, the
+ * Input help style). On a record screen with `data-help-mode="switch"` the lines are hidden until the
+ * tabs bar's "Show help" switch is on (`data-help-visible`) — Mark's pick of four options compared
+ * on Contact Edit, 2026-10-09 (the others: an info button that reveals or tooltips the line, and
+ * help on focus). Without the mode (ArticleEdit) the line always shows, as before. */
+.field-row__value > .field-row__help {
+  margin-top: var(--ai-spacing-3);   /* the Input's own control → help gap */
+}
+
+[data-help-mode="switch"]:not([data-help-visible]) .field-row__help {
+  display: none;
+}
+
+/* Type=Radio (edit) — DS Radio per option, in one row that wraps (Contact Type, Privacy Level,
+ * Gender; code-first 2026-10-09). Aligned like a checkbox row (`field-row--check`): no 40px control
+ * to centre against. Options sit spacing-5 apart, as the Radio demo spaces them. */
+.field-row__radios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-3) var(--ai-spacing-5);
+}
+
+/* A checkbox / radio row with help: centring would put the label midway down the control + help
+   block, so it sits on the control's first line instead. */
+.field-row--check.field-row--has-help {
+  align-items: flex-start;
+}

@@ -96,9 +96,11 @@ def build(page_title, header, page, scripts, modals="", listing=False, crumbs=("
     return s
 
 
-def page(inner, sidebar_on=True, mode=None, record_type=None):
+def page(inner, sidebar_on=True, mode=None, record_type=None, help_mode=None):
     mod = "" if sidebar_on else " record-screen--no-sidebar"
     mode_attr = f' data-record-mode="{mode}"' if mode else ""
+    if help_mode:  # "switch": help lines follow the tabs bar's Show help switch (FieldRow.js)
+        mode_attr += f' data-help-mode="{help_mode}"'
     if record_type:  # keys per-type state such as the sidebar's saved panel order (RecordScreen.js)
         mode_attr += f' data-record-type="{record_type}"'
     return f'''<div class="cc-control__page cc-control__page--record">
@@ -253,11 +255,24 @@ pages = {
 for c in contact.CONTACTS:
     pages[c["file"]] = build(
         "Contact · View",
-        m.record_header("Contact", c["name"], "view", view_href=c["file"], edit_href="#",
+        m.record_header("Contact", c["name"], "view", view_href=c["file"], edit_href=c.get("edit", "#"),
                         secondary=contact.SECONDARY, more=contact.KEBAB),
         page(m.record_tabs("details", sidebar=True, tabs=contact.tabs(c))
              + body(contact.view_sections(c), contact.sidebar(c)), mode="view", record_type="contact"),
         KIT_JS, crumbs=("CRM", "Contacts", "Contact"))
+    # Contact Edit (code-first, 2026-10-09): the full contact only. No sidebar (designer). Help text on
+    # every field, hidden until the tabs bar's "Show help" switch is on (Mark chose the switch from four
+    # options, 2026-10-09; FieldRow.js).
+    if c.get("edit"):
+        pages[c["edit"]] = build(
+            "Contact · Edit", m.record_header("Contact", c["name"], "edit", view_href=c["file"]),
+            page(m.record_tabs("details", tabs=contact.tabs(c), help_toggle=True)
+                 + '<div class="record-screen__body"><div class="record-screen__main">'
+                 + contact.edit_sections(c) + '</div></div>', sidebar_on=False, mode="edit", record_type="contact",
+                 help_mode="switch"),
+            KIT_JS, modals=contact.edit_modals(c) + m.media_select_modal("modal-media", "Select Media", rec.MEDIA_SOURCE[:24], len(rec.MEDIA_SOURCE))
+                          + m.delete_confirm_modal("modal-delete", "contact", c["name"]),
+            crumbs=("CRM", "Contacts", "Contact"))
     # The contact's other tabs (2026-10-07): full-width cards under the tab bar, as Article Steps.
     for key, render in contact.TAB_PAGES.items():
         pages[contact.page_for(c, key)] = build(

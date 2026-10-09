@@ -164,3 +164,11 @@
     display: none;
   }
 }
+
+/* "Show help" switch (Contact Edit, 2026-10-09; code-first): at every width — unlike Show sidebar
+ * there is always help to show. */
+@container cs-page (max-width: 1023px) {
+  .record-tabs__help-toggle {
+    display: inline-flex;
+  }
+}
