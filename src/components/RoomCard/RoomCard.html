@@ -96,21 +96,10 @@
       </div>
     </div>
   </div>
-  <p class="lede lede--intro">Summary card for a Seating Planner room. Designer-confirmed as a
-  <strong>room/plan card</strong> — the componentised form of the planner's plan chip, rather than a
-  new entity above the seating plan, so the name is the plan name and the counts derive from its
-  tables and seats. <strong>Presentational only</strong> — the parent module owns selection and
-  toggles <code>--selected</code>, so single-select coordination stays with whoever renders the
-  list. No JS in the component.</p>
-  <p class="lede lede--intro">The <strong>whole card is the select trigger</strong>: the room name is a real
-  <code>&lt;button&gt;</code> whose <code>::after</code> stretches over the card, with the edit and
-  delete buttons layered above it so they stay independently clickable. Focus draws a ring around
-  the card rather than around the name.</p>
+  <p class="lede lede--intro">A room (seating plan) card: name, tables, seats taken and a progress bar. Select a card to switch rooms.</p>
 
-  <h2>Types — State=Default</h2>
-  <p class="lede">Three types. <strong>Default and Seats Assigned look the same</strong> — they
-  differ only in the data driving the bar and the label, both brand-coloured. Only <code>--full</code> changes anything visually: the bar turns
-  <code>--ao-surface-success</code> and the FULL badge replaces the seats-free text.</p>
+  <h2>Types</h2>
+  <p class="lede">Default, seats assigned and full rooms.</p>
   <div class="room-list">
     <!-- TODO(backend:SeatingPlanner): room name, table count, seated count and capacity are all
          hardcoded → GET /crm/events/{eventId}/plans returning
@@ -189,10 +178,8 @@
     </article>
   </div>
 
-  <h2>Types — State=Selected</h2>
-  <p class="lede">Selected is a two-property delta on every type: background drops to
-  <code>--ao-surface-minimal</code> and the border goes <code>--ao-border-brand</code>. Verified
-  identical on Default and Full, so it composes rather than branching per type.</p>
+  <h2>Selected</h2>
+  <p class="lede">The selected room is highlighted.</p>
   <div class="room-list">
     <article class="room-card room-card--selected">
       <div class="room-card__header">
@@ -264,22 +251,16 @@
     </article>
   </div>
 
-  <h2>Device=Mobile</h2>
-  <p class="lede"><strong>Shown live in the 390px frame below</strong> — or resize the viewport under 768px. Figma's
-  Device axis is implemented as <code>@media (max-width: 767px)</code>, not a modifier class, so the
-  cards above respond on their own. Four things change: padding 16px → 12px, min-width 280px →
-  240px, the room name 16px → 14px, and the word "seated" leaves the counts line. It stays in the
-  accessibility tree, so screen readers still hear the full sentence.</p>
+  <h2>Mobile</h2>
+  <p class="lede">On mobile the card narrows and the counts shorten.</p>
   <div class="mobile-preview">
     <iframe class="mobile-preview__frame" src="RoomCard.html?frame=mobile"
             title="Room Card at a 390px mobile viewport" loading="lazy"></iframe>
-    <p class="mobile-preview__caption">Live 390px viewport &mdash; the same page and the same CSS,
-    rendered in an iframe so <code>@media (max-width: 767px)</code> applies inside it.</p>
+    <p class="mobile-preview__caption">Live 390px preview.</p>
   </div>
 
   <h2>Long room name</h2>
-  <p class="lede">The name is the only flexible element in the header; it truncates with an
-  ellipsis so the edit and delete buttons never get pushed out of the card.</p>
+  <p class="lede">Long room names truncate so the buttons stay in place.</p>
   <div class="room-list room-list--single">
     <article class="room-card" style="--room-card-progress: 40%">
       <div class="room-card__header">

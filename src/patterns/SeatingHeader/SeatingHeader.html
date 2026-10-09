@@ -86,21 +86,11 @@
       </div>
     </div>
   </div>
-  <p class="lede lede--intro">The Seating Planner's event bar, room selector and toolbar.
-  <strong>Tier: Pattern.</strong> Composes <strong>Button</strong>, <strong>Toggle</strong>
-  (<code>toggle--xs</code>, label-less) and <strong>RoomCard</strong> — one per plan, in the
-  Room-Selector-Bar slot.</p>
+  <p class="lede lede--intro">The Seating Planner's event bar, room selector and table toolbar.</p>
   
-  <p class="lede lede--intro">The <strong>Type</strong> axis is mostly data, not CSS:
-  <code>No Plans</code> is the event bar on its own and <code>Has Plans</code> adds the room
-  selector, so which one renders is markup the caller supplies. <code>Table Header</code> is the
-  third: the toolbar standing alone as its own card. It is the one Type that carries a modifier
-  — <code>--table</code>, for its top two corners — because as the root’s only child the
-  toolbar has a card edge to draw that it never had as a middle row.</p>
 
-  <h2 class="demo-heading">Tier=Pattern, Type=Has Plans, Device=Desktop</h2>
-  <p class="lede">The event bar and the room selector. Two plans, the first selected. The toolbar
-  that used to close this card is now <code>Type=Table Header</code>, below.</p>
+  <h2 class="demo-heading">With plans</h2>
+  <p class="lede">The event bar with the room selector, the first plan selected.</p>
   <!-- TODO(backend:SeatingPlanner): the event details, the plan list and the unassigned count are
        all hardcoded. Needs: GET the event (name, date, attendee count, venue) for the info bar;
        the plan list reuses seating-room-list for the per-card contract; the active room's
@@ -200,12 +190,8 @@
 
   </section>
 
-  <h2 class="demo-heading">Tier=Pattern, Type=Table Header, Device=Desktop</h2>
-  <p class="lede">The toolbar as its own card. It was the bottom row of the header above until
-  2026-09-15, when the team moved it down beside the tables it acts on — so the actions read
-  against the plan they change rather than against the event. <strong>Nothing inside it
-  changed</strong>: same controls, same 8px gaps, same 1023px compaction, same Room Layout move
-  into the overflow menu. The only new CSS is the card’s top two corners.</p>
+  <h2 class="demo-heading">Table toolbar</h2>
+  <p class="lede">The table toolbar, which sits above the tables it acts on.</p>
   <section class="seating-header seating-header--table" aria-label="Plan actions">
     <div class="seating-header__toolbar">
       <div class="seating-header__toolbar-actions">
@@ -277,9 +263,8 @@
     </div>
   </section>
 
-  <h2 class="demo-heading">Tier=Pattern, Type=No Plans, Device=Desktop</h2>
-  <p class="lede">The event bar on its own. Structurally identical to the bar above — Figma's
-  <code>No Plans</code> variant is <em>only</em> the bar, with no room selector and no toolbar.</p>
+  <h2 class="demo-heading">No plans yet</h2>
+  <p class="lede">The event bar on its own, before any plans exist.</p>
   <section class="seating-header" aria-label="Seating plan header, no plans yet">
     <div class="seating-header__bar">
       <div class="seating-header__details">
@@ -312,9 +297,8 @@
     </div>
   </section>
 
-  <h2 class="demo-heading">A long event name</h2>
-  <p class="lede">The title truncates with an ellipsis on desktop rather than pushing the swap
-  button away, and wraps instead of truncating on mobile.</p>
+  <h2 class="demo-heading">Long event name</h2>
+  <p class="lede">Long event names truncate on desktop and wrap on mobile.</p>
   <section class="seating-header" aria-label="Seating plan header, long event name">
     <div class="seating-header__bar">
       <div class="seating-header__details">
@@ -348,16 +332,8 @@
     </div>
   </section>
 
-  <h2 class="demo-heading">Many plans — the room selector scrolls</h2>
-  <p class="lede">More plans than fit is the normal state. The bar scrolls horizontally rather than
-  wrapping, and <strong>shows no scrollbar</strong>. Three affordances replace it. An <strong>edge fade</strong> on whichever side has more content, which every input sees.
-  <strong>Arrow buttons</strong> on desktop only, since touch swipes natively &mdash; they appear
-  and disappear with the fade, because both are driven by the same two classes, so an arrow can
-  never point somewhere the fade says is empty. And <strong>mouse drag</strong> (the cursor turns to
-  a grab handle only when there is somewhere to go). Keyboard needs none of them: Tab through the
-  cards and focus pulls them into view. A drag that ends on a card deliberately does <em>not</em>
-  activate it. Neither the fade nor the arrows are in Figma &mdash; both were added on the
-  designer's instruction and are logged as divergences.</p>
+  <h2 class="demo-heading">Many plans</h2>
+  <p class="lede">With many plans the room selector scrolls sideways: arrows on desktop, swipe on touch.</p>
   <section class="seating-header" aria-label="Seating plan header, many plans">
     <div class="seating-header__carousel">
       <div class="seating-header__rooms">
@@ -484,34 +460,21 @@
     </div>
   </section>
 
-  <h2 class="demo-heading">768&ndash;1023px &mdash; the toolbar stays compact</h2>
-  <p class="lede">The toolbar carries far more than the bars
-  above it &mdash; room name, count, the switch, a divider, three buttons and the kebab &mdash; so it
-  runs out of room long before the event bar does. It therefore keeps its compact form (stacked room
-  label, no toggle or divider, two buttons) all the way to 1023px, while the event bar is already
-  back to its desktop row. <strong>1024px is the Seating Planner shell's own layout boundary</strong>
-  &mdash; the prototype switches to its worklist at the same width. The toolbar's padding
-  deliberately stays with its siblings, so all three regions keep a common inline padding.</p>
+  <h2 class="demo-heading">Tablet</h2>
+  <p class="lede">Between 768 and 1023px the toolbar stays compact.</p>
   <div class="mobile-preview">
     <iframe class="mobile-preview__frame mobile-preview__frame--tablet"
             src="SeatingHeader.html?frame=mobile"
             title="Seating Header at a 900px viewport" loading="lazy"></iframe>
-    <p class="mobile-preview__caption">Live 900px viewport &mdash; desktop event bar, compact
-    toolbar.</p>
+    <p class="mobile-preview__caption">Live 900px preview.</p>
   </div>
 
-  <h2 class="demo-heading">Device=Mobile</h2>
-  <p class="lede">The bar stacks into three rows and the meta wraps; <strong>the primary "New Plan"
-  leads</strong> where desktop leads with "Import Plan"; the toolbar drops the toggle and the
-  divider outright, "Room Layout" goes, "Add Table" shortens to "Add", and Export becomes
-  icon-only &mdash; though all of those toolbar changes now happen at <strong>1023px</strong>, not
-  767px, so they are already in effect in the preview above. The plans carousel is swipe-only here
-  &mdash; no scrollbar, exactly as Figma draws it.</p>
+  <h2 class="demo-heading">Mobile</h2>
+  <p class="lede">On mobile the bars stack and the toolbar simplifies.</p>
   <div class="mobile-preview">
     <iframe class="mobile-preview__frame" src="SeatingHeader.html?frame=mobile"
             title="Seating Header at a 390px mobile viewport" loading="lazy"></iframe>
-    <p class="mobile-preview__caption">Live 390px viewport &mdash; the same page and the same CSS,
-    rendered in an iframe so <code>@media (max-width: 767px)</code> applies inside it.</p>
+    <p class="mobile-preview__caption">Live 390px preview.</p>
   </div>
 
   <script src="../../components/ThemeToggle/ThemeToggle.js"></script>

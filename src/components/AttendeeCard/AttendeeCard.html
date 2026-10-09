@@ -59,16 +59,10 @@
       </div>
     </div>
   </div>
-  <p class="lede">Attendee row for the Seating Planner — used in the Unassigned tray and inside
-  Table Detail. A <strong>drop target only</strong>: it never initiates a drag, and
-  <code>--dragged-over</code> is a class the parent module toggles while an attendee is held
-  over it. No JS in the component.</p>
-  <p class="lede">Role colours come from the Seating Planner collection's single palette, set at
-  <code>:root</code>, so the card needs no extra markup.</p>
+  <p class="lede">One attendee row, used in the Unassigned tray and in Table Detail. It highlights when an attendee is dragged over it.</p>
 
-  <h2>Roles — Default</h2>
-  <p class="lede">Five role types. The accent bar and role label share one custom property,
-  bound to the Seating Planner <code>--sp-*</code> tokens.</p>
+  <h2>Roles</h2>
+  <p class="lede">The five roles, each with its own colour.</p>
   <div class="tray">
     <article class="attendee-card attendee-card--attendee">
       <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
@@ -201,9 +195,8 @@
     </article>
   </div>
 
-  <h2>Roles — Dragged Over</h2>
-  <p class="lede">Drop-target highlight: background drops to <code>--ao-surface-minimal</code>
-  and the border goes <code>--ao-border-brand</code>.</p>
+  <h2>Dragged over</h2>
+  <p class="lede">Highlighted while an attendee is dragged over it.</p>
   <div class="tray">
     <article class="attendee-card attendee-card--attendee attendee-card--dragged-over">
       <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
@@ -317,8 +310,7 @@
   </div>
 
   <h2>Empty seat</h2>
-  <p class="lede">Structurally different: no name or meta, a dashed border, a neutral accent bar,
-  and an Assign action. Composes Button as <code>btn btn--secondary btn--sm</code>.</p>
+  <p class="lede">An empty seat, with an Assign button.</p>
   <p class="demo-row-label">Default</p>
   <div class="tray">
     <article class="attendee-card attendee-card--empty">
@@ -339,8 +331,7 @@
   </div>
 
   <h2>Optional slots</h2>
-  <p class="lede">Figma exposes <code>Show Actions</code> and <code>Show Seat Number</code> as
-  booleans — omit the corresponding element.</p>
+  <p class="lede">The seat number and row actions are optional.</p>
   <div class="tray">
     <article class="attendee-card attendee-card--vip">
       <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
@@ -377,9 +368,7 @@
   </div>
 
   <h2>Fluid width</h2>
-  <p class="lede">The card fills its container. The trays above are constrained to
-  <code>--ao-size-6</code> (320px), which leaves the card itself near the 288px Figma draws it at;
-  this one is unconstrained.</p>
+  <p class="lede">The card fills its container.</p>
   <div class="tray tray--wide">
     <article class="attendee-card attendee-card--host">
       <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
