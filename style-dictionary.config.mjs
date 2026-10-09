@@ -552,24 +552,12 @@ await sdCCDark.buildAllPlatforms();
 // The Figma variables carry no codeSyntax.WEB, so names come from the path via the
 // name/seating-planner transform.
 //
-// Activation: add data-seating="muted" | "radix-soft" | "radix-vivid" to a container.
-// No :root default is emitted — a palette must be chosen explicitly, so an unset
-// container renders with no --sp-* values rather than silently inheriting one mode.
-
-const seatingModes = [
-  { mode: 'Muted',        slug: 'muted' },
-  { mode: 'Radix Soft',   slug: 'radix-soft' },
-  { mode: 'Radix Vivid',  slug: 'radix-vivid' },
-];
-
-// Radix Vivid is the DEFAULT palette (designer decision 2026-08-25), emitted at :root so
-// seating components resolve without an explicit data-seating attribute. It previously had
-// no default, which meant an unset container rendered accent bars and role labels with no
-// colour at all — a silent failure rather than a safe one.
+// ONE palette (2026-10-09). The Muted / Radix Soft / Radix Vivid modes and their [data-seating]
+// files are gone — Figma's Seating Planner collection now has a single "Theme" mode, whose values
+// are Radix Vivid's (checked one-for-one). The source stays the Radix Vivid export until the next
+// export of that collection renames it; then point `source` at the new file.
 //
-// Import order matters: this :root file must load BEFORE the three [data-seating] files.
-// `:root` and `[data-seating="..."]` are both specificity 0,1,0, so source order alone
-// decides which wins, and the explicit attribute must be able to override the default.
+// Emitted at :root so seating components resolve with no attribute.
 const sdSeatingDefault = new StyleDictionary({
   usesDtcg: true,
   parsers: ['figma-token-parser'],
@@ -589,32 +577,6 @@ const sdSeatingDefault = new StyleDictionary({
 
 await sdSeatingDefault.buildAllPlatforms();
 
-for (const { mode, slug } of seatingModes) {
-  const sdSeating = new StyleDictionary({
-    usesDtcg: true,
-    parsers: ['figma-token-parser'],
-    source: [`FigmaTokens/Seating Planner/${mode}.tokens.json`],
-    platforms: {
-      css: {
-        transforms: [
-          'color/figma-hex',
-          'name/seating-planner',
-        ],
-        buildPath: 'css/',
-        files: [{
-          destination: `tokens-seating-${slug}.css`,
-          format: 'css/variables-selector',
-          options: {
-            selector: `[data-seating="${slug}"]`,
-            outputReferences: false,
-          },
-        }],
-      },
-    },
-  });
-
-  await sdSeating.buildAllPlatforms();
-}
 
 // ─── Output collision guard ───────────────────────────────────────────────────
 // Style Dictionary warns about token collisions but still emits every duplicate
@@ -642,7 +604,7 @@ const generatedFiles = [
   'css/tokens-chat-dark.css',
   'css/tokens-cc.css',
   'css/tokens-cc-dark.css',
-  ...seatingModes.map(({ slug }) => `css/tokens-seating-${slug}.css`),
+  'css/tokens-seating-default.css',
 ];
 
 const hardCollisions = [];

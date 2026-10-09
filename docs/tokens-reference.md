@@ -492,30 +492,25 @@ Names come from Figma's `codeSyntax.WEB` (added 2026-08-25), so the CSS and the 
 cannot drift. The six table tiers are grouped under `sp-table-*`, which keeps the attendee role
 `--sp-vip` distinct from the table tier `--sp-table-vip`.
 
-**Radix Vivid is the default**, emitted at `:root`. The three mode files override it when a
-container carries `data-seating="muted" | "radix-soft" | "radix-vivid"`.
+**One palette**, emitted at `:root` (2026-10-09). The Muted / Radix Soft / Radix Vivid modes and the
+`data-seating` switch were removed; Figma's Seating Planner collection has a single "Theme" mode
+whose values are the old Radix Vivid ones.
 
-**Generated files** (rebuilt by `npm run tokens`; do not edit manually):
-`css/tokens-seating-default.css` (`:root`, Radix Vivid) plus
-`css/tokens-seating-{muted,radix-soft,radix-vivid}.css`.
+**Generated file** (rebuilt by `npm run tokens`; do not edit manually): `css/tokens-seating-default.css`.
 
-> **Import order matters.** `:root` and `[data-seating="…"]` are both specificity `0,1,0`, so
-> source order alone decides the winner. `base.css` imports the default file *first*; move it
-> after the mode files and the explicit attribute silently stops working.
+### Attendee roles
 
-### Attendee roles — these differ per mode
+| Variable | Value |
+|---|---|
+| `--sp-attendee` | `#0797B9` |
+| `--sp-vip` | `#AB4ABA` |
+| `--sp-speaker` | `#4CBBA5` |
+| `--sp-sponsor` | `#5B5BD6` |
+| `--sp-host` | `#F76B15` |
 
-| Variable | Muted | Radix Soft | **Radix Vivid** (default) |
-|---|---|---|---|
-| `--sp-attendee` | `#6598F1` | `#5EB1EF` | **`#0797B9`** |
-| `--sp-vip` | `#C399F1` | `#CF91D8` | **`#AB4ABA`** |
-| `--sp-speaker` | `#2FA68C` | `#53B9AB` | **`#4CBBA5`** |
-| `--sp-sponsor` | `#EE6E66` | `#EB8E90` | **`#5B5BD6`** |
-| `--sp-host` | `#ED9C51` | `#EC9455` | **`#F76B15`** |
+### Table tiers
 
-### Table tiers — identical across all three modes
-
-| Variable | All modes |
+| Variable | Value |
 |---|---|
 | `--sp-table-gold` | `#CC4E00` |
 | `--sp-table-silver` | `#8B8D98` |

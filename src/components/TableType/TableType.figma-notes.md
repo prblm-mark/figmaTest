@@ -115,7 +115,7 @@ Three of the five tier colours are exactly the Seating Planner tokens; two are n
 
 Left as raw hex for all five so the tiers behave identically. If Gold and Silver are repointed
 at their `--sp-*` values in Figma, all five could bind tokens uniformly and the presets would
-then follow the `data-seating` mode (Muted / Radix Soft / Radix Vivid).
+then follow the Seating Planner palette (one palette since 2026-10-09).
 
 Also note `--sp-table-press` `#5C7C2F` exists in the palette but has **no Type variant** in this
 component — six table tiers in the tokens, five in the component.

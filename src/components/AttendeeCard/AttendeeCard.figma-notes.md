@@ -78,9 +78,9 @@ pattern as TableType. Defaults bind the Seating Planner tokens:
 | `--host` | `--sp-host` |
 | `--empty` | `--ao-surface-contrast` (neutral, not a role colour) |
 
-**Radix Vivid is the default palette** at `:root`, so the card renders correctly with no extra
-markup. Add `data-seating="muted"` or `"radix-soft"` to an ancestor to switch. All three are
-shown at the foot of the demo page.
+The Seating Planner collection has **one palette**, at `:root`, so the card renders correctly with
+no extra markup. The Muted / Radix Soft modes and the `data-seating` switch were removed on
+2026-10-09; Figma's collection has a single "Theme" mode, matching the old Radix Vivid values.
 
 ## State deltas
 

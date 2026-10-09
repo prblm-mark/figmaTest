@@ -63,10 +63,8 @@
   Table Detail. A <strong>drop target only</strong>: it never initiates a drag, and
   <code>--dragged-over</code> is a class the parent module toggles while an attendee is held
   over it. No JS in the component.</p>
-  <p class="lede">Role colours come from the Seating Planner collection. <strong>Radix Vivid is
-  the default</strong>, so the card works with no extra markup; add
-  <code>data-seating="muted"</code> or <code>"radix-soft"</code> to an ancestor to switch palette.
-  The section at the foot of this page shows all three.</p>
+  <p class="lede">Role colours come from the Seating Planner collection's single palette, set at
+  <code>:root</code>, so the card needs no extra markup.</p>
 
   <h2>Roles — Default</h2>
   <p class="lede">Five role types. The accent bar and role label share one custom property,
@@ -404,48 +402,6 @@
         </div>
       </div>
     </article>
-  </div>
-
-  <h2>Seating palettes</h2>
-  <p class="lede">The same card in all three modes. Radix Vivid is what resolves with no
-  attribute set.</p>
-  <div style="display:flex; gap:var(--ao-spacing-5); flex-wrap:wrap">
-    <div>
-      <p class="demo-row-label">Radix Vivid — default</p>
-      <div class="tray">
-        <article class="attendee-card attendee-card--host">
-          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
-          <div class="attendee-card__body">
-            <p class="attendee-card__name">Sarah Jenkins</p>
-            <p class="attendee-card__meta"><span class="attendee-card__role">Host</span></p>
-          </div>
-        </article>
-      </div>
-    </div>
-    <div data-seating="muted">
-      <p class="demo-row-label">Muted</p>
-      <div class="tray">
-        <article class="attendee-card attendee-card--host">
-          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
-          <div class="attendee-card__body">
-            <p class="attendee-card__name">Sarah Jenkins</p>
-            <p class="attendee-card__meta"><span class="attendee-card__role">Host</span></p>
-          </div>
-        </article>
-      </div>
-    </div>
-    <div data-seating="radix-soft">
-      <p class="demo-row-label">Radix Soft</p>
-      <div class="tray">
-        <article class="attendee-card attendee-card--host">
-          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
-          <div class="attendee-card__body">
-            <p class="attendee-card__name">Sarah Jenkins</p>
-            <p class="attendee-card__meta"><span class="attendee-card__role">Host</span></p>
-          </div>
-        </article>
-      </div>
-    </div>
   </div>
 
   <script src="../../components/ThemeToggle/ThemeToggle.js"></script>
