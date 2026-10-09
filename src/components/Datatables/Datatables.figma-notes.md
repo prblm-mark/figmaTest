@@ -281,7 +281,9 @@ spare capped at 224px), `data-fluid` (wrapping title: counts at most `--ai-size-
 adds the kebab column and each row's detail row itself (MutationObserver on the tbody, so re-renders are
 covered; open rows stay open), and re-fits on a ResizeObserver. Uses the existing Type=Orders kebab,
 `--nofit` and detail-panel styles; no new CSS.
-Also: `datatables__col--end` on the row's last column when no kebab follows (for a table's end gutter;
+Also: `datatables__col--end` on the row's last column when no kebab follows (for a table's end gutter —
+styled in Datatables.css since 2026-10-09: below 768 of its container it takes the row's left inset,
+`--ai-spacing-4`, as its right, because the Orders cells drop their right padding there;
 counted while measuring, so it cannot cause overflow), and a re-fit on `document.fonts.ready` + window
 `load` — natural widths change when the web font arrives, with no resize to report it.
 `data-fit="even"` (dashboards): equal column widths where content allows; `data-weight="n"` on a header

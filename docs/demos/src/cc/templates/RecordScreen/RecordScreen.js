@@ -374,4 +374,33 @@
     wrap.querySelector('.color-picker-input__swatch-inner').style.backgroundColor = e.target.value;
     wrap.querySelector('.color-picker-input__value').textContent = e.target.value.toUpperCase();
   });
+
+  /* Editable grids (record_markup.edit_grid; code-first 2026-10-09): Add row copies the last row
+     blank, Delete selected removes the ticked rows (one always stays, so Add row has a model).
+     TODO(backend:RecordScreen) record-edit-grid: in memory only → the rows post with the form */
+  document.addEventListener('click', function (e) {
+    var add = e.target.closest('[data-edit-grid-add]');
+    if (add) {
+      var body = add.closest('[data-edit-grid]').querySelector('tbody');
+      var last = body.lastElementChild;
+      if (!last) return;
+      var row = last.cloneNode(true);
+      row.querySelectorAll('input').forEach(function (i) { if (i.type === 'checkbox') i.checked = false; else i.value = ''; });
+      row.querySelectorAll('td:not(.datatables__col--tight)').forEach(function (td) {
+        if (!td.querySelector('input')) td.textContent = '-';   /* display-only columns start empty */
+      });
+      body.appendChild(row);
+      var first = row.querySelector('.input__control');
+      if (first) first.focus();
+      return;
+    }
+    var del = e.target.closest('[data-edit-grid-delete]');
+    if (del) {
+      var tbody = del.closest('[data-edit-grid]').querySelector('tbody');
+      tbody.querySelectorAll('tr').forEach(function (tr) {
+        var cb = tr.querySelector('.checkbox__input');
+        if (cb && cb.checked && tbody.children.length > 1) tr.remove();
+      });
+    }
+  });
 })();

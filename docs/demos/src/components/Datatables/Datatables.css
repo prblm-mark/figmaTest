@@ -930,6 +930,16 @@
              var(--ai-spacing-3) var(--ai-spacing-4);
   }
 
+  /* …which leaves the row's right edge to the kebab cell. When every column fits there is no kebab,
+     and the last column's text ran into the table edge (Mark, 2026-10-09, record tab cards).
+     DatatablesFit marks that column `datatables__col--end`; it takes the row's left inset as its
+     right. Was scoped to Live Dashboard (LiveDashboard.css, which still widens it to its 24px card
+     edge); now every fitted table gets it. */
+  .datatables--orders .table thead th.datatables__col--end,
+  .datatables--orders .table tbody td.datatables__col--end {
+    padding-right: var(--ai-spacing-4);
+  }
+
   /* The HEADER keeps a taller block padding than the rows — 12px against the
      cells' 8. The compaction above is right for a data row, where the value is
      the content and the row is one of twenty; a header is one line of small

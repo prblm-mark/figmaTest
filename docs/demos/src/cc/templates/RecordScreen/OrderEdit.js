@@ -6,7 +6,7 @@
  *     refund total may not exceed the order total — the server's checks, not built here).
  *   - Paid Full fixes Payment Status at Paid. Live hides the select; here it is disabled at Paid, so
  *     the value stays readable.
- *   - Each grid adds a blank row, or deletes the ticked rows.
+ *   (Adding / deleting grid rows is the kit's, RecordScreen.js.)
  * Select.js has no change event, so this listens for the option click after Select.js has set it.
  * TODO(backend:RecordScreen) order-edit: in memory only → Save posts the form */
 (function () {
@@ -39,30 +39,6 @@
 
   document.addEventListener('click', function (e) {
     if (e.target.closest('[data-order-status] .sel__menu-item')) { sync(); return; }
-
-    var add = e.target.closest('[data-order-grid-add]');
-    if (add) {
-      var body = add.closest('[data-order-grid]').querySelector('tbody');
-      var last = body.lastElementChild;
-      if (!last) return;
-      var row = last.cloneNode(true);
-      row.querySelectorAll('input').forEach(function (i) { if (i.type === 'checkbox') i.checked = false; else i.value = ''; });
-      body.appendChild(row);
-      var first = row.querySelector('.input__control');
-      if (first) first.focus();
-      return;
-    }
-
-    var del = e.target.closest('[data-order-grid-delete]');
-    if (del) {
-      var tbody = del.closest('[data-order-grid]').querySelector('tbody');
-      tbody.querySelectorAll('tr').forEach(function (tr) {
-        var cb = tr.querySelector('.checkbox__input');
-        /* Keep one row, so Add row always has something to copy. */
-        if (cb && cb.checked && tbody.children.length > 1) tr.remove();
-      });
-      return;
-    }
 
   });
 
