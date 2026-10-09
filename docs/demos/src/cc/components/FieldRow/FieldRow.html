@@ -54,6 +54,20 @@
             </div></dd>
           </div></dl>
   </div>
+  <div class="demo-section" style="--demo-w: 60rem">
+    <p class="demo-section__title">Layout=Wide · long values collapse (code-first, not in Figma)</p><p class="demo-note">Paragraph folds after 6 lines, Rich after 12, with the last line faded and a Show more / Show less button. Short values get no button. FieldRow.js adds the toggle only when the text really runs past the limit, and re-measures when the column changes width. Every value starts collapsed.</p>
+    <dl class="demo-stack" style="margin: 0">
+      <div class="field-row field-row--paragraph">
+            <dt class="field-row__label">Summary</dt>
+            <dd class="field-row__value"><p>Affino's AI plugins bring high-impact AI to a charity's existing website: an assistant that answers supporter questions around the clock, AI-enhanced search that understands what people mean rather than only what they type, article summaries that let a busy reader take in a long report in a minute, smart follow-on questions that keep visitors exploring, and a personalised news catch-up for returning supporters. Each plugin runs on the content the charity already publishes, so there is nothing new to write before switching one on, and every answer links back to the page it came from so supporters can check the source. They lift engagement, give faster answers and take real load off small teams, whose inboxes fill with the same twenty questions every week. There is no need to move the site to Affino: the plugins sit on top of the existing pages, and a charity can start with one and add the others as it sees what works. The article walks through each plugin in turn, shows how three charities of different sizes have used them, sets out what it costs to run them, and ends with a short checklist for choosing where to start.</p></dd>
+          </div><div class="field-row field-row--paragraph">
+            <dt class="field-row__label">Main Body</dt>
+            <dd class="field-row__value"><div class="field-row__rich"><p>Most charities now use AI, but the 2026 Charity Digital Skills Report shows most of it is individual and ad hoc, with little of it reaching the supporter-facing work that changes outcomes. Affino closes that gap with a series of AI plugins you add to the website you already have.</p><p>The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries, and Article Questions. You can switch on one or several. Here is what each does for your charity, how they connect to your site, and where to start.</p><h3>AI Assistants</h3><p>An assistant answers supporter questions in plain language, around the clock, from the pages you have already published. It cites its sources, hands over to a person when it should, and learns which questions come up most so your team can see where the site needs work.</p><h3>AI Enhanced Search</h3><p>Search that understands what people mean. A visitor who types “help paying for my mum’s care” finds the funding guide even though none of those words appear in its title.</p><h3>Article Summaries and Questions</h3><p>A short summary sits at the top of each long article, and a few smart follow-on questions sit at the end, so readers who arrive for one answer stay for the next.</p></div></dd>
+          </div><div class="field-row field-row--paragraph">
+            <dt class="field-row__label">Teaser</dt>
+            <dd class="field-row__value"><p>Affino’s AI plugins for charities: News AI, assistants, enhanced search, summaries, and article questions, added to the site you already have.</p></dd>
+          </div></dl>
+  </div>
   <div class="demo-section ">
     <p class="demo-section__title">Layout=Compact · Text, Tags</p><p class="demo-note">Sidebar rows: 12px on a 128px (--ai-size-1) term column.</p>
     <dl class="demo-stack demo-narrow" style="margin:0"><div class="field-row field-row--compact">
@@ -127,6 +141,7 @@ Five headline updates lead the release. We rebuilt more than twenty exports this
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>lucide.createIcons();</script>
+  <script src="FieldRow.js"></script>
   <script src="../../../components/Select/Select.js"></script>
   <script src="../../patterns/TagBox/TagBox.js"></script>
 </body>
