@@ -248,3 +248,39 @@
 .field-row--check .field-row__label {
   padding-top: 0;
 }
+
+/* ══ Collapsible long values (code-first 2026-10-09) — NOT in Figma yet, flagged ═════════════════
+ * FieldRow.js wraps a long Paragraph / Rich value in `__clamp-body` and adds the toggle; the row only
+ * gets `data-clamped` when the text runs past --field-row-clamp-lines (6 Paragraph, 12 Rich), so
+ * short values render exactly as before. Collapsed: capped at that many lines of the value's own
+ * line height, with the last line faded. The fade is an alpha MASK, not a paint over the text, so it
+ * works on any surface (section, panel, dark) without a gradient colour token.
+ * The toggle is the same Button Secondary xs as the row's other companion buttons ("Image details"),
+ * spaced like them (--ai-spacing-3). */
+.field-row__value[data-clamped]:not([data-expanded]) > .field-row__clamp-body {
+  max-block-size: calc(var(--field-row-clamp-lines) * var(--ai-leading-md));
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, currentColor calc(100% - var(--field-row-clamp-fade, var(--ai-leading-md))), transparent);
+}
+
+/* Rich text has gaps between its paragraphs, so the cut can land in one and a one-line fade would
+   show nothing. Two lines makes sure the fade always crosses some text. */
+.field-row__value:has(> .field-row__clamp-body > .field-row__rich) {
+  --field-row-clamp-fade: calc(var(--ai-leading-md) * 2);
+}
+
+.field-row__clamp-toggle {
+  margin-top: var(--ai-spacing-3);
+}
+
+.field-row__clamp-toggle[hidden] {
+  display: none;
+}
+
+.field-row__clamp-toggle svg {
+  transition: transform var(--ai-transition-default);
+}
+
+.field-row__value[data-expanded] > .field-row__clamp-toggle svg {
+  transform: rotate(180deg);
+}

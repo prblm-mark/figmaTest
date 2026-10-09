@@ -80,3 +80,23 @@ Set `3861:1987` gains, for Layout=Wide and Stacked: Type=**Lookup** (`3931:19293
 columns Wide, 1 Stacked), **Multimedia**, **Colour** (ColorPickerInput). Rich text is still a Textarea in Figma (RichTextEditor not
 built yet). Labels: SemiBold + text-primary on every non-Compact row; they wrap (hug + max-width, the * stays beside the text).
 The Required * visibility had to be relinked on the cloned rows (clone drops property refs).
+
+## Collapsible long values — code-first (2026-10-09), NOT in Figma
+
+Asked by Luismi: article 245's Summary filled a screen and a half on the View. Mark's decisions:
+
+| Rule | Value |
+|---|---|
+| Which rows | every Wide view row of Type=Paragraph (Summary, Teaser, Page Description, custom text) and Type=Rich (Main Body, Introduction…). Not Compact (sidebar), not Edit, not Media. |
+| When | Paragraph after **6 lines**, Rich after **12** (× `--ai-leading-md`). Only when the text really runs past the limit; short values are unchanged and get no button. |
+| Collapsed look | capped height, the last line faded (two lines for Rich, whose cut can land in a paragraph gap). The fade is an alpha `mask-image` (`currentColor` → `transparent`), so it needs no gradient colour token and works on any surface. |
+| Toggle | Button Secondary xs (as "Image details"), `--ai-spacing-3` above it: `chevron-down` "Show more" ⇄ "Show less" (the chevron rotates), `aria-expanded`. |
+| Memory | none: every value starts collapsed. |
+
+`FieldRow.js` enhances the server-rendered markup: it wraps the value in `.field-row__clamp-body`,
+appends `.field-row__clamp-toggle`, sets `data-clamped` when the value is long and `data-expanded`
+when open, and re-measures with a `ResizeObserver` (the column changes width with no window resize).
+`window.fieldRowClamp.init(root)` for content added later. Loaded by every RecordScreen page
+(`_generate.py` KIT_JS).
+
+**Figma push pending:** a FieldRow Collapsed / Expanded state for Paragraph and Rich.
