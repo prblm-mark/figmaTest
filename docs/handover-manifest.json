@@ -1433,6 +1433,13 @@
      "needs": "v1's StandardItemView getRecentConversions / getUsersAddedToItinerary / getUsersRecentClicks with paging; Add to Contact List per panel. Added to Itinerary only for Advanced Seminar (ContentTypeCode 17). Hide a panel with no rows."
     },
     {
+     "id": "order-edit",
+     "category": "needs-backend",
+     "element": "Order Edit (OrderEdit.html) → Order, Payment (+ Payment / Refund Details grids), Customer, End User, the three addresses, Delivery, Comments",
+     "current": "Static order 100412 with the invented customer. Fields, order, required mark and help text verbatim from AfoECommerce/CC/OrderProcessingDef.cfm (edit = OrderProcessingEdit.cfm, Action=change) + PaymentDetailsInclude.cfm. Read-only rows (Order No., Customer, End User, Gateway Reference, Payment ID) render as text. OrderEdit.js: status shows the payment grid (Paid Partial / Paid Full) or refund grid (Partially Refunded / Refunded), Paid Full locks Payment Status at Paid; grids add / delete rows in memory. Option lists for Sub Order Type and Payment Method are stand-ins.",
+     "needs": "The order's values and option sources; Save writes the form with the live rules — status required, payment status required, External Order ID unique, refund rows required at refund statuses and not above the order total; status side effects (OrderStatus log, OrderCancel, payment-status security changes, ItemsSold). Keep the live conditions: Cancelled locks status; Pro Forma makes account, owner and addresses read-only; Purchase Order No. only for PO payments; Gateway Reference editable only for PaymentMethodCode 1; Delivery Date only when set; Zone only with >1 zone. Line items stay view-only (edited on the Pro Forma)."
+    },
+    {
      "id": "contact-edit",
      "category": "needs-backend",
      "element": "Contact Edit (ContactEdit.html) → all nine sections: Contact Details, Accounts, Topics, Social Media, Profile & Subscriptions, Main Address, Additional Information, Job Seeker, Service Credits",

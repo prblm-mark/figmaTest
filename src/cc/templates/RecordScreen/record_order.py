@@ -293,3 +293,135 @@ def modals(o, c):
                       + _field_input("order-att-phone", "Business phone", kind="tel"),
                       "Add attendee", "attendee", "user-plus", "order-items")
     return "\n".join([status, send, send_inv, message, despatch, attendee])
+
+
+# ── Order Edit (code-first, 2026-10-09) ─────────────────────────────────────────────────────────
+# Fields, order and HELP TEXT verbatim from the live AfoECommerce/CC/OrderProcessingDef.cfm (edit is
+# OrderProcessingEdit.cfm, Action=change only; slot [8] help, [13] required) plus its
+# PaymentDetailsInclude.cfm grids. Read-only rows (Order No., Customer, End User) show as text
+# (Mark). Left out as the live screen would for this order: Pro Forma (none), Purchase Order (not a
+# PO payment), Delivery Date (none set). Line items are not editable on an order (Pro Forma only).
+# Status drives the form (OrderEdit.js): Paid Partial / Paid Full show the payment grid, Paid Full
+# fixes Payment Status at Paid; Partially Refunded / Refunded show the refund grid.
+# TODO(backend:RecordScreen) order-edit: values, option lists and lookups are static → the order + option sources; Save writes the form (status side effects: OrderStatus log, OrderCancel, payment-status security changes)
+PAYMENT_STATUSES = ["Not Paid", "Paid", "Awaiting Payment Confirmation"]
+EDIT_FILE = "OrderEdit.html"
+
+
+def _grid(kind, rows, help_text, visible):
+    """Payment / Refund Details (PaymentDetailsInclude.cfm): editable rows + Add row / Delete selected."""
+    gid = f"order-{kind}-grid"
+    refund = kind == "refund"
+    head = ["Date", "Amount", "Tax"] + (["Refund reason"] if refund else []) + [""]
+    def cell(v, label):
+        return (f'<td><div class="input"><div class="input__wrap"><input type="text" class="input__control" '
+                f'value="{e(v)}" aria-label="{e(label)}"></div></div></td>')
+    def row(r):
+        cells = cell(r[0], "Date") + cell(r[1], "Amount") + cell(r[2], "Tax") + (cell(r[3], "Refund reason") if refund else "")
+        return (f'<tr>{cells}<td class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" '
+                f'aria-label="Select row"><span class="checkbox__indicator">{m.icon("check")}</span></label></td></tr>')
+    title = "Refund Details" if refund else "Payment Details"
+    return f'''<div class="order-edit__grid" id="{gid}" data-order-grid="{kind}"{"" if visible else " hidden"}>
+            <h3 class="order-edit__grid-title" id="{gid}-title">{title}</h3>
+            <div class="datatables"><div class="datatables__body"><table class="table" aria-labelledby="{gid}-title" aria-describedby="{gid}-help">
+              <thead><tr>{"".join(f"<th>{e(h)}</th>" for h in head)}</tr></thead>
+              <tbody>{"".join(row(r) for r in rows)}</tbody>
+            </table></div></div>
+            <div class="order-edit__grid-actions">
+              {m.btn("Add row", "secondary", "sm", icon_left="plus", attrs=' data-order-grid-add')}
+              {m.btn("Delete selected", "tertiary", "sm", icon_left="trash-2", attrs=' data-order-grid-delete')}
+            </div>
+            <p class="input__help field-row__help" id="{gid}-help">{e(help_text)}</p>
+          </div>'''
+
+
+def _address_rows(kind, c):
+    r = m.edit_row
+    county_help = {"Invoice": "Invoice County", "Billing": "Billing County", "Delivery": "Shipping County"}[kind]
+    return [
+        r("Forename", "input", c["first"], help_text="Customer's First name."),
+        r("Surname", "input", c["last"], help_text="Customer's Last name."),
+        r("Company", "input", ADDRESS[0], help_text="Company Name."),
+        r("Address 1", "input", ADDRESS[1], help_text="First line of address."),
+        r("Address 2", "input", "", help_text="Second line of address."),
+        r("Town / City", "input", ADDRESS[2], help_text="Town or City."),
+        r("Country", "select", ADDRESS[4], options=["United Kingdom", "Ireland", "United States"], help_text="Drop-down selector for Country."),
+        r("County / State", "select", "City of Bristol", options=["City of Bristol", "Somerset", "Gloucestershire"],
+          help_text="Drop-down selector for County."),
+        r("County / State (Other)", "input", "", help_text=f"Customer's manual entry for {county_help}."),
+        r("Postcode / Zip", "input", ADDRESS[3], help_text="Postal Code / Zip."),
+        r("Phone Number", "input", c["tel"], help_text="Telephone Number including International dialling code."),
+        r("E-Mail Address", "input", c["email"], help_text="Customer's Email Address."),
+    ]
+
+
+def _addresses(c):
+    """Invoice / Billing / Delivery — one section each, as live (Mark chose it, 2026-10-09, over one
+    section with three columns or with tabs)."""
+    return "".join(m.record_section(f"{k} Address", _address_rows(k, c), "edit") for k in ("Invoice", "Billing", "Delivery"))
+
+
+def edit_sections(o, c):
+    r = m.edit_row
+    status = o["status"]
+    paid_full = status == "Paid Full"
+    top = [
+        r("Order No.", "static", o["code"], help_text="System Field Only - displays the Order Reference Number."),
+        r("External Order ID", "input", "", help_text="Enter an External Order ID. This can be used to identify an order from an external systems."),
+        r("Order Notes", "textarea", "", help_text="Enter Note / Comments for this Order."),
+        r("Zone", "select", o["zone"], options=["Affino", "Affino Events"], help_text="Zone drop-down selector / indicator."),
+        f'<div data-order-status>{r("Order Status", "select", status, options=STATUSES, help_text="Current Status of this order.")}</div>',
+        r("Order Type", "select", o["type"], required=True, options=["New Business", "Renewal"], help_text="Select Order Type of this order."),
+        # TODO(backend:RecordScreen) order-edit: Sub Order Type options are stand-ins → the store's sub order types
+        r("Sub Order Type", "select", "Select...", options=["Select...", "Event", "Subscription", "Service"],
+          help_text="Select an option to further categorise this order, note that this will be displayed on the Sales Reports."),
+        r("CRM Topics", "tagbox", tags=[], modal="modal-order-topics", help_text="Select the Topics for this Order."),
+        r("Customer Account", "lookup", o["account"],
+          help_text=("Select the correct Account for this customer. Once set, the Account will be stored against this Order. "
+                     "If the Account is changed at a later date or the Contact is added to another Account, it will not change "
+                     "the Account already associated to this Order.")),
+        r("Order Owner", "lookup", o["owner"],
+          help_text=("Select the order owner for this order. Note that the Order Owner is automatically populated from the "
+                     "Account and is the Account Manager of the account that this shopper is associated with. Note also that "
+                     "the Order Owner is carried over from the Pro Forma Invoice. It is essential that all orders that have "
+                     "reporting by sales person and by sales team have designated Order Owners.")),
+    ]
+    pay_status_help = ("Select the payment status for this order. Awaiting Payment Confirmation is used when there is a short "
+                       "waiting period for confirmation of payment from the payment gateway, e.g. this could be up to 5-8 days "
+                       "from GoCardless / Stripe. In these cases, the subscription will be set as Active or Active Pending. "
+                       "For orders where the subscription is not to be active until paid, the Not Paid status is used.")
+    payment = [
+        # TODO(backend:RecordScreen) order-edit: Payment Method options are stand-ins → the store's payment methods
+        r("Payment Method", "select", o["payment"]["method"], options=["No charge", "Card", "Invoice", "Purchase Order", "Direct Debit"],
+          help_text="Payment Method drop-down selector / indicator."),
+        r("Gateway Reference", "static", "", help_text="Payment Provider Reference Code"),
+        r("Payment ID", "static", "", help_text="Payment ID"),
+        f'<div data-payment-status{" data-fixed" if paid_full else ""}>{r("Payment Status", "select", o["payment"]["status"], options=PAYMENT_STATUSES, help_text=pay_status_help)}</div>',
+        _grid("payment", [(d, a, t) for d, a, t, _ in o["payment"]["rows"]], "Payment date, amount and tax taken.",
+              status in ("Paid Partial", "Paid Full")),
+        _grid("refund", [("", "", "", "")], "Refund date, amount and tax taken.", status in ("Partially Refunded", "Refunded")),
+    ]
+    customer = [
+        r("Name", "static", c["name"], help_text="Customer / User First Name. (System Field Only)."),
+        r("E-Mail Address", "static", c["email"], help_text="Customer / User Email Address. (System Field Only)."),
+        r("Member Type", "static", c["member"], help_text="Customer / User Member Type (System Field Only)"),
+        r("Job Title", "static", c["job"], help_text="Customer / User Job Description (System Field Only)."),
+        r("Company VAT No.", "static", "", help_text="Enter Company VAT No."),
+    ]
+    end_user = [
+        r("Name", "static", c["name"], help_text="Customer / User First Name. (System Field Only)."),
+        r("E-Mail Address", "static", c["email"], help_text="Customer / User Email Address. (System Field Only)."),
+    ]
+    delivery = [r("AWB Details", "textarea", "", help_text="Enter the full shipping details for the order once it has been shipped.")]
+    comments = [r("Gift Aid", "checkbox", False,
+                  help_text="Ticked if the user has selected to opt into Gift Aid during the checkout process.")]
+    sec = m.record_section
+    return (sec("Order", top, "edit") + sec("Payment", payment, "edit") + sec("Customer", customer, "edit")
+            + sec("End User", end_user, "edit") + _addresses(c) + sec("Delivery", delivery, "edit")
+            + sec("Comments", comments, "edit"))
+
+
+def edit_modals():
+    topics = [(n, "", "Topics", "Affino") for n in ["Events", "Commerce", "Subscriptions", "Renewals"]]
+    return (m.multi_select_modal("modal-order-topics", "Select Topics", topics)
+            + m.delete_confirm_modal("modal-delete", "order", "Order " + ORDER["code"]))

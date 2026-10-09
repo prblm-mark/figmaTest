@@ -373,6 +373,10 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
                 {btn("Choose file", "secondary", "sm", icon_left="upload", attrs=f' aria-label="Choose {e(label)}" data-backend-todo="record-media-file"')}
               </div>
             </div>'''
+    elif kind == "static":
+        # Read-only in edit (Order No., the customer — Order Edit, 2026-10-09): the value as text,
+        # aligned like a checkbox row since there is no 40px control.
+        ctl = f'<p class="field-row__static" id="{fid}"{described}>{e(value) if value else "-"}</p>'
     elif kind == "radio":
         # Radio group (Contact Type, Privacy Level, Gender — Contact Edit 2026-10-09): DS Radio, one
         # per option, in a row that wraps; the row label names the group.
@@ -386,7 +390,7 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
         ctl += f'<p class="input__help field-row__help" id="{fid}-help">{e(help_text)}</p>'
     lab_tag = "label" if kind in ("input", "textarea", "rich", "lookup", "date", "datetime") else "span"
     lab_for = f' for="{fid}"' if kind in ("input", "textarea", "rich", "lookup", "date", "datetime") else f' id="{fid}-label"'
-    row_mods = "field-row field-row--edit" + (" field-row--check" if kind in ("checkbox", "radio") else "")
+    row_mods = "field-row field-row--edit" + (" field-row--check" if kind in ("checkbox", "radio", "static") else "")
     if help_text:
         row_mods += " field-row--has-help"
     label_html = f'<{lab_tag} class="field-row__label"{lab_for}>{e(label)}{req}</{lab_tag}>'

@@ -15,7 +15,7 @@
        ThemeToggle (Figma HeaderGroup 4146:6685) remains the in-product
        control, driven by ThemeToggle.js at the foot of this file. -->
   <script src="../../../styles/theme-param.js"></script>
-  <title>Order · View — Affino Control Centre</title>
+  <title>Order · Edit — Affino Control Centre</title>
 
   <!-- Base + tokens -->
   <link rel="stylesheet" href="../../../styles/base.css">
@@ -483,12 +483,7 @@
               <h1 class="cc-header__title">Order 100412</h1>
             </div>
           </div>
-          <div class="cc-header__actions"><button type="button" class="btn btn--secondary" aria-label="Update status" aria-haspopup="dialog" data-record-modal-open="modal-order-status"><i data-lucide="refresh-cw" aria-hidden="true"></i><span class="cc-header__btn-label">Update status</span></button><a class="btn btn--primary" href="OrderEdit.html" aria-label="Edit" data-keep-width><i data-lucide="pencil" aria-hidden="true"></i><span class="cc-header__btn-label">Edit</span></a><div class="dropdown">
-            <button class="cc-header__kebab dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
-            <div class="dropdown__panel" role="menu" aria-label="More actions">
-              <ul class="dropdown__list"><li role="none"><a class="dropdown-item dropdown-item--sm" role="menuitem" href="#" aria-haspopup="dialog" data-record-modal-open="modal-order-receipt"><i data-lucide="receipt" aria-hidden="true"></i><span data-text="Send receipt">Send receipt</span></a></li><li role="none"><a class="dropdown-item dropdown-item--sm" role="menuitem" href="#" aria-haspopup="dialog" data-record-modal-open="modal-order-receipt-invoice"><i data-lucide="file-text" aria-hidden="true"></i><span data-text="Send receipt with invoice">Send receipt with invoice</span></a></li><li role="none"><a class="dropdown-item dropdown-item--sm" role="menuitem" href="#" aria-haspopup="dialog" data-record-modal-open="modal-order-message"><i data-lucide="mail" aria-hidden="true"></i><span data-text="Send message with invoice">Send message with invoice</span></a></li><li role="none"><a class="dropdown-item dropdown-item--sm" role="menuitem" href="#" data-backend-todo="order-invoice"><i data-lucide="file-search" aria-hidden="true"></i><span data-text="View invoice">View invoice</span></a></li><li role="none"><a class="dropdown-item dropdown-item--sm" role="menuitem" href="#" data-order-label data-backend-todo="order-shipping-label"><i data-lucide="printer" aria-hidden="true"></i><span data-text="Generate shipping label">Generate shipping label</span></a></li><li role="none"><a class="dropdown-item dropdown-item--sm" role="menuitem" href="#" aria-haspopup="dialog" data-record-modal-open="modal-order-despatch"><i data-lucide="truck" aria-hidden="true"></i><span data-text="Despatch notification">Despatch notification</span></a></li><li role="none"><a class="dropdown-item dropdown-item--sm" role="menuitem" href="../ListingScreen/ListingScreen.html" data-keep-width><i data-lucide="list" aria-hidden="true"></i><span data-text="Go to list">Go to list</span></a></li></ul>
-            </div>
-          </div></div>
+          <div class="cc-header__actions"><a class="btn btn--tertiary cc-header__btn--bordered-mobile" href="OrderView.html" aria-label="Cancel" data-keep-width><i data-lucide="x" class="cc-header__btn-icon--mobile" aria-hidden="true"></i><span class="cc-header__btn-label">Cancel</span></a><button type="button" class="btn btn--alert" aria-label="Delete" aria-haspopup="dialog" data-record-modal-open="modal-delete"><i data-lucide="trash-2" aria-hidden="true"></i><span class="cc-header__btn-label">Delete</span></button><button type="button" class="btn btn--primary" aria-label="Save"><i data-lucide="check" aria-hidden="true"></i><span class="cc-header__btn-label">Save</span></button></div>
         </header>
         </div>
 
@@ -498,229 +493,443 @@
     <!-- Page content (scrolling area) -->
     <!-- Page content (scrolling area) -->
     <div class="cc-control__page cc-control__page--record">
-      <div class="record-screen" data-record-screen data-record-mode="view" data-record-type="order">
-        <div class="record-screen__body">
-          <div class="record-screen__main"><section class="record-section" aria-labelledby="sec-order">
+      <div class="record-screen record-screen--no-sidebar" data-record-screen data-record-mode="edit" data-help-mode="switch" data-record-type="order">
+        <nav class="record-tabs" aria-label="Record sections">
+        <div class="record-tabs__list">
+          <a class="record-tab record-tab--active" href="OrderEdit.html" aria-current="page" data-keep-width>Details</a>
+        </div><div class="record-tabs__actions record-tabs__actions--help"><span class="record-tabs__sidebar-toggle record-tabs__help-toggle"><button class="toggle toggle--xxs" type="button" role="switch" aria-checked="false" aria-labelledby="record-help-label" data-record-help><span class="toggle__track"><span class="toggle__knob"></span></span></button><span id="record-help-label">Show help</span></span></div>
+      </nav><div class="record-screen__body"><div class="record-screen__main"><section class="record-section" aria-labelledby="sec-order">
           <div class="record-section__header"><h2 class="record-section__title" id="sec-order">Order</h2></div>
-          <dl class="record-section__body"><div class="field-row">
-            <dt class="field-row__label">Order number</dt>
-            <dd class="field-row__value">100412</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">External order ID</dt>
-            <dd class="field-row__value">-</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Order status</dt>
-            <dd class="field-row__value"><span class="badge badge--success" data-order-status>Paid Full</span></dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Order type</dt>
-            <dd class="field-row__value">New Business</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Sub order type</dt>
-            <dd class="field-row__value">-</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Store</dt>
-            <dd class="field-row__value">Affino Store</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Zone</dt>
-            <dd class="field-row__value">Affino</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Customer account</dt>
-            <dd class="field-row__value"><div class="field-row__tags"><a class="btn btn--tertiary btn--xs" href="#"><span>Harbour Lane Publishing</span></a></div></dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Order owner</dt>
-            <dd class="field-row__value">Markus Karlsson</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">CRM topics</dt>
-            <dd class="field-row__value">-</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Order notes</dt>
-            <dd class="field-row__value">-</dd>
-          </div></dl>
-        </section><section class="datatables datatables--orders contact-tab order-card" aria-labelledby="order-lineitems" data-backend-todo="order-items">
-          <div class="datatables__toolbar contact-tab__head">
-            <h2 class="contact-tab__title" id="order-lineitems">Line items <span class="badge badge--neutral" aria-label="1 line item">1</span></h2>
-          </div>
-          <div class="datatables__body"><table class="table" data-fit="even"><thead><tr><th data-keep data-weight="3" data-fluid>Description</th><th data-drop="3">Item code</th><th class="contact-tab__num" data-keep>Quantity</th><th class="contact-tab__num" data-drop="2">Original price</th><th class="contact-tab__num" data-drop="1">Discount</th><th class="contact-tab__num" data-drop="4">Unit price</th><th class="contact-tab__num" data-keep>Line total</th><th data-drop="5">Type</th></tr></thead><tbody><tr><td><a class="datatables__record-link" href="#" data-backend-todo="order-items">Affino Innovation Briefing 2019 - Actionable Intelligence, Case Study and 2020 Roadmap</a></td><td>AIB2019</td><td class="contact-tab__num">1</td><td class="contact-tab__num">£0.00</td><td class="contact-tab__num">£0.00</td><td class="contact-tab__num">£0.00</td><td class="contact-tab__num">£0.00</td><td><span class="badge badge--neutral">Event</span></td></tr></tbody></table></div><div class="order-attendees" data-order-attendees data-seats="1">
-            <div class="order-attendees__head">
-              <h3 class="order-attendees__title" id="order-attendees-title">Attendees
-                <span class="badge badge--warning" data-order-assigned>0 of 1 assigned</span></h3>
-              <button type="button" class="btn btn--secondary btn--sm" aria-haspopup="dialog" data-record-modal-open="modal-order-attendee"
-                      aria-label="Add attendees" data-order-add-attendee><i data-lucide="user-plus" aria-hidden="true"></i><span class="contact-tab__btn-label">Add attendees</span></button>
-            </div>
-            <p class="order-attendees__empty" data-order-attendees-empty>No attendees assigned to this place yet.</p>
-            <div class="order-attendees__table" data-order-attendees-table hidden><div class="datatables__body"><table class="table order-attendees__list" data-fit="even"><thead><tr><th data-keep data-weight="2" data-fluid>Attendee</th><th data-drop="4">Email</th><th data-drop="2">Job title</th><th data-drop="3">Company</th><th data-drop="1">Business phone</th></tr></thead><tbody></tbody></table></div></div>
-          </div><dl class="order-totals"><div class="order-totals__row"><dt>Subtotal</dt><dd class="contact-tab__num">£0.00</dd></div><div class="order-totals__row"><dt>Tax</dt><dd class="contact-tab__num">£0.00</dd></div><div class="order-totals__row order-totals__row--total"><dt>Total</dt><dd class="contact-tab__num">£0.00</dd></div></dl>
+          <div class="record-section__body"><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-orderno-217-label">Order No.</span>
+            <div class="field-row__value"><p class="field-row__static" id="f-orderno-217" aria-describedby="f-orderno-217-help">100412</p><p class="input__help field-row__help" id="f-orderno-217-help">System Field Only - displays the Order Reference Number.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-externalorderid-218">External Order ID</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-externalorderid-218" type="text" class="input__control" value="" aria-describedby="f-externalorderid-218-help"></div>
+              <span class="input__help field-row__help" id="f-externalorderid-218-help">Enter an External Order ID. This can be used to identify an order from an external systems.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-ordernotes-219">Order Notes</label>
+            <div class="field-row__value"><div class="textarea">
+              <textarea class="textarea__control" id="f-ordernotes-219" rows="4" aria-describedby="f-ordernotes-219-help"></textarea>
+            </div><p class="input__help field-row__help" id="f-ordernotes-219-help">Enter Note / Comments for this Order.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-zone-220-label">Zone</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-zone-220" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" aria-describedby="f-zone-220-help">
+                <span class="sel__value">Affino</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">Affino</button></li><li><button type="button" class="sel__menu-item" role="option">Affino Events</button></li>
+              </ul>
+            </div><p class="input__help field-row__help" id="f-zone-220-help">Zone drop-down selector / indicator.</p></div>
+          </div><div data-order-status><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-orderstatus-221-label">Order Status</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-orderstatus-221" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" aria-describedby="f-orderstatus-221-help">
+                <span class="sel__value">Paid Full</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item" role="option">Incomplete</button></li><li><button type="button" class="sel__menu-item" role="option">New</button></li><li><button type="button" class="sel__menu-item" role="option">Paid Partial</button></li><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">Paid Full</button></li><li><button type="button" class="sel__menu-item" role="option">Cancelled</button></li><li><button type="button" class="sel__menu-item" role="option">Shipped Partial</button></li><li><button type="button" class="sel__menu-item" role="option">Shipped</button></li><li><button type="button" class="sel__menu-item" role="option">Completed</button></li><li><button type="button" class="sel__menu-item" role="option">On Hold</button></li><li><button type="button" class="sel__menu-item" role="option">Released for Delivery</button></li><li><button type="button" class="sel__menu-item" role="option">Back Ordered</button></li><li><button type="button" class="sel__menu-item" role="option">Pending Return</button></li><li><button type="button" class="sel__menu-item" role="option">Returned</button></li><li><button type="button" class="sel__menu-item" role="option">Partially Refunded</button></li><li><button type="button" class="sel__menu-item" role="option">Refunded</button></li><li><button type="button" class="sel__menu-item" role="option">Exported</button></li>
+              </ul>
+            </div><p class="input__help field-row__help" id="f-orderstatus-221-help">Current Status of this order.</p></div>
+          </div></div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-ordertype-222-label">Order Type<span class="field-row__required" aria-hidden="true">*</span></span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-ordertype-222" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" aria-describedby="f-ordertype-222-help">
+                <span class="sel__value">New Business</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">New Business</button></li><li><button type="button" class="sel__menu-item" role="option">Renewal</button></li>
+              </ul>
+            </div><p class="input__help field-row__help" id="f-ordertype-222-help">Select Order Type of this order.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-subordertype-223-label">Sub Order Type</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-subordertype-223" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" aria-describedby="f-subordertype-223-help">
+                <span class="sel__value sel__value--placeholder">Select...</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">Select...</button></li><li><button type="button" class="sel__menu-item" role="option">Event</button></li><li><button type="button" class="sel__menu-item" role="option">Subscription</button></li><li><button type="button" class="sel__menu-item" role="option">Service</button></li>
+              </ul>
+            </div><p class="input__help field-row__help" id="f-subordertype-223-help">Select an option to further categorise this order, note that this will be displayed on the Sales Reports.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-crmtopics-224-label">CRM Topics</span>
+            <div class="field-row__value"><div class="tag-box" data-tag-box>
+              <ul class="tag-box__tags" id="f-crmtopics-224" aria-label="CRM Topics" data-empty="None selected" aria-describedby="f-crmtopics-224-help"></ul>
+              <button type="button" class="btn btn--secondary btn--sm" data-tag-box-select="modal-order-topics" aria-haspopup="dialog"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-crmtopics-224-help">Select the Topics for this Order.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-customeraccount-225">Customer Account</label>
+            <div class="field-row__value"><div class="field-row__lookup">
+              <div class="input"><div class="input__wrap"><input id="f-customeraccount-225" type="text" class="input__control" value="Harbour Lane Publishing" readonly placeholder="None selected" data-selector-value></div></div>
+              <button type="button" class="btn btn--secondary" aria-haspopup="dialog" aria-label="Select Customer Account" data-backend-todo="record-lookup"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-customeraccount-225-help">Select the correct Account for this customer. Once set, the Account will be stored against this Order. If the Account is changed at a later date or the Contact is added to another Account, it will not change the Account already associated to this Order.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-orderowner-226">Order Owner</label>
+            <div class="field-row__value"><div class="field-row__lookup">
+              <div class="input"><div class="input__wrap"><input id="f-orderowner-226" type="text" class="input__control" value="Markus Karlsson" readonly placeholder="None selected" data-selector-value></div></div>
+              <button type="button" class="btn btn--secondary" aria-haspopup="dialog" aria-label="Select Order Owner" data-backend-todo="record-lookup"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-orderowner-226-help">Select the order owner for this order. Note that the Order Owner is automatically populated from the Account and is the Account Manager of the account that this shopper is associated with. Note also that the Order Owner is carried over from the Pro Forma Invoice. It is essential that all orders that have reporting by sales person and by sales team have designated Order Owners.</p></div>
+          </div></div>
         </section><section class="record-section" aria-labelledby="sec-payment">
           <div class="record-section__header"><h2 class="record-section__title" id="sec-payment">Payment</h2></div>
-          <dl class="record-section__body"><div class="field-row">
-            <dt class="field-row__label">Payment method</dt>
-            <dd class="field-row__value">No charge</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Payment status</dt>
-            <dd class="field-row__value"><span class="badge badge--success">Paid</span></dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Gateway reference</dt>
-            <dd class="field-row__value">-</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Payment ID</dt>
-            <dd class="field-row__value">-</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Payment provider return</dt>
-            <dd class="field-row__value">-</dd>
-          </div></dl>
-        </section><section class="datatables datatables--orders contact-tab order-card" aria-labelledby="order-paymentdetails" data-backend-todo="order-record">
-          <div class="datatables__toolbar contact-tab__head">
-            <h2 class="contact-tab__title" id="order-paymentdetails">Payment details <span class="badge badge--neutral" aria-label="1 payment">1</span></h2>
-          </div>
-          <div class="datatables__body"><table class="table" data-fit="even"><thead><tr><th data-keep data-weight="2" data-fluid>Payment date</th><th class="contact-tab__num" data-keep>Amount</th><th class="contact-tab__num" data-drop="2">Tax</th><th data-drop="1">External code</th></tr></thead><tbody><tr><td>27 Nov 2019, 07:07:05</td><td class="contact-tab__num">£0.00</td><td class="contact-tab__num">£0.00</td><td>-</td></tr></tbody></table></div>
+          <div class="record-section__body"><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-paymentmethod-227-label">Payment Method</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-paymentmethod-227" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" aria-describedby="f-paymentmethod-227-help">
+                <span class="sel__value">No charge</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">No charge</button></li><li><button type="button" class="sel__menu-item" role="option">Card</button></li><li><button type="button" class="sel__menu-item" role="option">Invoice</button></li><li><button type="button" class="sel__menu-item" role="option">Purchase Order</button></li><li><button type="button" class="sel__menu-item" role="option">Direct Debit</button></li>
+              </ul>
+            </div><p class="input__help field-row__help" id="f-paymentmethod-227-help">Payment Method drop-down selector / indicator.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-gatewayreference-228-label">Gateway Reference</span>
+            <div class="field-row__value"><p class="field-row__static" id="f-gatewayreference-228" aria-describedby="f-gatewayreference-228-help">-</p><p class="input__help field-row__help" id="f-gatewayreference-228-help">Payment Provider Reference Code</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-paymentid-229-label">Payment ID</span>
+            <div class="field-row__value"><p class="field-row__static" id="f-paymentid-229" aria-describedby="f-paymentid-229-help">-</p><p class="input__help field-row__help" id="f-paymentid-229-help">Payment ID</p></div>
+          </div><div data-payment-status data-fixed><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-paymentstatus-230-label">Payment Status</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-paymentstatus-230" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" aria-describedby="f-paymentstatus-230-help">
+                <span class="sel__value">Paid</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item" role="option">Not Paid</button></li><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">Paid</button></li><li><button type="button" class="sel__menu-item" role="option">Awaiting Payment Confirmation</button></li>
+              </ul>
+            </div><p class="input__help field-row__help" id="f-paymentstatus-230-help">Select the payment status for this order. Awaiting Payment Confirmation is used when there is a short waiting period for confirmation of payment from the payment gateway, e.g. this could be up to 5-8 days from GoCardless / Stripe. In these cases, the subscription will be set as Active or Active Pending. For orders where the subscription is not to be active until paid, the Not Paid status is used.</p></div>
+          </div></div><div class="order-edit__grid" id="order-payment-grid" data-order-grid="payment">
+            <h3 class="order-edit__grid-title" id="order-payment-grid-title">Payment Details</h3>
+            <div class="datatables"><div class="datatables__body"><table class="table" aria-labelledby="order-payment-grid-title" aria-describedby="order-payment-grid-help">
+              <thead><tr><th>Date</th><th>Amount</th><th>Tax</th><th></th></tr></thead>
+              <tbody><tr><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="27 Nov 2019, 07:07:05" aria-label="Date"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="£0.00" aria-label="Amount"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="£0.00" aria-label="Tax"></div></div></td><td class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td></tr></tbody>
+            </table></div></div>
+            <div class="order-edit__grid-actions">
+              <button type="button" class="btn btn--secondary btn--sm" data-order-grid-add><i data-lucide="plus" aria-hidden="true"></i><span>Add row</span></button>
+              <button type="button" class="btn btn--tertiary btn--sm" data-order-grid-delete><i data-lucide="trash-2" aria-hidden="true"></i><span>Delete selected</span></button>
+            </div>
+            <p class="input__help field-row__help" id="order-payment-grid-help">Payment date, amount and tax taken.</p>
+          </div><div class="order-edit__grid" id="order-refund-grid" data-order-grid="refund" hidden>
+            <h3 class="order-edit__grid-title" id="order-refund-grid-title">Refund Details</h3>
+            <div class="datatables"><div class="datatables__body"><table class="table" aria-labelledby="order-refund-grid-title" aria-describedby="order-refund-grid-help">
+              <thead><tr><th>Date</th><th>Amount</th><th>Tax</th><th>Refund reason</th><th></th></tr></thead>
+              <tbody><tr><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="" aria-label="Date"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="" aria-label="Amount"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="" aria-label="Tax"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="" aria-label="Refund reason"></div></div></td><td class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td></tr></tbody>
+            </table></div></div>
+            <div class="order-edit__grid-actions">
+              <button type="button" class="btn btn--secondary btn--sm" data-order-grid-add><i data-lucide="plus" aria-hidden="true"></i><span>Add row</span></button>
+              <button type="button" class="btn btn--tertiary btn--sm" data-order-grid-delete><i data-lucide="trash-2" aria-hidden="true"></i><span>Delete selected</span></button>
+            </div>
+            <p class="input__help field-row__help" id="order-refund-grid-help">Refund date, amount and tax taken.</p>
+          </div></div>
         </section><section class="record-section" aria-labelledby="sec-customer">
           <div class="record-section__header"><h2 class="record-section__title" id="sec-customer">Customer</h2></div>
-          <dl class="record-section__body"><div class="field-row">
-            <dt class="field-row__label">Name</dt>
-            <dd class="field-row__value">Thomas Reid</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Email</dt>
-            <dd class="field-row__value">thomas.reid@harbourlane.example</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Member type</dt>
-            <dd class="field-row__value">Full account</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Job title</dt>
-            <dd class="field-row__value">Head of Digital</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Company VAT number</dt>
-            <dd class="field-row__value">-</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">End user</dt>
-            <dd class="field-row__value">Thomas Reid</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">End user email</dt>
-            <dd class="field-row__value">thomas.reid@harbourlane.example</dd>
-          </div></dl>
-        </section><section class="record-section" aria-labelledby="sec-addresses">
-          <div class="record-section__header"><h2 class="record-section__title" id="sec-addresses">Addresses</h2></div>
-          <dl class="record-section__body"><div class="field-row">
-            <dt class="field-row__label">Invoice address</dt>
-            <dd class="field-row__value"><address class="order-address">Thomas Reid<br>Harbour Lane Publishing Ltd<br>4 Quay Street<br>Bristol<br>BS1 4DB<br>United Kingdom<br>020 7946 0592</address></dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Billing address</dt>
-            <dd class="field-row__value"><address class="order-address">Thomas Reid<br>Harbour Lane Publishing Ltd<br>4 Quay Street<br>Bristol<br>BS1 4DB<br>United Kingdom<br>020 7946 0592</address></dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Delivery address</dt>
-            <dd class="field-row__value"><address class="order-address">Thomas Reid<br>Harbour Lane Publishing Ltd<br>4 Quay Street<br>Bristol<br>BS1 4DB<br>United Kingdom<br>020 7946 0592</address></dd>
-          </div></dl>
+          <div class="record-section__body"><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-name-231-label">Name</span>
+            <div class="field-row__value"><p class="field-row__static" id="f-name-231" aria-describedby="f-name-231-help">Thomas Reid</p><p class="input__help field-row__help" id="f-name-231-help">Customer / User First Name. (System Field Only).</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-emailaddress-232-label">E-Mail Address</span>
+            <div class="field-row__value"><p class="field-row__static" id="f-emailaddress-232" aria-describedby="f-emailaddress-232-help">thomas.reid@harbourlane.example</p><p class="input__help field-row__help" id="f-emailaddress-232-help">Customer / User Email Address. (System Field Only).</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-membertype-233-label">Member Type</span>
+            <div class="field-row__value"><p class="field-row__static" id="f-membertype-233" aria-describedby="f-membertype-233-help">Full account</p><p class="input__help field-row__help" id="f-membertype-233-help">Customer / User Member Type (System Field Only)</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-jobtitle-234-label">Job Title</span>
+            <div class="field-row__value"><p class="field-row__static" id="f-jobtitle-234" aria-describedby="f-jobtitle-234-help">Head of Digital</p><p class="input__help field-row__help" id="f-jobtitle-234-help">Customer / User Job Description (System Field Only).</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-companyvatno-235-label">Company VAT No.</span>
+            <div class="field-row__value"><p class="field-row__static" id="f-companyvatno-235" aria-describedby="f-companyvatno-235-help">-</p><p class="input__help field-row__help" id="f-companyvatno-235-help">Enter Company VAT No.</p></div>
+          </div></div>
+        </section><section class="record-section" aria-labelledby="sec-enduser">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-enduser">End User</h2></div>
+          <div class="record-section__body"><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-name-236-label">Name</span>
+            <div class="field-row__value"><p class="field-row__static" id="f-name-236" aria-describedby="f-name-236-help">Thomas Reid</p><p class="input__help field-row__help" id="f-name-236-help">Customer / User First Name. (System Field Only).</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-emailaddress-237-label">E-Mail Address</span>
+            <div class="field-row__value"><p class="field-row__static" id="f-emailaddress-237" aria-describedby="f-emailaddress-237-help">thomas.reid@harbourlane.example</p><p class="input__help field-row__help" id="f-emailaddress-237-help">Customer / User Email Address. (System Field Only).</p></div>
+          </div></div>
+        </section><section class="record-section" aria-labelledby="sec-invoiceaddress">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-invoiceaddress">Invoice Address</h2></div>
+          <div class="record-section__body"><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-forename-240">Forename</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-forename-240" type="text" class="input__control" value="Thomas" aria-describedby="f-forename-240-help"></div>
+              <span class="input__help field-row__help" id="f-forename-240-help">Customer&#x27;s First name.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-surname-241">Surname</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-surname-241" type="text" class="input__control" value="Reid" aria-describedby="f-surname-241-help"></div>
+              <span class="input__help field-row__help" id="f-surname-241-help">Customer&#x27;s Last name.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-company-242">Company</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-company-242" type="text" class="input__control" value="Harbour Lane Publishing Ltd" aria-describedby="f-company-242-help"></div>
+              <span class="input__help field-row__help" id="f-company-242-help">Company Name.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-address1-243">Address 1</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-address1-243" type="text" class="input__control" value="4 Quay Street" aria-describedby="f-address1-243-help"></div>
+              <span class="input__help field-row__help" id="f-address1-243-help">First line of address.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-address2-244">Address 2</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-address2-244" type="text" class="input__control" value="" aria-describedby="f-address2-244-help"></div>
+              <span class="input__help field-row__help" id="f-address2-244-help">Second line of address.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-towncity-245">Town / City</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-towncity-245" type="text" class="input__control" value="Bristol" aria-describedby="f-towncity-245-help"></div>
+              <span class="input__help field-row__help" id="f-towncity-245-help">Town or City.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-country-246-label">Country</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-country-246" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" aria-describedby="f-country-246-help">
+                <span class="sel__value">United Kingdom</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">United Kingdom</button></li><li><button type="button" class="sel__menu-item" role="option">Ireland</button></li><li><button type="button" class="sel__menu-item" role="option">United States</button></li>
+              </ul>
+            </div><p class="input__help field-row__help" id="f-country-246-help">Drop-down selector for Country.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-countystate-247-label">County / State</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-countystate-247" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" aria-describedby="f-countystate-247-help">
+                <span class="sel__value">City of Bristol</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">City of Bristol</button></li><li><button type="button" class="sel__menu-item" role="option">Somerset</button></li><li><button type="button" class="sel__menu-item" role="option">Gloucestershire</button></li>
+              </ul>
+            </div><p class="input__help field-row__help" id="f-countystate-247-help">Drop-down selector for County.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-countystateother-248">County / State (Other)</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-countystateother-248" type="text" class="input__control" value="" aria-describedby="f-countystateother-248-help"></div>
+              <span class="input__help field-row__help" id="f-countystateother-248-help">Customer&#x27;s manual entry for Invoice County.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-postcodezip-249">Postcode / Zip</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-postcodezip-249" type="text" class="input__control" value="BS1 4DB" aria-describedby="f-postcodezip-249-help"></div>
+              <span class="input__help field-row__help" id="f-postcodezip-249-help">Postal Code / Zip.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-phonenumber-250">Phone Number</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-phonenumber-250" type="text" class="input__control" value="020 7946 0592" aria-describedby="f-phonenumber-250-help"></div>
+              <span class="input__help field-row__help" id="f-phonenumber-250-help">Telephone Number including International dialling code.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-emailaddress-251">E-Mail Address</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-emailaddress-251" type="text" class="input__control" value="thomas.reid@harbourlane.example" aria-describedby="f-emailaddress-251-help"></div>
+              <span class="input__help field-row__help" id="f-emailaddress-251-help">Customer&#x27;s Email Address.</span>
+            </div></div>
+          </div></div>
+        </section><section class="record-section" aria-labelledby="sec-billingaddress">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-billingaddress">Billing Address</h2></div>
+          <div class="record-section__body"><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-forename-252">Forename</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-forename-252" type="text" class="input__control" value="Thomas" aria-describedby="f-forename-252-help"></div>
+              <span class="input__help field-row__help" id="f-forename-252-help">Customer&#x27;s First name.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-surname-253">Surname</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-surname-253" type="text" class="input__control" value="Reid" aria-describedby="f-surname-253-help"></div>
+              <span class="input__help field-row__help" id="f-surname-253-help">Customer&#x27;s Last name.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-company-254">Company</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-company-254" type="text" class="input__control" value="Harbour Lane Publishing Ltd" aria-describedby="f-company-254-help"></div>
+              <span class="input__help field-row__help" id="f-company-254-help">Company Name.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-address1-255">Address 1</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-address1-255" type="text" class="input__control" value="4 Quay Street" aria-describedby="f-address1-255-help"></div>
+              <span class="input__help field-row__help" id="f-address1-255-help">First line of address.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-address2-256">Address 2</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-address2-256" type="text" class="input__control" value="" aria-describedby="f-address2-256-help"></div>
+              <span class="input__help field-row__help" id="f-address2-256-help">Second line of address.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-towncity-257">Town / City</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-towncity-257" type="text" class="input__control" value="Bristol" aria-describedby="f-towncity-257-help"></div>
+              <span class="input__help field-row__help" id="f-towncity-257-help">Town or City.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-country-258-label">Country</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-country-258" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" aria-describedby="f-country-258-help">
+                <span class="sel__value">United Kingdom</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">United Kingdom</button></li><li><button type="button" class="sel__menu-item" role="option">Ireland</button></li><li><button type="button" class="sel__menu-item" role="option">United States</button></li>
+              </ul>
+            </div><p class="input__help field-row__help" id="f-country-258-help">Drop-down selector for Country.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-countystate-259-label">County / State</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-countystate-259" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" aria-describedby="f-countystate-259-help">
+                <span class="sel__value">City of Bristol</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">City of Bristol</button></li><li><button type="button" class="sel__menu-item" role="option">Somerset</button></li><li><button type="button" class="sel__menu-item" role="option">Gloucestershire</button></li>
+              </ul>
+            </div><p class="input__help field-row__help" id="f-countystate-259-help">Drop-down selector for County.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-countystateother-260">County / State (Other)</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-countystateother-260" type="text" class="input__control" value="" aria-describedby="f-countystateother-260-help"></div>
+              <span class="input__help field-row__help" id="f-countystateother-260-help">Customer&#x27;s manual entry for Billing County.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-postcodezip-261">Postcode / Zip</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-postcodezip-261" type="text" class="input__control" value="BS1 4DB" aria-describedby="f-postcodezip-261-help"></div>
+              <span class="input__help field-row__help" id="f-postcodezip-261-help">Postal Code / Zip.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-phonenumber-262">Phone Number</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-phonenumber-262" type="text" class="input__control" value="020 7946 0592" aria-describedby="f-phonenumber-262-help"></div>
+              <span class="input__help field-row__help" id="f-phonenumber-262-help">Telephone Number including International dialling code.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-emailaddress-263">E-Mail Address</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-emailaddress-263" type="text" class="input__control" value="thomas.reid@harbourlane.example" aria-describedby="f-emailaddress-263-help"></div>
+              <span class="input__help field-row__help" id="f-emailaddress-263-help">Customer&#x27;s Email Address.</span>
+            </div></div>
+          </div></div>
+        </section><section class="record-section" aria-labelledby="sec-deliveryaddress">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-deliveryaddress">Delivery Address</h2></div>
+          <div class="record-section__body"><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-forename-264">Forename</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-forename-264" type="text" class="input__control" value="Thomas" aria-describedby="f-forename-264-help"></div>
+              <span class="input__help field-row__help" id="f-forename-264-help">Customer&#x27;s First name.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-surname-265">Surname</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-surname-265" type="text" class="input__control" value="Reid" aria-describedby="f-surname-265-help"></div>
+              <span class="input__help field-row__help" id="f-surname-265-help">Customer&#x27;s Last name.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-company-266">Company</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-company-266" type="text" class="input__control" value="Harbour Lane Publishing Ltd" aria-describedby="f-company-266-help"></div>
+              <span class="input__help field-row__help" id="f-company-266-help">Company Name.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-address1-267">Address 1</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-address1-267" type="text" class="input__control" value="4 Quay Street" aria-describedby="f-address1-267-help"></div>
+              <span class="input__help field-row__help" id="f-address1-267-help">First line of address.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-address2-268">Address 2</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-address2-268" type="text" class="input__control" value="" aria-describedby="f-address2-268-help"></div>
+              <span class="input__help field-row__help" id="f-address2-268-help">Second line of address.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-towncity-269">Town / City</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-towncity-269" type="text" class="input__control" value="Bristol" aria-describedby="f-towncity-269-help"></div>
+              <span class="input__help field-row__help" id="f-towncity-269-help">Town or City.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-country-270-label">Country</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-country-270" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" aria-describedby="f-country-270-help">
+                <span class="sel__value">United Kingdom</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">United Kingdom</button></li><li><button type="button" class="sel__menu-item" role="option">Ireland</button></li><li><button type="button" class="sel__menu-item" role="option">United States</button></li>
+              </ul>
+            </div><p class="input__help field-row__help" id="f-country-270-help">Drop-down selector for Country.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-countystate-271-label">County / State</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-countystate-271" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" aria-describedby="f-countystate-271-help">
+                <span class="sel__value">City of Bristol</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">City of Bristol</button></li><li><button type="button" class="sel__menu-item" role="option">Somerset</button></li><li><button type="button" class="sel__menu-item" role="option">Gloucestershire</button></li>
+              </ul>
+            </div><p class="input__help field-row__help" id="f-countystate-271-help">Drop-down selector for County.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-countystateother-272">County / State (Other)</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-countystateother-272" type="text" class="input__control" value="" aria-describedby="f-countystateother-272-help"></div>
+              <span class="input__help field-row__help" id="f-countystateother-272-help">Customer&#x27;s manual entry for Shipping County.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-postcodezip-273">Postcode / Zip</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-postcodezip-273" type="text" class="input__control" value="BS1 4DB" aria-describedby="f-postcodezip-273-help"></div>
+              <span class="input__help field-row__help" id="f-postcodezip-273-help">Postal Code / Zip.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-phonenumber-274">Phone Number</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-phonenumber-274" type="text" class="input__control" value="020 7946 0592" aria-describedby="f-phonenumber-274-help"></div>
+              <span class="input__help field-row__help" id="f-phonenumber-274-help">Telephone Number including International dialling code.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-emailaddress-275">E-Mail Address</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-emailaddress-275" type="text" class="input__control" value="thomas.reid@harbourlane.example" aria-describedby="f-emailaddress-275-help"></div>
+              <span class="input__help field-row__help" id="f-emailaddress-275-help">Customer&#x27;s Email Address.</span>
+            </div></div>
+          </div></div>
         </section><section class="record-section" aria-labelledby="sec-delivery">
           <div class="record-section__header"><h2 class="record-section__title" id="sec-delivery">Delivery</h2></div>
-          <dl class="record-section__body"><div class="field-row">
-            <dt class="field-row__label">Delivery time frame</dt>
-            <dd class="field-row__value">-</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">AWB details</dt>
-            <dd class="field-row__value"><span data-order-awb>-</span></dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Invoices sent</dt>
-            <dd class="field-row__value"><span data-order-invoices>0</span></dd>
-          </div></dl>
-        </section><section class="record-section" aria-labelledby="sec-additionalinformation">
-          <div class="record-section__header"><h2 class="record-section__title" id="sec-additionalinformation">Additional information</h2></div>
-          <dl class="record-section__body"><div class="field-row">
-            <dt class="field-row__label">Comments</dt>
-            <dd class="field-row__value">-</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Custom data</dt>
-            <dd class="field-row__value">-</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Gift Aid</dt>
-            <dd class="field-row__value">No</dd>
-          </div><div class="field-row">
-            <dt class="field-row__label">Checkout journey</dt>
-            <dd class="field-row__value">-</dd>
-          </div></dl>
-        </section></div>
-          <aside class="record-screen__sidebar" id="record-sidebar" aria-label="Record information">
-            <div class="record-screen__handle" data-record-handle role="separator" aria-orientation="vertical"
-                 tabindex="0" aria-label="Resize the record information panel"
-                 aria-valuemin="384" aria-valuemax="0" aria-valuenow="384">
-              <span class="record-screen__handle-bar" aria-hidden="true"></span>
-            </div>
-            <section class="fact-panel" aria-labelledby="panel-status">
-          <div class="fact-panel__header">
-            <div class="fact-panel__title-block"><h2 class="fact-panel__title" id="panel-status">Status</h2></div>
-          </div>
-          <div class="order-status" data-order-status-panel><span class="badge badge--success" data-order-status>Paid Full</span><button type="button" class="btn btn--tertiary btn--xs" aria-haspopup="dialog" data-record-modal-open="modal-order-status"><span>Change</span></button></div><dl class="fact-list"><div class="field-row field-row--compact">
-            <dt class="field-row__label">Order number</dt>
-            <dd class="field-row__value">100412</dd>
-          </div><div class="field-row field-row--compact">
-            <dt class="field-row__label">Total</dt>
-            <dd class="field-row__value">£0.00</dd>
-          </div><div class="field-row field-row--compact">
-            <dt class="field-row__label">Items</dt>
-            <dd class="field-row__value">1</dd>
-          </div><div class="field-row field-row--compact">
-            <dt class="field-row__label">Payment</dt>
-            <dd class="field-row__value">Paid</dd>
-          </div><div class="field-row field-row--compact">
-            <dt class="field-row__label">Created</dt>
-            <dd class="field-row__value">27 Nov 2019, 07:07</dd>
-          </div><div class="field-row field-row--compact">
-            <dt class="field-row__label">Owner</dt>
-            <dd class="field-row__value">Markus Karlsson</dd>
-          </div></dl>
-        </section><section class="fact-panel" aria-labelledby="panel-statushistory">
-          <div class="fact-panel__header">
-            <div class="fact-panel__title-block"><h2 class="fact-panel__title" id="panel-statushistory">Status history</h2></div>
-          </div>
-          <div data-order-history><ol class="record-list record-list--timeline" data-backend-todo="order-history" data-ring-surface><li class="record-list__item"><span class="avatar avatar--size-2 avatar--placeholder record-list__icon signal-icon signal-icon--lagoon" aria-hidden="true"><i data-lucide="check" aria-hidden="true"></i></span><div class="record-list__main"><p class="record-list__meta">27 Nov 2019, 07:07</p><p class="record-list__title">Paid Full</p></div></li><li class="record-list__item"><span class="avatar avatar--size-2 avatar--placeholder record-list__icon signal-icon signal-icon--jade" aria-hidden="true"><i data-lucide="badge-pound-sterling" aria-hidden="true"></i></span><div class="record-list__main"><p class="record-list__meta">27 Nov 2019, 07:07</p><p class="record-list__title">Payment received: £0.00</p></div></li><li class="record-list__item"><span class="avatar avatar--size-2 avatar--placeholder record-list__icon signal-icon signal-icon--lagoon" aria-hidden="true"><i data-lucide="shopping-cart" aria-hidden="true"></i></span><div class="record-list__main"><p class="record-list__meta">27 Nov 2019, 07:07</p><p class="record-list__title">Incomplete</p></div></li></ol></div>
-        </section><section class="fact-panel" aria-labelledby="panel-customer">
-          <div class="fact-panel__header">
-            <div class="fact-panel__title-block"><h2 class="fact-panel__title" id="panel-customer">Customer</h2></div><div class="fact-panel__trailing"><a class="btn btn--tertiary btn--xs" href="ContactView.html" aria-label="View the customer's contact record" data-keep-width data-backend-todo="order-record"><span>View contact</span></a></div>
-          </div>
-          <dl class="fact-list"><div class="field-row field-row--compact">
-            <dt class="field-row__label">Name</dt>
-            <dd class="field-row__value">Thomas Reid</dd>
-          </div><div class="field-row field-row--compact">
-            <dt class="field-row__label">Company</dt>
-            <dd class="field-row__value">Harbour Lane Publishing</dd>
-          </div><div class="field-row field-row--compact">
-            <dt class="field-row__label">Email</dt>
-            <dd class="field-row__value">thomas.reid@harbourlane.example</dd>
-          </div><div class="field-row field-row--compact">
-            <dt class="field-row__label">Telephone</dt>
-            <dd class="field-row__value">020 7946 0592</dd>
-          </div></dl>
-        </section><section class="fact-panel" aria-labelledby="panel-contactnotes">
-          <div class="fact-panel__header">
-            <div class="fact-panel__title-block"><h2 class="fact-panel__title" id="panel-contactnotes">Contact notes</h2></div><div class="fact-panel__trailing"><button type="button" class="btn btn--tertiary btn--xs" aria-label="Create a note" data-backend-todo="order-notes"><span>Create note</span></button></div>
-          </div>
-          <p class="fact-panel__empty">No order notes yet.</p>
-        </section><section class="fact-panel" aria-labelledby="panel-nexttask">
-          <div class="fact-panel__header">
-            <div class="fact-panel__title-block"><h2 class="fact-panel__title" id="panel-nexttask">Next task</h2></div><div class="fact-panel__trailing"><button type="button" class="btn btn--tertiary btn--xs" aria-label="Create a task" data-backend-todo="order-notes"><span>Create task</span></button></div>
-          </div>
-          <p class="fact-panel__empty">No next task.</p>
-        </section><section class="fact-panel" aria-labelledby="panel-audit">
-          <div class="fact-panel__header">
-            <div class="fact-panel__title-block"><h2 class="fact-panel__title" id="panel-audit">Audit</h2></div>
-          </div>
-          <dl class="fact-list"><div class="field-row field-row--compact">
-            <dt class="field-row__label">IP address</dt>
-            <dd class="field-row__value">203.0.113.48</dd>
-          </div><div class="field-row field-row--compact">
-            <dt class="field-row__label">Browser</dt>
-            <dd class="field-row__value">Chrome 78 · macOS 10.15</dd>
-          </div><div class="field-row field-row--compact">
-            <dt class="field-row__label">Batch reference</dt>
-            <dd class="field-row__value">-</dd>
-          </div><div class="field-row field-row--compact">
-            <dt class="field-row__label">Created</dt>
-            <dd class="field-row__value">27 Nov 2019, 07:07</dd>
-          </div><div class="field-row field-row--compact">
-            <dt class="field-row__label">Created by</dt>
-            <dd class="field-row__value">Thomas Reid</dd>
-          </div></dl>
-        </section>
-          </aside>
-        </div>
+          <div class="record-section__body"><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-awbdetails-238">AWB Details</label>
+            <div class="field-row__value"><div class="textarea">
+              <textarea class="textarea__control" id="f-awbdetails-238" rows="4" aria-describedby="f-awbdetails-238-help"></textarea>
+            </div><p class="input__help field-row__help" id="f-awbdetails-238-help">Enter the full shipping details for the order once it has been shipped.</p></div>
+          </div></div>
+        </section><section class="record-section" aria-labelledby="sec-comments">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-comments">Comments</h2></div>
+          <div class="record-section__body"><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-giftaid-239-label">Gift Aid</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-giftaid-239" aria-labelledby="f-giftaid-239-label" aria-describedby="f-giftaid-239-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-giftaid-239-help">Ticked if the user has selected to opt into Gift Aid during the checkout process.</p></div>
+          </div></div>
+        </section></div></div>
       </div>
     </div>
 
@@ -1442,8 +1651,7 @@
   <script src="../../../components/AvatarGroup/AvatarGroup.js"></script>
   <script src="../../components/FieldRow/FieldRow.js"></script>
   <script src="RecordScreen.js"></script>
-  <script src="../../../components/Datatables/DatatablesFit.js"></script>
-  <script src="OrderView.js"></script>
+  <script src="OrderEdit.js"></script>
 
   <!-- The chips and their pickers are rendered by ListingScreen.js, which runs
        on DOMContentLoaded — AFTER the module above has already auto-initialised
@@ -1462,174 +1670,58 @@
       if (window.lucide) window.lucide.createIcons();
     });
   </script>
-<div class="modal-overlay" id="modal-order-status" role="presentation">
-    <div class="modal order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-order-status-title">
+<div class="modal-overlay" id="modal-order-topics" role="presentation" data-selector="multi">
+    <div class="modal filter-dropdowns__modal" role="dialog" aria-modal="true" aria-labelledby="modal-order-topics-title">
       <div class="modal__header">
-        <div class="modal__title-block"><h2 class="modal__title" id="modal-order-status-title">Update order status</h2><p class="modal__subtitle">Order 100412 is Paid Full.</p></div>
+        <h2 class="modal__title" id="modal-order-topics-title">Select Topics</h2>
         <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
       </div>
-      <!-- TODO(backend:RecordScreen) order-status: the action updates the page in memory only (OrderView.js) → the order-processing endpoint -->
-      <form class="modal__body order-modal__form" id="modal-order-status-form" data-order-form="status" novalidate><div class="sel" data-sel>
-          <label class="sel__label" for="order-status-new">New status</label>
-          <button id="order-status-new" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" data-modal-autofocus>
-            <span class="sel__value">Paid Full</span>
-            <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
-          </button>
-          <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item" role="option">Incomplete</button></li><li><button type="button" class="sel__menu-item" role="option">New</button></li><li><button type="button" class="sel__menu-item" role="option">Paid Partial</button></li><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Paid Full</button></li><li><button type="button" class="sel__menu-item" role="option">Cancelled</button></li><li><button type="button" class="sel__menu-item" role="option">Shipped Partial</button></li><li><button type="button" class="sel__menu-item" role="option">Shipped</button></li><li><button type="button" class="sel__menu-item" role="option">Completed</button></li><li><button type="button" class="sel__menu-item" role="option">On Hold</button></li><li><button type="button" class="sel__menu-item" role="option">Released for Delivery</button></li><li><button type="button" class="sel__menu-item" role="option">Back Ordered</button></li><li><button type="button" class="sel__menu-item" role="option">Pending Return</button></li><li><button type="button" class="sel__menu-item" role="option">Returned</button></li><li><button type="button" class="sel__menu-item" role="option">Partially Refunded</button></li><li><button type="button" class="sel__menu-item" role="option">Refunded</button></li><li><button type="button" class="sel__menu-item" role="option">Exported</button></li></ul>
-        </div><div class="textarea">
-          <label class="textarea__label" for="order-status-note">Note (optional)</label>
-          <textarea class="textarea__control" id="order-status-note" rows="3" placeholder="Why the status changed, for the history"></textarea>
-        </div><label class="checkbox">
-          <input type="checkbox" class="checkbox__input" id="order-status-notify">
-          <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
-          <span class="checkbox__label"><span class="checkbox__label-text">Email the customer</span>
-            <span class="checkbox__helper">Sends the status update to thomas.reid@harbourlane.example</span></span>
-        </label></form>
-      <div class="modal__footer">
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets"><div class="search search--sm selector__search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search by name" aria-label="Search by name" aria-controls="modal-order-topics-results" data-selector-search>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Parent Section" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Parent Section filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Parent Section</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Channel" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Channel filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Channel</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Zone" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Zone filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div></div>
+      <div class="filter-dropdowns__table-region modal__scroll">
+        <div class="datatables"><div class="datatables__body">
+          <table class="table">
+            <thead><tr>
+              <th class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select all"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></th>
+              <th><button class="datatables__sort datatables__sort--active" type="button">Name <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Parent Section <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Channel <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Zone <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th class="datatables__col--tight" aria-label="Open"></th>
+            </tr></thead>
+            <tbody><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Events"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Events</td><td>—</td><td>Topics</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Events"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Commerce"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Commerce</td><td>—</td><td>Topics</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Commerce"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Subscriptions"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Subscriptions</td><td>—</td><td>Topics</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Subscriptions"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Renewals"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Renewals</td><td>—</td><td>Topics</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Renewals"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr></tbody>
+          </table>
+          <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
+        </div></div>
+      </div>
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count aria-live="polite"></span>
         <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
-        <button type="submit" class="btn btn--primary" form="modal-order-status-form" data-order-submit="status" data-backend-todo="order-status"><i data-lucide="check" aria-hidden="true"></i><span>Update status</span></button>
+        <button type="button" class="btn btn--primary" data-filter-dropdowns-apply>Apply</button>
       </div>
     </div>
-  </div>
-<div class="modal-overlay" id="modal-order-receipt" role="presentation">
-    <div class="modal order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-order-receipt-title">
-      <div class="modal__header">
-        <div class="modal__title-block"><h2 class="modal__title" id="modal-order-receipt-title">Send receipt</h2><p class="modal__subtitle">The receipt for order 100412.</p></div>
-        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+  </div><div class="modal-overlay" id="modal-delete" role="presentation">
+    <div class="modal modal--confirm" role="alertdialog" aria-modal="true" aria-labelledby="modal-delete-title" aria-describedby="modal-delete-desc">
+      <div class="modal__body">
+        <div class="modal__icon-wrap"><i data-lucide="triangle-alert" aria-hidden="true"></i></div>
+        <h2 class="modal__confirm-title" id="modal-delete-title">Delete this order?</h2>
+        <p class="modal__confirm-desc" id="modal-delete-desc">“Order 100412” will be permanently deleted. This cannot be undone.</p>
       </div>
-      <!-- TODO(backend:RecordScreen) order-send: the action updates the page in memory only (OrderView.js) → the order-processing endpoint -->
-      <form class="modal__body order-modal__form" id="modal-order-receipt-form" data-order-form="receipt" novalidate><div class="input">
-          <label class="input__label" for="modal-order-receipt-to">To<span class="field-row__required" aria-hidden="true">*</span></label>
-          <div class="input__wrap"><input id="modal-order-receipt-to" type="email" class="input__control" value="thomas.reid@harbourlane.example" required aria-required="true" data-modal-autofocus></div>
-          <span class="input__help" id="modal-order-receipt-to-help" hidden></span>
-        </div><div class="input">
-          <label class="input__label" for="modal-order-receipt-cc">Cc (optional)</label>
-          <div class="input__wrap"><input id="modal-order-receipt-cc" type="email" class="input__control" value="" placeholder="name@company.com"></div>
-          <span class="input__help" id="modal-order-receipt-cc-help" hidden></span>
-        </div></form>
       <div class="modal__footer">
         <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
-        <button type="submit" class="btn btn--primary" form="modal-order-receipt-form" data-order-submit="receipt" data-backend-todo="order-send"><i data-lucide="send" aria-hidden="true"></i><span>Send</span></button>
-      </div>
-    </div>
-  </div>
-<div class="modal-overlay" id="modal-order-receipt-invoice" role="presentation">
-    <div class="modal order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-order-receipt-invoice-title">
-      <div class="modal__header">
-        <div class="modal__title-block"><h2 class="modal__title" id="modal-order-receipt-invoice-title">Send receipt with invoice</h2><p class="modal__subtitle">The receipt with invoice 100412 attached as a PDF.</p></div>
-        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
-      </div>
-      <!-- TODO(backend:RecordScreen) order-send: the action updates the page in memory only (OrderView.js) → the order-processing endpoint -->
-      <form class="modal__body order-modal__form" id="modal-order-receipt-invoice-form" data-order-form="receipt-invoice" novalidate><div class="input">
-          <label class="input__label" for="modal-order-receipt-invoice-to">To<span class="field-row__required" aria-hidden="true">*</span></label>
-          <div class="input__wrap"><input id="modal-order-receipt-invoice-to" type="email" class="input__control" value="thomas.reid@harbourlane.example" required aria-required="true" data-modal-autofocus></div>
-          <span class="input__help" id="modal-order-receipt-invoice-to-help" hidden></span>
-        </div><div class="input">
-          <label class="input__label" for="modal-order-receipt-invoice-cc">Cc (optional)</label>
-          <div class="input__wrap"><input id="modal-order-receipt-invoice-cc" type="email" class="input__control" value="" placeholder="name@company.com"></div>
-          <span class="input__help" id="modal-order-receipt-invoice-cc-help" hidden></span>
-        </div></form>
-      <div class="modal__footer">
-        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
-        <button type="submit" class="btn btn--primary" form="modal-order-receipt-invoice-form" data-order-submit="receipt-invoice" data-backend-todo="order-send"><i data-lucide="send" aria-hidden="true"></i><span>Send</span></button>
-      </div>
-    </div>
-  </div>
-<div class="modal-overlay" id="modal-order-message" role="presentation">
-    <div class="modal order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-order-message-title">
-      <div class="modal__header">
-        <div class="modal__title-block"><h2 class="modal__title" id="modal-order-message-title">Send message with invoice</h2><p class="modal__subtitle">A message of your own, with invoice 100412 attached.</p></div>
-        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
-      </div>
-      <!-- TODO(backend:RecordScreen) order-send: the action updates the page in memory only (OrderView.js) → the order-processing endpoint -->
-      <form class="modal__body order-modal__form" id="modal-order-message-form" data-order-form="message" novalidate><div class="input">
-          <label class="input__label" for="modal-order-message-to">To<span class="field-row__required" aria-hidden="true">*</span></label>
-          <div class="input__wrap"><input id="modal-order-message-to" type="email" class="input__control" value="thomas.reid@harbourlane.example" required aria-required="true" data-modal-autofocus></div>
-          <span class="input__help" id="modal-order-message-to-help" hidden></span>
-        </div><div class="input">
-          <label class="input__label" for="modal-order-message-cc">Cc (optional)</label>
-          <div class="input__wrap"><input id="modal-order-message-cc" type="email" class="input__control" value="" placeholder="name@company.com"></div>
-          <span class="input__help" id="modal-order-message-cc-help" hidden></span>
-        </div><div class="input">
-          <label class="input__label" for="modal-order-message-subject">Subject<span class="field-row__required" aria-hidden="true">*</span></label>
-          <div class="input__wrap"><input id="modal-order-message-subject" type="text" class="input__control" value="Your invoice for order 100412" required aria-required="true"></div>
-          <span class="input__help" id="modal-order-message-subject-help" hidden></span>
-        </div><div class="textarea">
-          <label class="textarea__label" for="modal-order-message-body">Message</label>
-          <textarea class="textarea__control" id="modal-order-message-body" rows="3" placeholder="">Dear Thomas,
-
-Please find attached the invoice for order 100412.
-
-Kind regards,
-Markus Karlsson</textarea>
-        </div></form>
-      <div class="modal__footer">
-        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
-        <button type="submit" class="btn btn--primary" form="modal-order-message-form" data-order-submit="message" data-backend-todo="order-send"><i data-lucide="send" aria-hidden="true"></i><span>Send</span></button>
-      </div>
-    </div>
-  </div>
-<div class="modal-overlay" id="modal-order-despatch" role="presentation">
-    <div class="modal order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-order-despatch-title">
-      <div class="modal__header">
-        <div class="modal__title-block"><h2 class="modal__title" id="modal-order-despatch-title">Despatch notification</h2><p class="modal__subtitle">Tells the customer the order is on its way and marks it Shipped.</p></div>
-        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
-      </div>
-      <!-- TODO(backend:RecordScreen) order-despatch: the action updates the page in memory only (OrderView.js) → the order-processing endpoint -->
-      <form class="modal__body order-modal__form" id="modal-order-despatch-form" data-order-form="despatch" novalidate><div class="sel" data-sel>
-          <label class="sel__label" for="order-courier">Courier</label>
-          <button id="order-courier" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" data-modal-autofocus>
-            <span class="sel__value">Royal Mail</span>
-            <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
-          </button>
-          <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Royal Mail</button></li><li><button type="button" class="sel__menu-item" role="option">Parcelforce</button></li><li><button type="button" class="sel__menu-item" role="option">DPD</button></li><li><button type="button" class="sel__menu-item" role="option">DHL</button></li><li><button type="button" class="sel__menu-item" role="option">UPS</button></li><li><button type="button" class="sel__menu-item" role="option">Collected in person</button></li></ul>
-        </div><div class="input">
-          <label class="input__label" for="order-awb">Tracking / AWB number<span class="field-row__required" aria-hidden="true">*</span></label>
-          <div class="input__wrap"><input id="order-awb" type="text" class="input__control" value="" required aria-required="true" placeholder="e.g. JD014600006781234567"></div>
-          <span class="input__help" id="order-awb-help" hidden></span>
-        </div><label class="checkbox">
-          <input type="checkbox" class="checkbox__input" id="order-despatch-notify" checked>
-          <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
-          <span class="checkbox__label"><span class="checkbox__label-text">Email the customer</span>
-            <span class="checkbox__helper">Sends the despatch notification to thomas.reid@harbourlane.example</span></span>
-        </label></form>
-      <div class="modal__footer">
-        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
-        <button type="submit" class="btn btn--primary" form="modal-order-despatch-form" data-order-submit="despatch" data-backend-todo="order-despatch"><i data-lucide="truck" aria-hidden="true"></i><span>Mark as shipped</span></button>
-      </div>
-    </div>
-  </div>
-<div class="modal-overlay" id="modal-order-attendee" role="presentation">
-    <div class="modal order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-order-attendee-title">
-      <div class="modal__header">
-        <div class="modal__title-block"><h2 class="modal__title" id="modal-order-attendee-title">Add attendee</h2><p class="modal__subtitle">Affino Innovation Briefing 2019 - Actionable Intelligence, Case Study and 2020 Roadmap</p></div>
-        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
-      </div>
-      <!-- TODO(backend:RecordScreen) order-items: the action updates the page in memory only (OrderView.js) → the order-processing endpoint -->
-      <form class="modal__body order-modal__form" id="modal-order-attendee-form" data-order-form="attendee" novalidate><div class="order-modal__prefill"><button type="button" class="btn btn--tertiary btn--sm" data-order-prefill data-name="Thomas Reid" data-email="thomas.reid@harbourlane.example" data-job="Head of Digital" data-company="Harbour Lane Publishing" data-phone="020 7946 0592"><i data-lucide="user-check" aria-hidden="true"></i><span>Use the customer’s details</span></button></div><div class="input">
-          <label class="input__label" for="order-att-name">Name<span class="field-row__required" aria-hidden="true">*</span></label>
-          <div class="input__wrap"><input id="order-att-name" type="text" class="input__control" value="" required aria-required="true" data-modal-autofocus></div>
-          <span class="input__help" id="order-att-name-help" hidden></span>
-        </div><div class="input">
-          <label class="input__label" for="order-att-email">Email<span class="field-row__required" aria-hidden="true">*</span></label>
-          <div class="input__wrap"><input id="order-att-email" type="email" class="input__control" value="" required aria-required="true"></div>
-          <span class="input__help" id="order-att-email-help" hidden></span>
-        </div><div class="order-modal__pair"><div class="input">
-          <label class="input__label" for="order-att-job">Job title</label>
-          <div class="input__wrap"><input id="order-att-job" type="text" class="input__control" value=""></div>
-          <span class="input__help" id="order-att-job-help" hidden></span>
-        </div><div class="input">
-          <label class="input__label" for="order-att-company">Company</label>
-          <div class="input__wrap"><input id="order-att-company" type="text" class="input__control" value=""></div>
-          <span class="input__help" id="order-att-company-help" hidden></span>
-        </div></div><div class="input">
-          <label class="input__label" for="order-att-phone">Business phone</label>
-          <div class="input__wrap"><input id="order-att-phone" type="tel" class="input__control" value=""></div>
-          <span class="input__help" id="order-att-phone-help" hidden></span>
-        </div></form>
-      <div class="modal__footer">
-        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
-        <button type="submit" class="btn btn--primary" form="modal-order-attendee-form" data-order-submit="attendee" data-backend-todo="order-items"><i data-lucide="user-plus" aria-hidden="true"></i><span>Add attendee</span></button>
+        <!-- TODO(backend:RecordScreen): Delete is mock (closes only) → v1 delete action for the article, then return to the listing -->
+        <button type="button" class="btn btn--alert" data-modal-cancel data-backend-todo="record-delete"><i data-lucide="trash-2" aria-hidden="true"></i><span>Delete</span></button>
       </div>
     </div>
   </div>

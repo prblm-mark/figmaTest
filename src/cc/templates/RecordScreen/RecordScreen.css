@@ -805,3 +805,41 @@
   border-width: 0 0 1px;
   border-radius: var(--ai-radius-none);
 }
+
+/* ══ Order Edit (code-first, 2026-10-09) — no Figma frame ═════════════════════════════════════════
+ * The live order form on the kit (record_order.edit_sections). Everything here reuses the record
+ * section's own rhythm: spacing-6 between rows and columns (the section body's gap), spacing-3
+ * between a control and its companions (the edit rows' rule). */
+
+/* Read-only rows in edit (Order No., Customer, End User): the value as text. */
+.field-row__static {
+  margin: 0;
+}
+
+/* Payment / Refund Details grids (PaymentDetailsInclude.cfm): title, editable table, Add row /
+   Delete selected, help line. Status-driven (OrderEdit.js). */
+.order-edit__grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+  min-inline-size: 0;
+}
+
+.order-edit__grid[hidden] {
+  display: none;
+}
+
+.order-edit__grid-title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+}
+
+.order-edit__grid-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-3);
+}
