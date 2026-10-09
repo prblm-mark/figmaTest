@@ -137,7 +137,7 @@ def _signals(pairs):
 
 # ── The two contacts ─────────────────────────────────────────────────
 FULL = {
-    "file": "ContactView.html", "seed": "olivia-bennett", "name": "Olivia Bennett", "job": "Founder & CEO",
+    "file": "ContactView.html", "edit": "ContactEdit.html", "seed": "olivia-bennett", "name": "Olivia Bennett", "job": "Founder & CEO",
     "email": "olivia.bennett@northbridge-media.example", "tel": "020 7946 0381", "mobile": "07700 900461",
     "address": "Northbridge Media Ltd, 3rd Floor, 12 Carver Street, London, EC2A 4BX, United Kingdom",
     "accounts": ["Northbridge Media"], "former": ["Harbour Retail Group"], "connections": [],
@@ -596,3 +596,161 @@ SPARSE.update({
                     "terms": [("2018 Affino General Terms and Conditions", "26 Nov 2018, 13:40")],
                     "perms": [], "mailing": [("Affino News", "Subscribed", "26 Nov 2018")], "content": [], "downloads": [], "forums": []},
 })
+
+
+# ── Contact Edit (code-first, 2026-10-09) ───────────────────────────────────────────────────────
+# Fields, order, required marks and HELP TEXT verbatim from the live definition,
+# AfcCommunityMgr/CC/CRMUserDef.cfm (CProperties slot [8] = help, [13] = required), plus its two
+# include templates (AvatarField.cfm after Screen name, CountryFields.cfm after Address 2). Values are
+# Olivia Bennett's, invented as on the View. Left out, as the live screen would for this record:
+# Password (Add only), Use Account Address (only while the address is empty), Delete CV (only when a
+# CV is stored), Alternative Avatar (one control profile only). Custom (a DesignScript include) is
+# not built. Source typos are kept so the copy matches what the backend will send.
+# TODO(backend:RecordScreen) contact-edit: every value, option list and lookup is static → the contact (Users) + option sources; Save writes the form
+def edit_sections(c):
+    r = m.edit_row
+    H = {
+        "title": "Enter the title for the contact",
+        "first": "Enter First Name",
+        "last": "Enter  last name; note that all entry fields with a tick next to them must be filled in",
+        "zone": ("Select the Registration Zone for this Contact. This is used to associate the contact to the designated "
+                 "User, Registration and Demographics Profiles and also display the relevant Topic List for topic "
+                 "targeting. Note: You will only be able to set this field once."),
+        "company": ("Enter the Company / Organisation for the contact. This field could be user-populated from the "
+                    "registration process. This is different to an Account which is assigned by your company (see "
+                    "Accounts panel below)."),
+        "job": "Enter the Job Title for the contact.",
+        "notes": ("Enter in notes on the contact, these notes used for internal reference only and will never be "
+                  "displayed publicly. Useful for providing additional context and for pasting info on the contact "
+                  "quickly for later reference / use."),
+        "privacy": ("Select the privacy level for this user. Note that it's strongly advised that you do not change their "
+                    "preference unless the user specifically requests you to do so, or you are doing the initial user setup."),
+        "advanced": "Select to display the user publicly on the Advanced Public Profile page.",
+        "email": "Enter a contact Email address",
+        "nickname": "Enter the name by which the user is known on the site.",
+        "screen": "Enter a unique Screen Name for the User - this should be SEO friendly.",
+        "avatar": ("Select to upload a new Avatar for this user. By default this will be populated from icons selected in "
+                   "the Public Profile."),
+        "default_avatar": ("Select the default avatar to be displayed on the Profile, This will be displayed if User "
+                           "doesn't upload User Icon."),
+        "tel": "Enter a contact Telephone number", "business": "Enter a Business Phone number", "mobile": "Enter a Mobile number",
+        "best": "Enter the best time to call the account.",
+        "topics": ("Add Keyword Tags separated by commas that describe this user. This information will only be displayed "
+                   "on the Public side to the user if you use the same topics are are on the My Interest or the "
+                   "Registration and Demographic Profiles. Make sure that on a single Zone setup that the Topic List is "
+                   "the same as on the Zone, do not create a separate CRM Topic List. For a multi-Zone setup aim to have "
+                   "a single taxonomy covering as many zones as possible and set it on the CRM Settings. In the future we "
+                   "will enforce just one Taxonomy per Affino instance, and you will simply select the Parent Topic for "
+                   "the topic tree you want to use on each Zone / the CRM Topics."),
+        "crm_topics": "Select the Topics for this user.",
+    }
+    details = [
+        r("Title", "select", "Ms", options=["Mr", "Mrs", "Ms", "Miss", "Dr", "Prof"], help_text=H["title"]),
+        r("First Name", "input", c["name"].split()[0], required=True, help_text=H["first"]),
+        r("Last Name", "input", c["name"].split()[-1], required=True, help_text=H["last"]),
+        r("Registration Zone", "select", "Affino", required=True, options=["Affino", "Affino Events"], help_text=H["zone"]),
+        r("Company / Organisation", "input", "Northbridge Media Ltd", help_text=H["company"]),
+        r("Job Title", "input", c.get("job", ""), help_text=H["job"]),
+        r("Notes", "textarea", "Prefers email. Renewal conversations go through her, sign-off through the board.", help_text=H["notes"]),
+        r("Gender", "radio", "Female", options=["Male", "Female"]),
+        # TODO(backend:RecordScreen) contact-edit: Contact Type options come from qAccountTypes (these three are stand-ins)
+        r("Contact Type", "radio", "Full account", required=True, options=["Full account", "Registered", "Guest"]),
+        r("Privacy Level", "radio", "Members Only", required=True,
+          options=["Public Profile", "Friends Only", "Private", "Members Only"], help_text=H["privacy"]),
+        r("Advanced Public Profile", "checkbox", False, help_text=H["advanced"]),
+        r("Primary Email", "input", c.get("email", ""), help_text=H["email"]),
+        r("Secondary Email", "input", "", help_text=H["email"]),
+        r("Nickname", "input", "Liv", help_text=H["nickname"]),
+        r("Screen name", "input", c["seed"], help_text=H["screen"]),
+        r("Avatar", "media", help_text=H["avatar"]),
+        r("Default Avatar", "media", help_text=H["default_avatar"]),
+        r("Telephone", "input", c.get("tel", ""), help_text=H["tel"]),
+        r("Business Phone", "input", "", help_text=H["business"]),
+        r("Mobile", "input", c.get("mobile", ""), help_text=H["mobile"]),
+        r("Best time to Call", "input", "Mornings, before 11", help_text=H["best"]),
+    ]
+    accounts = [
+        # The live Accounts panel is an include (CRMUserAccountsInclude.cfm): the contact's accounts.
+        r("Accounts", "tagbox", tags=c.get("accounts") or [], modal="modal-accounts"),
+        r("Former accounts", "tagbox", tags=c.get("former") or [], modal="modal-accounts"),
+    ]
+    topics = [
+        r("Topics", "tagbox", tags=(c.get("topics") or [])[:5], modal="modal-topics", help_text=H["topics"]),
+        r("CRM Topics - deprecated", "tagbox", tags=[], modal="modal-topics", help_text=H["crm_topics"]),
+    ]
+    social = [
+        r("X User", "input", "@oliviabennett", help_text="Enter your X ID."),
+        r("Facebook Page (Full URL)", "input", "", help_text="Enter in the user's Facebook URL."),
+        r("LinkedIn Page (Full URL)", "input", "https://www.linkedin.com/in/olivia-bennett-example", help_text="Enter in the user's LinkedIn URL."),
+        r("Instagram User", "input", "", help_text="Enter in the contact's Instagram URL."),
+        r("TikTok User", "input", "", help_text="Enter in the contact's TikTok URL."),
+        r("YouTube Channel", "input", "", help_text="Enter in the contact's YouTube channel URL."),
+    ]
+    subs = [
+        r("Contact Lists", "tagbox", tags=(c.get("lists") or [])[:4], modal="modal-lists",
+          help_text="Select specific contact lists you want to add this contact."),
+        r("Forum Subscriptions", "tagbox", tags=[], modal="modal-lists", help_text="Select to Subscribe the User to a Forum."),
+        r("Mailing List Subscriptions", "tagbox", tags=c.get("mailing") or [], modal="modal-lists",
+          help_text="Select additional Mailing Lists to Subscribe for this User."),
+        r("Mailing List Unsubscribes", "tagbox", tags=[], modal="modal-lists",
+          help_text=("These are the Mailing Lists that the user has un-subscribed from. You can remove the un-subscribes "
+                     "if the user has done so in error, but do not do so without the user's consent.")),
+        r("Email Bounced", "checkbox", False, help_text="Tick this to manually manage Email Bounced."),
+        r("Unsubscribed from all Marketing", "checkbox", False,
+          help_text="If checked, user has opted out of receiving Marketing Messages."),
+    ]
+    address = [
+        r("Address 1", "input", "3rd Floor, 12 Carver Street", help_text="Enter first line of the Address"),
+        r("Address 2", "input", "", help_text="Enter second line of the Address"),
+        r("Country", "select", "United Kingdom", options=["United Kingdom", "Ireland", "United States"],
+          help_text="Select the Country for this Contact."),
+        r("County / State", "select", "Greater London", options=["Greater London", "Kent", "Surrey"],
+          help_text="Select the County for this Contact."),
+        r("Town / City", "select", "London", options=["London"], help_text="Select the City for this Contact."),
+        r("Postcode / Zip", "input", "EC2A 4BX", help_text="Enter the PostCode or Zip"),
+    ]
+    more = [
+        r("Statement", "textarea", "", help_text="Add Statement details."),
+        r("Biography", "textarea", "Olivia founded Northbridge Media in 2014 and leads its publishing and events business.",
+          help_text="Add Biography details. These will be displayed on the Contact's Profile (My Information)."),
+        r("Skills", "textarea", "", help_text="Enter in the contact's Skills. These will then optionally be displayed on their public profile."),
+        r("Areas Of Specialism", "textarea", "", help_text="Enter the Areas Of Specialism for the contact."),
+        r("Education", "textarea", "", help_text="Enter the Education for the contact."),
+        r("Innovations", "textarea", "", help_text="Enter the Innovations for the contact."),
+        r("Publications", "textarea", "", help_text="Enter the Publications for the contact."),
+        r("Roles", "textarea", "", help_text="Enter the role(s) for this contact."),
+        r("Special Dietary Needs", "textarea", "", help_text="Enter the Special Dietary Needs for the contact."),
+        r("Disability Requirements", "textarea", "", help_text="Enter the Disability Requirements for the contact."),
+        r("My Homepage", "select", "Home", options=["Home", "My Information", "My Interests"],
+          help_text="Select which page on the site is displayed when the Login has been successful"),
+        r("External User ID", "input", "",
+          help_text=("Enter an External User ID for users. This can be used to identify users on external systems where "
+                     "the doesn't have an email address.")),
+    ]
+    jobs = [
+        r("Upload CV", "file", help_text="Select to upload a CV for this user.", file_icon="file-text"),
+        r("Job Seeker", "checkbox", False,
+          help_text=("If checked, the user has indicated they are a Job Seeker and Job related profiling for the member "
+                     "should be enabled.")),
+    ]
+    credits = [
+        r("Service Credits Threshold", "input", "",
+          help_text=("Enter a number for minimum Service Credits threshold. When a customer's Service Credits fall below "
+                     "this threshold, an email notification will be sent to Administrators set on the Service Credits "
+                     "Profile. This value will override the default setting on the Service Credits Profile.")),
+    ]
+    sec = m.record_section
+    return (sec("Contact Details", details, "edit") + sec("Accounts", accounts, "edit") + sec("Topics", topics, "edit")
+            + sec("Social Media", social, "edit") + sec("Profile & Subscriptions", subs, "edit")
+            + sec("Main Address", address, "edit") + sec("Additional Information", more, "edit")
+            + sec("Job Seeker", jobs, "edit") + sec("Service Credits", credits, "edit"))
+
+
+def edit_modals(c):
+    """The tag pickers' Select dialogs (TagBox → multi-select, as ArticleEdit's Topics)."""
+    src = lambda names, group: [(n, "", group, "Affino") for n in names]
+    lists = (c.get("lists") or []) + (c.get("mailing") or [])
+    return (m.multi_select_modal("modal-accounts", "Select Accounts",
+                                 src(["Northbridge Media", "Harbour Retail Group", "Carver Street Events", "Affino"], "Accounts"))
+            + m.multi_select_modal("modal-topics", "Select Topics and Keywords", src(c.get("topics") or [], "Topics"))
+            + m.multi_select_modal("modal-lists", "Select Lists", src(lists, "Lists")))

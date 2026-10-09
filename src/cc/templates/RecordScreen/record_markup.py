@@ -102,7 +102,7 @@ def record_kebab(items=RECORD_MORE):
 
 
 # ── RecordTabs ───────────────────────────────────────────────────────
-def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html", sidebar=None, form=None, save_todo="steps-import-save", tabs=None):
+def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html", sidebar=None, form=None, save_todo="steps-import-save", tabs=None, help_toggle=False):
     """sidebar: None = no toggle (Steps); True / False = the "Show sidebar" switch and its default
     (View on, Edit off — designer, 2026-09-29). Desktop only (RecordTabs.css)."""
     def tab(label, href, is_active, count=None):
@@ -120,6 +120,16 @@ def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html", s
                 'aria-labelledby="record-sidebar-label" aria-controls="record-sidebar" data-record-sidebar>'
                 '<span class="toggle__track"><span class="toggle__knob"></span></span></button>'
                 '<span id="record-sidebar-label">Show sidebar</span></span></div>')
+    if help_toggle:
+        # Help mode "Show help" (Contact Edit, 2026-10-09): one switch shows or hides every help line.
+        # Off by default, as the legacy edit form's hidden EditFormHelpDiv; saved per viewer
+        # (FieldRow.js). Only shown in that mode (FieldRow.css). Same Toggle as "Show sidebar".
+        acts = ('<div class="record-tabs__actions record-tabs__actions--help">'
+                '<span class="record-tabs__sidebar-toggle record-tabs__help-toggle">'
+                '<button class="toggle toggle--xxs" type="button" role="switch" aria-checked="false" '
+                'aria-labelledby="record-help-label" data-record-help>'
+                '<span class="toggle__track"><span class="toggle__knob"></span></span></button>'
+                '<span id="record-help-label">Show help</span></span></div>')
     if actions:
         acts = ('<div class="record-tabs__actions">'
                 + '<a class="btn btn--secondary btn--sm record-tabs__import" href="ArticleStepImport.html" data-keep-width><span>Import</span></a>'
@@ -232,17 +242,23 @@ def _id(label):
 ERROR_TARGETS = []  # (label, message, field id) for the validation summary — filled by edit_row(error=…)
 
 
-def edit_row(label, kind, value="", required=False, help_text=None, tags=None, modal=None, placeholder="None selected", options=None, error=None):
+def edit_row(label, kind, value="", required=False, help_text=None, tags=None, modal=None, placeholder="None selected", options=None, error=None, file_icon="file-audio"):
     fid = _id(label)
     if error:
         ERROR_TARGETS.append((label, error, fid))
     req = '<span class="field-row__required" aria-hidden="true">*</span>' if required else ""
     reqattr = " required aria-required=\"true\"" if required else ""
+    # Help text on every edit type (Contact Edit, 2026-10-09 — most CC edit screens carry help; the
+    # Article is the exception). Input keeps it as its own help line; every other type gets the same
+    # line under the control. On a screen with the "Show help" switch it is hidden until switched on
+    # (FieldRow.js / FieldRow.css).
+    described = f' aria-describedby="{fid}-help"' if help_text and not error else ""
     if kind == "input":
         # A failed Save re-renders the field in Input's error state with the message as its help line
         # (code-first, 2026-10-05; Hub TASK-531782 Q3).
         msg = error or help_text
-        help_html = f'<span class="input__help" id="{fid}-help">{e(msg)}</span>' if msg else ""
+        help_html = (f'<span class="input__help{"" if error else " field-row__help"}" id="{fid}-help">{e(msg)}</span>'
+                     if msg else "")
         desc = f' aria-describedby="{fid}-help"' if msg else ""
         invalid = ' aria-invalid="true"' if error else ""
         ctl = f'''<div class="input{" input--error" if error else ""}">
@@ -254,7 +270,7 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
         shown = "Select..." if placeholder else value
         vcls = "sel__value sel__value--placeholder" if placeholder else "sel__value"
         ctl = f'''<div class="sel" data-sel>
-              <button id="{fid}" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox">
+              <button id="{fid}" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox"{described}>
                 <span class="{vcls}">{e(shown)}</span>
                 <span class="sel__chevron">{icon("chevron-down")}</span>
               </button>
@@ -267,12 +283,12 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
     elif kind == "textarea":
         paras = value if isinstance(value, list) else [value]
         ctl = f'''<div class="textarea">
-              <textarea class="textarea__control" id="{fid}" rows="{8 if len(paras) > 1 else 4}">{PARA_SEP.join(e(p) for p in paras)}</textarea>
+              <textarea class="textarea__control" id="{fid}" rows="{8 if len(paras) > 1 else 4}"{described}>{PARA_SEP.join(e(p) for p in paras)}</textarea>
             </div>'''
     elif kind == "tagbox":
         items = "".join(f'''<li class="badge badge--neutral"><span>{e(t)}</span><button type="button" class="badge__close" aria-label="Remove {e(t)}">{icon("x")}</button></li>''' for t in tags)
         ctl = f'''<div class="tag-box" data-tag-box>
-              <ul class="tag-box__tags" id="{fid}" aria-label="{e(label)}" data-empty="None selected">{items}</ul>
+              <ul class="tag-box__tags" id="{fid}" aria-label="{e(label)}" data-empty="None selected"{described}>{items}</ul>
               {btn("Select", "secondary", "sm", attrs=f' data-tag-box-select="{modal}" aria-haspopup="dialog"')}
             </div>'''
     elif kind == "media":
@@ -281,7 +297,7 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
     elif kind == "checkbox":
         # The row label IS the checkbox's label (aria-labelledby) — repeating it beside the box read twice.
         ctl = f'''<label class="checkbox">
-              <input type="checkbox" class="checkbox__input" id="{fid}" aria-labelledby="{fid}-label"{' checked' if value else ''}>
+              <input type="checkbox" class="checkbox__input" id="{fid}" aria-labelledby="{fid}-label"{' checked' if value else ''}{described}>
               <span class="checkbox__indicator">{icon("check")}</span>
             </label>'''
     elif kind in ("date", "datetime"):
@@ -352,16 +368,30 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
         ctl = media_picker(label, modal="modal-multimedia", placeholder="film")
     elif kind == "file":
         ctl = f'''<div class="media-picker">
-              <span class="media-picker__thumb">{icon("file-audio")}</span>
+              <span class="media-picker__thumb">{icon(file_icon)}</span>
               <div class="media-picker__actions">
                 {btn("Choose file", "secondary", "sm", icon_left="upload", attrs=f' aria-label="Choose {e(label)}" data-backend-todo="record-media-file"')}
               </div>
             </div>'''
+    elif kind == "radio":
+        # Radio group (Contact Type, Privacy Level, Gender — Contact Edit 2026-10-09): DS Radio, one
+        # per option, in a row that wraps; the row label names the group.
+        radios = "".join(f'''<label class="radio">
+                <input type="radio" class="radio__input" name="{fid}"{' checked' if o == value else ''}{reqattr}>
+                <span class="radio__indicator"></span>
+                <span class="radio__label"><span class="radio__label-text">{e(o)}</span></span>
+              </label>''' for o in (options or []))
+        ctl = f'<div class="field-row__radios" role="radiogroup" aria-labelledby="{fid}-label"{described}>{radios}</div>'
+    if help_text and kind != "input":
+        ctl += f'<p class="input__help field-row__help" id="{fid}-help">{e(help_text)}</p>'
     lab_tag = "label" if kind in ("input", "textarea", "rich", "lookup", "date", "datetime") else "span"
     lab_for = f' for="{fid}"' if kind in ("input", "textarea", "rich", "lookup", "date", "datetime") else f' id="{fid}-label"'
-    row_mods = "field-row field-row--edit" + (" field-row--check" if kind == "checkbox" else "")
+    row_mods = "field-row field-row--edit" + (" field-row--check" if kind in ("checkbox", "radio") else "")
+    if help_text:
+        row_mods += " field-row--has-help"
+    label_html = f'<{lab_tag} class="field-row__label"{lab_for}>{e(label)}{req}</{lab_tag}>'
     return f'''<div class="{row_mods}">
-            <{lab_tag} class="field-row__label"{lab_for}>{e(label)}{req}</{lab_tag}>
+            {label_html}
             <div class="field-row__value">{ctl}</div>
           </div>'''
 

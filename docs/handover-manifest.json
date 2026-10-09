@@ -1433,6 +1433,20 @@
      "needs": "v1's StandardItemView getRecentConversions / getUsersAddedToItinerary / getUsersRecentClicks with paging; Add to Contact List per panel. Added to Itinerary only for Advanced Seminar (ContentTypeCode 17). Hide a panel with no rows."
     },
     {
+     "id": "contact-edit",
+     "category": "needs-backend",
+     "element": "Contact Edit (ContactEdit.html) → all nine sections: Contact Details, Accounts, Topics, Social Media, Profile & Subscriptions, Main Address, Additional Information, Job Seeker, Service Credits",
+     "current": "Static invented contact (record_contact.py edit_sections). Fields, order, required marks and help text verbatim from AfcCommunityMgr/CC/CRMUserDef.cfm (+ AvatarField.cfm, CountryFields.cfm). Option lists and lookups are stand-ins; Save does nothing.",
+     "needs": "The contact's values + each field's option source (Title, Registration Zone, Contact Type from qAccountTypes, Country/County/City cascade, My Homepage) and the tag pickers' sources (accounts, topics by zone taxonomy, contact/forum/mailing lists). Keep the live conditions: Password on Add only; Registration Zone only with >1 zone and settable once; Use Account Address only while the address is empty; Delete CV only when a CV is stored; Forum / Mailing List fields behind rights 86 / 81. Help text = CProperties slot [8], rendered as each row's help line."
+    },
+    {
+     "id": "record-help-preference",
+     "category": "needs-backend",
+     "element": "Edit help text → the tabs bar's \"Show help\" switch (data-record-help) on screens with data-help-mode=\"switch\" (Contact Edit)",
+     "current": "Help lines hidden until Show help is on (Mark's pick of four options, 2026-10-09). The choice is remembered in localStorage (cc-help-text); off by default.",
+     "needs": "Save Show help per user with the Control Centre settings and render it into the page (data-help-visible on .record-screen) so it never flashes. Put data-help-mode=\"switch\" + the switch on every edit screen that carries help."
+    },
+    {
      "id": "contact-record",
      "category": "needs-backend",
      "element": "Contact View → Contact / Accounts / Interests and lists sections",
