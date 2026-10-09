@@ -103,7 +103,7 @@ If a prototype request passes Step 0, continue to Key principles below.
   the input to the eventual `/build-component` build — where every gap must be resolved to a token
   or an explicit approval before any component CSS is written.
 
-- **Why tier 1 is non-negotiable.** `generate_figma_design` resolves `var(--ai-*)` to raw values
+- **Why tier 1 is non-negotiable.** `generate_figma_design` resolves `var(--ao-*)` to raw values
   during capture, and the Re-tokenise plugin rebinds them afterwards **by value matching only**
   (`inferredVariables`, then hex→variable and float→variable maps; ambiguous matches are skipped —
   see `figma-plugin-retokenise/README.md`). So a value that matches an existing token round-trips
@@ -111,8 +111,8 @@ If a prototype request passes Step 0, continue to Key principles below.
   Re-tokenise repairs bindings lost in capture; it cannot invent tokens for novel values. Using an
   existing token where one exists is what makes re-tokenising work at all.
 
-- **Never add new design system tokens.** Prototype CSS may only use `--ai-*` tokens that
-  already exist. Do not add new `--ai-*` CSS variables to support prototype elements.
+- **Never add new design system tokens.** Prototype CSS may only use `--ao-*` tokens that
+  already exist. Do not add new `--ao-*` CSS variables to support prototype elements.
   Recording a gap is **not** minting a token — tier 2 logs the need and moves on; only the design
   owner decides whether a token gets created.
 - **Real screens, not demos.** Prototype pages look like product screens — centred card or
@@ -160,7 +160,7 @@ Do not write any files until the user confirms.
 - Prototype-specific layout only — page centering, card wrapper, progress indicators, etc.
 - All component styles come from the component CSS files (linked in each HTML page)
 - Never duplicate or override component styles — compose them
-- Use only `--ai-*` tokens (see CLAUDE.md §2 for the full token reference)
+- Use only `--ao-*` tokens (see CLAUDE.md §2 for the full token reference)
 - BEM naming for any new prototype-specific elements (e.g. `.reg-steps`, `.reg-card`)
 
 **HTML (one per screen):**
@@ -311,13 +311,13 @@ Do this for ALL screens in a single operation. Do not leave capture scripts in t
 ### 6b. Rebind colours to Semantic — MANDATORY, every push
 
 **A capture binds colours by resolved VALUE, never by token name.** The browser turns
-`var(--ai-surface-error)` into `rgb(220,38,38)` before the page is serialised, so neither the capture
+`var(--ao-surface-error)` into `rgb(220,38,38)` before the page is serialised, so neither the capture
 nor the Re-tokenise plugin ever sees which token it was. Value is lossy three ways:
 
 - Every **Semantic** variable *aliases* a Primitive, so a semantic and its primitive resolve to the
   same hex — nothing in a value comparison can prefer the semantic layer.
-- **One hex spans FAMILIES.** `#67676C` is `--ai-text-contrast` *and* `--ai-icon-secondary`; `#212123`
-  is `--ai-text-primary` *and* `--ai-icon-primary`. Only the node says which is meant, so the script
+- **One hex spans FAMILIES.** `#67676C` is `--ao-text-contrast` *and* `--ao-icon-secondary`; `#212123`
+  is `--ao-text-primary` *and* `--ao-icon-primary`. Only the node says which is meant, so the script
   picks the family from node type + property: TEXT fill → `text/*`, vector fill **or stroke** →
   `icon/*`, other fill → `surface/*`, other stroke → `border/*`.
 - Many semantics share one hex *within* a family too — `#FFFFFF` is surface-primary, -elevated-1 and
@@ -361,8 +361,8 @@ collection, and one result you can compare frame-to-frame. It returns an array, 
 The map is built from `css/tokens.css`, which carries the LIGHT values — correct for a component
 demo page, and wrong for anything rendering under another theme, because those paints resolve to
 hexes the light map has never seen. Measured on `3565:1383` (2026-08-27): **44 of 160 paints
-unresolvable** without it, including 29 on `#A1B7C3` which *is* `--ai-icon-invert-secondary` in CC
-and 2 on `#667F89` which *is* `--ai-text-contrast` there. With `--theme cc` those 31 rebound and
+unresolvable** without it, including 29 on `#A1B7C3` which *is* `--ao-icon-invert-secondary` in CC
+and 2 on `#667F89` which *is* `--ao-text-contrast` there. With `--theme cc` those 31 rebound and
 the leftovers dropped to 13. The overlay REPLACES each token's hex rather than adding to it — adding
 would leave the light values in the map and let one match falsely inside a CC frame.
 
@@ -378,9 +378,9 @@ The generator parses `css/tokens.css` into a hex → token map and emits a `use_
 audits the frame **by collection** and rebinds anything off Semantic. Then:
 
 1. **Read the dry run's `UNRESOLVED` list before applying.** Each entry is a colour the map cannot
-   settle, because more than one `--ai-*` token shares that hex.
+   settle, because more than one `--ao-*` token shares that hex.
 2. **Resolve each one from the prototype's own CSS**, which is the only authoritative source — e.g.
-   `.sp-dot--vip { background: var(--ai-surface-neutral) }` settles `#2E2E32` that value matching
+   `.sp-dot--vip { background: var(--ao-surface-neutral) }` settles `#2E2E32` that value matching
    offered fifteen candidates for. Add it to `OVERRIDES` in the generator with the CSS line cited.
 3. **Never guess an ambiguous colour.** If the CSS does not settle it, leave it bound to the primitive
    and report it. A wrong semantic looks correct forever; a primitive at least looks wrong in dark.
@@ -454,15 +454,15 @@ Full tables in CLAUDE.md §2. Most-used in prototypes:
 
 | Need | Token |
 |---|---|
-| Page background | `--ai-surface-secondary` |
-| Card background | `--ai-surface-primary` |
-| Card radius | `--ai-radius-lg` |
-| Card padding | `--ai-spacing-7` (32px) |
-| Card width | `--ai-size-7` (384px) — or wider for multi-column layouts |
-| Heading | `--ai-font-fluid-xl` + `--ai-font-bold` + `--ai-font-title` |
-| Body text | `--ai-font-fixed-xs` + `--ai-font-regular` + `--ai-font-body` |
-| Spacing between fields | `--ai-spacing-5` (16px) |
-| Action row gap | `--ai-spacing-3` (8px) |
+| Page background | `--ao-surface-secondary` |
+| Card background | `--ao-surface-primary` |
+| Card radius | `--ao-radius-lg` |
+| Card padding | `--ao-spacing-7` (32px) |
+| Card width | `--ao-size-7` (384px) — or wider for multi-column layouts |
+| Heading | `--ao-font-fluid-xl` + `--ao-font-bold` + `--ao-font-title` |
+| Body text | `--ao-font-fixed-xs` + `--ao-font-regular` + `--ao-font-body` |
+| Spacing between fields | `--ao-spacing-5` (16px) |
+| Action row gap | `--ao-spacing-3` (8px) |
 
 ---
 
@@ -485,22 +485,22 @@ Full tables in CLAUDE.md §2. Most-used in prototypes:
 ```
 
 ```css
-.proto-steps { display: flex; align-items: flex-start; margin-bottom: var(--ai-spacing-7); }
-.proto-step { display: flex; flex-direction: column; align-items: center; gap: var(--ai-spacing-2); }
+.proto-steps { display: flex; align-items: flex-start; margin-bottom: var(--ao-spacing-7); }
+.proto-step { display: flex; flex-direction: column; align-items: center; gap: var(--ao-spacing-2); }
 .proto-step__dot {
-  width: var(--ai-spacing-7); height: var(--ai-spacing-7);
-  border-radius: var(--ai-radius-full);
-  background: var(--ai-surface-primary); border: 1px solid var(--ai-border-secondary);
+  width: var(--ao-spacing-7); height: var(--ao-spacing-7);
+  border-radius: var(--ao-radius-full);
+  background: var(--ao-surface-primary); border: 1px solid var(--ao-border-secondary);
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--ai-font-body); font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold); color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body); font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold); color: var(--ao-text-contrast);
 }
-.proto-step__dot [data-lucide] { width: var(--ai-icon-size-sm); height: var(--ai-icon-size-sm); }
-.proto-step--active .proto-step__dot { background: var(--ai-surface-brand); border-color: var(--ai-surface-brand); color: var(--ai-btn-primary-text); }
-.proto-step--complete .proto-step__dot { background: var(--ai-surface-success); border-color: var(--ai-surface-success); color: var(--ai-btn-primary-text); }
-.proto-step__label { font-family: var(--ai-font-body); font-size: var(--ai-font-fixed-xxs); font-weight: var(--ai-font-medium); color: var(--ai-text-contrast); }
-.proto-step--active .proto-step__label, .proto-step--complete .proto-step__label { color: var(--ai-text-primary); }
-.proto-steps__line { flex: 1; height: 1px; background: var(--ai-border-secondary); margin-top: var(--ai-spacing-5); }
+.proto-step__dot [data-lucide] { width: var(--ao-icon-size-sm); height: var(--ao-icon-size-sm); }
+.proto-step--active .proto-step__dot { background: var(--ao-surface-brand); border-color: var(--ao-surface-brand); color: var(--ao-btn-primary-text); }
+.proto-step--complete .proto-step__dot { background: var(--ao-surface-success); border-color: var(--ao-surface-success); color: var(--ao-btn-primary-text); }
+.proto-step__label { font-family: var(--ao-font-body); font-size: var(--ao-font-fixed-xxs); font-weight: var(--ao-font-medium); color: var(--ao-text-contrast); }
+.proto-step--active .proto-step__label, .proto-step--complete .proto-step__label { color: var(--ao-text-primary); }
+.proto-steps__line { flex: 1; height: 1px; background: var(--ao-border-secondary); margin-top: var(--ao-spacing-5); }
 ```
 
 ### Centred card page
@@ -508,11 +508,11 @@ Full tables in CLAUDE.md §2. Most-used in prototypes:
 ```css
 body {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  background: var(--ai-surface-secondary); padding: var(--ai-spacing-6);
+  background: var(--ao-surface-secondary); padding: var(--ao-spacing-6);
 }
 .proto-card {
-  background: var(--ai-surface-primary); border-radius: var(--ai-radius-lg);
-  padding: var(--ai-spacing-7); width: var(--ai-size-7); max-width: 100%;
+  background: var(--ao-surface-primary); border-radius: var(--ao-radius-lg);
+  padding: var(--ao-spacing-7); width: var(--ao-size-7); max-width: 100%;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
 }
 ```

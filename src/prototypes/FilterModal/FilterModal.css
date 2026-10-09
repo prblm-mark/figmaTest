@@ -1,24 +1,24 @@
 /* FilterModal prototype — "Filter by Catalogue Item" modal, rebuilt in the
  * design system. Prototype-only layout; all component visuals come from their
- * own CSS (Modal, FilterItem, Checkbox, Datatables, Button). Uses only --ai-* tokens.
+ * own CSS (Modal, FilterItem, Checkbox, Datatables, Button). Uses only --ao-* tokens.
  */
 
 /* ── Page frame ─────────────────────────────────────────── */
 body {
   min-height: 100vh;
-  background: var(--ai-surface-secondary);
-  font-family: var(--ai-font-body);
+  background: var(--ao-surface-secondary);
+  font-family: var(--ao-font-body);
 }
 
 /* Overlay comes from Modal.css (.modal-overlay). Centre the modal. */
 .modal-overlay {
   min-height: 100vh;
-  padding: var(--ai-spacing-9); /* 48px */
+  padding: var(--ao-spacing-9); /* 48px */
 }
 
 /* Wide filter modal — the 5-column table needs more room than --lg (768px). */
 .fm-modal {
-  width: var(--ai-size-12); /* 960px */
+  width: var(--ao-size-12); /* 960px */
   max-width: 100%;
 }
 
@@ -26,9 +26,9 @@ body {
 .fm-facets {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--ai-spacing-2);
-  padding: var(--ai-spacing-4) var(--ai-spacing-6);
-  border-bottom: 1px solid var(--ai-border-secondary);
+  gap: var(--ao-spacing-2);
+  padding: var(--ao-spacing-4) var(--ao-spacing-6);
+  border-bottom: 1px solid var(--ao-border-secondary);
   flex-shrink: 0;
 }
 
@@ -52,9 +52,9 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--ai-icon-secondary);
+  color: var(--ao-icon-secondary);
 }
 .fm-linkcell [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }

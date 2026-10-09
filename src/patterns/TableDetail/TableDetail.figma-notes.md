@@ -29,7 +29,7 @@ a media query.
 | All Roles | Mobile | `3488:201601` | 320×601 | ↑ |
 | Full | Mobile | `3488:201641` | 320×607 | ↑ |
 
-Width is **320px at every variant**, bound to `--ai-size-6` — a fixed rail, not a fluid panel.
+Width is **320px at every variant**, bound to `--ao-size-6` — a fixed rail, not a fluid panel.
 
 ### The whole Type axis is data, not CSS
 
@@ -79,8 +79,8 @@ variant being out of step.
 | Property | Desktop | Mobile |
 |---|---|---|
 | `__header` | present | **`display: none`** |
-| `__list` `padding` | `--ai-spacing-5` inline + block-end, no block-start | `--ai-spacing-3` (8px) all round |
-| `__seats` `gap` | `--ai-spacing-3` (8px) | `--ai-spacing-2` (6px) |
+| `__list` `padding` | `--ao-spacing-5` inline + block-end, no block-start | `--ao-spacing-3` (8px) all round |
+| `__seats` `gap` | `--ao-spacing-3` (8px) | `--ao-spacing-2` (6px) |
 
 The header is hidden rather than made optional, at the designer's direction — the mobile screen
 supplies the table name in its own sheet chrome. **See the accessibility note below.**
@@ -89,29 +89,29 @@ supplies the table name in its own sheet chrome. **See the accessibility note be
 
 | Figma | CSS | Role |
 |---|---|---|
-| `--ai-surface-primary` | panel `background-color` | |
-| `--ai-border-secondary` | panel `border-color`, legend `border-color` | |
-| `--ai-radius-lg` | panel `border-radius` (16px) | |
-| `light/shadow-xxs` → `--ai-shadow-2xs` | panel `box-shadow` | |
-| `--ai-size-6` | panel `inline-size` (320px) | fixed at both breakpoints |
-| `--ai-spacing-5` | header `padding` + `gap`, list `padding` (desktop) | |
-| `--ai-spacing-3` | header-row `gap`, meta `gap`, list `gap`, seats `gap`, legend `padding`, swatch size, mobile list `padding` | |
-| `--ai-spacing-1` | titles `gap`, legend-item `gap` | |
-| `--ai-spacing-2` | sponsor `gap`, mobile seats `gap` | |
-| `--ai-spacing-0-5` | legend `gap` | CSS leads Figma — see below |
-| `--ai-font-title` | name, meta, legend | |
-| `--ai-font-fixed-md` | table name (18px) | |
-| `--ai-font-fixed-xxs` | meta / seated count (12px) | |
-| `--ai-font-fixed-4xs` | legend labels (11px) | |
-| `--ai-font-bold` / `-medium` | name / meta + legend | |
-| `--ai-font-body` | sponsor name | inconsistent with TableCard — see below |
-| `--ai-leading-xs` | sponsor `line-height` (16px) | |
-| `--ai-text-primary` / `--ai-text-contrast` / `--ai-text-secondary` | name / meta / legend | |
-| `--ai-icon-size-sm` | handshake icon (16px) | |
-| `--ai-icon-secondary` | handshake icon colour | **differs from TableCard** — see below |
-| `--ai-surface-minimal` | legend `background-color` | |
-| `--ai-radius-md` | legend `border-radius` (8px) | |
-| `--ai-radius-xs` | legend swatch `border-radius` (2px) | the token added 2026-08-25 |
+| `--ao-surface-primary` | panel `background-color` | |
+| `--ao-border-secondary` | panel `border-color`, legend `border-color` | |
+| `--ao-radius-lg` | panel `border-radius` (16px) | |
+| `light/shadow-xxs` → `--ao-shadow-2xs` | panel `box-shadow` | |
+| `--ao-size-6` | panel `inline-size` (320px) | fixed at both breakpoints |
+| `--ao-spacing-5` | header `padding` + `gap`, list `padding` (desktop) | |
+| `--ao-spacing-3` | header-row `gap`, meta `gap`, list `gap`, seats `gap`, legend `padding`, swatch size, mobile list `padding` | |
+| `--ao-spacing-1` | titles `gap`, legend-item `gap` | |
+| `--ao-spacing-2` | sponsor `gap`, mobile seats `gap` | |
+| `--ao-spacing-0-5` | legend `gap` | CSS leads Figma — see below |
+| `--ao-font-title` | name, meta, legend | |
+| `--ao-font-fixed-md` | table name (18px) | |
+| `--ao-font-fixed-xxs` | meta / seated count (12px) | |
+| `--ao-font-fixed-4xs` | legend labels (11px) | |
+| `--ao-font-bold` / `-medium` | name / meta + legend | |
+| `--ao-font-body` | sponsor name | inconsistent with TableCard — see below |
+| `--ao-leading-xs` | sponsor `line-height` (16px) | |
+| `--ao-text-primary` / `--ao-text-contrast` / `--ao-text-secondary` | name / meta / legend | |
+| `--ao-icon-size-sm` | handshake icon (16px) | |
+| `--ao-icon-secondary` | handshake icon colour | **differs from TableCard** — see below |
+| `--ao-surface-minimal` | legend `background-color` | |
+| `--ao-radius-md` | legend `border-radius` (8px) | |
+| `--ao-radius-xs` | legend swatch `border-radius` (2px) | the token added 2026-08-25 |
 | `--sp-host` / `-vip` / `-speaker` / `-sponsor` / `-attendee` | legend swatches | all five roles |
 
 ## Token gaps and decisions
@@ -120,7 +120,7 @@ supplies the table name in its own sheet chrome. **See the accessibility note be
 |---|---|
 | panel `h-[698px]` | **Dropped for `block-size: 100%`** — see the height section. 698px has no token and is just ten seats' worth of height. |
 | sponsor row `h-[22px]` | **Left to content (16px)** — see below. |
-| `panel-header` `border-0` with `--ai-border-secondary` still set | **No border drawn.** A zero-width border with a colour left on it; the rendered design shows no divider under the header, so none is implemented. If a divider is wanted it needs a width in Figma first. |
+| `panel-header` `border-0` with `--ao-border-secondary` still set | **No border drawn.** A zero-width border with a colour left on it; the rendered design shows no divider under the header, so none is implemented. If a divider is wanted it needs a width in Figma first. |
 | 3px `Ellipse` separator | **A middot character**, matching the identical separator in AttendeeCard. Avoids an off-scale 3px dimension with no token. |
 | `Orange/600` (`#ea580c`) in the subtree's variable list | **Not a gap.** It appears in `get_variable_defs` but **zero times** in the panel's design context, so nothing being built uses it. Likely bound on a hidden layer or in another Seating Planner mode. |
 
@@ -129,7 +129,7 @@ supplies the table name in its own sheet chrome. **See the accessibility note be
 Figma pins the sponsor row at `h-[22px]`. In TableCard the identical 22px was *derivable* — exactly
 (TableCard's desktop padding moved to 2px on 2026-09-10, so its row now derives to 18px; this
 panel's row is unaffected and still derives to 22px) —
-`--ai-spacing-2` (6px) of padding-top plus a 16px icon — so it was safely omitted. **Here there is no
+`--ao-spacing-2` (6px) of padding-top plus a 16px icon — so it was safely omitted. **Here there is no
 padding**, so 22px is genuinely off-scale and unbound (the nearest steps are 16px and 24px).
 
 Rather than inline a raw 22px, the row is left to its content, which measures 16px. The visible
@@ -139,16 +139,16 @@ Figma or confirming the row should just hug its content.**
 
 ## Scrollbar
 
-The seat list carries a **transparent track with a thin `--ai-surface-secondary` thumb**, per the
+The seat list carries a **transparent track with a thin `--ao-surface-secondary` thumb**, per the
 designer 2026-08-25 — matching `.chat-sidebar__sections`, the existing precedent for this treatment.
 
 ```
-scrollbar-color: var(--ai-surface-secondary) transparent;
+scrollbar-color: var(--ao-surface-secondary) transparent;
 scrollbar-width: thin;
 ```
 
 Plus `::-webkit-scrollbar` / `-track` / `-thumb` rules for older WebKit, using
-`--ai-spacing-2` (6px) where the ChatSidebar precedent hardcodes `6px`.
+`--ao-spacing-2` (6px) where the ChatSidebar precedent hardcodes `6px`.
 
 **Measured gutter: 11px, not 6px.** Once `scrollbar-width: thin` is declared, Chrome 121+ honours
 the standard property and ignores the `::-webkit-scrollbar` width — so 11px *is* the browser's
@@ -218,11 +218,11 @@ Code Connect example markup changed with it, so `TableDetail.figma.ts` needs re-
 
 | Element | Property | Figma | CSS |
 |---|---|---|---|
-| `__legend` | `row-gap` | `4px` | **`--ai-spacing-0-5`** (2px) |
-| `__legend` | `column-gap` | `8px` | `--ai-spacing-3` (8px) — Figma's, unchanged |
+| `__legend` | `row-gap` | `4px` | **`--ao-spacing-0-5`** (2px) |
+| `__legend` | `column-gap` | `8px` | `--ao-spacing-3` (8px) — Figma's, unchanged |
 
 Only the **row** gap was tightened (designer, 2026-08-25). Figma binds a split gap on this container
-— 4px row, 8px column, both via `--ai-spacing-3`.
+— 4px row, 8px column, both via `--ao-spacing-3`.
 
 **The row gap does visible work here, because the five-role legend wraps.** Figma fits it on one
 row: its items total 240px and its content box is 272px, so 240 plus four 8px gaps fills it exactly.
@@ -255,14 +255,14 @@ The same contract as the rest of the module:
 ## Cross-component findings
 
 - **The handshake icon's colour differs between the two components.** TableDetail binds
-  `--ai-icon-secondary` (`#64748b`), TableCard binds `--ai-icon-contrast` (`#94a3b8`). Both were
+  `--ao-icon-secondary` (`#64748b`), TableCard binds `--ao-icon-contrast` (`#94a3b8`). Both were
   resolved with `get_variable_defs` on the icon node itself (`3472:85943` here) because design
   context hides the colour inside an SVG asset. Built as drawn in each; **worth deciding whether
   the same icon in the same role should differ.**
-- **The sponsor name's font-family differs too** — `--ai-font-body` here, `--ai-font-title` in
+- **The sponsor name's font-family differs too** — `--ao-font-body` here, `--ao-font-title` in
   TableCard. Both resolve to Inter so it is visually a no-op, but the binding is inconsistent.
-- **AttendeeCard's seat badge has drifted.** Figma now renders it at `--ai-font-fixed-6xs` (9px);
-  the component is `--ai-font-fixed-5xs` (10px). The designer's call 2026-08-25 was that **the
+- **AttendeeCard's seat badge has drifted.** Figma now renders it at `--ao-font-fixed-6xs` (9px);
+  the component is `--ao-font-fixed-5xs` (10px). The designer's call 2026-08-25 was that **the
   component stays the source of truth** and Figma should follow, so AttendeeCard was left alone.
   Recorded here so a future audit does not "fix" it backwards. Every other AttendeeCard divergence
   seen in this panel (seat box 18→16px, meta gap, accent wrapper, action padding, reorder height)
@@ -318,10 +318,10 @@ Rationale and the decision rule live in **CLAUDE.md §4a**. The short version: a
 SidebarMenu shrinks the CC content column with no window resize, so a viewport query cannot see
 the real available width — measured 820px of column at a 2239px viewport, with no query firing.
 
-## Minimum width: `--ai-size-5` (280px) (designer, 2026-09-10)
+## Minimum width: `--ao-size-5` (280px) (designer, 2026-09-10)
 
-`.table-detail` carries `min-inline-size: var(--ai-size-5)` alongside its fixed
-`inline-size: var(--ai-size-6)` (320).
+`.table-detail` carries `min-inline-size: var(--ao-size-5)` alongside its fixed
+`inline-size: var(--ao-size-6)` (320).
 
 **Figma has no minimum at all** — it draws one fixed 320px width at every variant, which is what
 the note above the width records. So this is an addition rather than a binding, and it does nothing
@@ -336,7 +336,7 @@ both directions:
 | Where | Was | Now |
 |---|---|---|
 | `.seating-plan__aside > .table-detail` | `min-inline-size: 0` — so the panel could shrink to whatever the drag set | reset removed, so the component's floor applies |
-| The handle's clamp (`SeatingPlanner.js`) | `--ai-size-4` (240) | `--ai-size-5` (280) |
+| The handle's clamp (`SeatingPlanner.js`) | `--ao-size-4` (240) | `--ao-size-5` (280) |
 
 **The clamp change is a divergence from Figma and is flagged as one.** 240 was not invented — it
 appears in Frame 245's own variable list alongside the 320 default. But a handle that drags to 240

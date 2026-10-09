@@ -7,7 +7,7 @@
 
 .checkbox {
   display: flex;
-  gap: var(--ai-spacing-3);               /* 8px */
+  gap: var(--ao-spacing-3);               /* 8px */
   align-items: flex-start;
   cursor: pointer;
 }
@@ -26,15 +26,15 @@
 .checkbox__indicator {
   width: 16px;
   height: 16px;
-  border-radius: var(--ai-radius-sm);     /* 4px — rounded square */
+  border-radius: var(--ao-radius-sm);     /* 4px — rounded square */
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  transition: border-color var(--ai-transition-default),
-              background var(--ai-transition-default);
+  background: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  transition: border-color var(--ao-transition-default),
+              background var(--ao-transition-default);
 }
 
 /* ── Check icon (hidden by default) ─────────────────── */
@@ -42,15 +42,15 @@
 .checkbox__indicator [data-lucide] {
   width: 14px;
   height: 14px;
-  color: var(--ai-text-invert);
+  color: var(--ao-text-invert);
   display: none;
 }
 
 /* ── Checked state ──────────────────────────────────── */
 
 .checkbox__input:checked + .checkbox__indicator {
-  background: var(--ai-surface-brand);
-  border-color: var(--ai-border-brand);
+  background: var(--ao-surface-brand);
+  border-color: var(--ao-border-brand);
 }
 
 .checkbox__input:checked + .checkbox__indicator [data-lucide] {
@@ -75,8 +75,8 @@
 /* ── Focus ring ─────────────────────────────────────── */
 
 .checkbox__input:focus-visible + .checkbox__indicator {
-  box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px var(--ai-surface-brand-soft);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px var(--ao-surface-brand-soft);
   outline: none;
 }
 
@@ -85,27 +85,27 @@
 .checkbox__label {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-1);               /* 4px */
+  gap: var(--ao-spacing-1);               /* 4px */
 }
 
 /* ── Label text ─────────────────────────────────────── */
 
 .checkbox__label-text {
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-medium);
-  font-size: var(--ai-font-fixed-xs);     /* 14px */
-  line-height: var(--ai-leading-xs);       /* 16px */
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-xs);     /* 14px */
+  line-height: var(--ao-leading-xs);       /* 16px */
+  color: var(--ao-text-primary);
   margin: 0;
 }
 
 /* ── Helper text ────────────────────────────────────── */
 
 .checkbox__helper {
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-xxs);    /* 12px */
-  line-height: var(--ai-leading-xs);       /* 16px */
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-regular);
+  font-size: var(--ao-font-fixed-xxs);    /* 12px */
+  line-height: var(--ao-leading-xs);       /* 16px */
+  color: var(--ao-text-contrast);
   margin: 0;
 }

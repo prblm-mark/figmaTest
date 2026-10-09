@@ -31,8 +31,8 @@ Single Size axis, 2 variants:
 
 | Size | CSS modifier | Outer wrap | Bell icon | Badge dot |
 |---|---|---|---|---|
-| Default | (none) | 40px | 20px (`--ai-icon-size-md`) | 12px |
-| Small | `.btn--sm` (on inner button) | 32px | 16px (`--ai-icon-size-sm`) | 12px |
+| Default | (none) | 40px | 20px (`--ao-icon-size-md`) | 12px |
+| Small | `.btn--sm` (on inner button) | 32px | 16px (`--ao-icon-size-sm`) | 12px |
 
 The outer wrap is sized by the inner `.btn.btn--tertiary.btn--icon` (default) or
 `.btn.btn--tertiary.btn--icon.btn--sm` (small). NotificationBadge supplies the badge
@@ -60,26 +60,26 @@ the bell button).
 
 | Property | Token |
 |---|---|
-| Background | `--ai-btn-tertiary-bg` (transparent) |
-| Icon colour | `--ai-btn-tertiary-text` (inherits theme) |
-| Size (default) | `--ai-spacing-8` (40px, from `.btn--icon`) |
-| Size (sm) | `--ai-spacing-7` (32px, from `.btn--icon.btn--sm`) |
-| Radius | `--ai-radius-md` (8px, from `.btn`) |
+| Background | `--ao-btn-tertiary-bg` (transparent) |
+| Icon colour | `--ao-btn-tertiary-text` (inherits theme) |
+| Size (default) | `--ao-spacing-8` (40px, from `.btn--icon`) |
+| Size (sm) | `--ao-spacing-7` (32px, from `.btn--icon.btn--sm`) |
+| Radius | `--ao-radius-md` (8px, from `.btn`) |
 
 ### Badge
 
 | Property | Token | Notes |
 |---|---|---|
-| Background | `var(--ai-surface-error)` | Resolves to Red 600 (#dc2626). Figma uses Red 500 (#ef4444) but Red 500 has no semantic token — see Token gaps. |
-| Border | `2px solid var(--ai-surface-primary)` | Border colour matches the page bg, producing a "halo" against the parent. In CC the parent header bg (`--cc-header-secondary-bg`) is white = `--ai-surface-primary`. |
-| Border radius | `var(--ai-radius-full)` | Fully circular |
-| Min width / height | `var(--ai-spacing-4)` (12px) | Square base; grows wider if count > 1 digit |
-| Text colour | `var(--ai-text-invert)` (white) | |
-| Font family | `var(--ai-font-body)` | Inter |
-| Font weight | `var(--ai-font-bold)` (700) | |
+| Background | `var(--ao-surface-error)` | Resolves to Red 600 (#dc2626). Figma uses Red 500 (#ef4444) but Red 500 has no semantic token — see Token gaps. |
+| Border | `2px solid var(--ao-surface-primary)` | Border colour matches the page bg, producing a "halo" against the parent. In CC the parent header bg (`--cc-header-secondary-bg`) is white = `--ao-surface-primary`. |
+| Border radius | `var(--ao-radius-full)` | Fully circular |
+| Min width / height | `var(--ao-spacing-4)` (12px) | Square base; grows wider if count > 1 digit |
+| Text colour | `var(--ao-text-invert)` (white) | |
+| Font family | `var(--ao-font-body)` | Inter |
+| Font weight | `var(--ao-font-bold)` (700) | |
 | Font size | `8px` | **Token gap** — sub-token optical size, see below |
 | Line-height | `1` | |
-| Padding | `0 var(--ai-spacing-1)` (0 4px) | Horizontal only, for multi-digit counts |
+| Padding | `0 var(--ao-spacing-1)` (0 4px) | Horizontal only, for multi-digit counts |
 | Position | `top: 0; right: 0; transform: translate(25%, -25%)` | Translate-based offset — size-agnostic top-right overhang. Figma uses raw `top: 4px right: 5px` (40px) and `top: 1px right: 2px` (32px). Translate is cleaner and matches the visual intent. |
 
 ---
@@ -88,8 +88,8 @@ the bell button).
 
 | Gap | Figma | Resolution |
 |---|---|---|
-| Badge background | Red 500 / `#ef4444` (raw primitive, no `--ai-*` token) | Approved: use existing `--ai-surface-error` (Red 600 / `#dc2626`). Slightly darker than Figma. Worth raising with the designer to add `--ai-surface-error-bright` (Red 500). |
-| Badge counter font-size | 8px (no token at this size; smallest tokens are `--ai-font-fixed-xxs` = 11px and `--ai-font-fluid-xxs` = 12px) | Approved: use raw `8px` with comment. Sub-token optical size, similar exception class to border-widths and letter-spacing. |
+| Badge background | Red 500 / `#ef4444` (raw primitive, no `--ao-*` token) | Approved: use existing `--ao-surface-error` (Red 600 / `#dc2626`). Slightly darker than Figma. Worth raising with the designer to add `--ao-surface-error-bright` (Red 500). |
+| Badge counter font-size | 8px (no token at this size; smallest tokens are `--ao-font-fixed-xxs` = 11px and `--ao-font-fluid-xxs` = 12px) | Approved: use raw `8px` with comment. Sub-token optical size, similar exception class to border-widths and letter-spacing. |
 | Badge position offsets | `top: 4px right: 5px` (40px) and `top: 1px right: 2px` (32px) — only 4px maps to a token | Resolved by switching to translate-based offset (`translate(25%, -25%)`), which is size-agnostic and avoids the raw-px positions. |
 
 ---

@@ -36,21 +36,21 @@ demo and Code Connect example, not by a container modifier class.
 
 | Property | Figma variable | CSS variable |
 |---|---|---|
-| Container bg | `--ai-surface-primary` | `--ai-surface-primary` |
-| Container border | `--ai-border-secondary` (1px) | `--ai-border-secondary` |
-| Container radius | `--ai-spacing-3` (8px) *(see gaps)* | `--ai-radius-md` (8px) |
-| Container padding | `--ai-spacing-3` (8px) | `--ai-spacing-3` |
-| Row gap | `--ai-spacing-px` (1px) | `--ai-spacing-px` |
+| Container bg | `--ao-surface-primary` | `--ao-surface-primary` |
+| Container border | `--ao-border-secondary` (1px) | `--ao-border-secondary` |
+| Container radius | `--ao-spacing-3` (8px) *(see gaps)* | `--ao-radius-md` (8px) |
+| Container padding | `--ao-spacing-3` (8px) | `--ao-spacing-3` |
+| Row gap | `--ao-spacing-px` (1px) | `--ao-spacing-px` |
 
 ## Token Gaps / Decisions
-- **No token gaps** — every value maps to an existing `--ai-*` token.
-- **Radius binding quirk:** Figma bound the container `border-radius` to `--ai-spacing-3`
-  (a spacing token, 8px). Used `--ai-radius-md` (same 8px, correct category) — matches the
+- **No token gaps** — every value maps to an existing `--ao-*` token.
+- **Radius binding quirk:** Figma bound the container `border-radius` to `--ao-spacing-3`
+  (a spacing token, 8px). Used `--ao-radius-md` (same 8px, correct category) — matches the
   same decision made on FilterDropdownItem.
 
 ## Notes
 - **Width:** the Figma frame is 296px, but the group is built `width: 100%` to fill whatever
   dropdown contains it (the demo constrains it to 296px for the gallery).
-- The 1px row gap (`--ai-spacing-px`) is a real token, not an optical border width.
+- The 1px row gap (`--ao-spacing-px`) is a real token, not an optical border width.
 - No standalone JS — the group relies on `FilterDropdownItem.js` (loaded in the demo) for
   the child items' multi-select toggle behaviour.

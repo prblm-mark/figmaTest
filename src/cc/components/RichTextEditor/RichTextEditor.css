@@ -12,41 +12,41 @@
 
 /* Frame — the Textarea's border and radius, so an editor reads as the same family of field. */
 .rich-text .tox.tox-tinymce {
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
 }
 
 .rich-text .tox.tox-tinymce:focus-within {
-  border-color: var(--ai-border-brand);
+  border-color: var(--ao-border-brand);
 }
 
 /* Toolbar */
 .rich-text .tox .tox-editor-header {
   box-shadow: none;
-  border-block-end: 1px solid var(--ai-border-secondary);
+  border-block-end: 1px solid var(--ao-border-secondary);
   padding: 0;
 }
 
 .rich-text .tox .tox-toolbar,
 .rich-text .tox .tox-toolbar__primary,
 .rich-text .tox .tox-toolbar__overflow {
-  background: var(--ai-surface-primary);
+  background: var(--ao-surface-primary);
 }
 
 .rich-text .tox .tox-toolbar__group {
-  padding: 0 var(--ai-spacing-2);
+  padding: 0 var(--ao-spacing-2);
 }
 
-/* Toolbar controls take the INPUT radius (--ai-radius-md, as the Input / Textarea field and this
+/* Toolbar controls take the INPUT radius (--ao-radius-md, as the Input / Textarea field and this
  * editor's own frame) rather than oxide's 4px (designer, 2026-09-29). Covers the icon buttons and
  * the Styles dropdown (.tox-tbtn--select), plus split buttons. */
 .rich-text .tox .tox-tbtn,
 .rich-text .tox .tox-split-button {
-  border-radius: var(--ai-radius-md);
+  border-radius: var(--ao-radius-md);
 }
 
 .rich-text .tox .tox-tbtn {
-  color: var(--ai-icon-primary);
+  color: var(--ao-icon-primary);
 }
 
 .rich-text .tox .tox-tbtn svg {
@@ -54,61 +54,61 @@
 }
 
 .rich-text .tox .tox-tbtn:hover {
-  background: var(--ai-surface-minimal);
-  color: var(--ai-icon-primary);
+  background: var(--ao-surface-minimal);
+  color: var(--ao-icon-primary);
 }
 
 .rich-text .tox .tox-tbtn--enabled,
 .rich-text .tox .tox-tbtn--enabled:hover {
-  background: var(--ai-surface-brand-soft);
-  color: var(--ai-text-brand);
+  background: var(--ao-surface-brand-soft);
+  color: var(--ao-text-brand);
 }
 
 .rich-text .tox .tox-tbtn:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: -2px;
 }
 
 /* The Styles dropdown is styled as our Select / Input field (designer, 2026-09-29): surface-primary
- * fill, --ai-border-secondary line, brand border on hover / open, the Input's focus ring. It keeps
+ * fill, --ao-border-secondary line, brand border on hover / open, the Input's focus ring. It keeps
  * TinyMCE's toolbar height (not the field's 40px) so the toolbar row does not grow. Replaces
  * oxide's #f7f7f7 fill, which is not a token. Declared after the generic tbtn hover / enabled rules
  * so it wins at equal specificity. */
 .rich-text .tox .tox-tbtn--select,
 .rich-text .tox .tox-tbtn--select:hover,
 .rich-text .tox .tox-tbtn--select[aria-expanded="true"] {
-  background: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  padding-inline: var(--ai-spacing-3);
-  transition: border-color var(--ai-transition-default), box-shadow var(--ai-transition-default);
+  background: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  padding-inline: var(--ao-spacing-3);
+  transition: border-color var(--ao-transition-default), box-shadow var(--ao-transition-default);
 }
 
 /* Open = TinyMCE's aria-expanded="true" (it does not add --enabled to a dropdown). */
 .rich-text .tox .tox-tbtn--select:hover,
 .rich-text .tox .tox-tbtn--select[aria-expanded="true"] {
-  border-color: var(--ai-border-brand);
+  border-color: var(--ao-border-brand);
 }
 
 .rich-text .tox .tox-tbtn--select:focus-visible {
   outline: none;
-  border-color: var(--ai-border-brand);
-  box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 95%, transparent);
+  border-color: var(--ao-border-brand);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px color-mix(in srgb, var(--ao-surface-brand-soft) 95%, transparent);
 }
 
 [data-theme="dark"] .rich-text .tox .tox-tbtn--select:focus-visible {
-  box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 30%, transparent);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px color-mix(in srgb, var(--ao-surface-brand-soft) 30%, transparent);
 }
 
 .rich-text .tox .tox-tbtn--select .tox-tbtn__select-chevron svg {
-  fill: var(--ai-icon-secondary);
+  fill: var(--ao-icon-secondary);
 }
 
 .rich-text .tox .tox-tbtn--select .tox-tbtn__select-label {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-2xs);
+  color: var(--ao-text-primary);
 }
 
 /* The editable area behind the iframe — the content CSS paints the iframe itself. */
@@ -117,20 +117,20 @@
 }
 
 .rich-text .tox .tox-edit-area__iframe {
-  background-color: var(--ai-surface-primary);
+  background-color: var(--ao-surface-primary);
 }
 
 /* Statusbar (path + word count) */
 .rich-text .tox .tox-statusbar {
-  border-block-start: 1px solid var(--ai-border-secondary);
-  background-color: var(--ai-surface-primary);
-  color: var(--ai-text-secondary);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
+  border-block-start: 1px solid var(--ao-border-secondary);
+  background-color: var(--ao-surface-primary);
+  color: var(--ao-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
 }
 
 .rich-text .tox .tox-statusbar a,
 .rich-text .tox .tox-statusbar__path-item,
 .rich-text .tox .tox-statusbar__wordcount {
-  color: var(--ai-text-secondary);
+  color: var(--ao-text-secondary);
 }

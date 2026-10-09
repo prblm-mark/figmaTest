@@ -68,38 +68,38 @@ so the same nesting is used.
 
 | Figma | CSS | Role |
 |---|---|---|
-| `--ai-surface-primary` | root, rooms, toolbar `background-color` | |
-| `--ai-border-secondary` | root `border`, bar + rooms `border-block-end`, divider `background-color` | |
-| `--ai-radius-lg` | root `border-radius` (16px) | |
-| `--ai-radius-md` | mobile global-action buttons (from `btn--sm`) | |
-| `--ai-radius-sm` | kebab focus ring radius | |
-| `--ai-spacing-6` | bar `padding`, rooms + toolbar `padding-inline` (24px) | |
-| `--ai-spacing-5` | rooms + toolbar `padding-block`, rooms + toolbar `gap`, divider `block-size` (16px) | |
-| `--ai-spacing-4` | title-row `gap`, meta `column-gap`, mobile bar `gap` + `padding-inline`, mobile rooms + toolbar `padding` (12px) | |
-| `--ai-spacing-3` | details `gap`, actions `gap`, room `gap`, toggle-group `gap`, buttons `gap`, mobile rooms `gap`, **mobile toolbar `gap`** (8px) | |
-| `--ai-spacing-2` | meta `row-gap`, meta-item `gap`, compact-toolbar buttons `gap` (6px) | |
-| `--ai-spacing-0-5` | compact-toolbar room `gap` (2px) | Figma binds `--ai-spacing-1` — see below |
-| `--ai-spacing-7` | **bar `gap` (32px)**, compact export button + mobile global-action `min-height` | |
-| `--ai-size-5` | desktop room-card `flex-basis` (280px) | Figma draws 290 — see below |
-| `--ai-font-title` | every text node | |
-| `--ai-font-fixed-xl` / `-md` | title, desktop / mobile (22 / 18px) | |
-| `--ai-font-fixed-md` / `-sm` | room name, desktop / mobile (18 / 16px) | |
-| `--ai-font-fixed-xs` / `-2xs` | meta items + room count, desktop / mobile (14 / 12px) | |
-| `--ai-font-fixed-xxs` | "Show unassigned" (12px, both breakpoints) | |
-| `--ai-font-fluid-xxs` | mobile global-action font size (from `btn--sm`) | |
-| `--ai-font-bold` / `-medium` | title + room name / meta + count + toggle label | |
-| `--ai-text-primary` / `--ai-text-contrast` | title + room name / meta + count + toggle label | |
-| `--ai-leading-xs` | meta items (16px) | |
-| `--ai-icon-size-sm` | meta icons (16px) | |
-| `--ai-icon-size-md` | kebab (20px) | |
-| `--ai-icon-size-xs` | swap button icon (12px, from `btn--xs`) | |
-| `--ai-icon-contrast` | meta icons | |
-| `--ai-icon-secondary` | kebab | **a different icon colour — see below** |
-| `--ai-surface-brand` | kebab `:focus-visible` outline | |
+| `--ao-surface-primary` | root, rooms, toolbar `background-color` | |
+| `--ao-border-secondary` | root `border`, bar + rooms `border-block-end`, divider `background-color` | |
+| `--ao-radius-lg` | root `border-radius` (16px) | |
+| `--ao-radius-md` | mobile global-action buttons (from `btn--sm`) | |
+| `--ao-radius-sm` | kebab focus ring radius | |
+| `--ao-spacing-6` | bar `padding`, rooms + toolbar `padding-inline` (24px) | |
+| `--ao-spacing-5` | rooms + toolbar `padding-block`, rooms + toolbar `gap`, divider `block-size` (16px) | |
+| `--ao-spacing-4` | title-row `gap`, meta `column-gap`, mobile bar `gap` + `padding-inline`, mobile rooms + toolbar `padding` (12px) | |
+| `--ao-spacing-3` | details `gap`, actions `gap`, room `gap`, toggle-group `gap`, buttons `gap`, mobile rooms `gap`, **mobile toolbar `gap`** (8px) | |
+| `--ao-spacing-2` | meta `row-gap`, meta-item `gap`, compact-toolbar buttons `gap` (6px) | |
+| `--ao-spacing-0-5` | compact-toolbar room `gap` (2px) | Figma binds `--ao-spacing-1` — see below |
+| `--ao-spacing-7` | **bar `gap` (32px)**, compact export button + mobile global-action `min-height` | |
+| `--ao-size-5` | desktop room-card `flex-basis` (280px) | Figma draws 290 — see below |
+| `--ao-font-title` | every text node | |
+| `--ao-font-fixed-xl` / `-md` | title, desktop / mobile (22 / 18px) | |
+| `--ao-font-fixed-md` / `-sm` | room name, desktop / mobile (18 / 16px) | |
+| `--ao-font-fixed-xs` / `-2xs` | meta items + room count, desktop / mobile (14 / 12px) | |
+| `--ao-font-fixed-xxs` | "Show unassigned" (12px, both breakpoints) | |
+| `--ao-font-fluid-xxs` | mobile global-action font size (from `btn--sm`) | |
+| `--ao-font-bold` / `-medium` | title + room name / meta + count + toggle label | |
+| `--ao-text-primary` / `--ao-text-contrast` | title + room name / meta + count + toggle label | |
+| `--ao-leading-xs` | meta items (16px) | |
+| `--ao-icon-size-sm` | meta icons (16px) | |
+| `--ao-icon-size-md` | kebab (20px) | |
+| `--ao-icon-size-xs` | swap button icon (12px, from `btn--xs`) | |
+| `--ao-icon-contrast` | meta icons | |
+| `--ao-icon-secondary` | kebab | **a different icon colour — see below** |
+| `--ao-surface-brand` | kebab `:focus-visible` outline | |
 
 ### Two different icon colours in one component
 
-The three meta icons are `--ai-icon-contrast` (#94a3b8); the kebab is `--ai-icon-secondary`
+The three meta icons are `--ao-icon-contrast` (#94a3b8); the kebab is `--ao-icon-secondary`
 (#64748b). Both appear in the variant's variable list, so they were disambiguated with scoped
 `get_variable_defs` calls on `3474:90247` and `3515:330387` rather than guessed. Worth a designer
 glance — a one-step difference between two icons in the same header may be intentional (the kebab
@@ -109,19 +109,19 @@ is interactive, the meta icons are decoration) or may be drift.
 
 | Figma | Decision |
 |---|---|
-| root `w-[1552px]`, `Event-Details` `w-[900px]` — both unbound, matching no `--ai-size-*` token | **Both fluid** (designer, 2026-08-26): root `inline-size: 100%`, details `flex: 1 0 0` + `min-inline-size: 0`. The bar is `justify-between`, so the details block is simply its left column, and 1552/900 are just the frame Figma drew. Same call already taken for AttendeeCard, TableCard and TableListing. |
-| Room Card instance `w-[290px]` (desktop) | **`--ai-size-5`** (280px). 290 has no token; 280 is the one that exists **and is the `min-inline-size` RoomCard itself binds** — the identical call made when RoomCard was built, so the two components agree rather than disagree by 10px. |
-| Toolbar room-label `gap-[8px]`, unbound | **`--ai-spacing-3`**, which is exactly 8px, so binding it is visually a no-op. Same treatment as TableListing's 12px filter label. **Worth binding in Figma.** |
-| `Event-Info-Bar` has no gap (Figma relies on `space-between` against a fixed 900px block) | **`--ai-spacing-7`** (32px) added (designer, 2026-08-26). With the details block fluid, this gap is what replaces the fixed width and keeps a long event title off the buttons. Overridden to `--ai-spacing-4` in the stacked mobile layout. |
-| Figma's mobile `Toolbar-Actions` room block binds `gap: --ai-spacing-1` (4px) | **`--ai-spacing-0-5`** (2px) below 1024px (designer, 2026-08-26). Two lines of stacked text read as one block at 2px and as two separate things at 4px. The identical tightening was taken on TableDetail's legend row gap, so it is a consistent preference rather than a one-off. `--ai-spacing-1` is now unused in this component. |
-| Figma's mobile `Toolbar` binds `gap: --ai-spacing-5` (16px) | **`--ai-spacing-3`** (8px) below 768px (designer, 2026-08-26) — a deliberate override rather than a Figma value. Scoped to the 767px block, so the 768–1023 tablet band keeps Figma's 16px. It is the gap between the actions group and the kebab. |
+| root `w-[1552px]`, `Event-Details` `w-[900px]` — both unbound, matching no `--ao-size-*` token | **Both fluid** (designer, 2026-08-26): root `inline-size: 100%`, details `flex: 1 0 0` + `min-inline-size: 0`. The bar is `justify-between`, so the details block is simply its left column, and 1552/900 are just the frame Figma drew. Same call already taken for AttendeeCard, TableCard and TableListing. |
+| Room Card instance `w-[290px]` (desktop) | **`--ao-size-5`** (280px). 290 has no token; 280 is the one that exists **and is the `min-inline-size` RoomCard itself binds** — the identical call made when RoomCard was built, so the two components agree rather than disagree by 10px. |
+| Toolbar room-label `gap-[8px]`, unbound | **`--ao-spacing-3`**, which is exactly 8px, so binding it is visually a no-op. Same treatment as TableListing's 12px filter label. **Worth binding in Figma.** |
+| `Event-Info-Bar` has no gap (Figma relies on `space-between` against a fixed 900px block) | **`--ao-spacing-7`** (32px) added (designer, 2026-08-26). With the details block fluid, this gap is what replaces the fixed width and keeps a long event title off the buttons. Overridden to `--ao-spacing-4` in the stacked mobile layout. |
+| Figma's mobile `Toolbar-Actions` room block binds `gap: --ao-spacing-1` (4px) | **`--ao-spacing-0-5`** (2px) below 1024px (designer, 2026-08-26). Two lines of stacked text read as one block at 2px and as two separate things at 4px. The identical tightening was taken on TableDetail's legend row gap, so it is a consistent preference rather than a one-off. `--ao-spacing-1` is now unused in this component. |
+| Figma's mobile `Toolbar` binds `gap: --ao-spacing-5` (16px) | **`--ao-spacing-3`** (8px) below 768px (designer, 2026-08-26) — a deliberate override rather than a Figma value. Scoped to the 767px block, so the 768–1023 tablet band keeps Figma's 16px. It is the gap between the actions group and the kebab. |
 | Kebab is a bare `Icon/24px/EllipsisVertical` layer, not a Button instance | **Built as a real `<button>`** (designer, 2026-08-26) with `aria-label="More seating actions"` and a stretched `::after` giving the 44×44 touch target, while the icon stays 20px as drawn. A bare `<i>` is neither focusable nor keyboard-operable (CLAUDE.md §9). Same stretched-trigger pattern RoomCard uses. |
-| Divider `line` node stroke, invisible in design context | **`--ai-border-secondary`**, resolved by `get_variable_defs` on the node itself (`3474:90290`). Not a gap — the same element, and the same resolution, as TableListing's divider. |
+| Divider `line` node stroke, invisible in design context | **`--ao-border-secondary`**, resolved by `get_variable_defs` on the node itself (`3474:90290`). Not a gap — the same element, and the same resolution, as TableListing's divider. |
 
 ### `text-[22px]` is NOT a gap — design context under-reported it
 
 The desktop title reads as a raw `text-[22px]` in `get_design_context`, which looks like an unbound
-value. But `get_variable_defs` on the variant lists **`--ai-font-fixed-xl: 22`**, and nothing else in
+value. But `get_variable_defs` on the variant lists **`--ao-font-fixed-xl: 22`**, and nothing else in
 the variant is 22px — so the title *is* bound and the design context simply did not report it.
 
 Worth recording as a method note: **a raw-looking value in design context is not evidence of an
@@ -135,8 +135,8 @@ under-reporting was hit earlier in this module.
 
 | Property | Desktop | Mobile |
 |---|---|---|
-| `__bar` direction | `row`, `justify-content: space-between` | **`column`**, three stacked rows, gap `--ai-spacing-4` |
-| `__bar` padding | `--ai-spacing-6` all round (24) | **`--ai-spacing-4` inline / `--ai-spacing-5` block** (12/16) — asymmetric, *not* a step-down |
+| `__bar` direction | `row`, `justify-content: space-between` | **`column`**, three stacked rows, gap `--ao-spacing-4` |
+| `__bar` padding | `--ao-spacing-6` all round (24) | **`--ao-spacing-4` inline / `--ao-spacing-5` block** (12/16) — asymmetric, *not* a step-down |
 | `__title` | 22px, `flex: 0 1 auto`, ellipsis | 18px, `flex: 1 0 0`, **wraps** (`overflow-wrap: break-word`) |
 | `__title-row` align | `center` | `flex-start` |
 | `__meta` | one row | **wraps to two** (date + attendees, then venue) |
@@ -146,7 +146,7 @@ under-reporting was hit earlier in this module.
 | `__rooms` padding / gap | 24/16, gap 16 | 12 all round, gap 8 |
 | room cards | `flex: 0 0 280px` | `flex: 1 0 0` on RoomCard's own 240px floor |
 | `__toolbar` padding | 24 inline / 16 block | 12 all round |
-| `__toolbar` gap | `--ai-spacing-5` (16) | **`--ai-spacing-3` (8)** — a designer call, not Figma; see below |
+| `__toolbar` gap | `--ao-spacing-5` (16) | **`--ao-spacing-3` (8)** — a designer call, not Figma; see below |
 | `__room` direction | `row`, gap 8 | **`column`**, gap **2** (Figma draws 4) |
 | `__room-name` / `__room-count` | 18 / 14px | 16 / 12px |
 | `__toggle-group`, `__divider` | present | **`display: none`** — absent from the variant, not rearranged |
@@ -305,9 +305,9 @@ silently reports `innerWidth: 500`. An early mobile pass was measured at 500px b
 |---|---|---|---|
 | swap button | 32×24, icon 12×12 | **32×24, 12×12** | exact — `btn--icon btn--xs` |
 | Toggle track / knob | 32×16 / 12×12 | **32×16 / 12×12** | exact — `toggle--xs` needed no change |
-| divider | 1×16 `--ai-border-secondary` | **1×16, #e2e8f0** | exact |
-| kebab | 20×20 `--ai-icon-secondary` | **20×20, #64748b** | exact |
-| meta icons | 16×16 `--ai-icon-contrast` | **16×16, #94a3b8** | exact |
+| divider | 1×16 `--ao-border-secondary` | **1×16, #e2e8f0** | exact |
+| kebab | 20×20 `--ao-icon-secondary` | **20×20, #64748b** | exact |
+| meta icons | 16×16 `--ao-icon-contrast` | **16×16, #94a3b8** | exact |
 | mobile `__details` | 368×70 | 364×**70** | height exact |
 | mobile `__meta` | 368×38 (2 rows) | 364×**38**, 2 rows | height exact |
 | mobile global buttons | 103×32 / 114×32 | 104×32 / 115×32 | 1px |
@@ -337,7 +337,7 @@ page overflow at either width, and the kebab is a focusable `BUTTON`.
   `btn btn--secondary btn--icon` with no `btn--xs`, and the base-size Global-Actions buttons emit no
   size either. The geometry resolved both unambiguously (`.btn--icon.btn--xs` *is* 32×24), but the
   mapping is incomplete. It does correctly resolve `btn--sm` and primary/secondary elsewhere.
-- **A single-child `Item` frame** wraps the desktop meta list, carrying its own `--ai-spacing-5` gap
+- **A single-child `Item` frame** wraps the desktop meta list, carrying its own `--ao-spacing-5` gap
   that does nothing with one child. Dropped. The mobile variant has no such wrapper, which is what
   confirms it is noise rather than structure — the same one-child-wrapper pattern already dropped in
   Unassigned and noted in TableDetail.
@@ -389,12 +389,12 @@ single plan fills the row while two or more hold RoomCard's 240px mobile floor a
 maximum that was harmless while the block only fired on a phone — but it now fires on **container**
 width, so a squeezed desktop column produced one absurdly wide plan chip.
 
-`max-inline-size: var(--ai-size-6)` (320) caps it. 320 sits just above Figma's mobile card (302), so
+`max-inline-size: var(--ao-size-6)` (320) caps it. 320 sits just above Figma's mobile card (302), so
 a real phone still fills the row exactly as drawn — verified at a genuine 402px viewport: one plan
 renders 285px in a 285px row, four plans render 240px each and the carousel scrolls (1008 vs 309).
 The cap only engages once the row is wider than the design ever intended.
 
-**Flagged:** if plans should never exceed their 280px desktop pin, this becomes `--ai-size-5` — a
+**Flagged:** if plans should never exceed their 280px desktop pin, this becomes `--ao-size-5` — a
 one-token change. 320 was chosen to preserve the mobile frame's fill; neither token is Figma's 302.
 
 ### The header must never shrink (fixed 2026-08-27)
@@ -494,8 +494,8 @@ if the frames are updated to match, delete this section.
 
 | Property | Code | Frame `3515:213426` | How the frame value was read |
 |---|---|---|---|
-| `.seating-header__meta` `row-gap` | `--ai-spacing-1` (4px) | **6px** | Its three meta items sit at y=0 and y=22 at 16px tall → 22 − 16 = 6 |
-| `.seating-header__bar` `gap` (mobile) | `--ai-spacing-5` (16px) | **12px** | Inside the 170px Event-Info-Bar, Event-Details occupies y=16..110 and Global-Actions starts at y=122 → 122 − 110 = 12 |
+| `.seating-header__meta` `row-gap` | `--ao-spacing-1` (4px) | **6px** | Its three meta items sit at y=0 and y=22 at 16px tall → 22 − 16 = 6 |
+| `.seating-header__bar` `gap` (mobile) | `--ao-spacing-5` (16px) | **12px** | Inside the 170px Event-Info-Bar, Event-Details occupies y=16..110 and Global-Actions starts at y=122 → 122 − 110 = 12 |
 
 Everything else in the mobile bar still matches the frame: `padding-inline` 12px and
 `padding-block` 16px (block-start reads y=16, block-end reads 170 − 154 = 16), and the asymmetry
@@ -558,18 +558,18 @@ Designer-directed. Three changes to two rules:
 
 | Rule | Property | Was | Now |
 |---|---|---|---|
-| `.seating-header__toolbar` | `gap` | `--ai-spacing-5` 16px | `--ai-spacing-3` 8px |
-| `.seating-header__toolbar` | `padding-inline-end` | (24px, from the shorthand) | `--ai-spacing-4` 12px |
-| `.seating-header__toolbar-actions` | `gap` | `--ai-spacing-5` 16px | `--ai-spacing-3` 8px |
+| `.seating-header__toolbar` | `gap` | `--ao-spacing-5` 16px | `--ao-spacing-3` 8px |
+| `.seating-header__toolbar` | `padding-inline-end` | (24px, from the shorthand) | `--ao-spacing-4` 12px |
+| `.seating-header__toolbar-actions` | `gap` | `--ao-spacing-5` 16px | `--ao-spacing-3` 8px |
 
 **The asymmetric padding relies on declaration order.** `padding-inline-end` must stay AFTER
 `padding-inline`; reversed, the shorthand resets the end side back to 24px. It reads like a
 redundant pair and is not. It happens to be alphabetical, so a property sorter leaves it alone.
 
 **A ≤767 override became dead and was removed.** That block used to re-declare
-`gap: var(--ai-spacing-3)`, scoped there deliberately so the tablet band kept Figma's 16px. With
+`gap: var(--ao-spacing-3)`, scoped there deliberately so the tablet band kept Figma's 16px. With
 the base rule now 8px it restated the inherited value, and its comment ("the tablet band keeps
-Figma's 16px") had become false. Its `padding: var(--ai-spacing-4)` remains real — it flattens the
+Figma's 16px") had become false. Its `padding: var(--ao-spacing-4)` remains real — it flattens the
 base rule's 24/12 inline and 16 block into 12px on all four sides, confirmed on mobile frame
 `3515:213426` where a 326px Toolbar holds a 302px Toolbar-Actions at x=12.
 
@@ -690,7 +690,7 @@ flipped to `inset-inline-end: 0` because Dropdown's default `left: 0` would push
 a trigger at the end of the row.
 
 **FLAGGED — panel size is Dropdown's, not Figma's.** Ours renders **240px** wide (Dropdown's own
-`min-width: var(--ai-size-4)`) where Figma's instance is **176px**; heights are 66/106 against
+`min-width: var(--ao-size-4)`) where Figma's instance is **176px**; heights are 66/106 against
 Figma's 64/96. Figma has resized the Dropdown instance in this context — a contextual override on
 *that* component. Not applied here: narrowing Dropdown globally, or scoping an override onto it from
 this pattern, are both decisions about Dropdown rather than SeatingHeader.
@@ -852,7 +852,7 @@ Figma-behind-code list at the end of this file.
 `mask-image` operates in the **alpha channel**, so the `black` / `transparent` stops are mask
 coverage values, not design colours. There is no paint value to tokenise and CLAUDE.md §8's
 gradient-token rule has nothing to bite on. The obvious alternative — overlaying
-`linear-gradient(transparent, var(--ai-surface-primary))` — would instead hardcode a relationship
+`linear-gradient(transparent, var(--ao-surface-primary))` — would instead hardcode a relationship
 to this row's background and break silently the day the header bg changes or the row is themed.
 The mask also fades the *cards* rather than painting a rectangle over them, so it stays correct
 across `border-block-end` with no stacking-order work.
@@ -860,8 +860,8 @@ across `border-block-end` with no stacking-order work.
 ### The width is `padding-inline`, and that turned out to be load-bearing
 
 Figma draws no fade, so it specifies no width — this is the one value in the component with no
-Figma authority. It is set to each breakpoint's own `padding-inline` (`--ai-spacing-6` = 24
-desktop, `--ai-spacing-4` = 12 at ≤767, declared next to the padding so the two cannot drift),
+Figma authority. It is set to each breakpoint's own `padding-inline` (`--ao-spacing-6` = 24
+desktop, `--ao-spacing-4` = 12 at ≤767, declared next to the padding so the two cannot drift),
 which started as an aesthetic choice — the fade spans exactly the gutter, so a card is never
 dimmed while fully inside the content box.
 
@@ -948,7 +948,7 @@ redundant.
 Also not in Figma, and checked rather than assumed: `get_metadata` on the set `3474:90519` returns
 **six** variants and not one of them contains a nav control. Composition is what keeps the
 invention honest — the visual IS `btn btn--secondary btn--icon btn--sm` (32×32 via
-`--ai-spacing-7`) with Lucide `chevron-left` / `chevron-right`, so **no new paint value, radius,
+`--ao-spacing-7`) with Lucide `chevron-left` / `chevron-right`, so **no new paint value, radius,
 size or icon is introduced**. Only position is new.
 
 ### They needed a wrapper, for two independent reasons
@@ -1031,17 +1031,17 @@ the first 8px of the nearest card, so `elementFromPoint` was run across both edg
 
 Reported against the live screen: *"too tight to the edge… being transparent doesn't work as it's
 a detailed interface below."* Both right, and the second had a nameable cause — **Button's
-secondary variant is transparent: `--ai-btn-secondary-bg` is `rgba(0,0,0,0)` in all three modes.**
+secondary variant is transparent: `--ao-btn-secondary-bg` is `rgba(0,0,0,0)` in all three modes.**
 Correct on a plain surface, wrong for a button floating over room cards, where a card's
 "24 seats free" read straight through it.
 
 | | Was | Now |
 |---|---|---|
-| Inline inset | `0`, flush with the rail edge | `--ai-spacing-4` (12px) |
-| Default fill | `--ai-btn-secondary-bg` — **transparent** | `color-mix(in srgb, var(--ai-surface-primary) 90%, transparent)` |
+| Inline inset | `0`, flush with the rail edge | `--ao-spacing-4` (12px) |
+| Default fill | `--ao-btn-secondary-bg` — **transparent** | `color-mix(in srgb, var(--ao-surface-primary) 90%, transparent)` |
 | Hover / active | Button's own | **unchanged** — Button's own |
-| Shadow | none | `--ai-shadow-sm` |
-| Fade width ≥1024 | `--ai-spacing-6` (24) | `--ai-spacing-9` (48) |
+| Shadow | none | `--ao-shadow-sm` |
+| Fade width ≥1024 | `--ao-spacing-6` (24) | `--ao-spacing-9` (48) |
 
 #### The first attempt shifted the whole ladder, and that was wrong
 
@@ -1053,7 +1053,7 @@ active fall through to Button's own tokens untouched. The full ladder is intact.
 
 #### Why `color-mix` and not a literal rgba
 
-The fill has to be `--ai-surface-primary` at 90%, and that token is `#ffffff` in light and CC but
+The fill has to be `--ao-surface-primary` at 90%, and that token is `#ffffff` in light and CC but
 `#1e293b` in **dark** — so a hand-written `rgba(255,255,255,0.9)` would hardcode one theme and
 break the other. `color-mix(in srgb, … 90%, transparent)` applies the alpha to whatever the token
 resolves to, per theme, and is already how this repo derives colours (ChatMain's scrollbar tints,
@@ -1061,12 +1061,12 @@ Modal's brand mix). The `0.9` itself needs no token — the skill lists `opacity
 value.
 
 90% rather than solid is the point: the card beneath stays faintly legible, so the button reads as
-glass over the carousel rather than a patch cut out of it. `--ai-shadow-sm` is what separates it
+glass over the carousel rather than a patch cut out of it. `--ao-shadow-sm` is what separates it
 from the card across the 10% where they show through each other.
 
 #### Widening the fade broke the keyboard protection, and needed a second line to fix
 
-The arrow is 32px at a 12px inset, so it reaches **44px** in from the rail edge; `--ai-spacing-9`
+The arrow is 32px at a 12px inset, so it reaches **44px** in from the rail edge; `--ao-spacing-9`
 (48) is the token that covers it. Scoped to the same `min-width: 1024px` block as the arrows, so
 the wider fade appears exactly where the button it serves does, and the 768–1023 band keeps the
 gutter-width fade.
@@ -1135,9 +1135,9 @@ drift to correct back.** Delete a row once the Figma side is updated.
 
 | # | What | Code | Figma | Directed | Detail |
 |---|---|---|---|---|---|
-| 1 | `.seating-header__meta` `row-gap` | `--ai-spacing-1` (4) | 6px | 2026-08-28 | *Two designer-directed divergences from the mobile frame* |
-| 2 | `.seating-header__bar` `gap` (≤767) | `--ai-spacing-5` (16) | 12px | 2026-08-28 | same section |
-| 3 | `.seating-header__toolbar-actions` `gap` | `--ai-spacing-3` (8) | 16px | 2026-08-28 | *Toolbar tightened…* — frame `3515:213426` still draws 16 |
+| 1 | `.seating-header__meta` `row-gap` | `--ao-spacing-1` (4) | 6px | 2026-08-28 | *Two designer-directed divergences from the mobile frame* |
+| 2 | `.seating-header__bar` `gap` (≤767) | `--ao-spacing-5` (16) | 12px | 2026-08-28 | same section |
+| 3 | `.seating-header__toolbar-actions` `gap` | `--ao-spacing-3` (8) | 16px | 2026-08-28 | *Toolbar tightened…* — frame `3515:213426` still draws 16 |
 | 4 | Show-unassigned toggle size | `toggle--xxs` | binds `toggle--xs` | 2026-09-10 | *The toggle is `xxs`…* — `xxs` is a real variant, not invented |
 | 5 | Plans-carousel **edge fade** | mask fade, `--fade-w` = `padding-inline` | **nothing** — hard clip | 2026-09-11 | *The plans carousel gets an edge fade* — no gradient variable exists on the node |
 | 6 | Plans-carousel **arrows** | `btn--secondary --icon --sm`, ≥1024 only | **nothing** — no nav control in any of the 6 variants | 2026-09-11 | *Desktop-only carousel arrows* — composed from Button, so no new design value |
@@ -1158,12 +1158,12 @@ correction**. Figma has drawn it this way all along:
 | | Figma `3585:110482` | Was in code | Now |
 |---|---|---|---|
 | Instance | 176 wide | — | — |
-| List `3393:27558` | **160** (`--ai-size-2`) at **8** (`--ai-spacing-3`) padding | Dropdown's 240 / 12 default | 160 / 8 |
+| List `3393:27558` | **160** (`--ao-size-2`) at **8** (`--ao-spacing-3`) padding | Dropdown's 240 / 12 default | 160 / 8 |
 | Rows | 4 × `DropdownItem` at **32** | 40 (Size=Default) | 32 (`dropdown-item--xs`) |
 
 `get_variable_defs` on the node confirms the row bindings are the xs set exactly:
-`--ai-font-fixed-2xs` (13), `--ai-font-medium`, `--ai-spacing-1`/`--ai-spacing-3` (4/8),
-`--ai-icon-size-xs` (12).
+`--ao-font-fixed-2xs` (13), `--ao-font-medium`, `--ao-spacing-1`/`--ao-spacing-3` (4/8),
+`--ao-icon-size-xs` (12).
 
 The rows carry `dropdown-item--xs` in the markup rather than being forced from the panel: xs is a
 formal DropdownItem variant (`3393:29188`), so the row should say which size it is. That variant
@@ -1172,8 +1172,8 @@ menu did not — the two were built in different sessions from the same List nod
 
 ### Icon colour — same contextual override Export already carries
 
-`3585:110482` binds `--ai-icon-secondary` on the row icons, where DropdownItem's own xs variant
-binds `--ai-icon-primary` (`3393:29188`). Both come from Figma. Applied here scoped to
+`3585:110482` binds `--ao-icon-secondary` on the row icons, where DropdownItem's own xs variant
+binds `--ao-icon-primary` (`3393:29188`). Both come from Figma. Applied here scoped to
 `.seating-header__menu` rather than re-raised, because the decision was already taken for this
 screen on 2026-09-09 (Case B: scope it, flag it, rather than give one row component a third icon
 colour). Recorded in both places so the two menus read as one override, not one override and one
@@ -1181,8 +1181,8 @@ accident.
 
 ### Label colour — the third override, taken (designer, 2026-09-11)
 
-`get_variable_defs` on `3585:110482` also returns **`--ai-text-secondary`** (`#335562`), where
-DropdownItem's xs variant binds `--ai-text-primary` (`3393:29188`). Raised as a question and
+`get_variable_defs` on `3585:110482` also returns **`--ao-text-secondary`** (`#335562`), where
+DropdownItem's xs variant binds `--ao-text-primary` (`3393:29188`). Raised as a question and
 answered: *"fix the label colour too, use text-secondary."* Applied scoped to
 `.seating-header__menu`, alongside the icon override.
 
@@ -1192,10 +1192,10 @@ down the cascade re-asserts the primary. Verified by hovering: label holds at `r
 while the background changes.
 
 **This does leave the two menus differing**, which is worth stating plainly because parity is what
-started the change: Export still renders `--ai-text-primary` (`rgb(0, 34, 47)`). It was left alone
+started the change: Export still renders `--ao-text-primary` (`rgb(0, 34, 47)`). It was left alone
 rather than swept along — its own Figma binding could not be checked, because its frames
 (`1:32273` / `1:43681`) live in a different file and the node is not reachable with this file key.
-If Export binds `--ai-text-secondary` too, it wants the same one-line override; if it genuinely
+If Export binds `--ao-text-secondary` too, it wants the same one-line override; if it genuinely
 binds primary, then the two menus disagree in Figma and that is the thing to fix.
 
 ### A missing stylesheet, found on the way
@@ -1220,8 +1220,8 @@ Both menus opened and measured in the screen at 1440×900:
 Row icons resolve to `rgb(102, 127, 137)` in both. The overflow menu's Room Layout row measures 0
 because it is `display: none` above 1200 by design — Table Types, the visible row, measures 32.
 
-Labels after the 2026-09-11 change: overflow `rgb(51, 85, 98)` (`--ai-text-secondary`), Export
-`rgb(0, 34, 47)` (`--ai-text-primary`) — the one remaining difference between them, above.
+Labels after the 2026-09-11 change: overflow `rgb(51, 85, 98)` (`--ao-text-secondary`), Export
+`rgb(0, 34, 47)` (`--ao-text-primary`) — the one remaining difference between them, above.
 
 ---
 
@@ -1340,9 +1340,9 @@ working in, rather than reversing that decision.
 
 | pass | treatment | outcome |
 |---|---|---|
-| 1 | `border-block-end: 1px solid var(--ai-border-secondary)`, dark only | *"i dont like the solid line"* |
-| 2 | `--ai-shadow-md`, dark only | too strong |
-| 3 | `--ai-shadow-card` (`0 0 10px .125`), dark only | *"can we add a softer shadow"* satisfied, then dropped in pass 4 |
+| 1 | `border-block-end: 1px solid var(--ao-border-secondary)`, dark only | *"i dont like the solid line"* |
+| 2 | `--ao-shadow-md`, dark only | too strong |
+| 3 | `--ao-shadow-card` (`0 0 10px .125`), dark only | *"can we add a softer shadow"* satisfied, then dropped in pass 4 |
 | 4 | **`0 1px 0 var(--cc-ui-primary-bg)`, both modes, no shadow** | **kept** |
 
 Pass 2 → 3 is the one worth remembering: when a shadow is too strong, the next rung down the scale
@@ -1388,9 +1388,9 @@ Verified in all four combinations, chrome height 48 throughout:
 | | `box-shadow` |
 |---|---|
 | light, rest | `rgb(231,237,240) 0 1px 0` |
-| light, scrolled | line + `--ai-shadow-sm` |
-| dark, rest | line + `--ai-shadow-card` |
-| dark, scrolled | line + `--ai-shadow-card` |
+| light, scrolled | line + `--ao-shadow-sm` |
+| dark, rest | line + `--ao-shadow-card` |
+| dark, scrolled | line + `--ao-shadow-card` |
 
 Both the base and `.is-scrolled` selectors are named, because the two rules would otherwise tie at
 (0,4,0) and source order alone would settle it. In dark the boundary is the same problem whether
@@ -1436,7 +1436,7 @@ is safe: there is one implementation to change, not two that drift.
 **The only new CSS is `.seating-header--table > .seating-header__toolbar`**, which rounds the top
 two corners. As the root's sole child the toolbar is both `:first-child` and `:last-child`, so the
 existing last-child rule already gives it the bottom pair. It needs them at all because the
-toolbar paints its own `--ai-surface-primary` — the corner-bleed failure SystemRole recorded. The
+toolbar paints its own `--ao-surface-primary` — the corner-bleed failure SystemRole recorded. The
 event bar upstairs gets away without them only because it paints no background of its own.
 
 ### The sticky model got simpler
@@ -1488,17 +1488,17 @@ all, which is what the mobile frames draw.
 
 **A 6px gap above the pinned Table Header.** It pinned flush against the chrome, which made the
 group look welded to the top edge on scroll while still breathing at the bottom. The same
-`--ai-spacing-2` on both sides reads as one group held clear of the chrome.
+`--ao-spacing-2` on both sides reads as one group held clear of the chrome.
 
 Three expressions moved together, and they stay written out separately on purpose:
 
 ```
-inset-block-start: calc(var(--ai-spacing-2) - var(--sp-page-pad));
+inset-block-start: calc(var(--ao-spacing-2) - var(--sp-page-pad));
 --sp-rail-top:     6 (above the card) + toolbar-h + 6 (card -> sheets) - page-pad
 --sp-rail-h:       scrollport - 6 - toolbar-h - 6 - page-pad
 ```
 
-Both 6s are `--ai-spacing-2` today. Collapsing them to `* 2` would hide that they are *different
+Both 6s are `--ao-spacing-2` today. Collapsing them to `* 2` would hide that they are *different
 gaps* — one above the pinned card, one between it and the sheets — and that changing one should
 not move the other.
 
@@ -1569,7 +1569,7 @@ Figma is being updated to match (designer, 2026-09-16).
 
 ### The shadow
 
-`--ai-shadow-sm` on the pinned card — the same weight the chrome uses for the same job on this
+`--ao-shadow-sm` on the pinned card — the same weight the chrome uses for the same job on this
 screen: separating something pinned from the content passing under it.
 
 **Only once it has actually STUCK**, which is a different question from the chrome's. The chrome
@@ -1604,7 +1604,7 @@ with it.
 
 Shadow: absent at rest and at 40px of scroll (the header is still on screen), present at 600 with
 the class set, and gone again at the top. With the transition taken out of the picture the settled
-value reads `rgba(0,0,0,0.06) 0 1px 2px, rgba(0,0,0,0.1) 0 1px 3px` — `--ai-shadow-sm` exactly.
+value reads `rgba(0,0,0,0.06) 0 1px 2px, rgba(0,0,0,0.1) 0 1px 3px` — `--ao-shadow-sm` exactly.
 
 Offset at 402: `scroll-margin-block-start` computes to 75px against a measured 63px card (63 + 12),
 and after a `scrollIntoView` the tapped card's top sits at 123 against the pinned card's bottom of

@@ -47,7 +47,7 @@
 | `Size` | sm | `.btn--sm` |
 | `Size` | xs | `.btn--xs` |
 
-> **2026-09-28:** Size=xs text is now **SemiBold** (`--ai-font-semibold`) — rebound in Figma on all 38 xs variants (`font/weight/SemiBold`, was Medium) at the designer's request. Radius is now `--ai-radius-md` (was `radius-sm`) — all 38 xs variants rebound to `border/radius/radius-md` the same day.
+> **2026-09-28:** Size=xs text is now **SemiBold** (`--ao-font-semibold`) — rebound in Figma on all 38 xs variants (`font/weight/SemiBold`, was Medium) at the designer's request. Radius is now `--ao-radius-md` (was `radius-sm`) — all 38 xs variants rebound to `border/radius/radius-md` the same day.
 
 | `Size` | _(none — see below)_ | `.btn--icon.btn--2xs` |
 | `Icon Only` | True | `.btn--icon` |
@@ -69,64 +69,64 @@ Figma default for all text-button variants has `showLeftIcon=true` — both slot
 
 | Figma Variable | CSS Variable | Role |
 |---|---|---|
-| `--ai-btn-primary-bg` | `--ai-btn-primary-bg` | Primary bg |
-| `--ai-btn-primary-bg-hover` | `--ai-btn-primary-bg-hover` | Primary hover + focus bg |
-| `--ai-btn-primary-bg-pressed` | `--ai-btn-primary-bg-pressed` | Primary active bg |
-| `--ai-btn-primary-text` | `--ai-btn-primary-text` | Primary text (theme-invariant) |
-| `--ai-btn-primary-text-hover` | `--ai-btn-primary-text-hover` | Primary hover text |
-| `--ai-btn-secondary-bg` | `--ai-btn-secondary-bg` | Secondary bg (transparent) |
-| `--ai-btn-secondary-bg-hover` | `--ai-btn-secondary-bg-hover` | Secondary hover + focus bg |
-| `--ai-btn-secondary-bg-pressed` | `--ai-btn-secondary-bg-pressed` | Secondary active bg |
-| `--ai-btn-secondary-border` | `--ai-btn-secondary-border` | Secondary border (default + pressed + focus ring) |
-| `--ai-btn-secondary-border-hover` | `--ai-btn-secondary-border-hover` | Secondary hover border |
-| `--ai-btn-secondary-text` | `--ai-btn-secondary-text` | Secondary text |
-| `--ai-btn-secondary-text-hover` | `--ai-btn-secondary-text-hover` | Secondary hover text |
-| `--ai-btn-tertiary-bg` | `--ai-btn-tertiary-bg` | Tertiary bg (transparent); also focus bg |
-| `--ai-btn-tertiary-bg-hover` | `--ai-btn-tertiary-bg-hover` | Tertiary hover bg |
-| `--ai-btn-tertiary-bg-pressed` | `--ai-btn-tertiary-bg-pressed` | Tertiary active bg |
-| `--ai-btn-tertiary-text` | `--ai-btn-tertiary-text` | Tertiary text |
-| `--ai-btn-tertiary-text-hover` | `--ai-btn-tertiary-text-hover` | Tertiary hover text |
-| `--ai-btn-bg-disabled` | `--ai-btn-bg-disabled` | Disabled bg (all variants) |
-| `--ai-btn-text-disabled` | `--ai-btn-text-disabled` | Disabled text (all variants) |
-| `--ai-border-secondary` | `--ai-border-secondary` | Tertiary focus ring |
-| `--ai-text-error` | `--ai-text-error` | Alert Outline text |
-| `--ai-border-error` | `--ai-border-error` | Alert Outline border |
-| `--ai-surface-error` | `--ai-surface-error` | Alert bg (maps from Figma `Red/500`) |
-| `--ai-surface-primary` | `--ai-surface-primary` | Alert Outline bg; inner border on primary/secondary focus |
-| `--ai-radius-md` | `--ai-radius-md` | Default corner radius (8px) |
-| `--ai-radius-sm` | `--ai-radius-sm` | Small button corner radius (4px) |
-| `--ai-spacing-8` | `--ai-spacing-8` | Base height (40px) |
-| `--ai-spacing-7` | `--ai-spacing-7` | Small height (32px) |
-| `--ai-font-fluid-xs` | `--ai-font-fluid-xs` | Base font size (14px) |
-| `--ai-font-fluid-xxs` | `--ai-font-fluid-xxs` | Small font size (12px) |
-| `--ai-leading-xs` | `--ai-leading-xs` | Line height (16px) |
-| `--ai-icon-size-sm` | `--ai-icon-size-sm` | Icon size inside base/sm buttons (16px) |
-| `--ai-icon-size-xs` | `--ai-icon-size-xs` | Icon size inside xs buttons (12px) |
-| `--ai-spacing-2` / `--ai-spacing-3` | same | xs vertical / horizontal padding (6px / 8px) |
-| `--ai-spacing-6` | `--ai-spacing-6` | xs icon-only height (24px) |
+| `--ao-btn-primary-bg` | `--ao-btn-primary-bg` | Primary bg |
+| `--ao-btn-primary-bg-hover` | `--ao-btn-primary-bg-hover` | Primary hover + focus bg |
+| `--ao-btn-primary-bg-pressed` | `--ao-btn-primary-bg-pressed` | Primary active bg |
+| `--ao-btn-primary-text` | `--ao-btn-primary-text` | Primary text (theme-invariant) |
+| `--ao-btn-primary-text-hover` | `--ao-btn-primary-text-hover` | Primary hover text |
+| `--ao-btn-secondary-bg` | `--ao-btn-secondary-bg` | Secondary bg (transparent) |
+| `--ao-btn-secondary-bg-hover` | `--ao-btn-secondary-bg-hover` | Secondary hover + focus bg |
+| `--ao-btn-secondary-bg-pressed` | `--ao-btn-secondary-bg-pressed` | Secondary active bg |
+| `--ao-btn-secondary-border` | `--ao-btn-secondary-border` | Secondary border (default + pressed + focus ring) |
+| `--ao-btn-secondary-border-hover` | `--ao-btn-secondary-border-hover` | Secondary hover border |
+| `--ao-btn-secondary-text` | `--ao-btn-secondary-text` | Secondary text |
+| `--ao-btn-secondary-text-hover` | `--ao-btn-secondary-text-hover` | Secondary hover text |
+| `--ao-btn-tertiary-bg` | `--ao-btn-tertiary-bg` | Tertiary bg (transparent); also focus bg |
+| `--ao-btn-tertiary-bg-hover` | `--ao-btn-tertiary-bg-hover` | Tertiary hover bg |
+| `--ao-btn-tertiary-bg-pressed` | `--ao-btn-tertiary-bg-pressed` | Tertiary active bg |
+| `--ao-btn-tertiary-text` | `--ao-btn-tertiary-text` | Tertiary text |
+| `--ao-btn-tertiary-text-hover` | `--ao-btn-tertiary-text-hover` | Tertiary hover text |
+| `--ao-btn-bg-disabled` | `--ao-btn-bg-disabled` | Disabled bg (all variants) |
+| `--ao-btn-text-disabled` | `--ao-btn-text-disabled` | Disabled text (all variants) |
+| `--ao-border-secondary` | `--ao-border-secondary` | Tertiary focus ring |
+| `--ao-text-error` | `--ao-text-error` | Alert Outline text |
+| `--ao-border-error` | `--ao-border-error` | Alert Outline border |
+| `--ao-surface-error` | `--ao-surface-error` | Alert bg (maps from Figma `Red/500`) |
+| `--ao-surface-primary` | `--ao-surface-primary` | Alert Outline bg; inner border on primary/secondary focus |
+| `--ao-radius-md` | `--ao-radius-md` | Default corner radius (8px) |
+| `--ao-radius-sm` | `--ao-radius-sm` | Small button corner radius (4px) |
+| `--ao-spacing-8` | `--ao-spacing-8` | Base height (40px) |
+| `--ao-spacing-7` | `--ao-spacing-7` | Small height (32px) |
+| `--ao-font-fluid-xs` | `--ao-font-fluid-xs` | Base font size (14px) |
+| `--ao-font-fluid-xxs` | `--ao-font-fluid-xxs` | Small font size (12px) |
+| `--ao-leading-xs` | `--ao-leading-xs` | Line height (16px) |
+| `--ao-icon-size-sm` | `--ao-icon-size-sm` | Icon size inside base/sm buttons (16px) |
+| `--ao-icon-size-xs` | `--ao-icon-size-xs` | Icon size inside xs buttons (12px) |
+| `--ao-spacing-2` / `--ao-spacing-3` | same | xs vertical / horizontal padding (6px / 8px) |
+| `--ao-spacing-6` | `--ao-spacing-6` | xs icon-only height (24px) |
 
 ## Token Gaps — Action Required in Figma
 
 | State | Figma Primitive | Value | Token Needed | Affected Variants | Status |
 |---|---|---|---|---|---|
-| Primary focus ring | `--ai-surface-brand-light` | `#3a8fff` | ✓ resolved | Primary | ✅ Implemented |
-| Alert hover bg | `Red/400` | `#f87171` | `--ai-btn-alert-hover` | Alert, Alert Outline | ✅ Primitive approved |
-| Alert focus ring | `Red/400` | `#f87171` | `--ai-btn-alert-focus-ring` | Alert, Alert Outline | ✅ Primitive approved |
-| Alert pressed | `Red/600` | `#dc2626` | `--ai-btn-alert-pressed` | Alert | ✅ Primitive approved |
+| Primary focus ring | `--ao-surface-brand-light` | `#3a8fff` | ✓ resolved | Primary | ✅ Implemented |
+| Alert hover bg | `Red/400` | `#f87171` | `--ao-btn-alert-hover` | Alert, Alert Outline | ✅ Primitive approved |
+| Alert focus ring | `Red/400` | `#f87171` | `--ao-btn-alert-focus-ring` | Alert, Alert Outline | ✅ Primitive approved |
+| Alert pressed | `Red/600` | `#dc2626` | `--ao-btn-alert-pressed` | Alert | ✅ Primitive approved |
 
-**Note:** Alert hover/pressed/focus states implemented using Figma primitives directly (approved). If semantic tokens are added to Figma in future, update `Button.css` to use `--ai-*` variables.
+**Note:** Alert hover/pressed/focus states implemented using Figma primitives directly (approved). If semantic tokens are added to Figma in future, update `Button.css` to use `--ao-*` variables.
 
 ## Notes
 
-- `button/base` typography: `--ai-font-fluid-xs` (14px), `--ai-font-semibold` (600), `--ai-leading-xs` (16px)
-- `button/sm` typography: `--ai-font-fluid-xxs` (12px), `--ai-font-semibold` (600), `--ai-leading-xs` (16px)
-- `button/xs` typography: `--ai-font-fluid-xxs` (12px), `--ai-font-semibold` (600, since 2026-09-28), `--ai-leading-xs` (16px). xs differs from sm: `--ai-spacing-1` gap (4px), 12px icons (`--ai-icon-size-xs`), and explicit vertical padding (`--ai-spacing-2`) rather than a fixed-height token — 28px text / 24px icon-only have no spacing token, so xs uses Figma's `py-2` padding directly.
-- Secondary = **transparent** bg + `--ai-btn-secondary-border` (visually outlined)
-- Tertiary = **transparent** bg + **no border** (ghost/text button); uses dedicated `--ai-btn-tertiary-*` tokens
-- Tertiary hover bg: `--ai-btn-tertiary-bg-hover` (#F3F4F6); focus ring: `0 0 0 2px --ai-border-secondary` (no inner white border)
-- Secondary and tertiary now have dedicated token sets — no longer sharing `--ai-btn-secondary-*`
-- Disabled: `--ai-btn-bg-disabled` for bg/border, `--ai-btn-text-disabled` for text (separate tokens)
-- Alert background uses Figma primitive `Red/500` → maps to `--ai-surface-error` (#ef4444)
+- `button/base` typography: `--ao-font-fluid-xs` (14px), `--ao-font-semibold` (600), `--ao-leading-xs` (16px)
+- `button/sm` typography: `--ao-font-fluid-xxs` (12px), `--ao-font-semibold` (600), `--ao-leading-xs` (16px)
+- `button/xs` typography: `--ao-font-fluid-xxs` (12px), `--ao-font-semibold` (600, since 2026-09-28), `--ao-leading-xs` (16px). xs differs from sm: `--ao-spacing-1` gap (4px), 12px icons (`--ao-icon-size-xs`), and explicit vertical padding (`--ao-spacing-2`) rather than a fixed-height token — 28px text / 24px icon-only have no spacing token, so xs uses Figma's `py-2` padding directly.
+- Secondary = **transparent** bg + `--ao-btn-secondary-border` (visually outlined)
+- Tertiary = **transparent** bg + **no border** (ghost/text button); uses dedicated `--ao-btn-tertiary-*` tokens
+- Tertiary hover bg: `--ao-btn-tertiary-bg-hover` (#F3F4F6); focus ring: `0 0 0 2px --ao-border-secondary` (no inner white border)
+- Secondary and tertiary now have dedicated token sets — no longer sharing `--ao-btn-secondary-*`
+- Disabled: `--ao-btn-bg-disabled` for bg/border, `--ao-btn-text-disabled` for text (separate tokens)
+- Alert background uses Figma primitive `Red/500` → maps to `--ao-surface-error` (#ef4444)
 - `.btn--lg` does **not** exist in Figma — removed from implementation
 - Figma exports the component collection key as `compnonents` (typo — do not fix in tokens)
 
@@ -140,8 +140,8 @@ Added 2026-08-25 while building **RoomCard** (`3470:84951`), which places Button
 icon size. Re-read from the set rather than assumed: every `Icon Only=True, Size=xs` variant
 measures 24x24 across all three Types and all five States (Secondary `2926:3565` +
 Hover `2926:3577` / Focus `2926:3613` / Pressed `2926:3593` / Disabled `2926:3595`; Primary
-`2926:3559`…; Tertiary `2926:3571`…), and `2926:3565` binds `--ai-spacing-6`,
-`--ai-icon-size-xs`, `--ai-radius-sm` (rebound to `--ai-radius-md` 2026-09-28).
+`2926:3559`…; Tertiary `2926:3571`…), and `2926:3565` binds `--ao-spacing-6`,
+`--ao-icon-size-xs`, `--ao-radius-sm` (rebound to `--ao-radius-md` 2026-09-28).
 
 | Size | Icon-only, as drawn in the Button set (`53:2489`) |
 |---|---|
@@ -164,7 +164,7 @@ So RoomCard's buttons are **resized instances**, a Figma-side override rather th
 designer chose to formalise the size in code (2026-08-25):
 
 ```css
-.btn--icon.btn--2xs { 24x24, padding 0, --ai-radius-sm, 12px icon }
+.btn--icon.btn--2xs { 24x24, padding 0, --ao-radius-sm, 12px icon }
 ```
 
 Two things to know about it:
@@ -173,7 +173,7 @@ Two things to know about it:
   inventing one would be a variant with no Figma counterpart. Writing `btn btn--2xs` without
   `btn--icon` therefore does nothing — the rule is a two-class combination, matching the house
   style of `.btn--icon.btn--sm` / `.btn--icon.btn--xs`.
-- **Its radius is set explicitly**, unlike `--xs` which inherits `--ai-radius-md` (since 2026-09-28) from the base
+- **Its radius is set explicitly**, unlike `--xs` which inherits `--ao-radius-md` (since 2026-09-28) from the base
   `.btn--xs` rule. There is no base `.btn--2xs`, so nothing would carry it.
 - The icon rule targets **both** `[data-lucide]` and `svg`. `lucide.createIcons()` replaces the
   `<i>` with an `<svg>`, so an `[data-lucide]`-only selector is fragile. Verified 12x12 rendered.
@@ -181,7 +181,7 @@ Two things to know about it:
 > **Figma follow-up:** add a `Size=2xs` icon-only variant to the Button set so Figma and code
 > agree, or resize RoomCard's instances to `xs`. Until then this row is code-ahead-of-Figma.
 > **Second consumer waiting:** AttendeeCard's `.attendee-card__action` is the same geometry
-> (24px box, 12px icon, `--ai-radius-sm`) built as scoped CSS — worth folding onto `btn--2xs`.
+> (24px box, 12px icon, `--ao-radius-sm`) built as scoped CSS — worth folding onto `btn--2xs`.
 
 ## Resting shadow — `shadow/2xs` (2026-09-23) — REMOVED
 
@@ -194,5 +194,5 @@ filter bar elements in the Listings frame (`3645:148870`) and chose to make it
 it: every `.btn--secondary`, icon-only included. In Figma it currently sits on the filter bar's instances (the
 sidebar's search Input has none), so Figma's component defaults trail this.
 
-Token: `--ai-shadow-2xs`. Only Secondary: Primary, Tertiary and the alert types are unchanged. The focus-visible ring replaces it while focused. A disabled Secondary keeps the shadow (the disabled rule does not reset box-shadow); Figma's disabled state has not been checked.
+Token: `--ao-shadow-2xs`. Only Secondary: Primary, Tertiary and the alert types are unchanged. The focus-visible ring replaces it while focused. A disabled Secondary keeps the shadow (the disabled rule does not reset box-shadow); Figma's disabled state has not been checked.
 

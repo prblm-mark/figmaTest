@@ -3,7 +3,7 @@
  * Tier: Component
  *
  * Two variants (State=Light | Dark) that mirror each other — the active
- * button is highlighted with --ai-surface-secondary + --ai-radius-sm; the
+ * button is highlighted with --ao-surface-secondary + --ao-radius-sm; the
  * inactive button is transparent. The whole wrapper is bordered + rounded.
  *
  * Distinct from `src/components/dark-mode-toggle.js` (which is the demo-page
@@ -17,11 +17,11 @@
 .theme-toggle {
   display: inline-flex;
   align-items: center;
-  height: var(--ai-spacing-8); /* 40px */
-  padding: 0 var(--ai-spacing-1); /* 0 4px */
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  height: var(--ao-spacing-8); /* 40px */
+  padding: 0 var(--ao-spacing-1); /* 0 4px */
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
   gap: 0;
 }
 
@@ -33,47 +33,47 @@
   min-width: 0;
   align-items: center;
   justify-content: center;
-  gap: var(--ai-spacing-3); /* 8px */
-  height: var(--ai-spacing-7); /* 32px */
-  padding: 0 var(--ai-spacing-4); /* 0 12px */
+  gap: var(--ao-spacing-3); /* 8px */
+  height: var(--ao-spacing-7); /* 32px */
+  padding: 0 var(--ao-spacing-4); /* 0 12px */
   background: transparent;
   border: 0;
-  border-radius: var(--ai-radius-md);
-  color: var(--ai-text-primary);
-  font-family: var(--ai-font-body);
-  font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fluid-xxs); /* 12px */
-  line-height: var(--ai-leading-xs); /* 16px */
+  border-radius: var(--ao-radius-md);
+  color: var(--ao-text-primary);
+  font-family: var(--ao-font-body);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fluid-xxs); /* 12px */
+  line-height: var(--ao-leading-xs); /* 16px */
   cursor: pointer;
   font-feature-settings: 'case' 1;
-  transition: background-color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default);
   white-space: nowrap;
 }
 
 .theme-toggle__btn [data-lucide] {
   flex-shrink: 0;
-  width: var(--ai-icon-size-sm); /* 16px */
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm); /* 16px */
+  height: var(--ao-icon-size-sm);
 }
 
 /* ── Active segment ──────────────────────────────────── */
 
 .theme-toggle__btn[aria-pressed="true"] {
-  /* `--ai-surface-secondary`, not `--ai-surface-minimal` (designer, 2026-08-28). Both Figma
+  /* `--ao-surface-secondary`, not `--ao-surface-minimal` (designer, 2026-08-28). Both Figma
    * variants (2699:2053 Dark, 2699:2062 Light) bind secondary and neither references minimal.
    *
-   * It matters visually rather than nominally: the wrapper is `--ai-surface-primary` (#ffffff)
+   * It matters visually rather than nominally: the wrapper is `--ao-surface-primary` (#ffffff)
    * and minimal is #f8fafc, so the active segment was a ~2% step off its own background and
    * read as unselected. Secondary is #e9eef4. Both tokens are theme-aware (dark: #293548 vs
    * #3d4b5f), so the contrast improves in dark mode too rather than only in light. */
-  background-color: var(--ai-surface-secondary);
-  border-radius: var(--ai-radius-sm);
+  background-color: var(--ao-surface-secondary);
+  border-radius: var(--ao-radius-sm);
 }
 
 /* ── Focus ───────────────────────────────────────────── */
 
 .theme-toggle__btn:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: -2px;
 }
 

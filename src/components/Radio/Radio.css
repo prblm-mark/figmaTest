@@ -7,7 +7,7 @@
 
 .radio {
   display: flex;
-  gap: var(--ai-spacing-3);               /* 8px */
+  gap: var(--ao-spacing-3);               /* 8px */
   align-items: flex-start;
   cursor: pointer;
 }
@@ -26,19 +26,19 @@
 .radio__indicator {
   width: 16px;
   height: 16px;
-  border-radius: var(--ai-radius-full);
+  border-radius: var(--ao-radius-full);
   flex-shrink: 0;
-  background: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  transition: border-color var(--ai-transition-default),
-              background var(--ai-transition-default);
+  background: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  transition: border-color var(--ao-transition-default),
+              background var(--ao-transition-default);
 }
 
 /* ── Checked state ──────────────────────────────────── */
 
 .radio__input:checked + .radio__indicator {
-  background: var(--ai-surface-primary);
-  border: var(--ai-spacing-1) solid var(--ai-border-brand);  /* 4px — creates filled ring */
+  background: var(--ao-surface-primary);
+  border: var(--ao-spacing-1) solid var(--ao-border-brand);  /* 4px — creates filled ring */
 }
 
 /* ── Disabled state ─────────────────────────────────── */
@@ -59,8 +59,8 @@
 /* ── Focus ring ─────────────────────────────────────── */
 
 .radio__input:focus-visible + .radio__indicator {
-  box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px var(--ai-surface-brand-soft);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px var(--ao-surface-brand-soft);
   outline: none;
 }
 
@@ -69,27 +69,27 @@
 .radio__label {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-1);               /* 4px */
+  gap: var(--ao-spacing-1);               /* 4px */
 }
 
 /* ── Label text ─────────────────────────────────────── */
 
 .radio__label-text {
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-medium);
-  font-size: var(--ai-font-fixed-xs);     /* 14px */
-  line-height: var(--ai-leading-xs);       /* 16px */
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-xs);     /* 14px */
+  line-height: var(--ao-leading-xs);       /* 16px */
+  color: var(--ao-text-primary);
   margin: 0;
 }
 
 /* ── Helper text ────────────────────────────────────── */
 
 .radio__helper {
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-xxs);    /* 12px */
-  line-height: var(--ai-leading-xs);       /* 16px */
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-regular);
+  font-size: var(--ao-font-fixed-xxs);    /* 12px */
+  line-height: var(--ao-leading-xs);       /* 16px */
+  color: var(--ao-text-contrast);
   margin: 0;
 }

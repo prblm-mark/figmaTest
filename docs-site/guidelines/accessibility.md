@@ -14,15 +14,15 @@ All interactive elements have visible focus indicators:
 
 ```css
 :focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
 }
 ```
 
 Components with custom focus rings use a double box-shadow pattern:
 
 ```css
-box-shadow: 0 0 0 1px var(--ai-surface-primary),
-            0 0 0 3px var(--ai-surface-brand-contrast);
+box-shadow: 0 0 0 1px var(--ao-surface-primary),
+            0 0 0 3px var(--ao-surface-brand-contrast);
 ```
 
 ## Semantic HTML

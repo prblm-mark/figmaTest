@@ -14,7 +14,7 @@
 .rs {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   width: 100%;
 }
 
@@ -22,23 +22,23 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 .rs__label {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-primary);
 }
 
 .rs__value {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-sm);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-surface-brand);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-sm);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-surface-brand);
   font-variant-numeric: tabular-nums;
 }
 
@@ -50,7 +50,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  height: var(--ai-spacing-6); /* 24px */
+  height: var(--ao-spacing-6); /* 24px */
 }
 
 /* ── Native input — sized track, transparent thumb ──── */
@@ -60,10 +60,10 @@
   appearance: none;
   display: block;
   width: 100%;
-  height: var(--ai-spacing-3); /* 8px default */
+  height: var(--ao-spacing-3); /* 8px default */
   margin: 0;
-  background-color: var(--ai-surface-minimal);
-  border-radius: var(--ai-radius-full);
+  background-color: var(--ao-surface-minimal);
+  border-radius: var(--ao-radius-full);
   cursor: pointer;
 }
 
@@ -72,37 +72,37 @@
 }
 
 .rs__input::-webkit-slider-runnable-track {
-  height: var(--ai-spacing-3);
+  height: var(--ao-spacing-3);
   background: transparent;
-  border-radius: var(--ai-radius-full);
+  border-radius: var(--ao-radius-full);
 }
 
 .rs__input::-moz-range-track {
-  height: var(--ai-spacing-3);
-  background: var(--ai-surface-minimal);
-  border-radius: var(--ai-radius-full);
+  height: var(--ao-spacing-3);
+  background: var(--ao-surface-minimal);
+  border-radius: var(--ao-radius-full);
 }
 
 .rs__input::-moz-range-progress {
-  height: var(--ai-spacing-3);
-  background: var(--ai-surface-brand);
-  border-radius: var(--ai-radius-full);
+  height: var(--ao-spacing-3);
+  background: var(--ao-surface-brand);
+  border-radius: var(--ao-radius-full);
 }
 
 /* Native thumb — invisible, still interactive */
 .rs__input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: var(--ai-icon-size-sm); /* 16px */
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm); /* 16px */
+  height: var(--ao-icon-size-sm);
   background: transparent;
   border: 0;
   cursor: pointer;
 }
 
 .rs__input::-moz-range-thumb {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
   background: transparent;
   border: 0;
   cursor: pointer;
@@ -114,85 +114,85 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: var(--ai-icon-size-sm); /* 16px */
-  height: var(--ai-icon-size-sm);
-  background-color: var(--ai-surface-brand);
-  border: 2px solid var(--ai-surface-primary);
-  border-radius: var(--ai-radius-full);
+  width: var(--ao-icon-size-sm); /* 16px */
+  height: var(--ao-icon-size-sm);
+  background-color: var(--ao-surface-brand);
+  border: 2px solid var(--ao-surface-primary);
+  border-radius: var(--ao-radius-full);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transform: translate(-50%, -50%);
   pointer-events: none;
-  transition: box-shadow var(--ai-transition-default);
+  transition: box-shadow var(--ao-transition-default);
 }
 
 .rs__wrap:hover .rs__thumb,
 .rs__wrap:focus-within .rs__thumb {
-  box-shadow: 0 0 0 4px var(--ai-surface-brand-soft);
+  box-shadow: 0 0 0 4px var(--ao-surface-brand-soft);
 }
 
 /* ── Size: sm (4px track / 12px thumb) ──────────────── */
 
 .rs--sm .rs__input {
-  height: var(--ai-spacing-1); /* 4px */
+  height: var(--ao-spacing-1); /* 4px */
 }
 
 .rs--sm .rs__input::-webkit-slider-runnable-track,
 .rs--sm .rs__input::-moz-range-track,
 .rs--sm .rs__input::-moz-range-progress {
-  height: var(--ai-spacing-1);
+  height: var(--ao-spacing-1);
 }
 
 .rs--sm .rs__input::-webkit-slider-thumb,
 .rs--sm .rs__input::-moz-range-thumb {
-  width: var(--ai-spacing-4); /* 12px */
-  height: var(--ai-spacing-4);
+  width: var(--ao-spacing-4); /* 12px */
+  height: var(--ao-spacing-4);
 }
 
 .rs--sm .rs__thumb {
-  width: var(--ai-spacing-4);
-  height: var(--ai-spacing-4);
+  width: var(--ao-spacing-4);
+  height: var(--ao-spacing-4);
 }
 
 /* ── Size: lg (12px track / 24px thumb / 3px border) ── */
 
 .rs--lg .rs__input {
-  height: var(--ai-spacing-4); /* 12px */
+  height: var(--ao-spacing-4); /* 12px */
 }
 
 .rs--lg .rs__input::-webkit-slider-runnable-track,
 .rs--lg .rs__input::-moz-range-track,
 .rs--lg .rs__input::-moz-range-progress {
-  height: var(--ai-spacing-4);
+  height: var(--ao-spacing-4);
 }
 
 .rs--lg .rs__input::-webkit-slider-thumb,
 .rs--lg .rs__input::-moz-range-thumb {
-  width: var(--ai-icon-size-lg); /* 24px */
-  height: var(--ai-icon-size-lg);
+  width: var(--ao-icon-size-lg); /* 24px */
+  height: var(--ao-icon-size-lg);
 }
 
 .rs--lg .rs__thumb {
-  width: var(--ai-icon-size-lg);
-  height: var(--ai-icon-size-lg);
+  width: var(--ao-icon-size-lg);
+  height: var(--ao-icon-size-lg);
   border-width: 3px;
 }
 
 /* ── Type: Disabled ────────────────────────────────── */
-/* Per Figma: solid `--ai-surface-secondary` track at 50% opacity, no brand
-   fill gradient. Thumb uses `--ai-surface-contrast`. */
+/* Per Figma: solid `--ao-surface-secondary` track at 50% opacity, no brand
+   fill gradient. Thumb uses `--ao-surface-contrast`. */
 
 .rs--disabled .rs__input {
   cursor: not-allowed;
-  background: var(--ai-surface-secondary);
+  background: var(--ao-surface-secondary);
   opacity: 0.5;
 }
 
 .rs--disabled .rs__thumb {
-  background-color: var(--ai-surface-contrast);
+  background-color: var(--ao-surface-contrast);
 }
 
 .rs--disabled .rs__value {
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 /* ── Type: Steps — tick marks below track ──────────── */
@@ -200,35 +200,35 @@
 .rs__steps {
   display: flex;
   justify-content: space-between;
-  margin: 0 var(--ai-spacing-2);
-  padding: 0 calc(var(--ai-icon-size-sm) / 2); /* offset by half a thumb */
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
-  color: var(--ai-text-contrast);
+  margin: 0 var(--ao-spacing-2);
+  padding: 0 calc(var(--ao-icon-size-sm) / 2); /* offset by half a thumb */
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-contrast);
 }
 
 .rs__step {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
 }
 
 .rs__step-mark {
   width: 1px;
-  height: var(--ai-spacing-2);
-  background-color: var(--ai-border-secondary);
+  height: var(--ao-spacing-2);
+  background-color: var(--ao-border-secondary);
 }
 
 /* ── Type: Labels — Min/Max + interval milestones ─── */
 
 .rs__labels {
   position: relative;
-  height: var(--ai-spacing-7);
-  margin: 0 var(--ai-spacing-2);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
-  color: var(--ai-text-contrast);
+  height: var(--ao-spacing-7);
+  margin: 0 var(--ao-spacing-2);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-contrast);
 }
 
 .rs__label-min,
@@ -247,12 +247,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
 }
 
 .rs__milestone-mark {
   width: 1px;
-  height: var(--ai-spacing-2);
-  background-color: var(--ai-border-secondary);
-  margin-top: calc(-1 * var(--ai-spacing-3));
+  height: var(--ao-spacing-2);
+  background-color: var(--ao-border-secondary);
+  margin-top: calc(-1 * var(--ao-spacing-3));
 }

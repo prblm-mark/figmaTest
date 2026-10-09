@@ -28,12 +28,12 @@
  *   | Wrapper        | Property     | Figma binding                        |
  *   |----------------|--------------|--------------------------------------|
  *   | page content   | background   | --cc-ui-primary-bg                   |
- *   | page content   | padding      | --ai-spacing-7 / --ai-spacing-4 mob  |
- *   | Container      | background   | --ai-datatable-table-bg (rebound)    |
- *   | Container      | border       | --ai-border-secondary                |
- *   | Container      | radius       | --ai-radius-lg                       |
- *   | empty state    | padding      | --ai-spacing-7 inline / -11 block    |
- *   | empty state    | gap          | --ai-spacing-4                       |
+ *   | page content   | padding      | --ao-spacing-7 / --ao-spacing-4 mob  |
+ *   | Container      | background   | --ao-datatable-table-bg (rebound)    |
+ *   | Container      | border       | --ao-border-secondary                |
+ *   | Container      | radius       | --ao-radius-lg                       |
+ *   | empty state    | padding      | --ao-spacing-7 inline / -11 block    |
+ *   | empty state    | gap          | --ao-spacing-4                       |
  *
  * The background is the shell's own and already correct — `.cc-control` paints
  * --cc-ui-primary-bg, which is exactly what Figma binds here. Nothing to restate.
@@ -45,11 +45,11 @@
  * nothing about it was specific to seating. See the theme block in Modal.css.
  *
  * The overlay itself has always been Modal's `.modal-overlay` — fixed, centred,
- * `--ai-spacing-6` padding, `display: none` until `--open`. All three already matched
+ * `--ao-spacing-6` padding, `display: none` until `--open`. All three already matched
  * Figma's overlay frame exactly, so this template has never needed to touch it. */
 
 /* ── Chrome: no bottom rule ─────────────────────────────────────────────────
- * The shell gives `.cc-control__chrome` a 1px `--ai-border-secondary` bottom rule. Figma's
+ * The shell gives `.cc-control__chrome` a 1px `--ao-border-secondary` bottom rule. Figma's
  * CCHeaderGroup on this screen is 48px with no rule, and it has nothing to separate: the
  * top nav is dark (`--cc-header-primary-bg`) sitting directly on the light page, so the
  * edge is already unambiguous and a light hairline just reads as a seam.
@@ -75,7 +75,7 @@
    * in dark it is `#0f172a` against the chrome's `#1e293b`, in light `#e7edf0` against the navy
    * bar. The dark rule below adds its soft shadow on top of this line rather than replacing it. */
   box-shadow: 0 1px 0 var(--cc-ui-primary-bg);
-  transition: box-shadow var(--ai-transition-default);
+  transition: box-shadow var(--ao-transition-default);
 }
 
 /* ...which leaves nothing to separate the chrome from content passing under it once the page
@@ -87,11 +87,11 @@
 .cc-control__main:has(.cc-control__page--seating) .cc-control__chrome.is-scrolled {
   /* The gap line is re-stated in every rule that sets `box-shadow`, because the property replaces
    * rather than accumulates — naming only the scroll shadow here would silently drop it. */
-  box-shadow: 0 1px 0 var(--cc-ui-primary-bg), var(--ai-shadow-sm);
+  box-shadow: 0 1px 0 var(--cc-ui-primary-bg), var(--ao-shadow-sm);
 }
 
 /* ── The dark boundary is the gap line alone (designer, 2026-09-11) ─────────
- * A soft `--ai-shadow-card` sat here as well, and was dropped: "drop the shadow and keep the
+ * A soft `--ao-shadow-card` sat here as well, and was dropped: "drop the shadow and keep the
  * border". Recorded rather than simply deleted, because the problem it solved is real and easy
  * to rediscover — in dark the top nav, the header toolbar and all three sheets paint the SAME
  * colour, `rgb(30, 41, 59)`, so nothing on this screen separates by fill there. Minimised or
@@ -103,7 +103,7 @@
  * (`#1e293b`) — the separation comes from the page colour itself, not from a shadow over it. */
 
 /* ── Top nav keeps its 48px on THIS screen, at every width ──────────────────
- * TopNavigation.css drops the bar to `--ai-spacing-8` (40px) below a 767px container. The
+ * TopNavigation.css drops the bar to `--ao-spacing-8` (40px) below a 767px container. The
  * Seating Planner does not follow: its mobile frame (3515:213426) draws CCHeaderGroup at 48
  * with the CCTopNavigation instance filling it at 48 — the same height as desktop. Verified on
  * the frame rather than inferred; the two nodes both measure 48 there.
@@ -118,19 +118,19 @@
  * one-class rule inside TopNavigation's `@container`, so this wins on specificity and does not
  * depend on file order or on which container the query resolves against. */
 .cc-control__main:has(.cc-control__page--seating) .cc-top-navigation {
-  min-height: var(--ai-spacing-9); /* 48px */
+  min-height: var(--ao-spacing-9); /* 48px */
 }
 
 /* ── Page padding + gap ─────────────────────────────────────────────────────
- * `.cc-control__page` gives --ai-spacing-6 (24px) padding and --ai-spacing-7 (32px) gap;
- * Figma binds --ai-spacing-7 padding and --ai-spacing-5 (16px) gap, both dropping to
- * --ai-spacing-4 (12px) on mobile.
+ * `.cc-control__page` gives --ao-spacing-6 (24px) padding and --ao-spacing-7 (32px) gap;
+ * Figma binds --ao-spacing-7 padding and --ao-spacing-5 (16px) gap, both dropping to
+ * --ao-spacing-4 (12px) on mobile.
  *
- * PADDING AMENDED 2026-09-10 at the designer's request: --ai-spacing-6 (24px) at desktop,
- * where Figma binds --ai-spacing-7 (32px). A deliberate divergence, and it leaves this screen
+ * PADDING AMENDED 2026-09-10 at the designer's request: --ao-spacing-6 (24px) at desktop,
+ * where Figma binds --ao-spacing-7 (32px). A deliberate divergence, and it leaves this screen
  * matching the shell's own padding — so the GAP is now the only place the page departs from
  * `.cc-control__page`. Figma wants updating to match. The narrow override below is untouched
- * and still steps to --ai-spacing-4, which is Figma's mobile value.
+ * and still steps to --ao-spacing-4, which is Figma's mobile value.
  *
  * The gap only started mattering on the No Plan state, which is the first with two page
  * children (SeatingHeader + the card). On the No Event state there is one child, so the
@@ -139,18 +139,18 @@
 .cc-control__page--seating {
   /* One name for the page's own padding, because the sticky insets below have to subtract it
    * and the two must never drift — see `--sp-sticky-origin`. */
-  --sp-page-pad: var(--ai-spacing-6);
+  --sp-page-pad: var(--ao-spacing-6);
   /* The two 6px gaps the sticky arithmetic below depends on, named so the full-width mode can
    * take both to 0 without re-deriving the calcs (2026-09-24). `--sp-pin-gap` is the space above
    * the pinned Table Header; `--sp-group-gap` the space between it and the sheets. */
-  --sp-pin-gap: var(--ai-spacing-2);
-  --sp-group-gap: var(--ai-spacing-2);
+  --sp-pin-gap: var(--ao-spacing-2);
+  --sp-group-gap: var(--ao-spacing-2);
   padding: var(--sp-page-pad);
   /* 24px, measured on 3515:203890: Header ends at y=258, Frame 279 starts at 282. Was 16 when
      the toolbar was the header's own bottom row and this gap only had to separate a card from a
      row of sheets; it now separates the EVENT from the PLAN, which the team asked to read as two
      things. The tighter 6px that binds the toolbar to its sheets is `.seating-group`'s gap. */
-  gap: var(--ai-spacing-6);
+  gap: var(--ao-spacing-6);
   /* `stable` — restored to the shell's own value (designer, 2026-09-11).
    *
    * This page had released it, and the reasoning was sound at the time: nothing here scrolled, its
@@ -170,7 +170,7 @@
    * value Figma binds: the toolbar's 64 is padding + content rather than a bound height (it
    * grows if the room name wraps), and the scrollport's height depends on the chrome and the
    * window. The fallbacks are what Figma actually draws — `Toolbar` measures 64 on 3615:110611,
-   * which is --ai-spacing-11 — so a no-JS render is still correct rather than merely non-broken.
+   * which is --ao-spacing-11 — so a no-JS render is still correct rather than merely non-broken.
    *
    * `--sp-rail-h` is the height the two rails have AT REST as well as when pinned: Figma sizes
    * Frame 246 to 979 = 1139 viewport - 48 chrome - 64 toolbar - 16 gap - 32 padding, i.e. for
@@ -178,15 +178,15 @@
    * scrolling moves them into the space the event bar vacates instead of resizing anything. No
    * height transition, and no relayout of the card grid per frame. */
   /* Two 6s, and they are different gaps: one above the pinned card, one between it and the
-     sheets. Both are `--ai-spacing-2` today, which is exactly why they are written separately —
+     sheets. Both are `--ao-spacing-2` today, which is exactly why they are written separately —
      collapsing them to a single `* 2` would hide that changing one should not move the other. */
   --sp-rail-top: calc(var(--sp-pin-gap)       /* the gap above the pinned card */
-                      + var(--sp-toolbar-h, var(--ai-spacing-11))
+                      + var(--sp-toolbar-h, var(--ao-spacing-11))
                       + var(--sp-group-gap)    /* the GROUP gap, table header -> sheet row */
                       - var(--sp-page-pad));   /* see --sp-sticky-origin */
-  --sp-rail-h: calc(var(--sp-scrollport-h, calc(100dvh - var(--ai-spacing-9)))
+  --sp-rail-h: calc(var(--sp-scrollport-h, calc(100dvh - var(--ao-spacing-9)))
                     - var(--sp-pin-gap)        /* the gap above the pinned card */
-                    - var(--sp-toolbar-h, var(--ai-spacing-11))
+                    - var(--sp-toolbar-h, var(--ao-spacing-11))
                     - var(--sp-group-gap)      /* the GROUP gap, table header -> sheet row */
                     - var(--sp-page-pad));     /* the page's own padding-block-end */
 }
@@ -220,7 +220,7 @@
  * arithmetic goes away: the event card is an ordinary block that scrolls off, and this card pins
  * on its own.
  *
- * IT PINS 6px DOWN, not flush (designer, 2026-09-15). `--ai-spacing-2` is the gap this card keeps
+ * IT PINS 6px DOWN, not flush (designer, 2026-09-15). `--ao-spacing-2` is the gap this card keeps
  * from the sheets below it, and pinning it flush against the chrome made the group look welded to
  * the top edge on scroll while still breathing at the bottom. The same value on both sides reads
  * as one group held clear of the chrome.
@@ -238,17 +238,17 @@
   z-index: 2;
   /* Declared on the REST state so the shadow fades in AND out. On `.is-stuck` alone it would
    * animate in and snap away — the same rule the hover-transition pattern records. */
-  transition: box-shadow var(--ai-transition-default);
+  transition: box-shadow var(--ao-transition-default);
 }
 
 /* Only once it has actually STUCK, not merely once the page has moved (designer, 2026-09-16).
  * `SeatingPlanner.js` sets the class by comparing this card's top with its group's; the two
  * coincide at rest and part the moment it pins.
  *
- * `--ai-shadow-sm` is the same weight the chrome uses for the same job on the same screen —
+ * `--ao-shadow-sm` is the same weight the chrome uses for the same job on the same screen —
  * separating something pinned from the content passing under it. */
 .cc-control__page--seating .seating-header--table.is-stuck {
-  box-shadow: var(--ai-shadow-sm);
+  box-shadow: var(--ao-shadow-sm);
 }
 
 /* ── Top-level cards: border/card + shadow/2xs (designer, 2026-10-02) ───────
@@ -263,19 +263,19 @@
 .cc-control:not([data-cc-width="full"]) .cc-control__page--seating .table-listing,
 .cc-control:not([data-cc-width="full"]) .cc-control__page--seating .table-detail,
 .cc-control:not([data-cc-width="full"]) .cc-control__page--seating .seating-screen {
-  border-color: var(--ai-border-card);
-  box-shadow: var(--ai-shadow-2xs);
+  border-color: var(--ao-border-card);
+  box-shadow: var(--ao-shadow-2xs);
 }
 
 .cc-control:not([data-cc-width="full"]) .cc-control__page--seating .seating-header--table.is-stuck {
-  box-shadow: var(--ai-shadow-sm);
+  box-shadow: var(--ao-shadow-sm);
 }
 
 /* The event header's bar divider (title row | rooms row) is part of the
  * top-level card, so it takes the card's edge colour (designer, 2026-10-02).
  * Full width keeps its own flush top rule (below). */
 .cc-control:not([data-cc-width="full"]) .cc-control__page--seating .seating-header__bar {
-  border-block-end-color: var(--ai-border-card);
+  border-block-end-color: var(--ao-border-card);
 }
 
 /* Full width: flush sheets, no card shadow, the listings' rule. The pinned
@@ -287,7 +287,7 @@
 
 /* The Find a table search sits on surface/minimal, as the listing search does. */
 .cc-control__page--seating .table-listing__search .input__wrap {
-  background-color: var(--ai-surface-minimal);
+  background-color: var(--ao-surface-minimal);
 }
 
 /* ── Scrolling a card clear of the pinned Table Header ──────────────────────
@@ -302,15 +302,15 @@
  * THE VALUE IS THE PINNED CARD'S FOOTPRINT: the 6px above it, its own measured height, and the
  * 6px it keeps from what follows. `--sp-toolbar-h` is published on the page by SeatingPlanner.js
  * and inherits down to here, so the landing point follows the card growing — a wrapped plan name
- * makes it taller and this moves with it. The `--ai-spacing-11` fallback is the one the rail
+ * makes it taller and this moves with it. The `--ao-spacing-11` fallback is the one the rail
  * offsets already use, for the no-JS case.
  *
  * The two 6s are written separately for the reason `--sp-rail-top` records: different gaps that
  * happen to share a value today. */
 .table-listing__grid > .table-card {
-  scroll-margin-block-start: calc(var(--sp-pin-gap, var(--ai-spacing-2))
-                                  + var(--sp-toolbar-h, var(--ai-spacing-11))
-                                  + var(--sp-group-gap, var(--ai-spacing-2)));
+  scroll-margin-block-start: calc(var(--sp-pin-gap, var(--ao-spacing-2))
+                                  + var(--sp-toolbar-h, var(--ao-spacing-11))
+                                  + var(--sp-group-gap, var(--ao-spacing-2)));
 }
 
 /* ── The plan group ─────────────────────────────────────────────────────────
@@ -318,7 +318,7 @@
  * bound together by a 6px gap so they read as one thing (measured: Table Header 0..64, sheets at
  * y=70 on desktop; 0..62 and y=68 on mobile — 6px at both, so no breakpoint).
  *
- * `--ai-spacing-2` is 6px. It is a real token, not a rounded guess: the same value the toolbar's
+ * `--ao-spacing-2` is 6px. It is a real token, not a rounded guess: the same value the toolbar's
  * own icon gaps bind.
  *
  * NO height rules. The sheets set their own `--sp-rail-h` and pin themselves there, which is the
@@ -327,7 +327,7 @@
 .seating-group {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-group-gap, var(--ai-spacing-2));
+  gap: var(--sp-group-gap, var(--ao-spacing-2));
 }
 
 /* NO scrolled-shadow on this header (designer, 2026-09-11). It was added when the listing grew
@@ -350,25 +350,25 @@
   flex: 1 0 0;
   min-block-size: 0;
   inline-size: 100%;
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-lg);
-  /* Figma binds --ai-datatable-table-bg (#ffffff) — a Datatables token doing a surface's
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-lg);
+  /* Figma binds --ao-datatable-table-bg (#ffffff) — a Datatables token doing a surface's
    * job, the same slip found on SeatingToast. Rebound to the semantic equivalent
    * (designer, 2026-08-26); identical value today. */
-  background-color: var(--ai-surface-primary);
+  background-color: var(--ao-surface-primary);
   overflow: hidden;
 }
 
 /* The No Plan state's card is the same box with a different treatment: a DASHED border and
- * `--ai-shadow-2xs`, reading as a placeholder waiting to be filled rather than a populated
+ * `--ao-shadow-2xs`, reading as a placeholder waiting to be filled rather than a populated
  * surface. Same dashed-placeholder idea as Unassigned's empty state.
  *
- * Figma binds `--ai-surface-primary` directly here (not the Datatables token the No Event
- * frame used) and leaves the radius as a raw `rounded-[16px]`, which is `--ai-radius-lg`
+ * Figma binds `--ao-surface-primary` directly here (not the Datatables token the No Event
+ * frame used) and leaves the radius as a raw `rounded-[16px]`, which is `--ao-radius-lg`
  * exactly — so the base rule above already covers both. */
 .seating-screen--placeholder {
   border-style: dashed;
-  box-shadow: var(--ai-shadow-2xs);
+  box-shadow: var(--ao-shadow-2xs);
 }
 
 /* ── Empty states ───────────────────────────────────────────────────────────
@@ -395,17 +395,17 @@
   justify-content: center;
   /* Both frames read py-[65px] / px-[25px] or px-[33px] — those are 64/24/32 PLUS the
    * card's 1px stroke, the same stroke-inside-vs-added arithmetic decoded on SeatingToast. */
-  padding-block: var(--ai-spacing-11);
+  padding-block: var(--ao-spacing-11);
   text-align: center;
 }
 
 .seating-screen__empty--gate {
-  gap: var(--ai-spacing-4);
-  padding-inline: var(--ai-spacing-7);
+  gap: var(--ao-spacing-4);
+  padding-inline: var(--ao-spacing-7);
 }
 
 .seating-screen__empty--no-plans {
-  padding-inline: var(--ai-spacing-6);
+  padding-inline: var(--ao-spacing-6);
 }
 
 /* A 48px brand-tinted disc. Figma names the frame "Text", which it is not. */
@@ -414,61 +414,61 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  /* 48px is --ai-spacing-9 exactly, so the size is on-scale despite reading as a raw
+  /* 48px is --ao-spacing-9 exactly, so the size is on-scale despite reading as a raw
    * `size-[48px]` in the design context. */
-  inline-size: var(--ai-spacing-9);
-  block-size: var(--ai-spacing-9);
-  border-radius: var(--ai-radius-full);
-  background-color: var(--ai-surface-brand-soft-extra);
-  /* Figma binds --ai-surface-brand for the glyph. Unlike the success/error icons on
-   * SeatingToast — where the icon scale genuinely has no entry — `--ai-icon-brand` DOES
+  inline-size: var(--ao-spacing-9);
+  block-size: var(--ao-spacing-9);
+  border-radius: var(--ao-radius-full);
+  background-color: var(--ao-surface-brand-soft-extra);
+  /* Figma binds --ao-surface-brand for the glyph. Unlike the success/error icons on
+   * SeatingToast — where the icon scale genuinely has no entry — `--ao-icon-brand` DOES
    * exist and carries the identical #0094ad, so this is a rebind rather than a gap
    * (designer, 2026-08-26). */
-  color: var(--ai-icon-brand);
+  color: var(--ao-icon-brand);
 }
 
 .seating-screen__empty-icon [data-lucide],
 .seating-screen__empty-icon svg {
-  inline-size: var(--ai-icon-size-lg);
-  block-size: var(--ai-icon-size-lg);
+  inline-size: var(--ao-icon-size-lg);
+  block-size: var(--ao-icon-size-lg);
 }
 
 .seating-screen__empty-title {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-md);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-md);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
 }
 
 /* UNIFIED across both empty states at the designer's direction 2026-08-26. The two frames
- * disagreed: the No Event state binds --ai-font-title with --ai-leading-md (24px), the No
- * Plan state --ai-font-body with --ai-leading-sm (20px). Body/20 won, so this is one rule
+ * disagreed: the No Event state binds --ao-font-title with --ao-leading-md (24px), the No
+ * Plan state --ao-font-body with --ao-leading-sm (20px). Body/20 won, so this is one rule
  * rather than two — and the No Event state's desktop leading tightens 24 -> 20 as a result.
  *
- * Colour is --ai-text-secondary everywhere. The No Plan DESKTOP frame binds
- * --ai-text-contrast, but its own mobile frame and both No Event frames say secondary, so
+ * Colour is --ao-text-secondary everywhere. The No Plan DESKTOP frame binds
+ * --ao-text-contrast, but its own mobile frame and both No Event frames say secondary, so
  * the desktop frame is the outlier (designer, 2026-08-26). Worth fixing in Figma.
  *
- * The No Plan frames cap the line at 512px, which is --ai-size-9 exactly. Applied to both:
+ * The No Plan frames cap the line at 512px, which is --ao-size-9 exactly. Applied to both:
  * a centred sentence wants a measure regardless of state, and the No Event copy is shorter
  * than the cap so nothing changes there. Figma marks these nowrap; left wrapping, since the
  * cap plus real copy never reaches two lines on desktop and mobile is meant to wrap. */
 .seating-screen__empty-text {
   margin: 0;
-  max-inline-size: var(--ai-size-9);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-secondary);
+  max-inline-size: var(--ao-size-9);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
 }
 
 /* Figma spaces the No Plan lines with a 6px pad on the second paragraph instead of a
- * container gap — `pt-[6px]`, which is --ai-spacing-2 exactly. */
+ * container gap — `pt-[6px]`, which is --ao-spacing-2 exactly. */
 .seating-screen__empty--no-plans .seating-screen__empty-text {
-  padding-block-start: var(--ai-spacing-2);
+  padding-block-start: var(--ao-spacing-2);
 }
 
 /* ── Narrow ─────────────────────────────────────────────────────────────────
@@ -483,21 +483,21 @@
  * viewport describes the intent, not the trigger — the trigger is available width. */
 @container cs-main (max-width: 767px) {
   .cc-control__page--seating {
-    --sp-page-pad: var(--ai-spacing-4);
+    --sp-page-pad: var(--ao-spacing-4);
     padding: var(--sp-page-pad);
     /* 16px, measured on 3515:213580: Header ends at y=291, Frame 278 starts at 307. Padding stays
        12, which the same frame confirms (children at x=12). */
-    gap: var(--ai-spacing-5);
+    gap: var(--ao-spacing-5);
   }
 
   .seating-screen__empty-title {
-    font-size: var(--ai-font-fixed-sm);
+    font-size: var(--ao-font-fixed-sm);
   }
 
   /* Only the size steps down now. Both states' mobile frames already bound
-   * --ai-leading-sm, so unifying the base on 20px made the leading override redundant. */
+   * --ao-leading-sm, so unifying the base on 20px made the leading override redundant. */
   .seating-screen__empty-text {
-    font-size: var(--ai-font-fixed-2xs);
+    font-size: var(--ao-font-fixed-2xs);
   }
 }
 
@@ -510,12 +510,12 @@
  * only, so `--sp-page-pad`, which the sticky offsets subtract, is untouched.
  * Not on flush pages: full width owns its padding (the plan view is 0 on every side). */
 .cc-control__page--seating:not(.cc-control__page--flush) {
-  padding-inline-end: var(--ai-spacing-4);
+  padding-inline-end: var(--ao-spacing-4);
 }
 
 @container cs-main (max-width: 767px) {
   .cc-control__page--seating:not(.cc-control__page--flush) {
-    padding-inline-end: var(--ai-spacing-0);
+    padding-inline-end: var(--ao-spacing-0);
   }
 }
 
@@ -540,8 +540,8 @@
 .create-plan__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: var(--ai-spacing-4);
-  row-gap: var(--ai-spacing-5);
+  column-gap: var(--ao-spacing-4);
+  row-gap: var(--ao-spacing-5);
   inline-size: 100%;
 }
 
@@ -564,20 +564,20 @@
   inset-block-start: 0;
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  /* Figma's `py-[--ai-spacing-px]` — a 1px nudge so the 12px-tall track optically centres
+  gap: var(--ao-spacing-2);
+  /* Figma's `py-[--ao-spacing-px]` — a 1px nudge so the 12px-tall track optically centres
    * against the 16px label line. */
-  padding-block: var(--ai-spacing-px);
+  padding-block: var(--ao-spacing-px);
 }
 
 /* 11px, not the 12px TableListing's toggle label uses — this frame binds
- * --ai-font-fixed-4xs. Worth a designer glance that two toggle labels differ. */
+ * --ao-font-fixed-4xs. Worth a designer glance that two toggle labels differ. */
 .create-plan__help-label {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-4xs);
-  font-weight: var(--ai-font-medium);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-4xs);
+  font-weight: var(--ao-font-medium);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
   white-space: nowrap;
   cursor: pointer;
 }
@@ -633,7 +633,7 @@
    * three on one row: 146 + 12 + 146 + 12 + 146 = 462, its own Content Slot width. So this is a
    * breakpoint change, not a redesign, and the base rule is untouched.
    *
-   * The gaps do not change: column 12 (--ai-spacing-4), row 16 (--ai-spacing-5) at both sizes,
+   * The gaps do not change: column 12 (--ao-spacing-4), row 16 (--ao-spacing-5) at both sizes,
    * both re-read from the updated frames rather than carried over. */
   .create-plan__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -651,31 +651,31 @@
    * Edit Plan would have re-armed that trap.
    *
    * KEEP IN STEP WITH `.input--sm` IN Input.css — this is a hand copy, and it has already
-   * drifted once. Until 2026-08-28 it replicated `padding: --ai-spacing-3` / `gap:
-   * --ai-spacing-2`, which were Input.css's own uncited values rather than Figma's; when those
+   * drifted once. Until 2026-08-28 it replicated `padding: --ao-spacing-3` / `gap:
+   * --ao-spacing-2`, which were Input.css's own uncited values rather than Figma's; when those
    * were corrected to `-4` / `-3` this copy still held the old pair. Worse, it never replicated
    * the sm TYPOGRAPHY at all, so every field in this modal rendered its label and value at the
    * Base 14px on mobile where Figma specifies 13px — which is what the designer reported. */
   .create-plan__grid .input__wrap,
   .edit-plan__fields .input__wrap,
   .table-form__fields .input__wrap {
-    min-height: var(--ai-spacing-7);
-    padding: 0 var(--ai-spacing-4);
-    gap: var(--ai-spacing-3);
+    min-height: var(--ao-spacing-7);
+    padding: 0 var(--ao-spacing-4);
+    gap: var(--ao-spacing-3);
   }
 
   .create-plan__grid .input__label,
   .edit-plan__fields .input__label,
   .table-form__fields .input__label,
   .table-form__fields .sel__label {
-    font-size: var(--ai-font-fixed-2xs);   /* 13px */
+    font-size: var(--ao-font-fixed-2xs);   /* 13px */
   }
 
   .create-plan__grid .input__control,
   .edit-plan__fields .input__control,
   .table-form__fields .input__control {
-    font-size: var(--ai-font-fixed-2xs);   /* 13px */
-    line-height: var(--ai-leading-xs);      /* 16px */
+    font-size: var(--ao-font-fixed-2xs);   /* 13px */
+    line-height: var(--ao-leading-xs);      /* 16px */
   }
 
   /* ── Help text drops to 4xs on mobile (designer, 2026-09-14) ────────────────────
@@ -698,7 +698,7 @@
    * reading. If the designer wants 4xs everywhere at `--sm`, that belongs in the component and
    * this block disappears. */
   .modal .input__help {
-    font-size: var(--ai-font-fixed-4xs);   /* 11px */
+    font-size: var(--ao-font-fixed-4xs);   /* 11px */
   }
 
   /* ══ Copy Plans mobile type lives in EventPicker now (2026-09-14) ══════════════════
@@ -715,13 +715,13 @@
    * Nothing Copy-Plans-specific remains, which is the right answer — the two pickers on this
    * screen should not differ. */
 
-  /* The Stepper keeps `--ai-leading-md` at both sizes (Figma 3567:105368), unlike a plain
+  /* The Stepper keeps `--ao-leading-md` at both sizes (Figma 3567:105368), unlike a plain
    * Input's sm field. Three classes deliberately: Input.css's own `.input--stepper
    * .input__control` is only two and loads EARLIER than this file, so it cannot defend itself
    * against the rule above — exactly the collision the padding comment below describes. */
   .create-plan__grid .input--stepper .input__control,
   .table-form__fields .input--stepper .input__control {
-    line-height: var(--ai-leading-md);      /* 24px */
+    line-height: var(--ao-leading-md);      /* 24px */
   }
 
   /* The sm replication above is a MEDIA QUERY, not the `input--sm` class, so
@@ -738,13 +738,13 @@
 
   .create-plan__grid .input--stepper .input__step,
   .table-form__fields .input--stepper .input__step {
-    inline-size: var(--ai-spacing-7);
+    inline-size: var(--ao-spacing-7);
   }
 
   /* Select's own sm control, to match the Inputs beside it. */
   .create-plan__shape .sel__control,
   .table-form__fields .sel__control {
-    min-height: var(--ai-spacing-7);
+    min-height: var(--ao-spacing-7);
     padding-block: 0;
   }
 
@@ -753,10 +753,10 @@
   .delete-plan__footer .btn,
   .table-form__footer .btn,
   .delete-table__footer .btn {
-    min-height: var(--ai-spacing-7);
-    padding: 0 var(--ai-spacing-4);
-    font-size: var(--ai-font-fluid-xxs);
-    border-radius: var(--ai-radius-md);
+    min-height: var(--ao-spacing-7);
+    padding: 0 var(--ao-spacing-4);
+    font-size: var(--ao-font-fluid-xxs);
+    border-radius: var(--ao-radius-md);
   }
 }
 
@@ -766,14 +766,14 @@
 .create-plan__shape {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   min-inline-size: 0;
 }
 
 /* `.sel` brings its own label+control gap; the wrapper above already provides it, and
  * doubling would push the control 8px below its neighbours. */
 .create-plan__shape .sel {
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   min-inline-size: 0;
 }
 
@@ -792,19 +792,19 @@
  * Frame 245 (3515:177773) is 1552 wide and lays out exactly:
  *     listing 1212 · gap 8 · pill 4 · gap 8 · detail 320
  * Every one of those traces to a token read from get_variable_defs on that frame:
- * the gaps are --ai-spacing-3 (8), the pill is --ai-spacing-1 (4) at --ai-radius-full,
- * and the detail width is --ai-size-6 (320) — Figma binds the size token, so the panel
+ * the gaps are --ao-spacing-3 (8), the pill is --ao-spacing-1 (4) at --ao-radius-full,
+ * and the detail width is --ao-size-6 (320) — Figma binds the size token, so the panel
  * width is NOT a hardcoded 320. 1212 is simply what is left over, so the listing fills.
  *
  * THE PILL IS GONE (designer, 2026-09-10) — see the resize section below. The row's 8px is now a
- * real `gap` instead of the handle's inline padding, which is the same --ai-spacing-3 Figma binds
+ * real `gap` instead of the handle's inline padding, which is the same --ao-spacing-3 Figma binds
  * between the columns; it just used to arrive via the splitter. That also gives the third sheet a
  * gap, which it never had: with `gap: 0` and the handle sitting only between the listing and the
  * detail, the detail and the Unassigned sheet were flush against each other. */
 
 .seating-plan {
   display: flex;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   /* ONE SCROLLER (designer, 2026-09-11). The page is now the only scroller on this screen at
    * every width — which is the model the <=1023 stacked layout already used, extended to side
    * by side rather than invented for it.
@@ -877,9 +877,9 @@
    * `position: relative; z-index: 1`, so an `auto` here would let a card's buttons paint over a
    * sheet; equal z-index puts DOM order in charge instead, and the rails come last. */
   z-index: 1;
-  /* --sp-aside-w is set by the drag handle at runtime; --ai-size-6 (320) is Figma's value
+  /* --sp-aside-w is set by the drag handle at runtime; --ao-size-6 (320) is Figma's value
    * and the reset target. */
-  inline-size: var(--sp-aside-w, var(--ai-size-6));
+  inline-size: var(--sp-aside-w, var(--ao-size-6));
   min-inline-size: 0;
   display: flex;
   min-block-size: 0;
@@ -887,7 +887,7 @@
 
 /* `min-inline-size` is NOT reset to 0 here, deliberately. It used to be, so the panel could
  * shrink to whatever the drag handle set — which is precisely what defeated the component's new
- * --ai-size-5 (280) floor: a `min-inline-size: 0` on the panel makes any min on the component
+ * --ao-size-5 (280) floor: a `min-inline-size: 0` on the panel makes any min on the component
  * itself unreachable. The panel now stops at 280 and the handle's own clamp was raised to match,
  * so the two cannot disagree. */
 .seating-plan__aside > .table-detail {
@@ -929,7 +929,7 @@
   z-index: 1;
   inset-block: 0;
   inset-inline-start: 0;
-  inline-size: var(--ai-spacing-5);   /* 16px grab zone, over the sheet's own padding */
+  inline-size: var(--ao-spacing-5);   /* 16px grab zone, over the sheet's own padding */
   cursor: col-resize;
   /* Stops a touch drag scrolling the page instead of moving the handle. */
   touch-action: none;
@@ -941,22 +941,22 @@
  * it is hidden here rather than deleted from the markup. */
 .seating-plan__handle-bar {
   display: none;
-  inline-size: var(--ai-spacing-1);      /* 4px */
-  border-radius: var(--ai-radius-full);
+  inline-size: var(--ao-spacing-1);      /* 4px */
+  border-radius: var(--ao-radius-full);
   /* Figma binds --cc-actions-menu-primary-bg here — the ACTIONS MENU's background token, on a
-   * splitter in the page body. Its value is identical to --ai-surface-contrast in all six
+   * splitter in the page body. Its value is identical to --ao-surface-contrast in all six
    * modes, so this is a value-preserving swap to the generic family that belongs in a page
    * body. Flagged for the designer to repoint the Figma binding. */
-  background-color: var(--ai-surface-contrast);
-  transition: background-color var(--ai-transition-default);
+  background-color: var(--ao-surface-contrast);
+  transition: background-color var(--ao-transition-default);
 }
 
 /* Figma specifies no hover/active state for the pill — this is an added interactive state,
- * flagged in figma-notes. --ai-border-brand is the same token the selected TableCard and
+ * flagged in figma-notes. --ao-border-brand is the same token the selected TableCard and
  * RoomCard use for their brand edge, so the handle reads as part of the same language. */
 /* Hover and drag now tint the SHEET'S EDGE rather than a pill — the edge is the affordance, so
  * the edge is what responds. Scoped to the aside that follows the strip. */
-/* `--ai-surface-contrast`, not `--ai-border-brand` (designer, 2026-09-10). Brand read as a
+/* `--ao-surface-contrast`, not `--ao-border-brand` (designer, 2026-09-10). Brand read as a
  * selection or a focus cue on an edge the user is only hovering; contrast says "this is a thing
  * you can grab" without claiming state. Focus keeps the brand ring below — that one IS a focus
  * indicator, and CLAUDE.md §9 fixes its colour. */
@@ -964,7 +964,7 @@
 .seating-plan__handle[data-dragging] ~ .table-detail,
 .seating-plan__handle:hover ~ .unassigned,
 .seating-plan__handle[data-dragging] ~ .unassigned {
-  border-inline-start-color: var(--ai-surface-contrast);
+  border-inline-start-color: var(--ao-surface-contrast);
 }
 
 /* The bar takes the focus ring rather than the 20px hit area, so the indicator sits on the
@@ -980,12 +980,12 @@
  * users it is now the cursor that carries the signal. */
 .seating-plan__handle:focus-visible .seating-plan__handle-bar {
   display: block;
-  inline-size: var(--ai-spacing-1);
+  inline-size: var(--ao-spacing-1);
   margin-inline: auto;
   block-size: 100%;
-  border-radius: var(--ai-radius-full);
-  background-color: var(--ai-border-brand);
-  outline: 2px solid var(--ai-surface-brand);
+  border-radius: var(--ao-radius-full);
+  background-color: var(--ao-border-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
 }
 
@@ -1067,7 +1067,7 @@
   }
 
   /* CASE B contextual override, flagged to the designer 2026-08-27.
-   * TableDetail sets `inline-size: var(--ai-size-6)` — a fixed 320 at BOTH breakpoints, and
+   * TableDetail sets `inline-size: var(--ao-size-6)` — a fixed 320 at BOTH breakpoints, and
    * its own notes call that out as deliberate. But Figma's mobile instance (3515:228045) is
    * 302 wide, i.e. the grid column, because Figma resized the instance. Left at 320 it
    * measurably overflows: 320 in a 300px column. So the width is overridden here, scoped to
@@ -1085,20 +1085,20 @@
    * `overflow: hidden` is what makes a height transition legible rather than a clipped jump —
    * without it the seat list would spill out of the box as it grows or shrinks.
    *
-   * `--ai-transition-slow` (250ms) is the "panel reveals" step, and this is a panel. DETAIL_MS
+   * `--ao-transition-slow` (250ms) is the "panel reveals" step, and this is a panel. DETAIL_MS
    * in the JS fallback timer must stay in step with it. */
   .table-listing__grid > .table-detail.is-animating {
     overflow: hidden;
-    transition: block-size var(--ai-transition-slow),
-                margin-block-start var(--ai-transition-slow),
-                opacity var(--ai-transition-slow);
+    transition: block-size var(--ao-transition-slow),
+                margin-block-start var(--ao-transition-slow),
+                opacity var(--ao-transition-slow);
   }
 }
 
 /* ── Edit Plan modal (Figma 3515:176248 desktop / 3515:227054 mobile) ───────────────────────────
  * A separate modal from create-plan (designer, 2026-08-28), editing only Plan name and
- * Room / location. Everything structural comes from Modal: `--ai-size-9` (512px) width,
- * `--ai-radius-lg`, `--ai-surface-elevated-1`, and the 24px header/body/footer padding — all
+ * Room / location. Everything structural comes from Modal: `--ao-size-9` (512px) width,
+ * `--ao-radius-lg`, `--ao-surface-elevated-1`, and the 24px header/body/footer padding — all
  * confirmed on the frame's own variable defs, so nothing is re-declared here.
  *
  * Only two things are local: the absolutely-positioned help toggle, and the field stack's gap.
@@ -1116,7 +1116,7 @@
 .edit-plan__fields {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
 }
 
 /* Out of flow, pinned to the first label's line — the same treatment create-plan uses, including
@@ -1127,16 +1127,16 @@
   inset-block-start: 0;
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  padding-block: var(--ai-spacing-px);
+  gap: var(--ao-spacing-2);
+  padding-block: var(--ao-spacing-px);
 }
 
 .edit-plan__help-label {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-4xs);
-  font-weight: var(--ai-font-medium);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-4xs);
+  font-weight: var(--ao-font-medium);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
   white-space: nowrap;
   cursor: pointer;
 }
@@ -1166,16 +1166,16 @@
  * geometry for the modal chrome at all.
  *
  * CONTEXTUAL OVERRIDE (Case B, designer 2026-08-29). The one real difference. Figma paints the
- * whole of both paragraphs `#00222f` = --ai-text-primary, confirmed on the text node itself
+ * whole of both paragraphs `#00222f` = --ao-text-primary, confirmed on the text node itself
  * (I3515:227208;...;3515:227203) rather than inferred from the crop — where the regular runs
  * merely LOOK lighter than the semibold ones, which is antialiasing, not a second colour.
- * `.modal__body > p` is --ai-text-secondary, and under this screen's `data-brand="cc"` that is
+ * `.modal__body > p` is --ao-text-secondary, and under this screen's `data-brand="cc"` that is
  * #335562 against Figma's #00222f — a real difference, not a rounding one. Scoped here rather
  * than changed in Modal.css: Modal.figma-notes records secondary as the component's own spec,
  * and four other screens use it unverified. A destructive confirmation wants its consequence at
  * full weight; that argument does not automatically extend to every modal. */
 .delete-plan__body > p {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 /* The plan name and the two counts. Semibold only — colour and size are inherited, because
@@ -1183,7 +1183,7 @@
  * `text-[14px]`, same `leading-[24px]`, same fill). `<strong>` is the right element on meaning
  * as well as looks: these are the words that change what the button destroys. */
 .delete-plan__body strong {
-  font-weight: var(--ai-font-semibold);
+  font-weight: var(--ao-font-semibold);
 }
 
 /* ── Table form (Edit table) ──────────────────────────────────────────────────────────────
@@ -1203,14 +1203,14 @@
   flex-direction: column;
   /* 16px, which is the gap between the field grid and the capacity warning. From the frame:
    * Frame 269 is 408 tall and the warning Paragraph starts at y=424. */
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
 }
 
 .table-form__fields {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: var(--ai-spacing-4);   /* 12px */
-  row-gap: var(--ai-spacing-5);      /* 16px */
+  column-gap: var(--ao-spacing-4);   /* 12px */
+  row-gap: var(--ao-spacing-5);      /* 16px */
 }
 
 /* Full width is the default; only Seats and Shape opt out. Expressed this way round because
@@ -1230,7 +1230,7 @@
 .table-form__stack {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   min-inline-size: 0;
 }
 
@@ -1238,9 +1238,9 @@
  * wrapper's gap applies between `.sel` and its SIBLINGS (help line, action row), not inside it.
  * This rule briefly zeroed that gap and made the tier field 80px against Figma's 88 (72 vs 80 on
  * mobile) — measured, and the reason the field is called out here at all. `.create-plan__shape
- * .sel` is the precedent and it likewise sets `--ai-spacing-3`, not zero. */
+ * .sel` is the precedent and it likewise sets `--ao-spacing-3`, not zero. */
 .table-form__stack .sel {
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   min-inline-size: 0;
 }
 
@@ -1254,16 +1254,16 @@
   inset-block-start: 0;
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  padding-block: var(--ai-spacing-px);
+  gap: var(--ao-spacing-2);
+  padding-block: var(--ao-spacing-px);
 }
 
 .table-form__help-label {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-4xs);
-  font-weight: var(--ai-font-medium);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-4xs);
+  font-weight: var(--ao-font-medium);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
   white-space: nowrap;
   cursor: pointer;
 }
@@ -1283,8 +1283,8 @@
 }
 
 /* ── Capacity warning ────────────────────────────────────────────────────────────────────
- * Alert type=warning. The COLOURS are Alert's own — --ai-surface-warning-soft /
- * --ai-border-warning / --ai-text-warning, all three confirmed by get_variable_defs on
+ * Alert type=warning. The COLOURS are Alert's own — --ao-surface-warning-soft /
+ * --ao-border-warning / --ao-text-warning, all three confirmed by get_variable_defs on
  * 3515:179636 after the designer bound them, and all three already correct in `.alert--warning`.
  *
  * Only the BOX METRICS are overridden, and only because this instance is more compact than
@@ -1298,29 +1298,29 @@
 .table-form__warning {
   flex-direction: row;
   align-items: flex-start;
-  padding: var(--ai-spacing-3) var(--ai-spacing-4);
-  gap: var(--ai-spacing-3);
+  padding: var(--ao-spacing-3) var(--ao-spacing-4);
+  gap: var(--ao-spacing-3);
 }
 
 .table-form__warning[hidden] {
   display: none;
 }
 
-/* --ai-surface-warning (#f76b15), NOT the inherited --ai-text-warning (#cc4e00) that
+/* --ao-surface-warning (#f76b15), NOT the inherited --ao-text-warning (#cc4e00) that
  * `.alert__icon` would otherwise take. Deduced rather than read directly: the icon exports as a
- * flat SVG asset so its fill is not in the design context, but --ai-surface-warning is bound on
- * the modal, the text is accounted for by --ai-text-warning, and nothing else in the dialog is
+ * flat SVG asset so its fill is not in the design context, but --ao-surface-warning is bound on
+ * the modal, the text is accounted for by --ao-text-warning, and nothing else in the dialog is
  * that colour — and the two oranges are visibly different in the frame. */
 .table-form__warning .alert__icon {
-  color: var(--ai-surface-warning);
+  color: var(--ao-surface-warning);
 }
 
 .table-form__warning-text {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);   /* 13px */
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-sm);     /* 20px */
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-2xs);   /* 13px */
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-sm);     /* 20px */
   color: inherit;
 }
 
@@ -1384,7 +1384,7 @@
  * frame at 465x58 — so: horizontally centred (632 + 465/2 = 864.5 = half of 1728), and 26px
  * clear of the bottom.
  *
- * 24px here, not 26. `--ai-spacing-6` is the nearest token and 26 maps to none (designer,
+ * 24px here, not 26. `--ao-spacing-6` is the nearest token and 26 maps to none (designer,
  * 2026-09-09); the project's rule is to stop on an untokenised dimension rather than inline it,
  * and 2px on a hand-placed floating element is inside the rounding I would expect.
  *
@@ -1399,7 +1399,7 @@
  * only the pill itself takes pointer events. */
 .sp-toast-host {
   position: fixed;
-  inset-block-end: var(--ai-spacing-6);
+  inset-block-end: var(--ao-spacing-6);
   inset-inline: 0;
   z-index: 90;
   display: flex;
@@ -1407,7 +1407,7 @@
   /* Keeps the pill off the screen edges once it hits its `max-inline-size: 100%` on a narrow
    * viewport. Figma has no mobile toast frame, so this is the same gutter the pill already
    * clears at the bottom rather than an invented value. */
-  padding-inline: var(--ai-spacing-6);
+  padding-inline: var(--ao-spacing-6);
   pointer-events: none;
 }
 
@@ -1424,19 +1424,19 @@
  * apart. Nothing here restates any of that.
  *
  * CONTEXTUAL OVERRIDE (Case B), the SECOND modal to need it: Figma paints both paragraphs
- * #00222f = --ai-text-primary, where `.modal__body > p` is --ai-text-secondary. Delete Plan
+ * #00222f = --ao-text-primary, where `.modal__body > p` is --ao-text-secondary. Delete Plan
  * needed exactly the same override on 2026-08-29. Two of two body-copy modals now disagree with
  * Modal's default, which is worth a look at the component rather than a third scoped copy —
  * flagged, not acted on from here. */
 .delete-table__body > p {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 /* Weight only; colour and size inherit, because Figma's emphasised runs differ from the
  * surrounding text in weight alone. `<strong>` is right on meaning too — the table name and the
  * headcount are the words that change what the button destroys. */
 .delete-table__body strong {
-  font-weight: var(--ai-font-semibold);
+  font-weight: var(--ao-font-semibold);
 }
 
 /* MOBILE TYPE STEP-DOWN, and this is where Delete table and Delete Plan genuinely differ.
@@ -1448,8 +1448,8 @@
  * 639px to sit on the same step as the modal's own sm treatment, as with the Table form labels. */
 @media (max-width: 639px) {
   .delete-table__body > p {
-    font-size: var(--ai-font-fixed-2xs);   /* 13px */
-    line-height: var(--ai-leading-sm);     /* 20px */
+    font-size: var(--ao-font-fixed-2xs);   /* 13px */
+    line-height: var(--ao-leading-sm);     /* 20px */
   }
 }
 
@@ -1470,31 +1470,31 @@
  * divider under the Standard row, inside the body). */
 .table-types__intro {
   margin: 0;
-  padding-block-start: var(--ai-spacing-5);      /* 16 desktop */
-  padding-inline: var(--ai-spacing-6);           /* 24 desktop */
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);           /* 12 */
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-xs);             /* 16 */
-  color: var(--ai-text-contrast);
+  padding-block-start: var(--ao-spacing-5);      /* 16 desktop */
+  padding-inline: var(--ao-spacing-6);           /* 24 desktop */
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);           /* 12 */
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-xs);             /* 16 */
+  color: var(--ao-text-contrast);
 }
 
 /* The body is a plain column here — Modal's own 16px gap would double the 12px row pitch. */
 .table-types__body {
-  gap: var(--ai-spacing-4);                      /* 12 — the row pitch is 40 + 12 = 52 */
+  gap: var(--ao-spacing-4);                      /* 12 — the row pitch is 40 + 12 = 52 */
 }
 
 .table-types__list {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);                      /* 12 */
+  gap: var(--ao-spacing-4);                      /* 12 */
 }
 
 /* A row: colour chip, name field, remove. 8px gaps, from the frame's `gap-[8px]`. */
 .table-types__row {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);                      /* 8 */
+  gap: var(--ao-spacing-3);                      /* 8 */
 }
 
 /* The name field takes the rest. `min-inline-size: 0` so a long tier name shrinks the input
@@ -1517,12 +1517,12 @@
   block-size: 0;
   margin: 0;
   border: 0;
-  border-block-start: 1px solid var(--ai-border-secondary);
+  border-block-start: 1px solid var(--ao-border-secondary);
 }
 
 /* Remove button. Figma places a Button instance here, but its paint matches NEITHER of our
  * Button types: it is transparent with no border, where `.btn--secondary` is transparent WITH a
- * --ai-btn-secondary-border and `.btn--tertiary` is a solid --ai-btn-tertiary-bg (#e5e9eb) with
+ * --ao-btn-secondary-border and `.btn--tertiary` is a solid --ao-btn-tertiary-bg (#e5e9eb) with
  * none. Built as a bare icon button instead, matching `.attendee-card__action` — the same
  * affordance, a destructive icon control inside a list row, already established on this surface.
  * Flagged for the designer rather than forced into a Button variant that would draw a box or a
@@ -1531,51 +1531,51 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  inline-size: var(--ai-spacing-7);              /* 32 */
-  block-size: var(--ai-spacing-7);
+  inline-size: var(--ao-spacing-7);              /* 32 */
+  block-size: var(--ao-spacing-7);
   flex-shrink: 0;
   padding: 0;
   background: none;
   border: 0;
-  border-radius: var(--ai-radius-md);
-  color: var(--ai-icon-secondary);
+  border-radius: var(--ao-radius-md);
+  color: var(--ao-icon-secondary);
   cursor: pointer;
-  transition: background-color var(--ai-transition-default),
-              color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default),
+              color var(--ao-transition-default);
 }
 
 .table-types__remove:hover {
-  background-color: var(--ai-surface-minimal);
-  color: var(--ai-text-error);
+  background-color: var(--ao-surface-minimal);
+  color: var(--ao-text-error);
 }
 
 .table-types__remove:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
 }
 
 .table-types__remove [data-lucide],
 .table-types__remove svg {
-  inline-size: var(--ai-icon-size-sm);           /* 16 */
-  block-size: var(--ai-icon-size-sm);
+  inline-size: var(--ao-icon-size-sm);           /* 16 */
+  block-size: var(--ao-icon-size-sm);
 }
 
-/* Add band. `--ai-surface-minimal` ground with a --ai-border-secondary top border, both read off
+/* Add band. `--ao-surface-minimal` ground with a --ao-border-secondary top border, both read off
  * the frame (`bg-[#f3f6f7]`, `border-t` `#e5e9eb`). `align-items: flex-end` is Figma's
  * `items-end`, which is what puts the button on the FIELD baseline rather than the label's. */
 .table-types__add {
   display: flex;
   align-items: flex-end;
-  gap: var(--ai-spacing-3);                      /* 8 */
-  padding: var(--ai-spacing-6);                  /* 24 desktop */
-  background-color: var(--ai-surface-minimal);
-  border-block-start: 1px solid var(--ai-border-secondary);
+  gap: var(--ao-spacing-3);                      /* 8 */
+  padding: var(--ao-spacing-6);                  /* 24 desktop */
+  background-color: var(--ao-surface-minimal);
+  border-block-start: 1px solid var(--ao-border-secondary);
 }
 
 .table-types__add-field {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-0-5);                    /* 2 — label 24 tall sits 26 above the field */
+  gap: var(--ao-spacing-0-5);                    /* 2 — label 24 tall sits 26 above the field */
   min-inline-size: 0;
 }
 
@@ -1584,20 +1584,20 @@
 }
 
 .table-types__label {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);           /* 12 */
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-md);             /* 24 */
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);           /* 12 */
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-md);             /* 24 */
+  color: var(--ao-text-secondary);
   white-space: nowrap;
 }
 
 /* 40px tall so it lines up with the 40px field beside it, while keeping `--sm`'s 12px type and
  * 12px padding — which is what Figma draws (97x40 desktop, 80x40 mobile, `button/sm` type and
- * `--ai-spacing-4` inline padding). Neither `.btn` (40 tall but 14px type, 16px padding) nor
+ * `--ao-spacing-4` inline padding). Neither `.btn` (40 tall but 14px type, 16px padding) nor
  * `.btn--sm` (32 tall) matches on its own, so the height is raised on top of `--sm`. */
 .table-types__add-btn.btn {
-  min-height: var(--ai-spacing-8);               /* 40 */
+  min-height: var(--ao-spacing-8);               /* 40 */
   flex-shrink: 0;
 }
 
@@ -1607,12 +1607,12 @@
  * the same step as the modal's own sm treatment, as with the other dialogs on this screen. */
 @media (max-width: 639px) {
   .table-types__intro {
-    padding-block-start: var(--ai-spacing-4);    /* 12 */
-    padding-inline: var(--ai-spacing-5);         /* 16 */
+    padding-block-start: var(--ao-spacing-4);    /* 12 */
+    padding-inline: var(--ao-spacing-5);         /* 16 */
   }
 
   .table-types__add {
-    padding: var(--ai-spacing-5);                /* 16 */
+    padding: var(--ao-spacing-5);                /* 16 */
   }
 }
 
@@ -1631,11 +1631,11 @@
  * Figma nests it (its "Slot Search" holds the sentence and the field together). */
 .copy-plans__intro {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);   /* 13 */
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-sm);     /* 20 */
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-2xs);   /* 13 */
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-sm);     /* 20 */
+  color: var(--ao-text-contrast);
 }
 
 /* The filters block becomes a column here: the picker lays its search and Live checkbox out for
@@ -1644,7 +1644,7 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: var(--ai-spacing-4);              /* 12 — Figma: intro ends y=56, search starts y=68 */
+  gap: var(--ao-spacing-4);              /* 12 — Figma: intro ends y=56, search starts y=68 */
 }
 
 /* Rows carry no seated bar. Figma's rows show the name, the meta line, the plan count and the
@@ -1675,14 +1675,14 @@
  * third time when the FilterBar needed the same control. */
 
 .seating-header__export-more.btn {
-  padding-inline: var(--ai-spacing-2);   /* 6 — this half carries a chevron and no label */
+  padding-inline: var(--ao-spacing-2);   /* 6 — this half carries a chevron and no label */
 }
 
-/* Figma's List node 3393:27558: 160 wide (--ai-size-2) with 8px padding, where Dropdown's own
+/* Figma's List node 3393:27558: 160 wide (--ao-size-2) with 8px padding, where Dropdown's own
  * panel default is 240 with 12px. */
 .dropdown__panel--export {
-  min-width: var(--ai-size-2);    /* 160 */
-  padding: var(--ai-spacing-3);   /* 8 */
+  min-width: var(--ao-size-2);    /* 160 */
+  padding: var(--ao-spacing-3);   /* 8 */
 }
 
 /* The trigger sits at the very end of the toolbar row, so Dropdown's `left: 0` panel would hang
@@ -1692,13 +1692,13 @@
   inset-inline-end: 0;
 }
 
-/* CONTEXTUAL OVERRIDE, flagged. This menu's row icons bind `--ai-icon-secondary`, while the
- * DropdownItem component's own Size=xs variant binds `--ai-icon-primary` (3393:29188) and its
- * Default/sm rows use `--ai-icon-contrast`. All three came out of Figma. Scoped here rather than
+/* CONTEXTUAL OVERRIDE, flagged. This menu's row icons bind `--ao-icon-secondary`, while the
+ * DropdownItem component's own Size=xs variant binds `--ao-icon-primary` (3393:29188) and its
+ * Default/sm rows use `--ao-icon-contrast`. All three came out of Figma. Scoped here rather than
  * changed in the component, because one row component having three icon colours reads as drift
  * in Figma rather than intent — raised for the designer 2026-09-09. */
 .dropdown__panel--export .dropdown-item [data-lucide]:not(.dropdown-item__check) {
-  color: var(--ai-icon-secondary);
+  color: var(--ao-icon-secondary);
 }
 
 /* The PDF row shows at EVERY width (designer, 2026-09-09 — "add pdf version to desktop too").
@@ -1726,13 +1726,13 @@
      ButtonGroup's own `.btn:only-child` rule cannot do it: the chevron is
      `display: none`, not removed, so the label is still :first-child of two. */
   .seating-header__export .btn-group > .btn:first-child {
-    border-radius: var(--ai-radius-md);
+    border-radius: var(--ao-radius-md);
   }
 }
 
 /* ── Export preview modal ─────────────────────────────────────────────────────────────────
  * Figma 1:14741 desktop / 1:45146 mobile (PDF), 1:17021 / 1:46486 (CSV). 768 wide = `modal--lg`
- * (--ai-size-11), and the mobile frames need nothing of their own: Modal's Size=sm block at 639
+ * (--ao-size-11), and the mobile frames need nothing of their own: Modal's Size=sm block at 639
  * already produces the 338-wide dialog those frames draw inside a 402 viewport, and neither
  * preview steps its type down — checked on both mobile frames rather than assumed, because most
  * of this screen does step down. */
@@ -1740,47 +1740,47 @@
 .export-preview__body {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-5);   /* 16 — Figma: summary ends y=24, panel starts y=40 */
+  gap: var(--ao-spacing-5);   /* 16 — Figma: summary ends y=24, panel starts y=40 */
 }
 
 /* "12 tables · 101 seated people — every row below is in the file. Empty seats are not
- * exported." Two runs, one 14/24 line: the counts semibold over --ai-text-primary, the sentence
- * regular over --ai-text-secondary (1:15251).
+ * exported." Two runs, one 14/24 line: the counts semibold over --ao-text-primary, the sentence
+ * regular over --ao-text-secondary (1:15251).
  *
  * The child combinator is REQUIRED, not tidiness. Modal.css carries
- * `.modal__body > p { font-size: --ai-font-fixed-xs; ... }` at (0,1,1), which outranks a bare
+ * `.modal__body > p { font-size: --ao-font-fixed-xs; ... }` at (0,1,1), which outranks a bare
  * `.export-preview__summary` at (0,1,0) whatever the source order — and Modal.css says so in a
  * comment right above that rule. Because its values are identical to these, the base rule looked
  * correct and hid the problem; the MOBILE override then silently lost and the summary stayed 14px
  * on a phone. Both rules now sit at (0,2,0) so they travel together. */
 .export-preview__body > .export-preview__summary {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);    /* 14 */
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);     /* 24 */
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);    /* 14 */
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);     /* 24 */
+  color: var(--ao-text-secondary);
 }
 
 .export-preview__body > .export-preview__summary strong {
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-primary);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
 }
 
 /* Both panels pin a HEIGHT and scroll their content — Figma clips a 3980px document into 384
  * and ~4940px of table rows into 448. The two heights DIFFER and are left differing: both are
- * real tokens (--ai-size-7 / --ai-size-8) and the modals differ to match (588 vs 652 tall).
+ * real tokens (--ao-size-7 / --ao-size-8) and the modals differ to match (588 vs 652 tall).
  *
  * No `height: auto` companion anywhere near these — `block-size` and `height` are one property,
  * so a reset would silently clobber the value. */
 .export-preview__panel--doc {
-  block-size: var(--ai-size-7);   /* 384 */
+  block-size: var(--ao-size-7);   /* 384 */
   /* `overflow-y` and `min-block-size` now come from `.modal__scroll` in the markup, with the
    * system's scrollbar treatment — see the note below. Only the cap and the paint are set here. */
-  padding: var(--ai-spacing-6);   /* 24 — Figma draws p-25: 24px inside a 1px stroke */
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  padding: var(--ao-spacing-6);   /* 24 — Figma draws p-25: 24px inside a 1px stroke */
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
 }
 
 /* ── Both preview panels take `.modal__scroll` (designer, 2026-09-14) ──────────────────
@@ -1797,7 +1797,7 @@
  * that job as a side effect; `.modal__scroll` states it. */
 
 .export-preview__panel--table {
-  block-size: var(--ai-size-8);   /* 448 */
+  block-size: var(--ao-size-8);   /* 448 */
   display: flex;                  /* let the scroller fill the pinned height */
 }
 
@@ -1819,7 +1819,7 @@
 /* ADDITION, not in Figma: the column headers stick. Figma clips the whole table, header
  * included, so scrolling to row 60 of a 100-row preview would leave six unlabelled columns —
  * which defeats the point of a preview whose job is to show which column holds what. Costs
- * nothing at rest, and `.table thead th` already paints --ai-surface-minimal so rows cannot
+ * nothing at rest, and `.table thead th` already paints --ao-surface-minimal so rows cannot
  * show through. Flagged for the designer. */
 .export-preview__panel--table .table thead th {
   position: sticky;
@@ -1831,23 +1831,23 @@
  * screen around it. */
 .export-preview__doc-title {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-md);   /* 18 */
-  font-weight: var(--ai-font-bold);     /* Bold, not Semibold (1:15255) */
-  line-height: var(--ai-leading-md);    /* 24 */
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-md);   /* 18 */
+  font-weight: var(--ao-font-bold);     /* Bold, not Semibold (1:15255) */
+  line-height: var(--ao-leading-md);    /* 24 */
+  color: var(--ao-text-primary);
 }
 
 .export-preview__doc-meta {
   margin: 0;
   /* Figma's paragraph is 26 tall around a 20px line, at BOTH sizes — 6px of space under the
    * title, not zero. */
-  padding-block-start: var(--ai-spacing-2);   /* 6 */
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);  /* 12 */
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-sm);    /* 20 */
-  color: var(--ai-text-contrast);
+  padding-block-start: var(--ao-spacing-2);   /* 6 */
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);  /* 12 */
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-sm);    /* 20 */
+  color: var(--ao-text-contrast);
 }
 
 /* Per-table heading. Figma's frame is 44 tall around a 20px line — the 24px above it IS the
@@ -1859,37 +1859,37 @@
  * candidate is 3px out. The same run is why a stray 16px space span appears in the export. */
 .export-preview__doc-heading {
   margin: 0;
-  padding-block-start: var(--ai-spacing-6);  /* 24 */
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-sm);        /* 16 */
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);         /* 20 */
-  color: var(--ai-text-primary);
+  padding-block-start: var(--ao-spacing-6);  /* 24 */
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-sm);        /* 16 */
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);         /* 20 */
+  color: var(--ao-text-primary);
 }
 
 /* The type and occupancy trailing the table number ("Head table · 10/10"). */
 .export-preview__doc-heading span {
-  font-size: var(--ai-font-fixed-xxs);   /* 12 */
-  font-weight: var(--ai-font-regular);
-  color: var(--ai-text-contrast);
+  font-size: var(--ao-font-fixed-xxs);   /* 12 */
+  font-weight: var(--ao-font-regular);
+  color: var(--ao-text-contrast);
 }
 
 /* Numbered seat list. Figma hangs the marker in a 24px gutter: the text box is 646 wide inside a
  * 670 list, and the "1." sits at x=-23 relative to that box. */
 .export-preview__doc-list {
   margin: 0;
-  padding-inline-start: var(--ai-spacing-6);  /* 24 */
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);         /* 14 */
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-lg);          /* 32 */
-  color: var(--ai-text-primary);
+  padding-inline-start: var(--ao-spacing-6);  /* 24 */
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);         /* 14 */
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-lg);          /* 32 */
+  color: var(--ao-text-primary);
 }
 
 /* The role, in brackets — a step down in emphasis, not in size (1:15263 keeps 14/32 and only
  * changes the colour). */
 .export-preview__doc-list span {
-  color: var(--ai-text-secondary);
+  color: var(--ao-text-secondary);
 }
 
 /* A table with nobody seated still appears in the document and says so, rather than going
@@ -1897,18 +1897,18 @@
 .export-preview__doc-empty {
   margin: 0;
   /* 32 tall around a 24px line at both sizes = 8px above. */
-  padding-block-start: var(--ai-spacing-3);   /* 8 */
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);   /* 14 */
+  padding-block-start: var(--ao-spacing-3);   /* 8 */
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);   /* 14 */
   font-style: italic;
-  line-height: var(--ai-leading-md);    /* 24 */
-  color: var(--ai-text-contrast);
+  line-height: var(--ao-leading-md);    /* 24 */
+  color: var(--ao-text-contrast);
 }
 
 /* Both panels are keyboard scrollers, so they take focus and must show it. */
 .export-preview__panel--doc:focus-visible,
 .export-preview__panel--table .table-wrap__scroll:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
 }
 
@@ -1930,25 +1930,25 @@
 @media (max-width: 639px) {
   /* (0,2,0) — see the base rule: Modal's `.modal__body > p` would otherwise win. */
   .export-preview__body > .export-preview__summary {
-    font-size: var(--ai-font-fixed-2xs);   /* 14 -> 13 */
+    font-size: var(--ao-font-fixed-2xs);   /* 14 -> 13 */
   }
 
   .export-preview__panel--doc {
-    padding: var(--ai-spacing-5);          /* 24 -> 16 (Figma p-17: 16 inside a 1px stroke) */
+    padding: var(--ao-spacing-5);          /* 24 -> 16 (Figma p-17: 16 inside a 1px stroke) */
   }
 
   .export-preview__doc-title {
-    font-size: var(--ai-font-fixed-sm);    /* 18 -> 16 */
+    font-size: var(--ao-font-fixed-sm);    /* 18 -> 16 */
   }
 
   /* 16 -> 14. The trailing span keeps its own explicit 12, so it is unaffected. */
   .export-preview__doc-heading {
-    font-size: var(--ai-font-fixed-xs);
+    font-size: var(--ao-font-fixed-xs);
   }
 
   /* 14 -> 13, and the bracketed role follows because it only overrides the colour. */
   .export-preview__doc-list {
-    font-size: var(--ai-font-fixed-2xs);
+    font-size: var(--ao-font-fixed-2xs);
   }
 }
 
@@ -1960,35 +1960,35 @@
 
 /* ── Room Layout modal ────────────────────────────────────────────────────────────────────
  * Figma 1:20655 / 1:49180 (Empty), 1:24161 / 1:53040 (Image), 1:27691 / 1:55622 (PDF).
- * All three states are 512 wide, which is `.modal`'s own default (`--ai-size-9`) — no size
+ * All three states are 512 wide, which is `.modal`'s own default (`--ao-size-9`) — no size
  * modifier. The shell, header, subtitle and footer are entirely Modal's; only what Figma draws
  * inside the body is written here.
  *
  * The empty state is the DS DragDropFile, matched property-for-property against Figma
- * (280 min-height, 2px dashed --ai-border-secondary, --ai-radius-lg, 32px padding, the 48px
- * --ai-surface-brand-soft-extra disc, 24px icon). NOTHING of that is restated below — if a
+ * (280 min-height, 2px dashed --ao-border-secondary, --ao-radius-lg, 32px padding, the 48px
+ * --ao-surface-brand-soft-extra disc, 24px icon). NOTHING of that is restated below — if a
  * dropzone value is not here, the component is already carrying it, Figma-verified. */
 
 /* Each attached state stacks its two parts with Figma's Content Slot gap. */
 .room-layout__attached {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);              /* 8 */
+  gap: var(--ao-spacing-3);              /* 8 */
   inline-size: 100%;
 }
 
-/* The dropzone's second line. DragDropFile's own `__subtitle` is 12px over --ai-text-contrast;
- * this screen's is 14px over --ai-text-secondary, so it gets its own class rather than bending
+/* The dropzone's second line. DragDropFile's own `__subtitle` is 12px over --ao-text-contrast;
+ * this screen's is 14px over --ao-text-secondary, so it gets its own class rather than bending
  * the component's. Figma gives it line-height 1.4 (=19.6 at 14px) with no matching token — the
- * line above it is an explicit --ai-leading-md, so 1.4 reads as Figma's "Auto"; resolved to
- * --ai-leading-sm (20px) at the designer's direction, 2026-09-09. */
+ * line above it is an explicit --ao-leading-md, so 1.4 reads as Figma's "Auto"; resolved to
+ * --ao-leading-sm (20px) at the designer's direction, 2026-09-09. */
 .room-layout__hint {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);   /* 14 */
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-sm);    /* 20 */
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);   /* 14 */
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-sm);    /* 20 */
+  color: var(--ao-text-secondary);
   text-align: center;
 }
 
@@ -1998,13 +1998,13 @@
  * without touching the component. Border colour reuses the component's own drag-over brand
  * border so the two states look related. */
 .room-layout__drop:focus-within {
-  border-color: var(--ai-border-brand);
-  outline: 2px solid var(--ai-surface-brand);
+  border-color: var(--ao-border-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
 }
 
 /* ── Image preview ───────────────────────────────────────────────────────────────────────
- * The box HUGS its image, capped at 280 (--ai-size-5), at the designer's direction
+ * The box HUGS its image, capped at 280 (--ao-size-5), at the designer's direction
  * 2026-09-09. Figma's two frames disagree — desktop draws a fixed 280 with the mock image
  * overflowing its own 32px padding, mobile hugs at 16px — and hugging-with-a-cap reproduces
  * both for their own artwork while staying sane for a real upload: a wide, short floor plan
@@ -2014,16 +2014,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--ai-spacing-7);         /* 32 — Figma draws p-33: 32 inside a 1px stroke */
-  background-color: var(--ai-surface-minimal);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-lg);
+  padding: var(--ao-spacing-7);         /* 32 — Figma draws p-33: 32 inside a 1px stroke */
+  background-color: var(--ao-surface-minimal);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-lg);
 }
 
 .room-layout__image {
   display: block;
   max-inline-size: 100%;
-  max-block-size: var(--ai-size-5);     /* 280 */
+  max-block-size: var(--ao-size-5);     /* 280 */
   object-fit: contain;
 }
 
@@ -2032,8 +2032,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
-  padding-block-start: var(--ai-spacing-4);   /* 12 */
+  gap: var(--ao-spacing-3);
+  padding-block-start: var(--ao-spacing-4);   /* 12 */
 }
 
 /* Ellipsis is an ADDITION on desktop: Figma's mobile frame truncates this and the desktop one
@@ -2043,11 +2043,11 @@
   margin: 0;
   min-inline-size: 0;
   overflow: hidden;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);   /* 14 */
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);    /* 24 */
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);   /* 14 */
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);    /* 24 */
+  color: var(--ao-text-secondary);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -2057,21 +2057,21 @@
 .room-layout__doc {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-5);             /* 16 */
-  padding: var(--ai-spacing-6);         /* 24 */
-  background-color: var(--ai-surface-minimal);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-lg);
+  gap: var(--ao-spacing-5);             /* 16 */
+  padding: var(--ao-spacing-6);         /* 24 */
+  background-color: var(--ao-surface-minimal);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-lg);
 }
 
 /* The only bare icon in the card — the trash beside it sits inside a Button, so Button supplies
- * its colour. `--ai-icon-secondary` is the one icon token the PDF frame binds that is not the
+ * its colour. `--ao-icon-secondary` is the one icon token the PDF frame binds that is not the
  * modal's own close X. */
 .room-layout__doc-icon {
   flex-shrink: 0;
-  width: var(--ai-icon-size-lg);        /* 24 */
-  height: var(--ai-icon-size-lg);
-  color: var(--ai-icon-secondary);
+  width: var(--ao-icon-size-lg);        /* 24 */
+  height: var(--ao-icon-size-lg);
+  color: var(--ao-icon-secondary);
 }
 
 .room-layout__doc-body {
@@ -2079,41 +2079,41 @@
   min-inline-size: 0;                   /* lets the filename ellipsis actually engage */
 }
 
-/* Semibold over --ai-text-primary — note this differs from the IMAGE state's filename, which
- * Figma draws 14px Regular over --ai-text-secondary. Two states, two treatments, both followed. */
+/* Semibold over --ao-text-primary — note this differs from the IMAGE state's filename, which
+ * Figma draws 14px Regular over --ao-text-secondary. Two states, two treatments, both followed. */
 .room-layout__doc-name {
   margin: 0;
   overflow: hidden;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);   /* 14 */
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);    /* 20 */
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);   /* 14 */
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);    /* 20 */
+  color: var(--ao-text-primary);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .room-layout__doc-meta {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);  /* 12 — Figma leaves this unbound; the token exists */
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-sm);    /* 20 */
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);  /* 12 — Figma leaves this unbound; the token exists */
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-sm);    /* 20 */
+  color: var(--ao-text-contrast);
 }
 
 .room-layout__doc-actions {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-1);             /* 4 */
+  gap: var(--ao-spacing-1);             /* 4 */
   flex-shrink: 0;
 }
 
-/* The remove buttons carry NO background at rest — Figma binds `--ai-btn-secondary-bg`
+/* The remove buttons carry NO background at rest — Figma binds `--ao-btn-secondary-bg`
  * (transparent) with no border on both of them (1:29441, 1:25922).
  *
  * Why this override is needed at all: `.btn--tertiary` already reads its rest background from
- * `--ai-btn-tertiary-bg`, which is `rgba(0, 0, 0, 0)` in tokens.css, tokens-dark.css,
+ * `--ao-btn-tertiary-bg`, which is `rgba(0, 0, 0, 0)` in tokens.css, tokens-dark.css,
  * tokens-chat.css and tokens-chat-dark.css — but **`tokens-cc.css` sets it to `#e5e9eb`**, a
  * solid grey, and this screen runs in the CC mode. So every tertiary button in the Control Centre
  * currently paints a grey box at rest. Flagged for the designer: that value looks wrong on its own
@@ -2143,12 +2143,12 @@
 /* Why a PDF shows a card and not a thumbnail. Figma's own copy. */
 .room-layout__note {
   margin: 0;
-  padding-block-start: var(--ai-spacing-4);   /* 12 */
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);   /* 14 */
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);    /* 24 */
-  color: var(--ai-text-secondary);
+  padding-block-start: var(--ao-spacing-4);   /* 12 */
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);   /* 14 */
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);    /* 24 */
+  color: var(--ao-text-secondary);
 }
 
 /* ── Room Layout: mobile ─────────────────────────────────────────────────────────────────
@@ -2161,33 +2161,33 @@
  * together. */
 @media (max-width: 639px) {
   .room-layout__attached {
-    gap: var(--ai-spacing-2);           /* 8 -> 6 */
+    gap: var(--ao-spacing-2);           /* 8 -> 6 */
   }
 
   /* Scoped to this usage — the DS component's own title size is not this screen's business. */
   .room-layout__drop .drag-drop__title,
   .room-layout__hint {
-    font-size: var(--ai-font-fixed-2xs);   /* 14 -> 13 */
+    font-size: var(--ao-font-fixed-2xs);   /* 14 -> 13 */
   }
 
   .room-layout__preview {
-    padding: var(--ai-spacing-5);       /* 32 -> 16 (Figma p-17: 16 inside a 1px stroke) */
+    padding: var(--ao-spacing-5);       /* 32 -> 16 (Figma p-17: 16 inside a 1px stroke) */
   }
 
   .room-layout__filename {
-    font-size: var(--ai-font-fixed-2xs);   /* 14 -> 13 */
+    font-size: var(--ao-font-fixed-2xs);   /* 14 -> 13 */
   }
 
   .room-layout__doc {
-    gap: var(--ai-spacing-4);           /* 16 -> 12 */
-    padding: var(--ai-spacing-4);       /* 24 -> 12 */
+    gap: var(--ao-spacing-4);           /* 16 -> 12 */
+    padding: var(--ao-spacing-4);       /* 24 -> 12 */
   }
 
   /* Both size AND leading step here, unlike everything else on this screen. */
   .room-layout__note {
-    padding-block-start: var(--ai-spacing-3);   /* 12 -> 8 */
-    font-size: var(--ai-font-fixed-2xs);        /* 14 -> 13 */
-    line-height: var(--ai-leading-xs);          /* 24 -> 16 */
+    padding-block-start: var(--ao-spacing-3);   /* 12 -> 8 */
+    font-size: var(--ao-font-fixed-2xs);        /* 14 -> 13 */
+    line-height: var(--ao-leading-xs);          /* 24 -> 16 */
   }
 }
 
@@ -2196,7 +2196,7 @@
  * component classes — deliberately, so the eight modals, export and room layout keep reading the
  * DOM they already read. These four have no component to belong to. */
 
-/* The unassigned rail's column. The Unassigned pattern sizes itself (`--ai-size-6`, matching
+/* The unassigned rail's column. The Unassigned pattern sizes itself (`--ao-size-6`, matching
  * TableDetail so the two rails agree), so this only has to stop the flex row squeezing it. */
 .seating-plan__pool {
   flex-shrink: 0;
@@ -2206,12 +2206,12 @@
   z-index: 1;
   display: flex;
   /* Resizable on the same terms as the detail rail (designer, 2026-09-10): the width comes from
-   * `--sp-pool-w` when the handle has set one, and falls back to Figma's --ai-size-6 (320) —
+   * `--sp-pool-w` when the handle has set one, and falls back to Figma's --ao-size-6 (320) —
    * which is also what a double-click resets to. `position: sticky` is the positioning context
    * for the edge strip, exactly as on the aside, and pins the sheet for the same reason. */
   position: sticky;
   inset-block-start: var(--sp-rail-top);
-  inline-size: var(--sp-pool-w, var(--ai-size-6));
+  inline-size: var(--sp-pool-w, var(--ao-size-6));
 }
 
 /* STACKED: the pool takes part in the page's flow rather than pinning. There is no column
@@ -2256,7 +2256,7 @@
 /* A plan with every seat taken swaps its progress fill to success, which is how the VIP Lounge
  * card reads in the baseline — green bar plus a FullBadge instead of a "N seats free" line. */
 .room-card__progress-fill--full {
-  background-color: var(--ai-surface-success);
+  background-color: var(--ao-surface-success);
 }
 
 /* Two empty states the authored markup never needed, because a hand-written list is never
@@ -2264,12 +2264,12 @@
 .table-listing__empty,
 .table-detail__empty {
   margin: 0;
-  padding: var(--ai-spacing-6);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-contrast);
+  padding: var(--ao-spacing-6);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-contrast);
   text-align: center;
 }
 
@@ -2311,19 +2311,19 @@
  * covered by a dialog is correct, since a dialog means the placement is no longer the task. */
 .seating-pick-bar {
   position: fixed;
-  inset-block-end: var(--ai-spacing-6);
+  inset-block-end: var(--ao-spacing-6);
   inset-inline-start: 50%;
   transform: translateX(-50%);
   z-index: 95;
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-4);
-  max-inline-size: calc(100% - var(--ai-spacing-7) * 2);
-  padding: var(--ai-spacing-3) var(--ai-spacing-3) var(--ai-spacing-3) var(--ai-spacing-5);
-  background-color: var(--ai-surface-elevated-1);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-full);
-  box-shadow: var(--ai-shadow-md);
+  gap: var(--ao-spacing-4);
+  max-inline-size: calc(100% - var(--ao-spacing-7) * 2);
+  padding: var(--ao-spacing-3) var(--ao-spacing-3) var(--ao-spacing-3) var(--ao-spacing-5);
+  background-color: var(--ao-surface-elevated-1);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-full);
+  box-shadow: var(--ao-shadow-md);
 }
 
 .seating-pick-bar[hidden] {
@@ -2332,23 +2332,23 @@
 
 .seating-pick-bar__icon {
   flex-shrink: 0;
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-brand);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-brand);
 }
 
 .seating-pick-bar__text {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
 }
 
 .seating-pick-bar__text strong {
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-primary);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
 }
 
 /* A picked-up row is grabbable; the cursor is the only hint a mouse user gets that drag is
@@ -2363,14 +2363,14 @@
 
 @media (max-width: 639px) {
   .seating-pick-bar {
-    inset-inline: var(--ai-spacing-5);
-    inset-inline-start: var(--ai-spacing-5);
+    inset-inline: var(--ao-spacing-5);
+    inset-inline-start: var(--ao-spacing-5);
     transform: none;
     max-inline-size: none;
   }
 
   .seating-pick-bar__text {
-    font-size: var(--ai-font-fixed-2xs);
+    font-size: var(--ao-font-fixed-2xs);
   }
 }
 
@@ -2379,7 +2379,7 @@
  * / 229072 (mobile). Launched from the Assign button on an empty AttendeeCard in Table Detail.
  *
  * Almost everything structural is Modal's already: 512px is `.modal`'s own default width
- * (--ai-size-9, exactly what the frame draws), and the 24px body padding with a 16px gap is
+ * (--ao-size-9, exactly what the frame draws), and the 24px body padding with a 16px gap is
  * `.modal__body`'s. Neither is re-declared here. The rows are AttendeeCard with its
  * `Show Seat Number` and `Show Actions` booleans off, so none of their internals are either.
  *
@@ -2407,8 +2407,8 @@
  * takes it past Modal's own 639px rule, so the 12px lead-in holds at mobile while the other three
  * sides still step down to 16px with every other dialog. */
 .modal__body.assign__body {
-  gap: var(--ai-spacing-3);
-  padding-block-start: var(--ai-spacing-4);
+  gap: var(--ao-spacing-3);
+  padding-block-start: var(--ao-spacing-4);
 }
 
 /* Figma pins this absolutely at `top-[81px] w-[462px]`; it is simply a right-aligned row above
@@ -2418,26 +2418,26 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--ai-spacing-2);
-  padding-block: var(--ai-spacing-px);
+  gap: var(--ao-spacing-2);
+  padding-block: var(--ao-spacing-px);
 }
 
 .assign__help-label {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-4xs);
-  font-weight: var(--ai-font-medium);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-4xs);
+  font-weight: var(--ao-font-medium);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
 }
 
 .assign__search {
-  min-inline-size: var(--ai-size-4);
+  min-inline-size: var(--ao-size-4);
 }
 
-/* CAPPED at --ai-size-7 (384px), the repo's established cap for a scrollable list inside a
+/* CAPPED at --ao-size-7 (384px), the repo's established cap for a scrollable list inside a
  * dialog — EventPicker's list and both FilterDropdowns menus use the same token, and
  * EventPicker's own note records it being approved in place of an untokenised Figma value:
- * "Figma caps the scroll region at 360px; --ai-size-7 (384px) is the nearest token."
+ * "Figma caps the scroll region at 360px; --ao-size-7 (384px) is the nearest token."
  *
  * Without it the list took `flex: 1 1 auto` at face value and claimed every spare pixel, so the
  * dialog TRACKED THE VIEWPORT — 952px tall at a 1000px viewport against the 719px Figma draws.
@@ -2453,9 +2453,9 @@
 .assign__results {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   flex: 1 1 auto;
-  max-block-size: var(--ai-size-7);
+  max-block-size: var(--ao-size-7);
 }
 
 /* `flex-shrink: 0` is LOAD-BEARING and not obvious. This is a height-constrained flex column,
@@ -2475,17 +2475,17 @@
  * Figma gives the in-list pair a 16px lead-in that the footer's version does not have. */
 .assign__section-label {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-4xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-xs);
-  letter-spacing: var(--ai-tracking-7);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-4xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-xs);
+  letter-spacing: var(--ao-tracking-7);
   text-transform: uppercase;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 .assign__results .assign__section-label {
-  padding-block-start: var(--ai-spacing-5);
+  padding-block-start: var(--ao-spacing-5);
 }
 
 /* The whole row is one action. A real <button> was tried first and collapsed to 4px — a button
@@ -2502,20 +2502,20 @@
  * list from looking inert: the brand border AttendeeCard already uses for `--dragged-over`,
  * rather than a new colour. Flagged for a designer ruling. */
 .assign__row:hover {
-  border-color: var(--ai-border-brand);
+  border-color: var(--ao-border-brand);
 }
 
 /* "No matches — add a guest manually below." Figma leaves this paint UNBOUND at #335562, which
- * is exactly --ai-text-secondary in the Control Centre mode this screen runs in, so the token is
+ * is exactly --ao-text-secondary in the Control Centre mode this screen runs in, so the token is
  * used and the unbound paint is flagged. */
 .assign__empty {
   margin: 0;
-  padding-block: var(--ai-spacing-3);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-secondary);
+  padding-block: var(--ao-spacing-3);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
   text-align: center;
 }
 
@@ -2526,17 +2526,17 @@
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-start;
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-6);
-  background-color: var(--ai-surface-minimal);
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-6);
+  background-color: var(--ao-surface-minimal);
 }
 
 .assign__manual {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  row-gap: var(--ai-spacing-5);
-  column-gap: var(--ai-spacing-3);
+  row-gap: var(--ao-spacing-5);
+  column-gap: var(--ao-spacing-3);
 }
 
 .assign__manual-field {
@@ -2557,22 +2557,22 @@
      button, and at 24px of side padding the fields were being squeezed by a quarter of the
      dialog's width before they started. */
   .assign__footer {
-    padding: var(--ai-spacing-4);
+    padding: var(--ao-spacing-4);
   }
 
   /* 8 -> 4 between the columns (designer, 2026-09-15). COLUMN gap only: `row-gap` is what
      separates the fields from the button once the row wraps, and it should not tighten with it. */
   .assign__manual {
-    column-gap: var(--ai-spacing-1);
+    column-gap: var(--ao-spacing-1);
   }
 
   .assign__manual-field .input__wrap {
-    min-block-size: var(--ai-spacing-7);
+    min-block-size: var(--ao-spacing-7);
   }
 
   .assign__manual-field .input__control {
-    font-size: var(--ai-font-fixed-2xs);
-    line-height: var(--ai-leading-xs);
+    font-size: var(--ao-font-fixed-2xs);
+    line-height: var(--ao-leading-xs);
   }
 }
 
@@ -2653,7 +2653,7 @@
  *    a darker strip beside them. Same WebKit/Blink scope as the shell rule. */
 @supports selector(::-webkit-scrollbar) {
   .cc-control__page--seating.cc-control__page--flush::-webkit-scrollbar-track {
-    background-color: var(--ai-surface-primary);
+    background-color: var(--ao-surface-primary);
   }
 }
 
@@ -2680,19 +2680,19 @@
 }
 
 .cc-control__page--flush[data-seating-state="plan"] .seating-header .seating-header__bar {
-  border-block-start: 1px solid var(--ai-border-secondary);
+  border-block-start: 1px solid var(--ao-border-secondary);
   border-block-end: 0;
 }
 
 .cc-control__page--flush[data-seating-state="plan"] .seating-header .seating-header__rooms {
-  padding-inline-end: var(--ai-spacing-5);
+  padding-inline-end: var(--ao-spacing-5);
   border-block-end: 0;
 }
 
 /* The Table Header's line above and below — the only rules between the room bar, the toolbar and
  * the sheets in this mode. */
 .cc-control__page--flush[data-seating-state="plan"] .seating-header--table {
-  border-block: 1px solid var(--ai-border-secondary);
+  border-block: 1px solid var(--ao-border-secondary);
 }
 
 /* The sheet row: no gaps, no cards. */
@@ -2710,7 +2710,7 @@
 .cc-control__page--flush[data-seating-state="plan"] .seating-plan__aside > .table-detail,
 .cc-control__page--flush[data-seating-state="plan"] .seating-plan__pool > .unassigned {
   border: 0;
-  border-inline-start: 1px solid var(--ai-border-secondary);
+  border-inline-start: 1px solid var(--ao-border-secondary);
   border-radius: 0;
   box-shadow: none;
 }

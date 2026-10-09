@@ -23,12 +23,12 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   inline-size: 100%;
-  padding: var(--ai-spacing-5);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-lg);
-  background-color: var(--ai-surface-primary);
+  padding: var(--ao-spacing-5);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-lg);
+  background-color: var(--ao-surface-primary);
   /* Figma sets overflow-clip on the frame; keeps card shadows inside the radius. */
   overflow: hidden;
 }
@@ -44,15 +44,15 @@
 .table-listing__toolbar {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   inline-size: 100%;
-  padding-block-end: var(--ai-spacing-3);
+  padding-block-end: var(--ao-spacing-3);
 }
 
 .table-listing__toolbar-main {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   flex: 1 0 0;
   min-inline-size: 0;
 }
@@ -64,15 +64,15 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: var(--ai-font-title);
+  font-family: var(--ao-font-title);
   /* 16px semibold (designer, 2026-09-15), was 18px bold. The three sheet titles and the
      room card now share one weight, so the plan reads as a set of panels rather than a
      stack of competing headings. A DIVERGENCE from Figma, which still draws 18/bold —
      applied on instruction and recorded so a later audit reads it as intent, not drift. */
-  font-size: var(--ai-font-fixed-sm);
-  font-weight: var(--ai-font-semibold);
+  font-size: var(--ao-font-fixed-sm);
+  font-weight: var(--ao-font-semibold);
   line-height: normal;
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 /* Right-aligned within its own flex-1 column, which is what puts it hard against the
@@ -81,42 +81,42 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   flex: 1 0 0;
   min-inline-size: 0;
 }
 
 .table-listing__filter-label {
-  /* Figma leaves this size unbound as a raw 12px; --ai-font-fixed-xxs is exactly 12px,
+  /* Figma leaves this size unbound as a raw 12px; --ao-font-fixed-xxs is exactly 12px,
    * so binding it is visually a no-op. Flagged in figma-notes. Same at both breakpoints. */
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-medium);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-medium);
   line-height: normal;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
   white-space: nowrap;
   cursor: pointer;
 }
 
 /* A 16px vertical hairline between the filter and the search. Figma draws it as a rotated
- * `line` node; its stroke resolves to --ai-border-secondary via get_variable_defs on
+ * `line` node; its stroke resolves to --ao-border-secondary via get_variable_defs on
  * 3474:91537, since design context hides it inside an SVG. 1px is the border-width
  * exception. */
 .table-listing__divider {
   flex-shrink: 0;
   inline-size: 1px;
-  block-size: var(--ai-spacing-5);
-  background-color: var(--ai-border-secondary);
+  block-size: var(--ao-spacing-5);
+  background-color: var(--ao-border-secondary);
 }
 
 .table-listing__search {
-  /* Was `flex-shrink: 0` + a hard `inline-size: var(--ai-size-6)`. Measured 2026-08-27: the
+  /* Was `flex-shrink: 0` + a hard `inline-size: var(--ao-size-6)`. Measured 2026-08-27: the
    * search held its full 320px inside a 382px toolbar, leaving 62px for the title and filter
    * together, so the title was squeezed to a 13px box and its text overflowed by 45px — the
    * "Tab..s" collision. A breakpoint alone would not have fixed this, only moved the width it
    * happens at; the fix is intrinsic. 320 is now a CAP, not a floor, and the field may shrink. */
-  flex: 0 1 var(--ai-size-6);
-  max-inline-size: var(--ai-size-6);
+  flex: 0 1 var(--ao-size-6);
+  max-inline-size: var(--ao-size-6);
   min-inline-size: 0;
 }
 
@@ -129,8 +129,8 @@
  * No breakpoint is invented, and the mobile single column falls out of the same rule. */
 .table-listing__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--ai-size-4), 1fr));
-  gap: var(--ai-spacing-3);
+  grid-template-columns: repeat(auto-fill, minmax(var(--ao-size-4), 1fr));
+  gap: var(--ao-spacing-3);
   /* STRETCH, not start (designer, 2026-09-10; Figma lRKvtYSU3SvO5hbMT33jxw `1:31485`).
    * Cards on a row are all the height of the tallest one. Figma's grid declares no
    * align-items, so it takes the default `stretch`, and its measured row tracks are
@@ -169,8 +169,8 @@
  * contract in CLAUDE.md. */
 @container cs-page (max-width: 767px) {
   .table-listing {
-    padding-inline: var(--ai-spacing-4);
-    padding-block: var(--ai-spacing-5);
+    padding-inline: var(--ao-spacing-4);
+    padding-block: var(--ao-spacing-5);
   }
 }
 
@@ -179,7 +179,7 @@
     flex-direction: column;
     align-items: stretch;
     /* Figma zeroes this on mobile — the container gap alone separates toolbar from grid. */
-    padding-block-end: var(--ai-spacing-0);
+    padding-block-end: var(--ao-spacing-0);
   }
 
   .table-listing__divider {

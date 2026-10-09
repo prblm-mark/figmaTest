@@ -9,7 +9,7 @@
 ## Variant × State Matrix
 Single variant — `Tier=Pattern`. No Selected / Hover / Active variants exist in the
 component set. Per user direction: items render as `<a>` links with a CSS-only hover
-(glyph + label darken to `--ai-text-primary`). No current-page/active state is implemented
+(glyph + label darken to `--ao-text-primary`). No current-page/active state is implemented
 because Figma defines none.
 
 | Item | Icon node | Glyph (intrinsic px) | Label |
@@ -40,17 +40,17 @@ metadata, not spacing tokens). Rounded to whole px; exact Figma values noted abo
 ## Token Mapping
 | Figma variable | CSS token | Role |
 |---|---|---|
-| `--ai-surface-minimal` (Figma bind) | `--cc-actions-menu-secondary-bg` | Strip background — **user override** (#e7edf0 light / #1e293b dark) to pair with the CC ActionsMenu, instead of the Figma-bound `--ai-surface-minimal` |
-| `--ai-spacing-4` (12) | `--ai-spacing-4` | Strip vertical padding |
-| `--ai-size-11` (768) | `--ai-size-11` | Row max-width |
-| `--ai-spacing-7` (32) | `--ai-spacing-7` | Row horizontal padding + item gap |
-| `--ai-spacing-9` (48) | `--ai-spacing-9` | Icon-box height |
-| `--ai-spacing-3` (8) | `--ai-spacing-3` | Icon→label gap |
-| `--ai-text-secondary` (#335562 CC) | `--ai-text-secondary` | Glyph paint + label colour (rest) |
-| `--ai-text-primary` (#00222f CC) | `--ai-text-primary` | Glyph + label on hover |
-| `--ai-font-title` (Inter) | `--ai-font-title` | Label family |
-| `--ai-font-medium` | `--ai-font-medium` | Label weight |
-| `--ai-font-fixed-xxs` (12) | `--ai-font-fixed-xxs` | Label size |
+| `--ao-surface-minimal` (Figma bind) | `--cc-actions-menu-secondary-bg` | Strip background — **user override** (#e7edf0 light / #1e293b dark) to pair with the CC ActionsMenu, instead of the Figma-bound `--ao-surface-minimal` |
+| `--ao-spacing-4` (12) | `--ao-spacing-4` | Strip vertical padding |
+| `--ao-size-11` (768) | `--ao-size-11` | Row max-width |
+| `--ao-spacing-7` (32) | `--ao-spacing-7` | Row horizontal padding + item gap |
+| `--ao-spacing-9` (48) | `--ao-spacing-9` | Icon-box height |
+| `--ao-spacing-3` (8) | `--ao-spacing-3` | Icon→label gap |
+| `--ao-text-secondary` (#335562 CC) | `--ao-text-secondary` | Glyph paint + label colour (rest) |
+| `--ao-text-primary` (#00222f CC) | `--ao-text-primary` | Glyph + label on hover |
+| `--ao-font-title` (Inter) | `--ao-font-title` | Label family |
+| `--ao-font-medium` | `--ao-font-medium` | Label weight |
+| `--ao-font-fixed-xxs` (12) | `--ao-font-fixed-xxs` | Label size |
 
 Label `letter-spacing: 0.36px` and `line-height: 1.4` — optical typographic values
 (letter-spacing is an allowed raw-px exception; 1.4 is unitless).
@@ -58,13 +58,13 @@ Label `letter-spacing: 0.36px` and `line-height: 1.4` — optical typographic va
 ## Icon assets
 The nine glyphs are the **exact Figma SVGs** exported to `img/cc-nav/<name>.svg`. They are
 stroke-based line art (`stroke-width: 1.5`). Rendered via CSS `mask` painted in
-`--ai-text-secondary` — the same brand-asset convention used for `affinoMark.svg` /
+`--ao-text-secondary` — the same brand-asset convention used for `affinoMark.svg` /
 `affinoLogo.svg` in `Sidebar.css` / `Menu.css`. This keeps the glyphs theme-aware
 (CC light/dark) rather than baking the stroke colour into the file. The SVGs are **not**
 Lucide icons (they are bespoke Affino module glyphs), so the Lucide rule does not apply.
 
 ## Token Gaps
-None. Every design value maps to an existing `--ai-*` token; glyph dimensions are the
+None. Every design value maps to an existing `--ao-*` token; glyph dimensions are the
 documented brand-asset exception.
 
 ## Modifiers
@@ -76,11 +76,11 @@ documented brand-asset exception.
 - **HeaderGroup (CC)** `Type=IconNavigation` (`4219:6346`) — the strip sits between
   CCTopNavigation and CCHeader, hidden by default and shown via the User Menu "Icon Navigation"
   toggle (`HeaderGroup.js` adds `.cc-header-group--icon-nav`). In that node Figma binds the
-  strip bg to `--ai-surface-minimal`, but the strip keeps this component's
+  strip bg to `--ao-surface-minimal`, but the strip keeps this component's
   `--cc-actions-menu-secondary-bg` override (user decision) for consistency everywhere.
 
 ## Notes
-- CC brand context: requires `data-brand="cc"` on an ancestor so the `--ai-*` tokens resolve
+- CC brand context: requires `data-brand="cc"` on an ancestor so the `--ao-*` tokens resolve
   to their CC values (`tokens-cc.css` / `tokens-cc-dark.css`).
 - No Device=Mobile variant and no "mobile" mode referenced in the design context — the row
   caps at 768 and compresses on narrower viewports; no responsive variant was invented.

@@ -10,15 +10,15 @@
  *
  * ─── WHY THIS EXISTS ────────────────────────────────────────────────────────
  * A capture binds colours by resolved VALUE, never by token name — the browser
- * turns `var(--ai-icon-secondary)` into `rgb(103,103,108)` before the page is
+ * turns `var(--ao-icon-secondary)` into `rgb(103,103,108)` before the page is
  * serialised, so neither the capture nor the Re-tokenise plugin ever sees which
  * token it was. Value is lossy three ways:
  *
  *   1. Every Semantic variable ALIASES a Primitive, so a semantic and its
  *      primitive resolve to the same hex. Value alone cannot prefer the semantic.
- *   2. One hex spans FAMILIES. #67676C is `--ai-text-contrast` AND
- *      `--ai-icon-secondary`; #212123 is `--ai-text-primary` AND
- *      `--ai-icon-primary`. Only the node says which is meant.
+ *   2. One hex spans FAMILIES. #67676C is `--ao-text-contrast` AND
+ *      `--ao-icon-secondary`; #212123 is `--ao-text-primary` AND
+ *      `--ao-icon-primary`. Only the node says which is meant.
  *   3. One hex can repeat WITHIN a family (#FFFFFF is surface-primary,
  *      surface-elevated-1 and surface-elevated-2).
  *
@@ -75,7 +75,7 @@ const FAMILIES = ['surface', 'text', 'icon', 'border'];
  * Only needed where one family has several tokens on the same hex. Cite the
  * source that settles it so the next person can re-check rather than trust it. */
 const OVERRIDES = {
-  // .sp-dot--vip / .sp-role--vip { background: var(--ai-surface-neutral) }
+  // .sp-dot--vip / .sp-role--vip { background: var(--ao-surface-neutral) }
   // — SeatingPlanner.css:564. Value matching offers 15 candidates for this hex.
   'surface|#2E2E32': { name: 'surface/neutral', because: 'SeatingPlanner.css:564 .sp-dot--vip' },
   // Search-input placeholder: a TEXT fill, so text/contrast rather than the icon
@@ -83,15 +83,15 @@ const OVERRIDES = {
   'text|#67676C': { name: 'text/contrast', because: 'placeholder text is a TEXT fill' },
 };
 
-/* Tokens whose Figma name does NOT follow `--ai-<family>-<rest>` → `<family>/<rest>`.
- * `--ai-btn-*` lives under `components/global/button/*` in Figma, for instance.
+/* Tokens whose Figma name does NOT follow `--ao-<family>-<rest>` → `<family>/<rest>`.
+ * `--ao-btn-*` lives under `components/global/button/*` in Figma, for instance.
  * Anything not listed is derived by convention AND verified to exist in the
  * Semantic collection before use; an unverified name is reported, not applied. */
 const NAME_FIXUPS = {};
 
 function readTokenHexes(file) {
   const css = readFileSync(join(ROOT, file), 'utf8');
-  const re = /--ai-([a-z0-9-]+)\s*:\s*(#[0-9a-fA-F]{6})\s*;/g;
+  const re = /--ao-([a-z0-9-]+)\s*:\s*(#[0-9a-fA-F]{6})\s*;/g;
   const out = new Map();                      // token -> HEX
   let m;
   while ((m = re.exec(css))) out.set(m[1], m[2].toUpperCase());
@@ -103,8 +103,8 @@ function parseTokens(theme) {
    * was a light-theme component page — but the Control Centre screens render under the CC theme,
    * whose values live in `css/tokens-cc.css`, so their paints resolve to hexes the light map has
    * never seen. Measured on 3565:1383 (2026-08-27): 44 of 160 paints unresolvable, among them
-   * 29 on #A1B7C3 which IS `--ai-icon-invert-secondary` in CC and 2 on #667F89 which IS
-   * `--ai-text-contrast` there. The old comment claimed a theme overlay "could only manufacture
+   * 29 on #A1B7C3 which IS `--ao-icon-invert-secondary` in CC and 2 on #667F89 which IS
+   * `--ao-text-contrast` there. The old comment claimed a theme overlay "could only manufacture
    * false matches"; the opposite is true — without it a CC capture cannot be rebound at all.
    *
    * The overlay REPLACES a token's hex rather than adding to it, which is why this now resolves
@@ -162,7 +162,7 @@ for (const family of FAMILIES) {
     if (OVERRIDES[key]) {
       map[key] = { name: OVERRIDES[key].name, source: 'override: ' + OVERRIDES[key].because };
     } else if (tokens.length === 1) {
-      map[key] = { name: figmaName(tokens[0]), source: '--ai-' + tokens[0] };
+      map[key] = { name: figmaName(tokens[0]), source: '--ao-' + tokens[0] };
     } else {
       ambiguous.push({ key, tokens });
     }
@@ -172,7 +172,7 @@ for (const family of FAMILIES) {
 console.error(`[gen] families indexed: ${FAMILIES.map((f) => f + '=' + perFamily[f].size).join(' ')}`);
 console.error(`[gen] ${Object.keys(map).length} resolvable  ·  ${ambiguous.length} ambiguous (reported, never bound)`);
 for (const a of ambiguous) {
-  console.error(`        ${a.key}  ${a.tokens.map((t) => '--ai-' + t).join(', ')}`);
+  console.error(`        ${a.key}  ${a.tokens.map((t) => '--ao-' + t).join(', ')}`);
 }
 console.error(`[gen] theme: ${theme || 'light (base)'}`);
 console.error(`[gen] emitting ${apply ? 'APPLY' : 'DRY RUN'} for ${nodeIds.join(', ')} on page ${pageId}`);

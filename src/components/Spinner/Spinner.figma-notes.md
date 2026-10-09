@@ -28,25 +28,25 @@ Total: 4 × 7 = 28 combinations. The CSS lets consumers also override `color` di
 |---|---|---|
 | Wrapper | `<span class="spinner" role="status">` | Outer rotating ring. `role="status"` makes screen readers announce the loading state. |
 | Visually-hidden label | `<span class="spinner__label">Loading…</span>` | Text inside the wrapper for SR users. Optional — alternatively put `aria-label="Loading"` on the wrapper. |
-| Size modifier | `.spinner--{sm|lg|xl}` | Default size is 20px (matches `--ai-icon-size-md`). |
+| Size modifier | `.spinner--{sm|lg|xl}` | Default size is 20px (matches `--ao-icon-size-md`). |
 | Colour modifier | `.spinner--{brand|success|warning|danger|info|neutral|inverted}` | Sets `color` on the element; the ring inherits via `currentColor`. |
 
 ## Token mapping
 
 | Property | Token |
 |---|---|
-| Default diameter | `--ai-icon-size-md` (20px) |
-| sm diameter | `--ai-icon-size-sm` (16px) |
-| lg diameter | `--ai-icon-size-lg` (24px) |
-| xl diameter | `--ai-icon-size-xl` (32px) |
-| Border radius | `--ai-radius-full` |
-| Brand colour | `--ai-surface-brand` |
-| Success | `--ai-surface-success` |
-| Warning | `--ai-surface-warning` |
-| Danger | `--ai-surface-error` |
-| Info | `--ai-surface-info` |
-| Neutral | `--ai-text-contrast` |
-| Inverted | `--ai-btn-primary-text` (white in light + dark) |
+| Default diameter | `--ao-icon-size-md` (20px) |
+| sm diameter | `--ao-icon-size-sm` (16px) |
+| lg diameter | `--ao-icon-size-lg` (24px) |
+| xl diameter | `--ao-icon-size-xl` (32px) |
+| Border radius | `--ao-radius-full` |
+| Brand colour | `--ao-surface-brand` |
+| Success | `--ao-surface-success` |
+| Warning | `--ao-surface-warning` |
+| Danger | `--ao-surface-error` |
+| Info | `--ao-surface-info` |
+| Neutral | `--ao-text-contrast` |
+| Inverted | `--ao-btn-primary-text` (white in light + dark) |
 
 Border widths: 2px / 2px / 3px / 4px for sm / default / lg / xl. Optical pixel values, kept as `px` per project rule (border-widths are not tokenised).
 
@@ -101,7 +101,7 @@ None — pure CSS, no JS, no other DS components required.
 - **Status colours** — all 6 named colours at lg
 - **With status text** — inline spinner + "Loading…" label
 - **Inside a button** — `<button disabled aria-busy="true">` with `.spinner--sm` + label text. Primary/Alert use `--inverted` (white spinner); Secondary uses `--brand`.
-- **Inverted on a coloured surface** — white spinner on a `--ai-surface-brand` panel
+- **Inverted on a coloured surface** — white spinner on a `--ao-surface-brand` panel
 - **Centred** — placeholder for page/section loading (`min-height: 8rem` panel with the xl spinner centred)
 
 ## Outstanding

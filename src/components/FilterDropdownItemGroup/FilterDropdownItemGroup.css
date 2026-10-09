@@ -6,16 +6,16 @@
  * child items show sub text; the container itself is identical in both. Selection
  * and hover behaviour come from FilterDropdownItem / FilterDropdownItem.js.
  *
- * Uses only --ai-* design tokens.
+ * Uses only --ao-* design tokens.
  */
 
 .filter-dropdown-item-group {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-px);            /* 1px */
+  gap: var(--ao-spacing-px);            /* 1px */
   width: 100%;                           /* fills its dropdown; Figma frame = 296px */
-  padding: var(--ai-spacing-3);          /* 8px */
-  background: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);    /* Figma bound --ai-spacing-3 (8px); radius-md = same value, correct category */
+  padding: var(--ao-spacing-3);          /* 8px */
+  background: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);    /* Figma bound --ao-spacing-3 (8px); radius-md = same value, correct category */
 }

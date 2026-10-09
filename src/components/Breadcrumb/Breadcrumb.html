@@ -11,12 +11,12 @@
   <!-- Component -->
   <link rel="stylesheet" href="Breadcrumb.css">
   <style>
-    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); min-height: 100vh; }
+    body { padding: var(--ao-spacing-7); background: var(--ao-surface-secondary); min-height: 100vh; }
     .demo-section {
-      padding: var(--ai-spacing-6);
-      background: var(--ai-surface-primary);
-      border-radius: var(--ai-radius-lg);
-      margin-bottom: var(--ai-spacing-5);
+      padding: var(--ao-spacing-6);
+      background: var(--ao-surface-primary);
+      border-radius: var(--ao-radius-lg);
+      margin-bottom: var(--ao-spacing-5);
       /* Breadcrumb's sub-640 gap block uses an ANONYMOUS `@container`, which resolves to the
          nearest ancestor container. In the CC shell that is `.cc-top-navigation`; a standalone demo
          has no shell, so without a container here the block could never fire and this page would
@@ -26,19 +26,19 @@
     /* Give the Dropdown demo enough vertical room for open panels */
     .demo-section--dropdown { min-height: 18rem; }
     .demo-section__title {
-      font-size: var(--ai-font-fixed-xs);
-      font-weight: var(--ai-font-semibold);
-      color: var(--ai-text-contrast);
+      font-size: var(--ao-font-fixed-xs);
+      font-weight: var(--ao-font-semibold);
+      color: var(--ao-text-contrast);
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin: 0 0 var(--ai-spacing-3);
+      margin: 0 0 var(--ao-spacing-3);
     }
   </style>
 </head>
 <body>
 
-  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Breadcrumb</h1>
-  <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-7);">
+  <h1 style="font-size: var(--ao-font-fixed-4xl); font-weight: var(--ao-font-bold); color: var(--ao-text-primary); margin: 0 0 var(--ao-spacing-6);">Breadcrumb</h1>
+  <p style="font-size: var(--ao-font-fixed-sm); color: var(--ao-text-contrast); margin: 0 0 var(--ao-spacing-7);">
     Four type variants — Default, Home Icon, Solid Background, Dropdown. Last item indicates the current page (text-primary, semibold). Chevron-right separators use icon-contrast; home icon uses icon-secondary.
   </p>
 

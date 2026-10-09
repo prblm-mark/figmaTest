@@ -18,8 +18,8 @@ Floating popup chat widget (384px wide). Embeds the same chat UI as AiChat but i
 | Resize | Sidebar width on desktop (col-resize) | Popup height via top-edge handle (ns-resize) |
 | Drag | None | Header acts as drag handle (`cursor: move`) |
 | Responsiveness | Desktop ↔ mobile via media queries | Always mobile-width; CSS overrides pin all breakpoints |
-| Border radius | None (edge-to-edge) | `--ai-radius-xl` rounded corners |
-| Shadow | Sidebar only (mobile open state) | `--ai-shadow-xl` on popup container |
+| Border radius | None (edge-to-edge) | `--ao-radius-xl` rounded corners |
+| Shadow | Sidebar only (mobile open state) | `--ao-shadow-xl` on popup container |
 | Sidebar logo | Visible | Hidden |
 | Sidebar search | Visible | Hidden |
 | Admin controls | Visible at xl breakpoint | Not included |
@@ -123,8 +123,8 @@ Every desktop escalation is pinned back to its mobile base value using scoped ov
 
 ## Dark mode
 
-- **Scrollbar colors:** Custom `color-mix()` overrides for both light and dark themes, blending `--ai-surface-primary` with blue (light) or white (dark) at different ratios for track and thumb
-- **Tertiary button hover:** `[data-theme="dark"] .ai-chat-min .btn--tertiary:hover` uses `--ai-surface-minimal`
+- **Scrollbar colors:** Custom `color-mix()` overrides for both light and dark themes, blending `--ao-surface-primary` with blue (light) or white (dark) at different ratios for track and thumb
+- **Tertiary button hover:** `[data-theme="dark"] .ai-chat-min .btn--tertiary:hover` uses `--ao-surface-minimal`
 
 ---
 
@@ -180,12 +180,12 @@ Every desktop escalation is pinned back to its mobile base value using scoped ov
 
 | Property | Token |
 |---|---|
-| Popup background | `--ai-surface-primary` (via `data-surface="chat"`) |
-| Popup border radius | `--ai-radius-xl` |
-| Popup shadow | `--ai-shadow-xl` |
-| Popup width | `--ai-size-7` (384px) |
+| Popup background | `--ao-surface-primary` (via `data-surface="chat"`) |
+| Popup border radius | `--ao-radius-xl` |
+| Popup shadow | `--ao-shadow-xl` |
+| Popup width | `--ao-size-7` (384px) |
 | Popup min-height | 320px |
 | Max width | `calc(100vw - spacing-5 × 2)` |
 | Max height | `calc(100vh - spacing-6 × 2)` |
-| Resize handle hover bg | `--ai-border-secondary` |
+| Resize handle hover bg | `--ao-border-secondary` |
 | Sidebar shadow (open) | `4px 4px 6px rgba(0,0,0,0.1)` |

@@ -15,23 +15,23 @@
 
 | Figma property | CSS token / technique |
 |---|---|
-| Background (Primary) | `color-mix(in srgb, var(--ai-chat-brand) 8%, var(--ai-surface-primary))` |
-| Border (Primary) | `color-mix(in srgb, var(--ai-chat-brand) 30%, var(--ai-surface-primary))` |
-| Text (Primary) | `var(--ai-chat-brand)` — adjusted via `data-brand-theme` for readability |
-| Background (Link) | `--ai-surface-contrast` |
-| Border (Link) | `--ai-border-secondary` |
-| Text (Link) | `--ai-text-primary` |
-| Border radius | `--ai-radius-full` |
-| Padding | `--ai-spacing-3` (vertical) `--ai-spacing-5` (horizontal) |
-| Gap | `--ai-spacing-3` |
+| Background (Primary) | `color-mix(in srgb, var(--ao-chat-brand) 8%, var(--ao-surface-primary))` |
+| Border (Primary) | `color-mix(in srgb, var(--ao-chat-brand) 30%, var(--ao-surface-primary))` |
+| Text (Primary) | `var(--ao-chat-brand)` — adjusted via `data-brand-theme` for readability |
+| Background (Link) | `--ao-surface-contrast` |
+| Border (Link) | `--ao-border-secondary` |
+| Text (Link) | `--ao-text-primary` |
+| Border radius | `--ao-radius-full` |
+| Padding | `--ao-spacing-3` (vertical) `--ao-spacing-5` (horizontal) |
+| Gap | `--ao-spacing-3` |
 | Max width | `12rem` (192px) |
-| Font | `--ai-font-title`, `--ai-font-medium`, `--ai-font-fixed-xxs` (12px) |
-| Line height | `--ai-leading-xs` |
-| Icon size | `--ai-icon-size-sm` (16px) |
+| Font | `--ao-font-title`, `--ao-font-medium`, `--ao-font-fixed-xxs` (12px) |
+| Line height | `--ao-leading-xs` |
+| Icon size | `--ao-icon-size-sm` (16px) |
 
 ## Dynamic Brand Color
 
-The Primary variant derives all colors from `--ai-chat-brand` using `color-mix()`.
+The Primary variant derives all colors from `--ao-chat-brand` using `color-mix()`.
 Brand luminance is detected at runtime by `src/utils/brand-colors.js`, which sets
 `data-brand-theme="light|dark"` on the container element. This allows the component
 to adapt text readability for any arbitrary brand color in both light and dark themes.
@@ -40,14 +40,14 @@ to adapt text readability for any arbitrary brand color in both light and dark t
 
 | Variable | Dark brand | Light brand |
 |---|---|---|
-| `--_brand-text` | `var(--ai-chat-brand)` | `color-mix(brand 50%, black)` |
+| `--_brand-text` | `var(--ao-chat-brand)` | `color-mix(brand 50%, black)` |
 | `--_brand-bg` | `color-mix(brand 8%, surface)` | `color-mix(brand 15%, surface)` |
-| `--_brand-border` | `color-mix(brand 30%, surface)` | `var(--ai-chat-brand)` |
+| `--_brand-border` | `color-mix(brand 30%, surface)` | `var(--ao-chat-brand)` |
 
 Dark mode override: dark brand text lightened to `color-mix(brand 60%, white)` for contrast.
 
 ## Hover states
 
 - Primary: bg intensity increases (8%→15% / 15%→25%), border strengthens
-- Link: bg → `--ai-surface-secondary`, border → `--ai-border-brand`, text → `--ai-surface-brand`
-- Transition: `--ai-transition-default` (150ms ease)
+- Link: bg → `--ao-surface-secondary`, border → `--ao-border-brand`, text → `--ao-surface-brand`
+- Transition: `--ao-transition-default` (150ms ease)

@@ -26,45 +26,45 @@ Properties: **Type** × **Device** = 3 × 2 = 6 (intended).
 
 | Figma element | CSS class | Notes |
 |---|---|---|
-| Outer container | `.table-wrap` | White bg, `--ai-border-secondary` border, `--ai-radius-md`, `overflow: hidden` |
+| Outer container | `.table-wrap` | White bg, `--ao-border-secondary` border, `--ao-radius-md`, `overflow: hidden` |
 | Scroll wrapper (inner) | `.table-wrap__scroll` | Holds the `<table>`. `overflow-x: auto` lives here — so consumers can place chrome (toolbar, pagination footer) inside `.table-wrap` without it scrolling along with the table content |
-| `<table>` | `.table` | `border-collapse: collapse`, `width: 100%`, `--ai-font-title` family |
-| Type=Striped | `.table.table--striped` | Alternating row bgs (`tbody tr:nth-child(even)` → `--ai-surface-minimal`) |
+| `<table>` | `.table` | `border-collapse: collapse`, `width: 100%`, `--ao-font-title` family |
+| Type=Striped | `.table.table--striped` | Alternating row bgs (`tbody tr:nth-child(even)` → `--ao-surface-minimal`) |
 | Type=Border | `.table.table--bordered` | Vertical cell borders on every column except the last |
-| Header cell | `<th>` (default styling) | Padding `8/16`, uppercase, `--ai-font-fixed-xxs`, semibold |
-| Body cell | `<td>` (default styling) | Padding `12/16`, regular `--ai-font-fixed-xs` |
+| Header cell | `<th>` (default styling) | Padding `8/16`, uppercase, `--ao-font-fixed-xxs`, semibold |
+| Body cell | `<td>` (default styling) | Padding `12/16`, regular `--ao-font-fixed-xs` |
 | Right-aligned cell utility | `.table__cell--right` | Optional helper — apply on `<th>` and `<td>` to right-align a column. Not used in the default Table demo (numeric columns left-align like all other cells). |
 
 ## Token Mapping
 
 | Figma value | CSS variable | Role |
 |---|---|---|
-| `surface/primary` | `--ai-surface-primary` | Wrap background |
-| `surface/minimal` | `--ai-surface-minimal` | Header bg, striped row bg |
-| `border/secondary` | `--ai-border-secondary` | Wrap border, header bottom border, body row dividers, vertical cell separators (Bordered) |
-| `text/secondary` | `--ai-text-secondary` | Header text colour |
-| `text/primary` | `--ai-text-primary` | Body text colour |
-| `radius/md` (8px) | `--ai-radius-md` | Wrap corner radius |
-| `spacing/3` (8px) | `--ai-spacing-3` | Header padding-y |
-| `spacing/4` (12px) | `--ai-spacing-4` | Body padding-y |
-| `spacing/5` (16px) | `--ai-spacing-5` | All cell padding-x |
-| `font/title` | `--ai-font-title` | Both header and body |
-| `font/fixed-xxs` (12px) | `--ai-font-fixed-xxs` | Header text size |
-| `font/fixed-xs` (14px) | `--ai-font-fixed-xs` | Body text size |
-| `font/semibold` | `--ai-font-semibold` | Header weight |
-| `font/regular` | `--ai-font-regular` | Body weight |
-| `leading/md` (24px) | `--ai-leading-md` | Both |
-| `tracking 0.6px` | `--ai-tracking-7` (`0.05em`) | Header letter-spacing — `0.05em` at 12px font-size resolves to 0.6px (matches Figma's literal 0.6px) |
+| `surface/primary` | `--ao-surface-primary` | Wrap background |
+| `surface/minimal` | `--ao-surface-minimal` | Header bg, striped row bg |
+| `border/secondary` | `--ao-border-secondary` | Wrap border, header bottom border, body row dividers, vertical cell separators (Bordered) |
+| `text/secondary` | `--ao-text-secondary` | Header text colour |
+| `text/primary` | `--ao-text-primary` | Body text colour |
+| `radius/md` (8px) | `--ao-radius-md` | Wrap corner radius |
+| `spacing/3` (8px) | `--ao-spacing-3` | Header padding-y |
+| `spacing/4` (12px) | `--ao-spacing-4` | Body padding-y |
+| `spacing/5` (16px) | `--ao-spacing-5` | All cell padding-x |
+| `font/title` | `--ao-font-title` | Both header and body |
+| `font/fixed-xxs` (12px) | `--ao-font-fixed-xxs` | Header text size |
+| `font/fixed-xs` (14px) | `--ao-font-fixed-xs` | Body text size |
+| `font/semibold` | `--ao-font-semibold` | Header weight |
+| `font/regular` | `--ao-font-regular` | Body weight |
+| `leading/md` (24px) | `--ao-leading-md` | Both |
+| `tracking 0.6px` | `--ao-tracking-7` (`0.05em`) | Header letter-spacing — `0.05em` at 12px font-size resolves to 0.6px (matches Figma's literal 0.6px) |
 
 ## Token Gaps
 
-None — every Figma value maps to an existing `--ai-*` token.
+None — every Figma value maps to an existing `--ao-*` token.
 
 ## Notes / Inconsistencies
 
-- **Mobile Price header text colour discrepancy.** In the Mobile variants (Default + Striped), Figma binds the right-most "Price" header cell to `--ai-text-contrast` (`#67676c`) instead of the `--ai-text-secondary` (`#3c3c3f`) used by every other header cell across all variants. Almost certainly a binding bug. The component normalises to `--ai-text-secondary` everywhere for consistency.
+- **Mobile Price header text colour discrepancy.** In the Mobile variants (Default + Striped), Figma binds the right-most "Price" header cell to `--ao-text-contrast` (`#67676c`) instead of the `--ao-text-secondary` (`#3c3c3f`) used by every other header cell across all variants. Almost certainly a binding bug. The component normalises to `--ao-text-secondary` everywhere for consistency.
 - **Layout via absolute positioning in Figma.** Figma's design context renders the table as absolute-positioned cells with hardcoded pixel widths (e.g. `w-[384.688px]`). The production CSS uses a normal `<table>` with `border-collapse: collapse` and lets the browser's auto-layout distribute column widths — this is more semantic, accessible, and resilient to content variation.
-- **Mobile scroll indicator pill.** The Mobile variants in Figma include a small `bg-[var(--ai-surface-secondary)] h-[10px] rounded-full w-[180px]` pill at the bottom of the panel — a visual representation of where the scrollbar would be. The production component does not render this; the browser's native scrollbar serves the same purpose.
+- **Mobile scroll indicator pill.** The Mobile variants in Figma include a small `bg-[var(--ao-surface-secondary)] h-[10px] rounded-full w-[180px]` pill at the bottom of the panel — a visual representation of where the scrollbar would be. The production component does not render this; the browser's native scrollbar serves the same purpose.
 - **Last row has no bottom border.** Standard table pattern — `tbody tr:last-child td { border-bottom: 0 }`.
 - **All cells use `white-space: nowrap`** to match Figma's `whitespace-nowrap` on every cell. This means narrow wraps trigger horizontal scroll instead of wrapping cell content.
 

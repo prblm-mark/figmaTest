@@ -34,30 +34,30 @@
 
 | Property | Figma variable | CSS variable |
 |---|---|---|
-| Desktop gap | `--ai-spacing-5` | `--ai-spacing-5` |
-| Mobile outer gap | `--ai-spacing-3` | `--ai-spacing-3` |
-| Mobile title/info gap | `--ai-spacing-1` | `--ai-spacing-1` |
-| Title font | `--ai-font-fluid-xl`, `--ai-font-bold`, `--ai-leading-lg` | same |
-| Title color | `--ai-text-primary` | `--ai-text-primary` |
-| Actions gap | `--ai-spacing-3` | `--ai-spacing-3` |
-| Mobile button height | `h-[32px]` = `--ai-spacing-7` | `.header__actions .btn` at `@media max-width:767px` |
-| Mobile button padding | `--ai-spacing-4` | same |
-| Mobile button font | `--ai-font-fluid-xxs` | same |
-| Tooltip bg | `--ai-surface-invert` | `--ai-surface-invert` |
-| Tooltip radius | `--ai-radius-lg` | `--ai-radius-lg` |
-| Tooltip padding | `--ai-spacing-5` | `--ai-spacing-5` |
-| Tooltip text color | `--ai-text-invert` | `--ai-text-invert` |
-| Tooltip text font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-xs` | same |
+| Desktop gap | `--ao-spacing-5` | `--ao-spacing-5` |
+| Mobile outer gap | `--ao-spacing-3` | `--ao-spacing-3` |
+| Mobile title/info gap | `--ao-spacing-1` | `--ao-spacing-1` |
+| Title font | `--ao-font-fluid-xl`, `--ao-font-bold`, `--ao-leading-lg` | same |
+| Title color | `--ao-text-primary` | `--ao-text-primary` |
+| Actions gap | `--ao-spacing-3` | `--ao-spacing-3` |
+| Mobile button height | `h-[32px]` = `--ao-spacing-7` | `.header__actions .btn` at `@media max-width:767px` |
+| Mobile button padding | `--ao-spacing-4` | same |
+| Mobile button font | `--ao-font-fluid-xxs` | same |
+| Tooltip bg | `--ao-surface-invert` | `--ao-surface-invert` |
+| Tooltip radius | `--ao-radius-lg` | `--ao-radius-lg` |
+| Tooltip padding | `--ao-spacing-5` | `--ao-spacing-5` |
+| Tooltip text color | `--ao-text-invert` | `--ao-text-invert` |
+| Tooltip text font | `--ao-font-body`, `--ao-font-regular`, `--ao-font-fixed-xxs`, `--ao-leading-xs` | same |
 
 ## Token Gaps
-None — all design values map to `--ai-*` semantic tokens.
+None — all design values map to `--ao-*` semantic tokens.
 Tooltip box-shadow (`0 2px 10px rgba(0,0,0,0.15)`) is structural CSS, not tokenised.
 
 ## Notes
 - `header__title-group` uses `display: contents` on desktop — makes the wrapper transparent to
   the flex layout so title and info slot appear as direct flex children. Switched to `flex-col`
   automatically at `@media (max-width: 767px)` — no `.header--mobile` modifier needed.
-- Mobile title renders at 20px (vs 22px desktop) via `--ai-font-fluid-xl` — the fluid token
+- Mobile title renders at 20px (vs 22px desktop) via `--ao-font-fluid-xl` — the fluid token
   handles the breakpoint automatically, no override needed.
 - Tooltip is shown/hidden by presence of `.header__tooltip` in the DOM (JS-driven in production).
   `top: 100%` positions it flush below the header regardless of height.

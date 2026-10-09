@@ -39,28 +39,28 @@ Dialog pattern for alerts, confirmations, forms, feedback, and scrollable conten
 
 | Property | Token |
 |----------|-------|
-| Background | `--ai-surface-primary` |
-| Border radius | `--ai-radius-lg` |
+| Background | `--ao-surface-primary` |
+| Border radius | `--ao-radius-lg` |
 | Shadow | `0 0 20px rgba(0,0,0,0.05), 0 2px 2px rgba(0,0,0,0.1)` |
-| Header/footer padding | `--ai-spacing-5` (v) / `--ai-spacing-6` (h) |
-| Header/footer border | `--ai-border-secondary` |
-| Body padding | `--ai-spacing-6` |
-| Body paragraph gap | `--ai-spacing-5` |
-| Title font | `--ai-font-title` / `--ai-font-fixed-md` / `--ai-font-semibold` |
-| Title color | `--ai-text-primary` |
-| Body text | `--ai-font-body` / `--ai-font-fixed-xs` / `--ai-text-secondary` |
-| Footer button gap | `--ai-spacing-3` |
-| Close button size | `--ai-spacing-7` (32px) |
-| Close icon size | `--ai-icon-size-md` (20px) |
-| Confirmation icon wrap | 56px circle, `--ai-surface-minimal` bg |
-| Confirmation icon | `--ai-icon-size-lg`, `--ai-text-error` |
-| Feedback header gap | `--ai-spacing-4` |
-| Feedback icon circle | `--ai-spacing-8` (40px), `--ai-radius-full` |
+| Header/footer padding | `--ao-spacing-5` (v) / `--ao-spacing-6` (h) |
+| Header/footer border | `--ao-border-secondary` |
+| Body padding | `--ao-spacing-6` |
+| Body paragraph gap | `--ao-spacing-5` |
+| Title font | `--ao-font-title` / `--ao-font-fixed-md` / `--ao-font-semibold` |
+| Title color | `--ao-text-primary` |
+| Body text | `--ao-font-body` / `--ao-font-fixed-xs` / `--ao-text-secondary` |
+| Footer button gap | `--ao-spacing-3` |
+| Close button size | `--ao-spacing-7` (32px) |
+| Close icon size | `--ao-icon-size-md` (20px) |
+| Confirmation icon wrap | 56px circle, `--ao-surface-minimal` bg |
+| Confirmation icon | `--ao-icon-size-lg`, `--ao-text-error` |
+| Feedback header gap | `--ao-spacing-4` |
+| Feedback icon circle | `--ao-spacing-8` (40px), `--ao-radius-full` |
 | Feedback positive bg | `#dcfeec` (Aqua/50 — primitive, approved) |
-| Feedback positive icon | `--ai-surface-success` |
+| Feedback positive icon | `--ao-surface-success` |
 | Feedback negative bg | `#fef3f3` (Red/50 — primitive, approved) |
-| Feedback negative icon | `--ai-text-error` |
-| Checkbox list gap | `--ai-spacing-4` |
+| Feedback negative icon | `--ao-text-error` |
+| Checkbox list gap | `--ao-spacing-4` |
 
 ## Dependencies
 
@@ -80,11 +80,11 @@ Original note: Figma defines no mobile modal variant. One responsive rule exists
 
 | Breakpoint | Rule | Origin |
 |---|---|---|
-| `max-width: 639px` (below `--ai-bp-sm`) | `.modal__header` / `.modal__footer` padding → `var(--ai-spacing-4) var(--ai-spacing-5)` (from `--ai-spacing-5` / `--ai-spacing-6`) | Added 2026-07-27 during the EventPicker build, then applied to **all** modals by request |
-| `max-width: 639px` | `.modal__footer .btn` → `min-height: --ai-spacing-7` (32), `padding: 0 --ai-spacing-4` (12), `font-size: --ai-font-fluid-xxs` (12) — i.e. `.btn--sm` | Added 2026-09-09. Completes the `Size=sm` footer variant (`3427:11839`), which had been implemented for padding but not button size. Affects **every** modal |
+| `max-width: 639px` (below `--ao-bp-sm`) | `.modal__header` / `.modal__footer` padding → `var(--ao-spacing-4) var(--ao-spacing-5)` (from `--ao-spacing-5` / `--ao-spacing-6`) | Added 2026-07-27 during the EventPicker build, then applied to **all** modals by request |
+| `max-width: 639px` | `.modal__footer .btn` → `min-height: --ao-spacing-7` (32), `padding: 0 --ao-spacing-4` (12), `font-size: --ao-font-fluid-xxs` (12) — i.e. `.btn--sm` | Added 2026-09-09. Completes the `Size=sm` footer variant (`3427:11839`), which had been implemented for padding but not button size. Affects **every** modal |
 
 `.modal--confirm .modal__footer` is unaffected — it is more specific and keeps its
-intentionally borderless, centred `0 var(--ai-spacing-6) var(--ai-spacing-6)` padding.
+intentionally borderless, centred `0 var(--ao-spacing-6) var(--ao-spacing-6)` padding.
 `.modal__body` padding is also unchanged at every width.
 
 ## Overlay scrim — per theme
@@ -135,7 +135,7 @@ deep, so it beats both the plain dark rule and the plain chat rule.
 **There is no scrim token**, so all four values are raw rgba. `#0f172a` exists as
 `--cc-header-primary-bg` (and dark `--cc-ui-primary-bg`), but binding a scrim to a header or page
 background would be a category error, and a hex token cannot carry the alpha anyway. The proper fix
-is a real `--ai-surface-scrim` with per-theme values in Figma; until then these are deliberate raw
+is a real `--ao-surface-scrim` with per-theme values in Figma; until then these are deliberate raw
 values, not oversights.
 
 ## Notes
@@ -199,7 +199,7 @@ was **invisible on desktop** and only surfaced as a mobile override that silentl
 - **`showIcon`** — a 40px tinted disc with a 20px glyph. Its `rgba(48, 203, 144, 0.15)` fill is the
   *same already-approved value* `.modal__header-icon--positive` uses, so there is no token question
   here, only unwritten CSS.
-- **`subTitle`** — a second, inline title beside the first, medium weight with `--ai-tracking-3`.
+- **`subTitle`** — a second, inline title beside the first, medium weight with `--ao-tracking-3`.
   Distinct from `subText`, which sits *below*.
 - **Base/sm are SIZE VARIANTS, not a breakpoint.** This is the important one. Implementing them as
   `@media (max-width: 639px)` reproduces the right values for these screens, but a consumer who
@@ -207,21 +207,21 @@ was **invisible on desktop** and only surfaced as a mobile override that silentl
   the faithful model. Chosen deliberately (designer, 2026-08-27) as the smaller change; a full
   ModalHeader/Body/Footer audit is its own job.
 - **The sm variant's own padding disagrees with the screens using it.** `Size=sm` binds
-  `py: --ai-spacing-3` (8) and a 6px heading gap; the create-plan mobile frames bind `py: 12` and a
+  `py: --ao-spacing-3` (8) and a 6px heading gap; the create-plan mobile frames bind `py: 12` and a
   4px gap — which is what Modal's existing 639px rule already produced. So those frames are not
   using sm as drawn. Worth resolving before the audit.
 - **`.modal` shadow and border still differ from Figma.** Figma binds `light/shadow-md`
-  (`--ai-shadow-md`) plus a 1px `--ai-border-secondary`; `.modal` has neither. Pre-existing, flagged
+  (`--ao-shadow-md`) plus a 1px `--ao-border-secondary`; `.modal` has neither. Pre-existing, flagged
   on the Seating Planner screens too.
 - **The overlay's mobile padding.** The create-plan mobile frame places its modal 32px from each
-  edge, where `.modal-overlay` pads `--ai-spacing-6` (24) — so the modal renders 354 wide against
+  edge, where `.modal-overlay` pads `--ao-spacing-6` (24) — so the modal renders 354 wide against
   Figma's 338. Not changed, because overlay padding is shared by every modal.
 
 ## Two fixes, 2026-08-27
 
-**`.modal` had no border.** Figma binds a 1px `--ai-border-secondary` on the Modal root and always
+**`.modal` had no border.** Figma binds a 1px `--ao-border-secondary` on the Modal root and always
 had; it was noted as a difference while building the Seating Planner screens and then not acted on.
-Added for **all** modals. With the global `border-box` it sits inside the width, so `--ai-size-9`
+Added for **all** modals. With the global `border-box` it sits inside the width, so `--ao-size-9`
 stays 512px.
 
 **`.modal__body p` was restyling nested paragraphs.** At (0,1,1) it beat any single-class selector,
@@ -232,7 +232,7 @@ and the only nested ones anywhere are the help lines that should never have been
 
 ### The header type is `leading-none`
 
-`.modal__title` used `--ai-leading-md` (24px) and `.modal__subtitle` `--ai-leading-xs` (16px), where
+`.modal__title` used `--ao-leading-md` (24px) and `.modal__subtitle` `--ao-leading-xs` (16px), where
 Figma's ModalHeader renders **both** `leading-none` — its title row is `h-[18px]` against an 18px
 font. That made every modal header 8px taller than drawn. Fixed 2026-08-27.
 
@@ -242,13 +242,13 @@ would overlap it — the header collapses rather than tightens. Figma's `leading
 text *wrapper* and is an export artefact of mixed-style containers; `leading-none` on the paragraph
 is the real instruction. `1` also scales, so one rule covers Base and the compact size (18px and
 16px title, 14px and 13px subtitle) where a fixed px value would need two — and it stays correct in
-themes where `--ai-font-fixed-md` resolves differently, as it does on EventPicker's page.
+themes where `--ao-font-fixed-md` resolves differently, as it does on EventPicker's page.
 
 The title has no `nowrap` or ellipsis, so a long user-supplied name still wraps rather than being
 clipped; at leading 1 those lines touch but stay legible.
 
-**Token added, gap closed.** There was no ratio token and no `--ai-leading-*` equal to 18px (the
-scale is 16/20/24/32/40/48), so **`--ai-leading-none: 1` was added** to
+**Token added, gap closed.** There was no ratio token and no `--ao-leading-*` equal to 18px (the
+scale is 16/20/24/32/40/48), so **`--ao-leading-none: 1` was added** to
 `FigmaTokens/Typography/{Desktop,Mobile,Minimised}.tokens.json` on 2026-08-27 — the designer had
 already added the Figma variable, so the next export replaces the placeholder variableId.
 
@@ -299,7 +299,7 @@ with 128px gaps. Zero JS errors throughout.
 height/flex rules alongside it. It provides `overflow-y: auto`, `min-block-size: 0`, and the
 scrollbar treatment; caps and flex behaviour stay with the caller.
 
-A **transparent track with a thin `--ai-surface-secondary` thumb**. This is what the design system
+A **transparent track with a thin `--ao-surface-secondary` thumb**. This is what the design system
 already does everywhere it scrolls, so it is a convention being named rather than invented:
 
 | Where | Established |
@@ -312,8 +312,8 @@ already does everywhere it scrolls, so it is a convention being named rather tha
 360px container of paragraphs and no scrollbar at all — checked, not assumed. So the appearance is
 a code decision, and one answer is better than two.
 
-`.modal__body--scroll` was that second answer: a **visible** `--ai-surface-minimal` track with an
-`--ai-border-secondary` thumb at a raw 6px, undocumented in these notes and used only by this
+`.modal__body--scroll` was that second answer: a **visible** `--ao-surface-minimal` track with an
+`--ao-border-secondary` thumb at a raw 6px, undocumented in these notes and used only by this
 component's own demo. Folded into the shared rule, keeping its own 360px cap. Its scrollbar now
 looks like every other scroll region in the system.
 

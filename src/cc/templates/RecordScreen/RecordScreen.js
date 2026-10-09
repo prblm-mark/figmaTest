@@ -34,7 +34,7 @@
   if (window.ccWidth) window.ccWidth.apply(window.ccWidth.resolve());
 
   /* Resizable sidebar (designer, 2026-09-28) — the Seating Planner's handle model.
-   * MIN --ai-size-7 (384 — Figma's width is the floor, designer 2026-09-28), MAX half the row, 16px arrow step, double-click
+   * MIN --ao-size-7 (384 — Figma's width is the floor, designer 2026-09-28), MAX half the row, 16px arrow step, double-click
    * resets to Figma's 384. The chosen width is kept per viewer (localStorage, like cc-width) so
    * it survives moving between View and Edit. No stacked layout exists for these screens yet,
    * so there is no isStacked() guard. */
@@ -53,7 +53,7 @@
 
   if (body && handle && side) {
     var bounds = function () {
-      var min = tokenPx('--ai-size-7');
+      var min = tokenPx('--ao-size-7');
       return { min: min, max: Math.max(min, body.getBoundingClientRect().width / 2) };
     };
     var aria = function (w) {
@@ -92,7 +92,7 @@
     handle.addEventListener('pointercancel', end);
 
     handle.addEventListener('keydown', function (ev) {
-      var b = bounds(), step = tokenPx('--ai-spacing-5'), w = side.getBoundingClientRect().width;
+      var b = bounds(), step = tokenPx('--ao-spacing-5'), w = side.getBoundingClientRect().width;
       if (ev.key === 'ArrowLeft') setWidth(w + step, true);
       else if (ev.key === 'ArrowRight') setWidth(w - step, true);
       else if (ev.key === 'Home') setWidth(b.max, true);
@@ -147,12 +147,12 @@
   if (canvas && window.Chart) {
     var cs = getComputedStyle(document.documentElement);
     var tok = function (n, fb) { return cs.getPropertyValue(n).trim() || fb; };
-    var brand = tok('--ai-surface-brand', '#0071d8');
-    var success = tok('--ai-surface-success', '#30cb90');
+    var brand = tok('--ao-surface-brand', '#0071d8');
+    var success = tok('--ao-surface-success', '#30cb90');
     window.Chart.defaults.font.family = 'Inter, sans-serif';
     window.Chart.defaults.font.size = 10;
-    window.Chart.defaults.color = tok('--ai-text-contrast', '#67676c');
-    window.Chart.defaults.borderColor = tok('--ai-border-secondary', '#e2e2e3');
+    window.Chart.defaults.color = tok('--ao-text-contrast', '#67676c');
+    window.Chart.defaults.borderColor = tok('--ao-border-secondary', '#e2e2e3');
     new window.Chart(canvas, {
       type: 'line',
       data: {
@@ -281,7 +281,7 @@
     var convChart = new window.Chart(convCanvas, {
       type: 'bar',
       data: { labels: months, datasets: [{ label: 'Conversions', data: CONV.registration.series,
-        backgroundColor: ccs.getPropertyValue('--ai-surface-brand').trim(), borderRadius: 2, maxBarThickness: 12 }] },
+        backgroundColor: ccs.getPropertyValue('--ao-surface-brand').trim(), borderRadius: 2, maxBarThickness: 12 }] },
       options: {
         responsive: true, maintainAspectRatio: false,
         plugins: { legend: { display: false } },

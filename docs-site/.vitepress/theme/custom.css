@@ -1,4 +1,4 @@
-/* Import design system tokens so doc pages can reference --ai-* vars */
+/* Import design system tokens so doc pages can reference --ao-* vars */
 @import '../../../css/tokens.css';
 @import '../../../css/tokens-dark.css';
 @import '../../../css/tokens-shadows.css';
@@ -11,10 +11,10 @@ html.dark {
 
 /* Override VitePress brand colors with our design system */
 :root {
-  --vp-c-brand-1: var(--ai-surface-brand);
-  --vp-c-brand-2: var(--ai-surface-brand-light);
-  --vp-c-brand-3: var(--ai-surface-brand-dark);
-  --vp-c-brand-soft: var(--ai-surface-brand-contrast-extra);
+  --vp-c-brand-1: var(--ao-surface-brand);
+  --vp-c-brand-2: var(--ao-surface-brand-light);
+  --vp-c-brand-3: var(--ao-surface-brand-dark);
+  --vp-c-brand-soft: var(--ao-surface-brand-contrast-extra);
 }
 
 /* Align home hero and navbar width with feature cards */

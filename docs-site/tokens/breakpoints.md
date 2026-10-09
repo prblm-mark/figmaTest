@@ -6,11 +6,11 @@ Mobile-first responsive scale. All `@media` queries use `min-width`.
 
 | Name | Token | Value | @media usage | Use |
 |---|---|---|---|---|
-| sm | `--ai-bp-sm` | `40rem` (640px) | `@media (min-width: 640px)` | Mobile → tablet transition |
-| md | `--ai-bp-md` | `48rem` (768px) | `@media (min-width: 768px)` | Tablet → small desktop |
-| lg | `--ai-bp-lg` | `64rem` (1024px) | `@media (min-width: 1024px)` | Desktop — sidebar inline, nav arrows appear |
-| xl | `--ai-bp-xl` | `80rem` (1280px) | `@media (min-width: 1280px)` | Wide desktop — admin controls inline |
-| 2xl | `--ai-bp-2xl` | `96rem` (1536px) | `@media (min-width: 1536px)` | Ultra-wide |
+| sm | `--ao-bp-sm` | `40rem` (640px) | `@media (min-width: 640px)` | Mobile → tablet transition |
+| md | `--ao-bp-md` | `48rem` (768px) | `@media (min-width: 768px)` | Tablet → small desktop |
+| lg | `--ao-bp-lg` | `64rem` (1024px) | `@media (min-width: 1024px)` | Desktop — sidebar inline, nav arrows appear |
+| xl | `--ao-bp-xl` | `80rem` (1280px) | `@media (min-width: 1280px)` | Wide desktop — admin controls inline |
+| 2xl | `--ao-bp-2xl` | `96rem` (1536px) | `@media (min-width: 1536px)` | Ultra-wide |
 
 ## Rules
 
@@ -20,11 +20,11 @@ Base styles = mobile. Add complexity via `min-width` queries. Never use `max-wid
 
 ```css
 /* Base: mobile */
-.component { font-size: var(--ai-font-fixed-xs); }
+.component { font-size: var(--ao-font-fixed-xs); }
 
 /* Upgrade at tablet */
 @media (min-width: 640px) {
-  .component { font-size: var(--ai-font-fixed-sm); }
+  .component { font-size: var(--ao-font-fixed-sm); }
 }
 ```
 
@@ -37,7 +37,7 @@ Base styles = mobile. Add complexity via `min-width` queries. Never use `max-wid
 @media (min-width: 640px) { ... }
 
 /* Wrong — will not work */
-@media (min-width: var(--ai-bp-sm)) { ... }
+@media (min-width: var(--ao-bp-sm)) { ... }
 ```
 
 `@container` queries **can** use CSS variables.

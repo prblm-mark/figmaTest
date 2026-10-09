@@ -58,77 +58,77 @@ Total = **80 symbols**, matching the metadata enumeration.
 
 | Size | Diameter | Token |
 |---|---|---|
-| 1 | 24px | `--ai-spacing-6` |
-| 2 | 32px | `--ai-spacing-7` |
-| 3 | 48px | `--ai-spacing-9` |
-| 4 | 64px | `--ai-spacing-11` |
-| 5 | 80px | `--ai-spacing-13` |
+| 1 | 24px | `--ao-spacing-6` |
+| 2 | 32px | `--ao-spacing-7` |
+| 3 | 48px | `--ao-spacing-9` |
+| 4 | 64px | `--ao-spacing-11` |
+| 5 | 80px | `--ao-spacing-13` |
 
 ### Shape
 
 | Shape | Token |
 |---|---|
-| Round | `--ai-radius-full` |
-| Rounded | `--ai-radius-md` (8px squircle) |
+| Round | `--ao-radius-full` |
+| Rounded | `--ao-radius-md` (8px squircle) |
 
 ### Type=Bordered
 
 | Property | Value |
 |---|---|
-| Outline | `1px solid var(--ai-border-secondary)` |
+| Outline | `1px solid var(--ao-border-secondary)` |
 | Outline offset | `3px` (Figma uses a 4px gap; outline rendered at offset 3 + 1px width visually = 4px from photo) |
 
 ### Type=Placeholder
 
 | Property | Token |
 |---|---|
-| Background | `--ai-surface-secondary` |
-| Icon colour | `--ai-icon-secondary` |
+| Background | `--ao-surface-secondary` |
+| Icon colour | `--ao-icon-secondary` |
 | Icon | Lucide `user`, with **explicit per-size dimensions** (NOT proportional) |
 
 **Placeholder icon sizes per avatar size** (verified from Figma — do not assume scaling):
 
 | Avatar | Icon size | Token |
 |---|---|---|
-| Size 1 (24px) | 16px | `--ai-icon-size-sm` |
-| Size 2 (32px) | 20px | `--ai-icon-size-md` |
-| Size 3 (48px) | 24px | `--ai-icon-size-lg` |
-| Size 4 (64px) | 32px | `--ai-icon-size-xl` |
+| Size 1 (24px) | 16px | `--ao-icon-size-sm` |
+| Size 2 (32px) | 20px | `--ao-icon-size-md` |
+| Size 3 (48px) | 24px | `--ao-icon-size-lg` |
+| Size 4 (64px) | 32px | `--ao-icon-size-xl` |
 | Size 5 (80px) | **40px** | ⚠ no token — hardcoded `40px` |
 
-⚠ **Token gap:** Size 5 placeholder icon is 40px; there's no `--ai-icon-size-2xl` token. Flagged for designer to add.
+⚠ **Token gap:** Size 5 placeholder icon is 40px; there's no `--ao-icon-size-2xl` token. Flagged for designer to add.
 
 ### Type=Initials
 
 | Property | Token |
 |---|---|
-| Background | `--ai-surface-info-soft` |
-| Text colour | `--ai-text-info` |
-| Font family | `--ai-font-title` |
-| Font weight | `--ai-font-semibold` |
-| Font size (Size 1) | `--ai-font-fixed-xxs` (12px) |
-| Font size (Size 2) | `--ai-font-fixed-xs`  (14px) |
-| Font size (Size 3) | `--ai-font-fixed-md`  (18px) |
-| Font size (Size 4) | `--ai-font-fixed-xl`  (22px) |
-| Font size (Size 5) | `--ai-font-fixed-3xl` (28px) |
+| Background | `--ao-surface-info-soft` |
+| Text colour | `--ao-text-info` |
+| Font family | `--ao-font-title` |
+| Font weight | `--ao-font-semibold` |
+| Font size (Size 1) | `--ao-font-fixed-xxs` (12px) |
+| Font size (Size 2) | `--ao-font-fixed-xs`  (14px) |
+| Font size (Size 3) | `--ao-font-fixed-md`  (18px) |
+| Font size (Size 4) | `--ao-font-fixed-xl`  (22px) |
+| Font size (Size 5) | `--ao-font-fixed-3xl` (28px) |
 
 ### Checked
 
 | Property | Token |
 |---|---|
-| Background | `--ai-surface-success` |
-| Tick icon colour | `--ai-btn-primary-text` (white in light + dark) |
+| Background | `--ao-surface-success` |
+| Tick icon colour | `--ao-btn-primary-text` (white in light + dark) |
 | Tick icon | Lucide `check`, with **explicit per-size dimensions** (NOT proportional) |
 
 **Checked tick sizes per avatar size** (verified from Figma):
 
 | Avatar | Tick size | Token |
 |---|---|---|
-| Size 1 (24px) | 16px | `--ai-icon-size-sm` |
-| Size 2 (32px) | 16px | `--ai-icon-size-sm` |
-| Size 3 (48px) | 24px | `--ai-icon-size-lg` |
-| Size 4 (64px) | 24px | `--ai-icon-size-lg` |
-| Size 5 (80px) | 24px | `--ai-icon-size-lg` |
+| Size 1 (24px) | 16px | `--ao-icon-size-sm` |
+| Size 2 (32px) | 16px | `--ao-icon-size-sm` |
+| Size 3 (48px) | 24px | `--ao-icon-size-lg` |
+| Size 4 (64px) | 24px | `--ao-icon-size-lg` |
+| Size 5 (80px) | 24px | `--ao-icon-size-lg` |
 
 Note: Size 1+2 share the small tick; Sizes 3+4+5 share the large tick. There's no `md` (20px) or `xl` (32px) tick — Figma quantises to two values.
 
@@ -136,13 +136,13 @@ Note: Size 1+2 share the small tick; Sizes 3+4+5 share the large tick. There's n
 
 | Property | Token |
 |---|---|
-| Diameter (Sizes 1, 2) | `--ai-spacing-3` (8px) |
-| Diameter (Sizes 3, 4) | `--ai-spacing-5` (16px) |
-| Diameter (Size 5) | `--ai-spacing-6` (24px) |
-| Border / ring | `1px solid --ai-surface-primary` (1.5px on Sizes 3-4, 2px on Size 5) |
-| Notification Color = Green | `--ai-surface-success` |
-| Notification Color = Red | `--ai-surface-error` |
-| Notification Color = Orange | `--ai-surface-warning` |
+| Diameter (Sizes 1, 2) | `--ao-spacing-3` (8px) |
+| Diameter (Sizes 3, 4) | `--ao-spacing-5` (16px) |
+| Diameter (Size 5) | `--ao-spacing-6` (24px) |
+| Border / ring | `1px solid --ao-surface-primary` (1.5px on Sizes 3-4, 2px on Size 5) |
+| Notification Color = Green | `--ao-surface-success` |
+| Notification Color = Red | `--ao-surface-error` |
+| Notification Color = Orange | `--ao-surface-warning` |
 
 **Position depends on Shape:**
 
@@ -166,7 +166,7 @@ The photo is clipped via `clip-path` on the `.portrait` element, NOT via `overfl
 | Shape | Clip |
 |---|---|
 | Round | `clip-path: circle(50%)` |
-| Rounded | `clip-path: inset(0 round var(--ai-radius-md))` |
+| Rounded | `clip-path: inset(0 round var(--ao-radius-md))` |
 
 ---
 
@@ -191,12 +191,12 @@ The photo is clipped via `clip-path` on the `.portrait` element, NOT via `overfl
 ## History
 
 - 2026-05-07 (initial rebuild): Full rebuild after the designer formalised the new variant matrix in Figma. Pre-existing code-first additions (`--rounded`, `--bordered`, `--placeholder`, `--initials`, status-dot colour modifiers) were re-derived from the Figma source rather than carried over. Token bindings changed for several types:
-  - `--bordered`: outline tightened to 1px `--ai-border-secondary` outside (was 2px `--ai-surface-contrast` inside)
-  - `--placeholder`: bg `--ai-surface-secondary`, icon `--ai-icon-secondary` (was `--ai-surface-contrast` / `--ai-text-invert`)
-  - `--initials`: bg `--ai-surface-info-soft`, text `--ai-text-info` (was `--ai-surface-brand-soft` / `--ai-surface-brand-dark`)
+  - `--bordered`: outline tightened to 1px `--ao-border-secondary` outside (was 2px `--ao-surface-contrast` inside)
+  - `--placeholder`: bg `--ao-surface-secondary`, icon `--ao-icon-secondary` (was `--ao-surface-contrast` / `--ao-text-invert`)
+  - `--initials`: bg `--ao-surface-info-soft`, text `--ao-text-info` (was `--ao-surface-brand-soft` / `--ao-surface-brand-dark`)
   - Notification dot colour modifiers renamed to match the Figma `Notification Color` enum: `--green` / `--red` / `--orange` (was `--online` / `--away` / `--busy` / `--offline`).
 - 2026-05-07 (correction): Initial rebuild assumed proportional 67% icon scaling and identical dot positioning across shapes. Both wrong. Re-fetched per-size variants and corrected:
   - **Checked tick** sizes are explicit per Figma: 16px for Sizes 1+2, 24px for Sizes 3+4+5 (not 67% of avatar).
-  - **Placeholder user icon** sizes are explicit per Figma: 16/20/24/32/40px for Sizes 1/2/3/4/5 (not 67% of avatar). Size 5's 40px has no `--ai-icon-size-2xl` token — flagged.
+  - **Placeholder user icon** sizes are explicit per Figma: 16/20/24/32/40px for Sizes 1/2/3/4/5 (not 67% of avatar). Size 5's 40px has no `--ao-icon-size-2xl` token — flagged.
   - **Notification dot** on Shape=Rounded uses negative offsets (`top: -3 right: -2` for Size 1, `top: -2 right: -2` for Size 2, `top: -8 right: -8` for Sizes 3-5) to clear the squircle's rounded corners. Round shape stays at `top: 0; right: 0`.
 - Pre-2026-05-07: Avatar had Size 1-5 + Show Notification + Checked, no Shape/Type/Notification Color axes.

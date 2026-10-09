@@ -75,31 +75,31 @@ rows below.
 
 | Figma | CSS | Role |
 |---|---|---|
-| `--ai-surface-primary` | panel `background-color` | |
-| `--ai-border-secondary` | panel + empty-state `border-color` | |
-| `--ai-radius-lg` | panel `border-radius` (16px) | |
-| `light/shadow-xxs` → `--ai-shadow-2xs` | panel `box-shadow` | |
-| `--ai-size-6` | panel `inline-size` (320px) | Figma draws 321 — see below |
-| `--ai-spacing-5` | header `padding`, body `padding-inline` + `padding-block-end`, empty `padding-inline` | |
-| `--ai-spacing-2` | header `gap`, empty `gap` | |
-| `--ai-spacing-3` | header-row `gap`, body `gap`, list `gap` | |
-| `--ai-spacing-1` | count `padding-block` | |
-| `--ai-spacing-4` | count `padding-inline` (12px) | |
-| `--ai-spacing-7` | empty `padding-block` (32px) | |
-| `--ai-font-title` | every text node | |
-| `--ai-font-fixed-md` | panel title (18px) | |
-| `--ai-font-fixed-4xs` | count (11px) | |
-| `--ai-font-fixed-xxs` | hint, empty body copy (12px) | |
-| `--ai-font-fixed-xs` | empty-state heading (14px) | |
-| `--ai-font-bold` / `-semibold` / `-regular` | title / count + empty heading / hint + empty copy | |
-| `--ai-leading-xs` | hint, empty body copy (16px) | see below |
-| `--ai-leading-sm` | empty-state heading (20px) | |
-| `--ai-text-primary` / `--ai-text-contrast` | title + empty heading / hint + count + empty copy | |
-| `--ai-surface-secondary` | count `background-color` | |
-| `--ai-radius-full` | count `border-radius` | |
-| `--ai-radius-md` | empty-state `border-radius` (8px) | |
-| `--ai-icon-size-sm` | empty-state tick (16px) | |
-| `--ai-surface-success` | empty-state tick colour | a SURFACE token on an icon — see below |
+| `--ao-surface-primary` | panel `background-color` | |
+| `--ao-border-secondary` | panel + empty-state `border-color` | |
+| `--ao-radius-lg` | panel `border-radius` (16px) | |
+| `light/shadow-xxs` → `--ao-shadow-2xs` | panel `box-shadow` | |
+| `--ao-size-6` | panel `inline-size` (320px) | Figma draws 321 — see below |
+| `--ao-spacing-5` | header `padding`, body `padding-inline` + `padding-block-end`, empty `padding-inline` | |
+| `--ao-spacing-2` | header `gap`, empty `gap` | |
+| `--ao-spacing-3` | header-row `gap`, body `gap`, list `gap` | |
+| `--ao-spacing-1` | count `padding-block` | |
+| `--ao-spacing-4` | count `padding-inline` (12px) | |
+| `--ao-spacing-7` | empty `padding-block` (32px) | |
+| `--ao-font-title` | every text node | |
+| `--ao-font-fixed-md` | panel title (18px) | |
+| `--ao-font-fixed-4xs` | count (11px) | |
+| `--ao-font-fixed-xxs` | hint, empty body copy (12px) | |
+| `--ao-font-fixed-xs` | empty-state heading (14px) | |
+| `--ao-font-bold` / `-semibold` / `-regular` | title / count + empty heading / hint + empty copy | |
+| `--ao-leading-xs` | hint, empty body copy (16px) | see below |
+| `--ao-leading-sm` | empty-state heading (20px) | |
+| `--ao-text-primary` / `--ao-text-contrast` | title + empty heading / hint + count + empty copy | |
+| `--ao-surface-secondary` | count `background-color` | |
+| `--ao-radius-full` | count `border-radius` | |
+| `--ao-radius-md` | empty-state `border-radius` (8px) | |
+| `--ao-icon-size-sm` | empty-state tick (16px) | |
+| `--ao-surface-success` | empty-state tick colour | a SURFACE token on an icon — see below |
 
 ## Token gaps and decisions
 
@@ -107,9 +107,9 @@ All resolved with the designer 2026-08-25 rather than invented.
 
 | Figma | Decision |
 |---|---|
-| panel `w-[321px]`, unbound | **`--ai-size-6`** (320px). 321 has no token and is 1px off the one that exists, which TableDetail's identical rail *is* bound to. Treated as a Figma slip; worth nudging the frame to 320 and binding it. |
-| empty body copy `line-height: 1.4` (unitless), unbound | **`--ai-leading-xs`** (16px, i.e. 1.33). No `--ai-leading-*` token matches 1.4 — the scale is all px, and 1.4 × 12px is 16.8px. 0.8px tighter per line, ~2.4px over this three-line paragraph. |
-| empty tick coloured `--ai-surface-success` | **Used as drawn.** A *surface* token doing an icon's job, because **the icon scale has no success entry at all** — it stops at primary / secondary / contrast / invert / invert-secondary / brand, while surfaces and text both have success/error/warning. 3.16:1 on white clears the 3:1 WCAG asks of a graphical object, so this is safe; but **`--ai-icon-success` is a genuine hole in the scale** and worth filling. |
+| panel `w-[321px]`, unbound | **`--ao-size-6`** (320px). 321 has no token and is 1px off the one that exists, which TableDetail's identical rail *is* bound to. Treated as a Figma slip; worth nudging the frame to 320 and binding it. |
+| empty body copy `line-height: 1.4` (unitless), unbound | **`--ao-leading-xs`** (16px, i.e. 1.33). No `--ao-leading-*` token matches 1.4 — the scale is all px, and 1.4 × 12px is 16.8px. 0.8px tighter per line, ~2.4px over this three-line paragraph. |
+| empty tick coloured `--ao-surface-success` | **Used as drawn.** A *surface* token doing an icon's job, because **the icon scale has no success entry at all** — it stops at primary / secondary / contrast / invert / invert-secondary / brand, while surfaces and text both have success/error/warning. 3.16:1 on white clears the 3:1 WCAG asks of a graphical object, so this is safe; but **`--ao-icon-success` is a genuine hole in the scale** and worth filling. |
 | `Orange/600` (`#ea580c`) in the set's variable list | **Not a gap.** Present in `get_variable_defs` but used by nothing in this component — the same phantom seen on TableDetail. Likely bound on a hidden layer or in another Seating Planner mode. |
 
 ## Height: grows with content
@@ -167,7 +167,7 @@ Same treatment TableDetail already carries, and for the same reason. Three parts
 | `.unassigned__body` | `flex: 1; min-block-size: 0` | absorbs the leftover height, and `min-block-size: 0` is what lets a flex item shrink below its content — without it a scroll never engages (the app-shell height trap) |
 | `.unassigned__list` | `flex: 1; min-block-size: 0; overflow-y: auto` | **the list** is the scroller, not the body, so the search field above stays put while the people move |
 
-Scrollbar is the system's — transparent track, thin `--ai-surface-secondary` thumb — matching
+Scrollbar is the system's — transparent track, thin `--ao-surface-secondary` thumb — matching
 `.table-detail__list` and `.chat-sidebar__sections`.
 
 ### `flex-shrink: 0` on the list's children is load-bearing
@@ -194,8 +194,8 @@ held over it — half of `seating-drag-unspecified-visuals`, closed alongside th
 
 **Figma has no drag state here, and unlike TableCard there is no state axis to point at:** this
 component has two variants and both are Type (empty / populated). So the values are not drawn from
-its own set. They are the system's established drop-target pair — `--ai-border-brand` on
-`--ai-surface-minimal` — which the designer confirmed for AttendeeCard's `--dragged-over` on
+its own set. They are the system's established drop-target pair — `--ao-border-brand` on
+`--ao-surface-minimal` — which the designer confirmed for AttendeeCard's `--dragged-over` on
 2026-08-25, and which TableCard's drop target resolves to as well. Reusing an approved pair rather
 than inventing two values, but it is still a treatment **Figma does not draw for this component**,
 so it is worth adding there.
@@ -216,4 +216,4 @@ The parent module toggles it. No drag JS lives here, the same division AttendeeC
 Holding a seated person and hovering the tray marks it; hovering one of its own rows keeps the mark
 on the tray; moving to a table card moves the mark; holding an already-unassigned person marks
 nothing; Escape clears it. The paint computes `rgb(48,182,194)` on `rgb(243,246,247)` — exactly
-`--ai-border-brand` on `--ai-surface-minimal`.
+`--ao-border-brand` on `--ao-surface-minimal`.

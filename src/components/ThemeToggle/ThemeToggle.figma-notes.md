@@ -38,11 +38,11 @@ on the segment buttons.
 
 | Property | Token |
 |---|---|
-| Background | `var(--ai-surface-primary)` |
-| Border | `1px solid var(--ai-border-secondary)` |
-| Border-radius | `var(--ai-radius-md)` (8px) |
-| Height | `var(--ai-spacing-8)` (40px) |
-| Padding (horizontal) | `var(--ai-spacing-1)` (4px) |
+| Background | `var(--ao-surface-primary)` |
+| Border | `1px solid var(--ao-border-secondary)` |
+| Border-radius | `var(--ao-radius-md)` (8px) |
+| Height | `var(--ao-spacing-8)` (40px) |
+| Padding (horizontal) | `var(--ao-spacing-1)` (4px) |
 | Gap | `0` |
 | Width (standalone) | `172px` (raw — sub-token optical, Figma value) |
 
@@ -51,18 +51,18 @@ on the segment buttons.
 | Property | Token |
 |---|---|
 | Flex | `1 0 0` (each button fills half) |
-| Height | `var(--ai-spacing-7)` (32px) |
-| Padding (horizontal) | `var(--ai-spacing-4)` (12px) |
-| Gap (icon → label) | `var(--ai-spacing-3)` (8px) |
+| Height | `var(--ao-spacing-7)` (32px) |
+| Padding (horizontal) | `var(--ao-spacing-4)` (12px) |
+| Gap (icon → label) | `var(--ao-spacing-3)` (8px) |
 | Background (inactive) | `transparent` |
-| Background (active) | `var(--ai-surface-secondary)` — was `--ai-surface-minimal` until 2026-08-28. Both Figma variants bind secondary; minimal (#f8fafc) was only a ~2% step off the #ffffff wrapper, so the active segment read as unselected. |
+| Background (active) | `var(--ao-surface-secondary)` — was `--ao-surface-minimal` until 2026-08-28. Both Figma variants bind secondary; minimal (#f8fafc) was only a ~2% step off the #ffffff wrapper, so the active segment read as unselected. |
 
 ### Active-segment background — `secondary`, not `minimal` (2026-08-28)
 
 Changed at the designer's direction and verified in Figma: both variants (`2699:2053` Dark,
-`2699:2062` Light) bind `--ai-surface-secondary`, and neither references `minimal`.
+`2699:2062` Light) bind `--ao-surface-secondary`, and neither references `minimal`.
 
-It is a real visual fix, not a rename. Against the `--ai-surface-primary` wrapper the old token
+It is a real visual fix, not a rename. Against the `--ao-surface-primary` wrapper the old token
 was nearly invisible, and the improvement holds in every mode the component actually renders in:
 
 | Mode | wrapper (`primary`) | old (`minimal`) | new (`secondary`) |
@@ -73,7 +73,7 @@ was nearly invisible, and the improvement holds in every mode the component actu
 | CC Dark | (cc) | `#293548` | `#3d4b5f` |
 
 **One mode inverts, and is flagged rather than handled:** under `[data-surface="chat"]`,
-`--ai-surface-secondary` is `#ffffff` while `--ai-surface-minimal` is `#e2e2e3` — so in chat
+`--ao-surface-secondary` is `#ffffff` while `--ao-surface-minimal` is `#e2e2e3` — so in chat
 context the change would make the active segment *white* and the old token was the higher-contrast
 one. This is not a live problem: ThemeToggle is never rendered inside a `[data-surface="chat"]`
 scope (checked every consumer — Dropdown, HeaderGroup, ControlScreen, ControlHub, SeatingPlanner;
@@ -87,20 +87,20 @@ mode look broken — the active segment appeared stuck at the light `#e9eef4` wh
 no transition, flipped correctly. Inject
 `*{transition:none!important;animation:none!important}` before measuring.
 | Border | none |
-| Border-radius (inactive) | `var(--ai-radius-md)` |
-| Border-radius (active) | `var(--ai-radius-sm)` |
-| Text colour | `var(--ai-text-primary)` (substituted — see Token gaps) |
-| Font-family | `var(--ai-font-body)` |
-| Font-weight | `var(--ai-font-semibold)` |
-| Font-size | `var(--ai-font-fluid-xxs)` (12px) |
-| Line-height | `var(--ai-leading-xs)` (16px) |
-| Icon size | `var(--ai-icon-size-sm)` (16px) |
+| Border-radius (inactive) | `var(--ao-radius-md)` |
+| Border-radius (active) | `var(--ao-radius-sm)` |
+| Text colour | `var(--ao-text-primary)` (substituted — see Token gaps) |
+| Font-family | `var(--ao-font-body)` |
+| Font-weight | `var(--ao-font-semibold)` |
+| Font-size | `var(--ao-font-fluid-xxs)` (12px) |
+| Line-height | `var(--ao-leading-xs)` (16px) |
+| Icon size | `var(--ao-icon-size-sm)` (16px) |
 
 ### Focus
 
 | Property | Token |
 |---|---|
-| Outline | `2px solid var(--ai-surface-brand); outline-offset: -2px` |
+| Outline | `2px solid var(--ao-surface-brand); outline-offset: -2px` |
 
 ---
 
@@ -109,7 +109,7 @@ no transition, flipped correctly. Inject
 | Gap | Figma value | Resolution |
 |---|---|---|
 | 172px (standalone wrapper width) | `172px` | Approved raw — sub-token optical, Figma value |
-| Text colour | `--ai-btn-tertiary-text` (inactive), `--ai-btn-secondary-text-hover` (active) | Substituted with `--ai-text-primary`. Both Figma tokens currently resolve to the same value (#212123). Substitution keeps the semantic cleaner — text colour in a non-button context shouldn't reference button tokens. Flagged for designer to consider adding `--ai-text-on-segment` (or similar) if a different value is ever needed. |
+| Text colour | `--ao-btn-tertiary-text` (inactive), `--ao-btn-secondary-text-hover` (active) | Substituted with `--ao-text-primary`. Both Figma tokens currently resolve to the same value (#212123). Substitution keeps the semantic cleaner — text colour in a non-button context shouldn't reference button tokens. Flagged for designer to consider adding `--ao-text-on-segment` (or similar) if a different value is ever needed. |
 
 ---
 

@@ -11,11 +11,11 @@ Single variant — loading placeholder with 5 lines.
 | Figma property | CSS token | Value |
 |---|---|---|
 | Container direction | flex column | — |
-| Line gap | `--ai-spacing-4` | 12px |
+| Line gap | `--ao-spacing-4` | 12px |
 | Line height | `1rem` | 16px |
-| Line border-radius | `--ai-radius-sm` | 4px |
-| Shimmer base color | `--ai-skeleton-base` | #e5e7eb / #111928 |
-| Shimmer highlight | `--ai-skeleton-highlight` | #ffffff / #2b3644 |
+| Line border-radius | `--ao-radius-sm` | 4px |
+| Shimmer base color | `--ao-skeleton-base` | #e5e7eb / #111928 |
+| Shimmer highlight | `--ao-skeleton-highlight` | #ffffff / #2b3644 |
 
 ## Line widths
 

@@ -4,7 +4,7 @@ import figma, { html } from '@figma/code-connect/html'
 // @media (max-width: 767px), so both variants produce identical markup — the toolbar flips
 // to a column and the grid drops to one column entirely in CSS.
 //
-// The grid is repeat(auto-fill, minmax(var(--ai-size-4), 1fr)) rather than Figma's literal
+// The grid is repeat(auto-fill, minmax(var(--ao-size-4), 1fr)) rather than Figma's literal
 // four columns: it renders 4 columns of 281px at Figma's 1148px grid width (exactly the
 // cards Figma draws) and 1 at mobile, without overflowing in between. See figma-notes.
 //

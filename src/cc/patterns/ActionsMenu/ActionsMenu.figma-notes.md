@@ -47,8 +47,8 @@ a Component Instance — so inline scoped CSS is appropriate.
 | Property | Token | Value |
 |---|---|---|
 | Background | `var(--cc-actions-menu-primary-bg)` | `#d0dbe1` (CC light), `#334155` (CC dark) |
-| Padding | `var(--ai-spacing-4) var(--ai-spacing-3)` | 12px / 8px |
-| Gap | `var(--ai-spacing-3)` | 8px |
+| Padding | `var(--ao-spacing-4) var(--ao-spacing-3)` | 12px / 8px |
+| Gap | `var(--ao-spacing-3)` | 8px |
 | Display | `inline-flex` column, centred | — |
 
 Width is implicit: 40px button + 2 × 8px horizontal padding = **56px** total.
@@ -58,14 +58,14 @@ No explicit `width` set — wrapper sizes to its content.
 
 | Property | Token |
 |---|---|
-| Width × Height | `var(--ai-spacing-8)` × `var(--ai-spacing-8)` (40 × 40) |
-| Border-radius | `var(--ai-radius-md)` (8px) |
+| Width × Height | `var(--ao-spacing-8)` × `var(--ao-spacing-8)` (40 × 40) |
+| Border-radius | `var(--ao-radius-md)` (8px) |
 | Background (default) | `transparent` |
 | Background (hover / `.is-hover` / `:active`) | `var(--cc-actions-menu-secondary-bg)` |
-| Icon size | `var(--ai-icon-size-md)` (20px) |
+| Icon size | `var(--ao-icon-size-md)` (20px) |
 | Icon colour (rest) | `var(--cc-actions-menu-icon)` |
 | Icon colour (hover / `.is-hover` / `:active`) | `var(--cc-actions-menu-icon-active)` |
-| Focus outline | `2px solid var(--ai-surface-brand)`, offset `-2px` |
+| Focus outline | `2px solid var(--ao-surface-brand)`, offset `-2px` |
 
 ---
 

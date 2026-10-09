@@ -43,38 +43,38 @@ No State, Size, or Device axis.
 
 | Property | Token |
 |---|---|
-| font-family | `var(--ai-font-title)` |
-| font-size | `var(--ai-font-fixed-xs)` (14px) |
-| line-height | `var(--ai-leading-md)` (24px) |
-| font-weight (link) | `var(--ai-font-medium)` |
-| font-weight (current) | `var(--ai-font-semibold)` |
-| color (link) | `var(--ai-text-secondary)` |
-| color (link hover) | `var(--ai-text-primary)` |
-| color (current) | `var(--ai-text-primary)` |
+| font-family | `var(--ao-font-title)` |
+| font-size | `var(--ao-font-fixed-xs)` (14px) |
+| line-height | `var(--ao-leading-md)` (24px) |
+| font-weight (link) | `var(--ao-font-medium)` |
+| font-weight (current) | `var(--ao-font-semibold)` |
+| color (link) | `var(--ao-text-secondary)` |
+| color (link hover) | `var(--ao-text-primary)` |
+| color (current) | `var(--ao-text-primary)` |
 
 ### Layout
 
 | Property | Token |
 |---|---|
-| List gap | `var(--ai-spacing-2)` (6px) |
-| Item height | `var(--ai-leading-md)` (24px — matches text line-height) |
+| List gap | `var(--ao-spacing-2)` (6px) |
+| Item height | `var(--ao-leading-md)` (24px — matches text line-height) |
 
 ### Icons
 
 | Icon | Lucide name | Size token | Colour token |
 |---|---|---|---|
-| Separator | `chevron-right` | `--ai-icon-size-sm` (16px) | `--ai-icon-contrast` |
-| Home | `house` | `--ai-icon-size-sm` (16px) | `--ai-icon-secondary` |
-| Dropdown trigger | `chevron-down` | `--ai-icon-size-sm` (16px) | `currentColor` (inherits the button's text-secondary; see Token gap notes) |
+| Separator | `chevron-right` | `--ao-icon-size-sm` (16px) | `--ao-icon-contrast` |
+| Home | `house` | `--ao-icon-size-sm` (16px) | `--ao-icon-secondary` |
+| Dropdown trigger | `chevron-down` | `--ao-icon-size-sm` (16px) | `currentColor` (inherits the button's text-secondary; see Token gap notes) |
 
 ### Type=Solid Background container
 
 | Property | Token |
 |---|---|
-| background-color | `var(--ai-surface-minimal)` |
-| border | `1px solid var(--ai-border-secondary)` |
-| border-radius | `var(--ai-radius-md)` (8px) |
-| padding | `var(--ai-spacing-3) var(--ai-spacing-5)` (8px 16px) |
+| background-color | `var(--ao-surface-minimal)` |
+| border | `1px solid var(--ao-border-secondary)` |
+| border-radius | `var(--ao-radius-md)` (8px) |
+| padding | `var(--ao-spacing-3) var(--ao-spacing-5)` (8px 16px) |
 
 The padding/bg/border live on the inner `.breadcrumb__list` (the `<ol>`) so the
 `<nav>` itself stays a transparent inline-block. This keeps the chrome scoped to the visible
@@ -86,7 +86,7 @@ list without affecting external siblings.
 
 | Item | Figma binding | Resolution |
 |---|---|---|
-| Dropdown chevron-down colour | No explicit Figma variable bound to the chevron-down icon (variable defs on the icon node return empty). | Used `currentColor` so it inherits from the dropdown button's `--ai-text-secondary`. Visually matches the text and adjusts on hover with the button. Worth raising with the designer. |
+| Dropdown chevron-down colour | No explicit Figma variable bound to the chevron-down icon (variable defs on the icon node return empty). | Used `currentColor` so it inherits from the dropdown button's `--ao-text-secondary`. Visually matches the text and adjusts on hover with the button. Worth raising with the designer. |
 | Frame name | Figma frame is named "Numbered List" — clearly the wrong name for what is structurally a breadcrumb pattern. | Component code-named `Breadcrumb` per established convention. Worth raising with the designer to rename the Figma frame. |
 
 No primitive Tailwind colours used. No hardcoded px / hex values (border widths stay 1px per the project rule).
@@ -110,7 +110,7 @@ No primitive Tailwind colours used. No hardcoded px / hex values (border widths 
 ## Interaction model
 
 - **Links and home icon:** standard `<a>` navigation. Hover changes colour from
-  `text-secondary` → `text-primary` via `--ai-transition-default`.
+  `text-secondary` → `text-primary` via `--ao-transition-default`.
 - **Current page:** non-interactive — rendered as plain text inside the `<li>` with
   `aria-current="page"`. No href, no hover.
 - **Dropdown triggers:** rendered as `<button type="button" class="breadcrumb__dropdown
@@ -154,7 +154,7 @@ No primitive Tailwind colours used. No hardcoded px / hex values (border widths 
 - 2026-05-05: First Figma-verified spec. `get_metadata` on component set `2580:11309` enumerated
   all 4 Type variants; `get_design_context` on each variant resolved tokens; targeted
   `get_variable_defs` on the separator (`2580:11172`) and home icon (`2580:11192`) nodes
-  pinpointed `--ai-icon-contrast` vs `--ai-icon-secondary` respectively. The dropdown chevron
+  pinpointed `--ao-icon-contrast` vs `--ao-icon-secondary` respectively. The dropdown chevron
   icon node had no token binding — fell back to `currentColor` (documented in Token gap notes).
 
 ## Truncation instead of wrapping (2026-08-28)
@@ -221,7 +221,7 @@ it belongs as a `min-inline-size` on the truncating item, not as another breakpo
 
 ## Tighter gaps below the sm breakpoint (2026-08-28)
 
-`.breadcrumb__list` and `.breadcrumb__dropdown` both drop `--ai-spacing-2` (6px) → `--ai-spacing-1`
+`.breadcrumb__list` and `.breadcrumb__dropdown` both drop `--ao-spacing-2` (6px) → `--ao-spacing-1`
 (4px) below **640px**, the `sm` breakpoint from `docs/tokens-reference.md`. `.breadcrumb__link`'s own
 gap is untouched — the designer named only those two.
 

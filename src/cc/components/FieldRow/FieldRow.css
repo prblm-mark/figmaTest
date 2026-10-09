@@ -14,31 +14,31 @@
 .field-row {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
   min-width: 0;
 }
 
 .field-row__label {
-  flex: 0 0 var(--ai-size-3);
+  flex: 0 0 var(--ao-size-3);
   min-width: 0;
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-semibold);   /* designer amend 2026-09-29 (was medium) */
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-sm);
-  letter-spacing: var(--ai-tracking-4);
-  color: var(--ai-text-primary);   /* designer amend 2026-09-29 (was text-secondary) */
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-semibold);   /* designer amend 2026-09-29 (was medium) */
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  letter-spacing: var(--ao-tracking-4);
+  color: var(--ao-text-primary);   /* designer amend 2026-09-29 (was text-secondary) */
 }
 
 .field-row__value {
   flex: 1 1 0;
   min-width: 0;
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-regular);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
   overflow-wrap: anywhere;
 }
 
@@ -47,14 +47,14 @@
 }
 
 .field-row__value p + p {
-  margin-top: var(--ai-leading-md);
+  margin-top: var(--ao-leading-md);
 }
 
 /* Type=Tags — wrapping row of Button Tertiary xs links */
 .field-row__tags {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
 }
 
 /* Type=Paragraph / Media — multi-line values align to the top */
@@ -66,21 +66,21 @@
 /* ── Layout=Compact (sidebar) ─────────────────────── */
 
 .field-row--compact {
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
 .field-row--compact .field-row__label {
-  flex-basis: var(--ai-size-1);
-  font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
+  flex-basis: var(--ao-size-1);
+  font-weight: var(--ao-font-regular);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
   letter-spacing: normal;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 .field-row--compact .field-row__value {
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
 }
 
 /* ── Edit types ───────────────────────────────────── */
@@ -92,12 +92,12 @@
 /* Label padding centres the label on the 40px control */
 .field-row--edit .field-row__label {
   display: flex;
-  gap: var(--ai-spacing-1);
-  padding-top: var(--ai-spacing-4);
+  gap: var(--ao-spacing-1);
+  padding-top: var(--ao-spacing-4);
 }
 
 .field-row__required {
-  color: var(--ai-text-error);
+  color: var(--ao-text-error);
 }
 
 .field-row--edit .field-row__value {
@@ -108,7 +108,7 @@
 /* ══ Code-first row types (Article 10007, 2026-09-29) — NOT in Figma yet, flagged ══════════════
  * Built to fill the framework with a real article's full field set. Each composes an existing DS
  * component; only the arrangement below is new, and it reuses the row's own rhythm
- * (--ai-spacing-3 between a control and its companion, as the edit label/control gap). */
+ * (--ao-spacing-3 between a control and its companion, as the edit label/control gap). */
 
 /* Type=Rich (view) — an HTML body: paragraphs, headings, quotes. */
 .field-row__rich > * {
@@ -116,36 +116,36 @@
 }
 
 .field-row__rich > * + * {
-  margin-top: var(--ai-spacing-4);
+  margin-top: var(--ao-spacing-4);
 }
 
 .field-row__rich h2,
 .field-row__rich h3 {
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
 }
 
 .field-row__rich h2 {
-  font-size: var(--ai-font-fixed-sm);
+  font-size: var(--ao-font-fixed-sm);
 }
 
 .field-row__rich h3 {
-  font-size: var(--ai-font-fixed-xs);
+  font-size: var(--ao-font-fixed-xs);
 }
 
 .field-row__rich blockquote {
-  padding-left: var(--ai-spacing-4);
-  border-left: 2px solid var(--ai-border-brand);
-  color: var(--ai-text-secondary);
+  padding-left: var(--ao-spacing-4);
+  border-left: 2px solid var(--ao-border-brand);
+  color: var(--ao-text-secondary);
 }
 
 /* Type=Lookup (edit) — the current value + a Select that opens the picker. */
 .field-row__lookup {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   min-width: 0;
 }
 
@@ -163,7 +163,7 @@
 .field-row__image {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   min-width: 0;
   container: field-image / inline-size;
 }
@@ -174,7 +174,7 @@
 .field-row__image-options {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
 /* No image in the slot → no image options (alt / caption / alignment / width). */
@@ -189,7 +189,7 @@
 .field-row__image-option {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   min-width: 0;
 }
 
@@ -197,11 +197,11 @@
 .field-row__options {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
 }
 
 /* Alignment — a SegmentedControl (icon + text, designer 2026-09-29; it replaced three radios).
- * The control is 40px (--ai-spacing-8), the Input / Select height, so it sits level with Width
+ * The control is 40px (--ao-spacing-8), the Input / Select height, so it sits level with Width
  * with no centring rule. It fills its cell and the three segments share it equally. */
 .field-row__align {
   inline-size: 100%;
@@ -222,8 +222,8 @@
  *      accessibility tree (visually hidden, not display:none), so each radio keeps its name. */
 @container field-align (max-width: 269px) {
   .field-row__align .seg-control__btn {
-    padding-inline: var(--ai-spacing-2);
-    gap: var(--ai-spacing-1);
+    padding-inline: var(--ao-spacing-2);
+    gap: var(--ao-spacing-1);
   }
 }
 
@@ -256,21 +256,21 @@
  * line height, with the last line faded. The fade is an alpha MASK, not a paint over the text, so it
  * works on any surface (section, panel, dark) without a gradient colour token.
  * The toggle is the same Button Secondary xs as the row's other companion buttons ("Image details"),
- * spaced like them (--ai-spacing-3). */
+ * spaced like them (--ao-spacing-3). */
 .field-row__value[data-clamped]:not([data-expanded]) > .field-row__clamp-body {
-  max-block-size: calc(var(--field-row-clamp-lines) * var(--ai-leading-md));
+  max-block-size: calc(var(--field-row-clamp-lines) * var(--ao-leading-md));
   overflow: hidden;
-  mask-image: linear-gradient(to bottom, currentColor calc(100% - var(--field-row-clamp-fade, var(--ai-leading-md))), transparent);
+  mask-image: linear-gradient(to bottom, currentColor calc(100% - var(--field-row-clamp-fade, var(--ao-leading-md))), transparent);
 }
 
 /* Rich text has gaps between its paragraphs, so the cut can land in one and a one-line fade would
    show nothing. Two lines makes sure the fade always crosses some text. */
 .field-row__value:has(> .field-row__clamp-body > .field-row__rich) {
-  --field-row-clamp-fade: calc(var(--ai-leading-md) * 2);
+  --field-row-clamp-fade: calc(var(--ao-leading-md) * 2);
 }
 
 .field-row__clamp-toggle {
-  margin-top: var(--ai-spacing-3);
+  margin-top: var(--ao-spacing-3);
 }
 
 .field-row__clamp-toggle[hidden] {
@@ -278,7 +278,7 @@
 }
 
 .field-row__clamp-toggle svg {
-  transition: transform var(--ai-transition-default);
+  transition: transform var(--ao-transition-default);
 }
 
 .field-row__value[data-expanded] > .field-row__clamp-toggle svg {
@@ -293,7 +293,7 @@
  * on Contact Edit, 2026-10-09 (the others: an info button that reveals or tooltips the line, and
  * help on focus). Without the mode (ArticleEdit) the line always shows, as before. */
 .field-row__value > .field-row__help {
-  margin-top: var(--ai-spacing-3);   /* the Input's own control → help gap */
+  margin-top: var(--ao-spacing-3);   /* the Input's own control → help gap */
 }
 
 [data-help-mode="switch"]:not([data-help-visible]) .field-row__help {
@@ -306,7 +306,7 @@
 .field-row__radios {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--ai-spacing-3) var(--ai-spacing-5);
+  gap: var(--ao-spacing-3) var(--ao-spacing-5);
 }
 
 /* A checkbox / radio row with help: centring would put the label midway down the control + help

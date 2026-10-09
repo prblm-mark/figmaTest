@@ -34,19 +34,19 @@ Every shell property traces to a `get_design_context` binding on the variant nod
 | Wrapper | Property | Desktop token | Mobile token |
 |---|---|---|---|
 | `.cc-login` (root) | background | `--cc-ui-primary-bg` | (same) |
-| `.cc-login` | padding | `--ai-spacing-8` (40) | `--ai-spacing-6` (24) |
+| `.cc-login` | padding | `--ao-spacing-8` (40) | `--ao-spacing-6` (24) |
 | `.cc-login` | layout | flex col, center/center, `min-height:100vh`¹ | (same) |
-| `.cc-login__column` | gap | `--ai-spacing-7` (32) | `--ai-spacing-6` (24) |
-| `.cc-login__column` | max-width | `--ai-size-9` (512) | (same) |
-| `.cc-login__head` | gap | `--ai-spacing-4` (12) | `--ai-spacing-3` (8) |
-| `.cc-login__title` | size / leading | `--ai-font-fixed-xl` / `--ai-leading-md` (22/24) | `--ai-font-fixed-md` / `--ai-leading-sm` (18/20) |
+| `.cc-login__column` | gap | `--ao-spacing-7` (32) | `--ao-spacing-6` (24) |
+| `.cc-login__column` | max-width | `--ao-size-9` (512) | (same) |
+| `.cc-login__head` | gap | `--ao-spacing-4` (12) | `--ao-spacing-3` (8) |
+| `.cc-login__title` | size / leading | `--ao-font-fixed-xl` / `--ao-leading-md` (22/24) | `--ao-font-fixed-md` / `--ao-leading-sm` (18/20) |
 | `.cc-login__card` | background | `--cc-ui-secondary-bg` | (same) |
-| `.cc-login__card` | gap | `--ai-spacing-6` (24) | (same) |
-| `.cc-login__card` | padding | `--ai-spacing-8` (40) | `--ai-spacing-6` (24) |
-| `.cc-login__card` | radius | `--ai-radius-lg` (16) | (same) |
-| `.cc-login__card` | max-width | `--ai-size-10` (640) | (same) |
-| `.cc-login__card` | shadow | `--ai-shadow-sm` ² | (same) |
-| `.cc-login__options` | gap | `--ai-spacing-3` (8) | (same) |
+| `.cc-login__card` | gap | `--ao-spacing-6` (24) | (same) |
+| `.cc-login__card` | padding | `--ao-spacing-8` (40) | `--ao-spacing-6` (24) |
+| `.cc-login__card` | radius | `--ao-radius-lg` (16) | (same) |
+| `.cc-login__card` | max-width | `--ao-size-10` (640) | (same) |
+| `.cc-login__card` | shadow | `--ao-shadow-sm` ² | (same) |
+| `.cc-login__options` | gap | `--ao-spacing-3` (8) | (same) |
 
 ¹ Figma's fixed 936px frame uses `justify-center` + `py-[181px]` — an artefact of
 the fixed artboard height. In a real full-bleed login the vertical centring is
@@ -54,7 +54,7 @@ done with `min-height:100vh` + flex `justify-content:center`; only the horizonta
 `px` token is taken literally.
 
 ² Figma effect `shadow-1` = `0 1px 2px #00000017` (≈ 9% black). Mapped to the
-project's `--ai-shadow-sm` token (closest defined shadow) per the shadow-token rule.
+project's `--ao-shadow-sm` token (closest defined shadow) per the shadow-token rule.
 
 ## CSS Class Mapping
 
@@ -80,14 +80,14 @@ project's `--ai-shadow-sm` token (closest defined shadow) per the shadow-token r
 |---|---|---|
 | `cc/ui/primary-bg` | `--cc-ui-primary-bg` | Page background |
 | `cc/ui/secondary-bg` | `--cc-ui-secondary-bg` | Card background |
-| `surface/brand` | `--ai-surface-brand` | Wordmark mask paint (teal) |
-| `surface/input` | `--ai-surface-input` | Input fields + checkbox box (scoped override) |
-| `text/primary` | `--ai-text-primary` | Title, "Remember me", footer text |
-| `text/brand` | `--ai-text-brand` | Forgot password / Register Now links |
-| `btn/primary/bg` | `--ai-btn-primary-bg` | Login button (via `.btn--primary`) |
-| `border/secondary` | `--ai-border-secondary` | Input / checkbox borders |
-| `radius/lg` | `--ai-radius-lg` | Card corner radius |
-| `size/9`, `size/10` | `--ai-size-9` / `--ai-size-10` | Column / card max-widths |
+| `surface/brand` | `--ao-surface-brand` | Wordmark mask paint (teal) |
+| `surface/input` | `--ao-surface-input` | Input fields + checkbox box (scoped override) |
+| `text/primary` | `--ao-text-primary` | Title, "Remember me", footer text |
+| `text/brand` | `--ao-text-brand` | Forgot password / Register Now links |
+| `btn/primary/bg` | `--ao-btn-primary-bg` | Login button (via `.btn--primary`) |
+| `border/secondary` | `--ao-border-secondary` | Input / checkbox borders |
+| `radius/lg` | `--ao-radius-lg` | Card corner radius |
+| `size/9`, `size/10` | `--ao-size-9` / `--ao-size-10` | Column / card max-widths |
 
 ## Scoped Override
 
@@ -96,9 +96,9 @@ The Figma design paints the Input field background and the Checkbox box with
 as a `.cc-login`-scoped override (base components unchanged):
 
 ```css
-.cc-login .input__wrap { background-color: var(--ai-surface-input); }
+.cc-login .input__wrap { background-color: var(--ao-surface-input); }
 .cc-login .checkbox__input:not(:checked) + .checkbox__indicator {
-  background: var(--ai-surface-input);
+  background: var(--ao-surface-input);
 }
 ```
 
@@ -110,7 +110,7 @@ guard makes the intent explicit).
 
 The Affino wordmark uses the established CC pattern: a CSS `mask` of
 `img/affinoLogo.svg` painted in a colour token (mono), identical to
-`.cc-menu__brand`. Painted in `--ai-surface-brand` (teal) for the light page.
+`.cc-menu__brand`. Painted in `--ao-surface-brand` (teal) for the light page.
 Asset dimensions `167×38` are an allowed exception to the no-raw-px rule
 (logo/brand asset metadata).
 
@@ -122,7 +122,7 @@ entry in `HANDOVER.md` / `docs/handover-manifest.json`.
 
 ## Token Gaps
 
-None. Every design value mapped to an existing `--ai-*` / `--cc-*` token.
+None. Every design value mapped to an existing `--ao-*` / `--cc-*` token.
 
 ## Notes
 
@@ -131,4 +131,4 @@ None. Every design value mapped to an existing `--ai-*` / `--cc-*` token.
 - Clear button (`.input__clear`) from the base Input is omitted — the Figma login
   inputs show only a leading icon + field.
 - The "Forgot password?" / "Register Now" links are `title/xs`-style (semibold,
-  14px). Both use `--ai-text-brand`.
+  14px). Both use `--ao-text-brand`.

@@ -33,22 +33,22 @@ Single variant. The Figma symbol name is literally `Tier=Pattern` — a leftover
 
 | Property | Token | Notes |
 |---|---|---|
-| Card bg | `var(--ai-surface-primary)` | |
-| Card width | `var(--ai-size-5)` | 17.5rem / 280px — Figma is 288px (8px wider). Rounded to nearest size-scale token per design approval. |
-| Card padding | `var(--ai-spacing-5)` | 16px |
-| Card gap (between sections) | `var(--ai-spacing-6)` | 24px |
-| Card radius | `var(--ai-radius-lg)` | 16px |
-| Card shadow | `var(--ai-shadow-md)` | maps to Figma `light/shadow-md` |
-| Section gap | `var(--ai-spacing-1)` | 4px |
-| Heading font | `var(--ai-font-body)` + `var(--ai-font-semibold)` | Inter SemiBold |
-| Heading size | `var(--ai-font-fixed-xs)` | 14px |
-| Heading line-height | `var(--ai-leading-md)` | 24px |
-| Heading colour | `var(--ai-text-primary)` | |
-| Body font | `var(--ai-font-body)` + `var(--ai-font-regular)` | Inter Regular |
-| Body size | `var(--ai-font-fixed-xs)` | 14px (fixed) |
-| Body line-height | `var(--ai-leading-sm)` | Designer-approved tightening from initial `--ai-leading-md`. |
-| Body colour | `var(--ai-text-secondary)` | |
-| Pills row gap | `var(--ai-spacing-1)` | 4px |
+| Card bg | `var(--ao-surface-primary)` | |
+| Card width | `var(--ao-size-5)` | 17.5rem / 280px — Figma is 288px (8px wider). Rounded to nearest size-scale token per design approval. |
+| Card padding | `var(--ao-spacing-5)` | 16px |
+| Card gap (between sections) | `var(--ao-spacing-6)` | 24px |
+| Card radius | `var(--ao-radius-lg)` | 16px |
+| Card shadow | `var(--ao-shadow-md)` | maps to Figma `light/shadow-md` |
+| Section gap | `var(--ao-spacing-1)` | 4px |
+| Heading font | `var(--ao-font-body)` + `var(--ao-font-semibold)` | Inter SemiBold |
+| Heading size | `var(--ao-font-fixed-xs)` | 14px |
+| Heading line-height | `var(--ao-leading-md)` | 24px |
+| Heading colour | `var(--ao-text-primary)` | |
+| Body font | `var(--ao-font-body)` + `var(--ao-font-regular)` | Inter Regular |
+| Body size | `var(--ao-font-fixed-xs)` | 14px (fixed) |
+| Body line-height | `var(--ao-leading-sm)` | Designer-approved tightening from initial `--ao-leading-md`. |
+| Body colour | `var(--ao-text-secondary)` | |
+| Pills row gap | `var(--ao-spacing-1)` | 4px |
 | Pill height / typography | inherited from `btn btn--tertiary btn--sm` | h-32, px-12, font-fluid-xxs (12px), leading-xs (16px), bg-tertiary, text-tertiary |
 
 ---
@@ -57,8 +57,8 @@ Single variant. The Figma symbol name is literally `Tier=Pattern` — a leftover
 
 | # | Property | Figma | Resolution |
 |---|---|---|---|
-| 1 | Card width | `288px` (no variable binding) | Approved: use `--ai-size-5` (280px) — nearest size-scale token. 8px narrower than Figma. |
-| 2 | Body line-height | `1.5` (raw ratio, no token binding) | Approved: use `--ai-leading-md` (24px). Worth re-binding in Figma to a `--ai-leading-*` token. |
+| 1 | Card width | `288px` (no variable binding) | Approved: use `--ao-size-5` (280px) — nearest size-scale token. 8px narrower than Figma. |
+| 2 | Body line-height | `1.5` (raw ratio, no token binding) | Approved: use `--ao-leading-md` (24px). Worth re-binding in Figma to a `--ao-leading-*` token. |
 
 ---
 
@@ -85,4 +85,4 @@ Pills are clickable `<button>` elements but have no wired functionality yet — 
 
 ## History
 
-- 2026-05-28: Initial build from Figma `4164:8667`. Single variant. Composes existing Button (tertiary, sm). Designer-approved token swaps for card width (288 → `--ai-size-5` 280px) and body line-height (raw 1.5 → `--ai-leading-md`).
+- 2026-05-28: Initial build from Figma `4164:8667`. Single variant. Composes existing Button (tertiary, sm). Designer-approved token swaps for card width (288 → `--ao-size-5` 280px) and body line-height (raw 1.5 → `--ao-leading-md`).

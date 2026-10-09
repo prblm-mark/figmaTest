@@ -14,7 +14,7 @@
 | Mobile | Selected | 4062:18581 | 52 | SlidersVertical | EllipsisVertical immediately after CircleUser |
 | Mobile | Expanded | 4062:18629 | 52 | SlidersVertical + EllipsisVertical | 5 extra tool buttons after Ellipsis (Astroid / Info / Star / ALargeSmall / Minimize2) |
 
-Mobile rails are NOT padded at the bottom — every button is a direct sibling in the flex column with the standard `--ai-spacing-2` (6) gap. There is no spacer.
+Mobile rails are NOT padded at the bottom — every button is a direct sibling in the flex column with the standard `--ao-spacing-2` (6) gap. There is no spacer.
 
 **Desktop Default and Selected are visually identical** — the workspace button is highlighted in both. The "State" axis on Desktop only changes which menu item in the partner Menu panel is selected (irrelevant to the Sidebar itself).
 
@@ -36,13 +36,13 @@ Mobile rails are NOT padded at the bottom — every button is a direct sibling i
 | Rail bg | `--cc-mainmenu-primary-bg` | (same) |
 | Active button bg | `--cc-mainmenu-secondary-bg` | (same) |
 | Hover button bg | `--cc-mainmenu-secondary-bg` | (same) |
-| Gap | `--ai-spacing-3` (8) | `--ai-spacing-2` (6) |
-| Padding (vertical / horizontal) | `--ai-spacing-4` `--ai-spacing-3` (12 / 8) | `--ai-spacing-4` `--ai-spacing-2` (12 / 6) |
+| Gap | `--ao-spacing-3` (8) | `--ao-spacing-2` (6) |
+| Padding (vertical / horizontal) | `--ao-spacing-4` `--ao-spacing-3` (12 / 8) | `--ao-spacing-4` `--ao-spacing-2` (12 / 6) |
 | Brand cell width × height | 40 × 72 | 40 × 40 |
 | Brand mark size | 28 × auto (mask-size) | 24 × auto (mask-size) |
 | Rail button | 40 × 40, radius-md | (same) |
-| Button icon size | `--ai-icon-size-md` (20) | (same) |
-| Default button icon colour | `--ai-icon-invert-secondary` (#a1b7c3) | (same) |
+| Button icon size | `--ao-icon-size-md` (20) | (same) |
+| Default button icon colour | `--ao-icon-invert-secondary` (#a1b7c3) | (same) |
 | Active / hover button icon colour | `--cc-mainmenu-icon` (#f3f6f7) | (same) |
 
 Border widths are kept as `px` per project convention. The brand uses a dedicated mark-only SVG `img/affinoMark.svg` (extracted from `affinoLogo.svg` — just the first path, the infinity-loop mark, 36 × 38). `mask-position: center center` centres it inside the 40×72 (Desktop) or 40×40 (Mobile) cell.

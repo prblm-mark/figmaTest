@@ -15,28 +15,28 @@
 
 | Figma Property | CSS Token |
 |---|---|
-| Outer border | `--ai-border-secondary` |
-| Outer radius | `--ai-radius-lg` |
-| Header font-family | `--ai-font-title` |
-| Header font-weight | `--ai-font-semibold` |
-| Header font-size (mobile) | `--ai-font-fixed-xxs` |
-| Header font-size (desktop) | `--ai-font-fixed-xs` |
-| Header line-height | `--ai-leading-xs` |
-| Header color | `--ai-text-secondary` |
-| Header border-bottom | `--ai-border-secondary` |
-| Header cell padding | `--ai-spacing-4` / `--ai-spacing-5` |
-| Body font-family | `--ai-font-title` |
-| Body font-weight | `--ai-font-regular` |
-| Body font-size (mobile) | `--ai-font-fixed-xs` |
-| Body font-size (desktop) | `--ai-font-fixed-sm` |
-| Body line-height | `--ai-leading-md` |
-| Body color | `--ai-text-primary` |
-| Body row separator | `--ai-surface-minimal` |
-| Body cell padding | `--ai-spacing-4` / `--ai-spacing-5` |
+| Outer border | `--ao-border-secondary` |
+| Outer radius | `--ao-radius-lg` |
+| Header font-family | `--ao-font-title` |
+| Header font-weight | `--ao-font-semibold` |
+| Header font-size (mobile) | `--ao-font-fixed-xxs` |
+| Header font-size (desktop) | `--ao-font-fixed-xs` |
+| Header line-height | `--ao-leading-xs` |
+| Header color | `--ao-text-secondary` |
+| Header border-bottom | `--ao-border-secondary` |
+| Header cell padding | `--ao-spacing-4` / `--ao-spacing-5` |
+| Body font-family | `--ao-font-title` |
+| Body font-weight | `--ao-font-regular` |
+| Body font-size (mobile) | `--ao-font-fixed-xs` |
+| Body font-size (desktop) | `--ao-font-fixed-sm` |
+| Body line-height | `--ao-leading-md` |
+| Body color | `--ao-text-primary` |
+| Body row separator | `--ao-surface-minimal` |
+| Body cell padding | `--ao-spacing-4` / `--ao-spacing-5` |
 
 ## Notes
 
 - Wrapped in `.chat-response-table-scroll` for horizontal overflow on narrow viewports.
-- Row separators use `--ai-surface-minimal` (not `--ai-border-secondary`).
+- Row separators use `--ao-surface-minimal` (not `--ao-border-secondary`).
 - Last row has no bottom border.
 - Responsive: font sizes step up at 640px breakpoint.

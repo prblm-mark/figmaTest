@@ -39,14 +39,14 @@ Whos Online keep the rendering they were signed off with. The deltas:
 
 | Element | Types 1–3 | Orders |
 |---|---|---|
-| Toolbar background | `--ai-datatable-table-header-bg` | `--ai-surface-primary` (desktop only; mobile reverts) |
-| Footer background | `--ai-datatable-table-footer-bg` | `--ai-surface-primary` (desktop only) |
-| `__user-name` weight | `--ai-font-bold` | `--ai-font-semibold` |
-| `__user-role` | `--ai-font-body` / medium / `--ai-text-contrast` | `--ai-font-title` / regular / `--ai-text-secondary` |
-| Column header `th` | semibold / `--ai-text-secondary` (Table) | `--ai-font-bold` / `--ai-text-contrast` (designer, 2026-09-23; was medium / `--ai-text-primary` from the Orders frame). Bold at mobile too (2026-09-24; only the size and tracking step down there). The **active sort** label stays contrast too (`.datatables__sort--active` darkens it to primary on the other Types); its chevron keeps `--ai-icon-contrast` like the others, so the active column is marked by the single direction chevron's shape alone |
-| `__user-cell` gap | `--ai-spacing-3` | `--ai-spacing-4` |
-| `__page-btn--active` bg | `--ai-datatable-table-border` | `--ai-datatable-table-footer-bg` |
-| `__select` height | `--ai-spacing-8` (40px) | ~~`--ai-spacing-7` (32px)~~ — back to 40px, the base button height, on the designer's call 2026-09-23 (the full-width Listings frame `3788:16762` also draws it at 40). No Orders override now |
+| Toolbar background | `--ao-datatable-table-header-bg` | `--ao-surface-primary` (desktop only; mobile reverts) |
+| Footer background | `--ao-datatable-table-footer-bg` | `--ao-surface-primary` (desktop only) |
+| `__user-name` weight | `--ao-font-bold` | `--ao-font-semibold` |
+| `__user-role` | `--ao-font-body` / medium / `--ao-text-contrast` | `--ao-font-title` / regular / `--ao-text-secondary` |
+| Column header `th` | semibold / `--ao-text-secondary` (Table) | `--ao-font-bold` / `--ao-text-contrast` (designer, 2026-09-23; was medium / `--ao-text-primary` from the Orders frame). Bold at mobile too (2026-09-24; only the size and tracking step down there). The **active sort** label stays contrast too (`.datatables__sort--active` darkens it to primary on the other Types); its chevron keeps `--ao-icon-contrast` like the others, so the active column is marked by the single direction chevron's shape alone |
+| `__user-cell` gap | `--ao-spacing-3` | `--ao-spacing-4` |
+| `__page-btn--active` bg | `--ao-datatable-table-border` | `--ao-datatable-table-footer-bg` |
+| `__select` height | `--ao-spacing-8` (40px) | ~~`--ao-spacing-7` (32px)~~ — back to 40px, the base button height, on the designer's call 2026-09-23 (the full-width Listings frame `3788:16762` also draws it at 40). No Orders override now |
 
 Only the toolbar background difference is invisible in CC light — the two tokens both
 resolve to `#ffffff` there and diverge only in CC dark.
@@ -57,18 +57,18 @@ The **Whos Online** type combines the page-size selector AND the search input in
 
 | Figma element | CSS class | Notes |
 |---|---|---|
-| Outer container | `.datatables` | White bg, secondary border, `--ai-radius-md`, `overflow: hidden`. Replaces `.table-wrap` from the Table component. |
+| Outer container | `.datatables` | White bg, secondary border, `--ao-radius-md`, `overflow: hidden`. Replaces `.table-wrap` from the Table component. |
 | Body scroll wrapper | `.datatables__body` | Inner div around the `<table>` only. `overflow-x: auto` lives here, so the toolbar above and pagination footer below stay fixed while the table content scrolls horizontally. |
 | Mobile-scroll wrap | `.datatables.datatables--mobile-scroll` | Adds `max-width: 24rem`; the inner `.datatables__body` handles the scroll. Inner `.table` grows to `width: max-content` with `nowrap` cells |
 | Toolbar | `.datatables__toolbar` | Flex row, white bg, bottom border. Padding `12/16` (vertical/horizontal) |
 | Toolbar meta (left side) | `.datatables__meta` | Inline flex with text + `.datatables__select` for the row-count picker |
-| Page-size select | `.datatables__select` | Button styled as a small select (40px tall on every Type since 2026-09-23, `--ai-radius-md`, chevron-down). Native `<select>` doesn't capture cleanly in Figma so this is a button |
+| Page-size select | `.datatables__select` | Button styled as a small select (40px tall on every Type since 2026-09-23, `--ao-radius-md`, chevron-down). Native `<select>` doesn't capture cleanly in Figma so this is a button |
 | Toolbar search field | `.datatables__search` | Wraps the existing Input component; constrains to ≤18rem on desktop, full-width on mobile |
 | Toolbar actions (right side) | `.datatables__actions` | Flex row of action buttons (uses Button component) |
 | Sortable column header | `<button class="datatables__sort">` | Slots inside `<th>`; `--active` modifier flips the chevron icon to dark |
 | Footer (pagination) | `.datatables__footer` | Flex row, white bg, top border. Padding `8-9/16` |
 | Pagination button group | `.datatables__pagination` | Connected segmented buttons inside a single radius-md outline |
-| Pagination button | `.datatables__page-btn` | 40×40 cells. `--active` modifier paints `--ai-datatable-table-footer-bg` background with bold text |
+| Pagination button | `.datatables__page-btn` | 40×40 cells. `--active` modifier paints `--ao-datatable-table-footer-bg` background with bold text |
 | Kebab toggle (Trigger only) | `<label class="datatables__kebab">` | Wraps a hidden checkbox + `more-vertical` icon |
 | Kebab cell | `.datatables__kebab-cell` | Last `<th>`/`<td>` column, fixed 48px wide |
 | Visible row | `<tr class="datatables__row">` | Pairs with the next sibling row |
@@ -78,7 +78,7 @@ The **Whos Online** type combines the page-size selector AND the search input in
 | User text wrap | `<div class="datatables__user-text">` | Inside `.datatables__user-cell` — column of name + role |
 | User name | `<span class="datatables__user-name">` | Title bold fixed-xs text-primary |
 | User role / subtitle | `<span class="datatables__user-role">` | Body medium fixed-xs text-contrast |
-| Centred icon cell (Whos Online TOUCH) | `<span class="datatables__icon-cell">` | Inline-flex; uses `--ai-icon-secondary` |
+| Centred icon cell (Whos Online TOUCH) | `<span class="datatables__icon-cell">` | Inline-flex; uses `--ao-icon-secondary` |
 
 ## Composition
 
@@ -93,7 +93,7 @@ Datatables **wraps the Table component** — the inner `<table class="table">…
 
 ## Token Mapping
 
-The Datatables chrome moved to a dedicated `--ai-datatable-*` token namespace
+The Datatables chrome moved to a dedicated `--ao-datatable-*` token namespace
 (`components/global/datatable` in the Figma Semantic mode files) on 2026-05-07. The base
 Table component (`.table`) still uses generic semantic tokens; Datatables overrides the
 column-header bg and cell borders inside `.datatables .table` to switch to the namespaced
@@ -101,43 +101,43 @@ tokens.
 
 | Figma value | CSS variable | Role |
 |---|---|---|
-| `components/global/datatable/table-bg` | `--ai-datatable-table-bg` | Outer container bg, page-size select bg, pagination wrap bg |
-| `components/global/datatable/table-header-bg` | `--ai-datatable-table-header-bg` | Toolbar bg (above the table) |
-| `components/global/datatable/table-subheader-bg` | `--ai-datatable-table-subheader-bg` | Column-header row bg (inside `.datatables .table thead th`) |
-| `components/global/datatable/table-footer-bg` | `--ai-datatable-table-footer-bg` | Pagination footer bg, active page-btn bg, page-btn hover bg |
-| `components/global/datatable/table-expanded-bg` | `--ai-datatable-table-expanded-bg` | Expanded row bg + detail-row bg + kebab hover bg |
-| `components/global/datatable/table-border` | `--ai-datatable-table-border` | All chrome borders: container, toolbar, footer, pagination dividers, cell borders |
-| `text/primary` | `--ai-text-primary` | Body text, page-btn label, sort-active icon |
-| `text/secondary` | `--ai-text-secondary` | (inherited via Table) Header text |
-| `text/contrast` | `--ai-text-contrast` | Toolbar meta text, footer text, detail-list `<dt>` |
-| `icon/contrast` | `--ai-icon-contrast` | Sort-icon (inactive), kebab icon, select chevron |
-| `radius/md` (8px) | `--ai-radius-md` | Container, select, kebab, page-btn group |
-| `spacing/2` (6px) | `--ai-spacing-2` | Meta gap, kebab→label gap |
-| `spacing/3` (8px) | `--ai-spacing-3` | Action gap, footer padding-y, select padding-x |
-| `spacing/4` (12px) | `--ai-spacing-4` | Toolbar gap, padding-y |
-| `spacing/5` (16px) | `--ai-spacing-5` | Toolbar/footer padding-x, detail-list column gap |
-| `spacing/7` (32px) | `--ai-spacing-7` | Select height |
-| `spacing/8` (40px) | `--ai-spacing-8` | Page-btn cell size |
-| `spacing/9` (48px) | `--ai-spacing-9` | Kebab cell width |
-| `font/title` | `--ai-font-title` | All Datatables-specific text |
-| `font/fixed-xs` (14px) | `--ai-font-fixed-xs` | Footer text, meta text, page-btn label |
-| `font/fixed-xxs` (12px) | `--ai-font-fixed-xxs` | Detail `<dt>` (uppercase labels) |
-| `font/medium` | `--ai-font-medium` | Page-size select label |
-| `font/bold` | `--ai-font-bold` | Active page-btn, footer `<strong>` |
-| `tracking/7` (0.05em) | `--ai-tracking-7` | Detail `<dt>` letter-spacing |
+| `components/global/datatable/table-bg` | `--ao-datatable-table-bg` | Outer container bg, page-size select bg, pagination wrap bg |
+| `components/global/datatable/table-header-bg` | `--ao-datatable-table-header-bg` | Toolbar bg (above the table) |
+| `components/global/datatable/table-subheader-bg` | `--ao-datatable-table-subheader-bg` | Column-header row bg (inside `.datatables .table thead th`) |
+| `components/global/datatable/table-footer-bg` | `--ao-datatable-table-footer-bg` | Pagination footer bg, active page-btn bg, page-btn hover bg |
+| `components/global/datatable/table-expanded-bg` | `--ao-datatable-table-expanded-bg` | Expanded row bg + detail-row bg + kebab hover bg |
+| `components/global/datatable/table-border` | `--ao-datatable-table-border` | All chrome borders: container, toolbar, footer, pagination dividers, cell borders |
+| `text/primary` | `--ao-text-primary` | Body text, page-btn label, sort-active icon |
+| `text/secondary` | `--ao-text-secondary` | (inherited via Table) Header text |
+| `text/contrast` | `--ao-text-contrast` | Toolbar meta text, footer text, detail-list `<dt>` |
+| `icon/contrast` | `--ao-icon-contrast` | Sort-icon (inactive), kebab icon, select chevron |
+| `radius/md` (8px) | `--ao-radius-md` | Container, select, kebab, page-btn group |
+| `spacing/2` (6px) | `--ao-spacing-2` | Meta gap, kebab→label gap |
+| `spacing/3` (8px) | `--ao-spacing-3` | Action gap, footer padding-y, select padding-x |
+| `spacing/4` (12px) | `--ao-spacing-4` | Toolbar gap, padding-y |
+| `spacing/5` (16px) | `--ao-spacing-5` | Toolbar/footer padding-x, detail-list column gap |
+| `spacing/7` (32px) | `--ao-spacing-7` | Select height |
+| `spacing/8` (40px) | `--ao-spacing-8` | Page-btn cell size |
+| `spacing/9` (48px) | `--ao-spacing-9` | Kebab cell width |
+| `font/title` | `--ao-font-title` | All Datatables-specific text |
+| `font/fixed-xs` (14px) | `--ao-font-fixed-xs` | Footer text, meta text, page-btn label |
+| `font/fixed-xxs` (12px) | `--ao-font-fixed-xxs` | Detail `<dt>` (uppercase labels) |
+| `font/medium` | `--ao-font-medium` | Page-size select label |
+| `font/bold` | `--ao-font-bold` | Active page-btn, footer `<strong>` |
+| `tracking/7` (0.05em) | `--ao-tracking-7` | Detail `<dt>` letter-spacing |
 
 ## Token Gaps
 
-None — every value maps to an existing `--ai-*` token.
+None — every value maps to an existing `--ao-*` token.
 
 ## Notes / Inconsistencies
 
-- **Compact padding below 768px container width.** `.datatables` is a `container-type: inline-size` context. In `@container (max-width: 767px)`, every element that uses spacing-5/spacing-4 padding at desktop (`.datatables__toolbar`, `.datatables__footer`, `.datatables__detail-list`, and the `.table` header/body cells) drops to a uniform `--ai-spacing-3` (8px) on both axes. The cell rules are scoped under `.datatables` so the base Table component used elsewhere is unaffected.
-- **Toolbar search is full-width below 768px.** At desktop `.datatables__search` is `align-items: flex-end` (content-width, right-aligned) and the Input `--sm` wrap caps at `--ai-size-3` (192px). On a narrow toolbar that fixed width overflowed, so `@container (max-width: 767px)` switches the search to `align-items: stretch` and lifts the wrap's `max-width` to `none` — the field then fills the toolbar's remaining space and shrinks with it.
+- **Compact padding below 768px container width.** `.datatables` is a `container-type: inline-size` context. In `@container (max-width: 767px)`, every element that uses spacing-5/spacing-4 padding at desktop (`.datatables__toolbar`, `.datatables__footer`, `.datatables__detail-list`, and the `.table` header/body cells) drops to a uniform `--ao-spacing-3` (8px) on both axes. The cell rules are scoped under `.datatables` so the base Table component used elsewhere is unaffected.
+- **Toolbar search is full-width below 768px.** At desktop `.datatables__search` is `align-items: flex-end` (content-width, right-aligned) and the Input `--sm` wrap caps at `--ao-size-3` (192px). On a narrow toolbar that fixed width overflowed, so `@container (max-width: 767px)` switches the search to `align-items: stretch` and lifts the wrap's `max-width` to `none` — the field then fills the toolbar's remaining space and shrinks with it.
 - **`.datatables__col--tight` column modifier.** Add to a column's header `<th>` and every body `<td>` in that column to drop its right padding below 768px, collapsing the column toward its content so the freed width goes to its neighbour. Used on the **Login** column of the Whos Online · Trigger variant (so the wider User column gets the space). Rule lives in the `@container (max-width: 767px)` block with specificity raised above the cell-padding compaction.
-- **Header text colour discrepancy across variants.** Figma binds the header `<th>` text to `--ai-text-primary` in some variants (Pagination Desktop) and `--ai-text-secondary` in others (Search Mobile, sometimes a single column within Pagination Mobile). The component normalises to `--ai-text-secondary` everywhere — inheriting the existing Table component's choice. Worth flagging to the designer.
+- **Header text colour discrepancy across variants.** Figma binds the header `<th>` text to `--ao-text-primary` in some variants (Pagination Desktop) and `--ao-text-secondary` in others (Search Mobile, sometimes a single column within Pagination Mobile). The component normalises to `--ao-text-secondary` everywhere — inheriting the existing Table component's choice. Worth flagging to the designer.
 - **Layout via absolute positioning in Figma.** Figma renders cells with absolute positioning + hardcoded pixel widths (e.g. `w-[356.469px]`). The production CSS uses native `<table>` with `border-collapse: collapse` and lets the browser distribute column widths — semantic, accessible, and resilient to content variation.
-- **Mobile scroll-indicator pill.** The Mobile/Scroll variants in Figma include a small `bg-[var(--ai-surface-secondary)] h-[10px] rounded-full w-[180px]` pill at the bottom — a visual stand-in for the scrollbar. The production component uses the browser's native scrollbar.
+- **Mobile scroll-indicator pill.** The Mobile/Scroll variants in Figma include a small `bg-[var(--ao-surface-secondary)] h-[10px] rounded-full w-[180px]` pill at the bottom — a visual stand-in for the scrollbar. The production component uses the browser's native scrollbar.
 - **Pagination Mobile Trigger meta is just text** ("10 of 1,289") — no row-count select. Smaller toolbar to save space when the row layout already collapses to kebab.
 - **Search Desktop uses a primary Export button** (with `download` icon); the Pagination variants use tertiary buttons throughout. The component HTML demos reflect both patterns.
 
@@ -158,7 +158,7 @@ None — every value maps to an existing `--ai-*` token.
 ## Row controls: the kebab gained a hover border
 
 2026-09-18, designer. The kebab's hover was a background tint; it now also
-draws `1px solid var(--ai-border-secondary)` — the same line the table draws
+draws `1px solid var(--ao-border-secondary)` — the same line the table draws
 between its rows. The border is reserved as transparent at rest so the 32px box
 does not change size when the pointer arrives.
 
@@ -200,11 +200,11 @@ arrow), with a second rule between the numbers inside their own wrapper.
 ## The kebab gets the row's gutter
 
 2026-09-21, designer. Figma's mobile frame puts the kebab cell flush to the
-row edge (`--ai-spacing-0` both sides). Overruled: flush reads as the control
+row edge (`--ao-spacing-0` both sides). Overruled: flush reads as the control
 falling off the table, and since the kebab is the last thing in the row, the
 row's right-hand gutter has to come from that cell or it does not exist.
 
-- **Right: `--ai-spacing-4` (12px)** at narrow container widths — the same
+- **Right: `--ao-spacing-4` (12px)** at narrow container widths — the same
   value the other cells use on their leading edge, so the gutter matches the
   one down the left of the table.
 - **Left stays tight (4px)** where the pencil is beside it: the two are one
@@ -235,7 +235,7 @@ exactly the content's.
 
 Same change, same cause as the title: under fixed layout the account/section
 chip was CROPPED when the fit handed its column less than the chip's 160px cap.
-`max-inline-size: min(var(--ai-size-2), 100%)` — the percentage resolves,
+`max-inline-size: min(var(--ao-size-2), 100%)` — the percentage resolves,
 because a fixed-layout cell has a definite width — so the chip ellipsises at
 the column instead of overflowing it. `sizeColumns` also stops taking a snug
 column below 128px when it is trimming to fit, which is the width at which a
@@ -249,11 +249,11 @@ and read as a link rather than as a state.
 
 It does not need the colour. The control is a chevron PAIR at rest and a single
 direction chevron once a column is sorting, so the shape already carries the
-state — and `--ai-text-primary` matches the label sitting beside it, so the two
+state — and `--ao-text-primary` matches the label sitting beside it, so the two
 now darken together.
 
 Worth knowing how it got there: **two rules 900 lines apart set the same
-property to different values**, `--ai-text-primary` first and `--ai-icon-brand`
+property to different values**, `--ao-text-primary` first and `--ao-icon-brand`
 second, and the later one quietly won. The duplicate is gone with the fix.
 
 Measured, active / inactive / label: light `rgb(0,34,47)` / `rgb(153,170,177)` /
@@ -277,13 +277,13 @@ The listings' column fit (ListingScreen.js `fitColumns` / `shareSpare`) as a sta
 for tables outside the Listing Screen — first used by Live Dashboard (Top articles) and Sales Leaderboard.
 Put `data-fit` on a `.datatables--orders` table and mark its `<th>`s: `data-keep` (never dropped),
 `data-drop="n"` (drop order, 1 first), `data-hug` (fixed-shape: takes no spare), `data-snug` (short text:
-spare capped at 224px), `data-fluid` (wrapping title: counts at most `--ai-size-3` when fitting). The helper
+spare capped at 224px), `data-fluid` (wrapping title: counts at most `--ao-size-3` when fitting). The helper
 adds the kebab column and each row's detail row itself (MutationObserver on the tbody, so re-renders are
 covered; open rows stay open), and re-fits on a ResizeObserver. Uses the existing Type=Orders kebab,
 `--nofit` and detail-panel styles; no new CSS.
 Also: `datatables__col--end` on the row's last column when no kebab follows (for a table's end gutter —
 styled in Datatables.css since 2026-10-09: below 768 of its container it takes the row's left inset,
-`--ai-spacing-4`, as its right, because the Orders cells drop their right padding there;
+`--ao-spacing-4`, as its right, because the Orders cells drop their right padding there;
 counted while measuring, so it cannot cause overflow), and a re-fit on `document.fonts.ready` + window
 `load` — natural widths change when the web font arrives, with no resize to report it.
 `data-fit="even"` (dashboards): equal column widths where content allows; `data-weight="n"` on a header

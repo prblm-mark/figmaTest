@@ -27,9 +27,9 @@ layout. No `--mobile` modifier class.
 >
 > | | Desktop (`4099:3633`) | Mobile (`4099:3630` / `:3632`) |
 > |---|---|---|
-> | bar padding-x | `--ai-spacing-5` 16px | **`--ai-spacing-4` 12px** |
-> | bar min-height | `--ai-spacing-9` 48px | `--ai-spacing-8` 40px (already correct) |
-> | breadcrumb font | `--ai-font-fixed-xs` 14px | **`--ai-font-fixed-2xs` 13px** |
+> | bar padding-x | `--ao-spacing-5` 16px | **`--ao-spacing-4` 12px** |
+> | bar min-height | `--ao-spacing-9` 48px | `--ao-spacing-8` 40px (already correct) |
+> | breadcrumb font | `--ao-font-fixed-xs` 14px | **`--ao-font-fixed-2xs` 13px** |
 >
 > Padding was read geometrically rather than from a class: the Breadcrumb child sits at `x=12`
 > with 12px clear on the right in both mobile variants, and at `x=16` in the desktop one.
@@ -38,9 +38,9 @@ layout. No `--mobile` modifier class.
 > nav — because that is the element Breadcrumb.css sizes; `__link` and `__dropdown` both declare
 > `font-size: inherit`, so setting it anywhere else silently does nothing.
 >
-> **Token-name hazard, recorded because it will recur:** 13px is `--ai-font-fixed-2xs` in this
+> **Token-name hazard, recorded because it will recur:** 13px is `--ao-font-fixed-2xs` in this
 > codebase, but the CC Hybrid Figma file binds 13px to a variable it still calls
-> `--ai-font-fixed-xxs`. That file's typography variables predate the 28 Aug 2026 swap, after
+> `--ao-font-fixed-xxs`. That file's typography variables predate the 28 Aug 2026 swap, after
 > which `xxs` = 12px and `2xs` = 13px in `css/tokens.css` and in the Affino AI file. **The two
 > Figma files now disagree about what `xxs` means.** Match on the pixel value, never the name —
 > copying the name out of the CC Hybrid file yields 12px.
@@ -87,23 +87,23 @@ markers, so it is unaffected.
 | Property | Token |
 |---|---|
 | Background | `var(--cc-header-primary-bg)` (#0f3b53 in CC light) |
-| Min height | `var(--ai-spacing-9)` (48px) |
-| Padding (x) — desktop | `var(--ai-spacing-5)` (16px) |
-| Padding (x) — mobile | `var(--ai-spacing-4)` (12px) — **added 2026-08-28** |
-| Breadcrumb font — desktop | `var(--ai-font-fixed-xs)` (14px), from Breadcrumb's own CSS |
-| Breadcrumb font — mobile | `var(--ai-font-fixed-2xs)` (13px) — **added 2026-08-28**, scoped override |
-| Gap | `var(--ai-spacing-5)` (16px) |
+| Min height | `var(--ao-spacing-9)` (48px) |
+| Padding (x) — desktop | `var(--ao-spacing-5)` (16px) |
+| Padding (x) — mobile | `var(--ao-spacing-4)` (12px) — **added 2026-08-28** |
+| Breadcrumb font — desktop | `var(--ao-font-fixed-xs)` (14px), from Breadcrumb's own CSS |
+| Breadcrumb font — mobile | `var(--ao-font-fixed-2xs)` (13px) — **added 2026-08-28**, scoped override |
+| Gap | `var(--ao-spacing-5)` (16px) |
 
 ### Breadcrumb (contextual override — dark bg)
 
 | Element | Token | Notes |
 |---|---|---|
-| `.breadcrumb__link` | `var(--ai-text-invert-secondary)` | Inverted from default `--ai-text-secondary` |
-| `.breadcrumb__link:hover` | `var(--ai-text-invert)` | Inverted from default `--ai-text-primary` |
-| `.breadcrumb__dropdown` | `var(--ai-text-invert-secondary)` | Same as link |
-| `.breadcrumb__dropdown:hover` | `var(--ai-text-invert)` | |
-| `.breadcrumb__item--current` | `var(--ai-text-invert)` | Inverted from default `--ai-text-primary` |
-| `.breadcrumb__separator` | `var(--ai-icon-invert-secondary)` | Inverted from default `--ai-icon-contrast` |
+| `.breadcrumb__link` | `var(--ao-text-invert-secondary)` | Inverted from default `--ao-text-secondary` |
+| `.breadcrumb__link:hover` | `var(--ao-text-invert)` | Inverted from default `--ao-text-primary` |
+| `.breadcrumb__dropdown` | `var(--ao-text-invert-secondary)` | Same as link |
+| `.breadcrumb__dropdown:hover` | `var(--ao-text-invert)` | |
+| `.breadcrumb__item--current` | `var(--ao-text-invert)` | Inverted from default `--ao-text-primary` |
+| `.breadcrumb__separator` | `var(--ao-icon-invert-secondary)` | Inverted from default `--ao-icon-contrast` |
 
 Case B contextual override per CLAUDE.md — scoped to `.cc-top-navigation .breadcrumb__*`,
 does not modify the Breadcrumb component itself.
@@ -112,29 +112,29 @@ does not modify the Breadcrumb component itself.
 
 | Property | Token | Notes |
 |---|---|---|
-| Gap | `var(--ai-spacing-3)` (8px) | Between portrait and name |
-| Portrait size | `var(--ai-spacing-7)` (32px) | **Figma uses 28px** — see Token gaps |
-| Username font-family | `var(--ai-font-title)` | Inter |
-| Username font-weight | `var(--ai-font-medium)` (500) | |
-| Username font-size | `var(--ai-font-fixed-xs)` (14px) | |
-| Username colour | `var(--ai-text-invert-secondary)` | |
+| Gap | `var(--ao-spacing-3)` (8px) | Between portrait and name |
+| Portrait size | `var(--ao-spacing-7)` (32px) | **Figma uses 28px** — see Token gaps |
+| Username font-family | `var(--ao-font-title)` | Inter |
+| Username font-weight | `var(--ao-font-medium)` (500) | |
+| Username font-size | `var(--ao-font-fixed-xs)` (14px) | |
+| Username colour | `var(--ao-text-invert-secondary)` | |
 | Username letter-spacing | `0.28px` | Optical — letter-spacing is a documented px exception |
 | Username font-feature-settings | `'salt' 1` | Inter stylistic alternates |
-| User chevron wrapper | `var(--ai-icon-size-lg)` (24px) | Click-target padding |
-| User chevron icon | `var(--ai-icon-size-sm)` (16px) | |
-| User chevron colour | `var(--ai-icon-invert-secondary)` | |
+| User chevron wrapper | `var(--ao-icon-size-lg)` (24px) | Click-target padding |
+| User chevron icon | `var(--ao-icon-size-sm)` (16px) | |
+| User chevron colour | `var(--ao-icon-invert-secondary)` | |
 
 ### Preview button (monitor icon)
 
 | Property | Token |
 |---|---|
-| Size | `var(--ai-icon-size-md)` (20px) |
+| Size | `var(--ao-icon-size-md)` (20px) |
 | Background | `transparent` |
 | Border | none |
-| Icon size | `var(--ai-icon-size-md)` (20px) |
+| Icon size | `var(--ao-icon-size-md)` (20px) |
 | Icon colour | `var(--cc-header-icon)` |
-| Icon colour (hover) | `var(--ai-text-invert)` |
-| Transition | `color var(--ai-transition-default)` |
+| Icon colour (hover) | `var(--ao-text-invert)` |
+| Transition | `color var(--ao-transition-default)` |
 
 ---
 
@@ -142,8 +142,8 @@ does not modify the Breadcrumb component itself.
 
 | Gap | Figma value | Resolution |
 |---|---|---|
-| User portrait size | 28px | Approved: use `var(--ai-spacing-7)` (32px) — closest existing token. 4px larger than Figma. |
-| Mobile container gap | 18px (Figma `--size-4-5`) | Approved: use `var(--ai-spacing-5)` (16px) for both desktop and mobile — token-clean and consistent. 2px deviation from Figma on mobile. |
+| User portrait size | 28px | Approved: use `var(--ao-spacing-7)` (32px) — closest existing token. 4px larger than Figma. |
+| Mobile container gap | 18px (Figma `--size-4-5`) | Approved: use `var(--ao-spacing-5)` (16px) for both desktop and mobile — token-clean and consistent. 2px deviation from Figma on mobile. |
 
 ---
 
@@ -192,8 +192,8 @@ Result: mobile shows only the portrait in the User block. Preview button stays v
 
 ## Mobile height raised to 48px — designer override of Figma
 
-2026-09-21. `min-height` on a narrow container goes `--ai-spacing-8` (40px) →
-`--ai-spacing-9` (48px), so this bar and the Header below it are the SAME
+2026-09-21. `min-height` on a narrow container goes `--ao-spacing-8` (40px) →
+`--ao-spacing-9` (48px), so this bar and the Header below it are the SAME
 height on a phone; the Header comes down from 56 to meet it.
 
 **Figma's mobile variants (4099:3630 / 4099:3632) still say 40.** This is an
@@ -208,6 +208,6 @@ Measured 48px at 360 / 390 / 500 / 760 viewport, desktop unchanged at 48.
 The crumb `<li>` is the ellipsis container, so the "…" takes the `<li>`'s colour, not its link's.
 TopNavigation only coloured the links, so a truncated link crumb drew a dark ellipsis on the dark
 bar and looked clipped flush. `.cc-top-navigation .breadcrumb__item` now carries
-`--ai-text-invert-secondary`, and the last visible crumb on mobile carries `--ai-text-invert` on the
+`--ao-text-invert-secondary`, and the last visible crumb on mobile carries `--ao-text-invert` on the
 `<li>` as well as the link. Record screens mark Articles `--collapse` too, so they collapse to the
 Figma mobile two (`4099:3632`): "Zone Selector > Content".

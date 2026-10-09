@@ -42,7 +42,7 @@ None — Portraits is a leaf component.
 
 - **Clip responsibility:** A Portrait on its own is a 300×300 square image. Clipping to a
   circle is entirely the parent Avatar's responsibility (`overflow: hidden` +
-  `border-radius: var(--ai-radius-full)`).
+  `border-radius: var(--ao-radius-full)`).
 - **Sizing:** The `.portrait` class uses `width: 100%; height: 100%` so the image always
   fills whatever container it's placed in — including all five Avatar size variants.
 - **`object-fit: cover`:** Ensures the photo crops to fill the container without distortion,

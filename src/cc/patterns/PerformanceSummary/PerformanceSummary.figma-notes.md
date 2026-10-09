@@ -27,13 +27,13 @@
 
 | Property | Token |
 |---|---|
-| gaps | --ai-spacing-5 root, --ai-spacing-3 stats/chips, --ai-spacing-4 accounts/totals |
-| accounts card | --ai-surface-primary, 1px --ai-border-secondary, --ai-radius-md, padding --ai-spacing-4 |
-| chart well | --ai-surface-minimal, --ai-radius-md |
-| text | --ai-font-fixed-2xs --ai-leading-xs; labels --ai-text-contrast, values Bold --ai-text-primary, link SemiBold --ai-text-brand |
+| gaps | --ao-spacing-5 root, --ao-spacing-3 stats/chips, --ao-spacing-4 accounts/totals |
+| accounts card | --ao-surface-primary, 1px --ao-border-secondary, --ao-radius-md, padding --ao-spacing-4 |
+| chart well | --ao-surface-minimal, --ao-radius-md |
+| text | --ao-font-fixed-2xs --ao-leading-xs; labels --ao-text-contrast, values Bold --ao-text-primary, link SemiBold --ao-text-brand |
 
 ## Token Gaps & Decisions
-Draft panel padding was raw 20px → FactPanel `--ai-spacing-5`. Chart height is the Chart component's own (Figma pins 175px). All figures are static (backend).
+Draft panel padding was raw 20px → FactPanel `--ao-spacing-5`. Chart height is the Chart component's own (Figma pins 175px). All figures are static (backend).
 
 ## Notes
 - Built 2026-09-28 from the View & Edit kit (section `3861:1902`, CC Light mode). The kit was

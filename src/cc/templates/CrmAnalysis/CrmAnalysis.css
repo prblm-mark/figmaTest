@@ -14,7 +14,7 @@
 .cc-crm__layout {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
   min-inline-size: 0;
 }
 
@@ -32,7 +32,7 @@
   /* An explicit shrinkable column: the implicit one is sized to min-content, so a wide chart or row
      made the card overflow its track (measured: 324 / 309 at 390). */
   grid-template-columns: minmax(0, 1fr);
-  row-gap: var(--ai-spacing-5);
+  row-gap: var(--ao-spacing-5);
 }
 
 /* The figures' wrapper is the size container, not the card: a size container gets layout
@@ -61,7 +61,7 @@
 }
 
 .cc-live--full .cc-crm__layout {
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
 /* Card heads wrap: a title beside the period switch (or the "as of" line) is wider than a phone's
@@ -71,11 +71,11 @@
 }
 
 .cc-crm__meta {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-3xs);
-  font-weight: var(--ai-font-medium);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-3xs);
+  font-weight: var(--ao-font-medium);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
   white-space: nowrap;
 }
 
@@ -86,41 +86,41 @@
 .cc-crm__pairs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--ai-spacing-6);
+  gap: var(--ao-spacing-6);
 }
 
 .cc-crm__pair {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   min-inline-size: 0;
 }
 
 .cc-crm__pair + .cc-crm__pair {
-  padding-inline-start: var(--ai-spacing-6);
-  border-inline-start: 1px solid var(--ai-border-secondary);
+  padding-inline-start: var(--ao-spacing-6);
+  border-inline-start: 1px solid var(--ao-border-secondary);
 }
 
 .cc-crm__stat {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   grid-template-areas: "icon label" "icon value";
-  column-gap: var(--ai-spacing-4);
+  column-gap: var(--ao-spacing-4);
   align-items: center;
   flex: 0 1 auto;
   min-inline-size: 0;
-  margin: calc(-1 * var(--ai-spacing-3));
-  padding: var(--ai-spacing-3);
-  border-radius: var(--ai-radius-md);
-  color: var(--ai-text-primary);
+  margin: calc(-1 * var(--ao-spacing-3));
+  padding: var(--ao-spacing-3);
+  border-radius: var(--ao-radius-md);
+  color: var(--ao-text-primary);
   text-decoration: none;
-  transition: background-color var(--ai-transition-default);
+  transition: background-color var(--ao-transition-default);
 }
 
 /* Row-link hover: background only (the CC menu-link rule — no brand colour, no underline). */
 .cc-crm__stat:hover {
-  background-color: var(--ai-surface-secondary);
-  color: var(--ai-text-primary);
+  background-color: var(--ao-surface-secondary);
+  color: var(--ao-text-primary);
   text-decoration: none;
 }
 
@@ -132,29 +132,29 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  inline-size: var(--ai-spacing-8);
-  block-size: var(--ai-spacing-8);
-  border-radius: var(--ai-radius-md);
+  inline-size: var(--ao-spacing-8);
+  block-size: var(--ao-spacing-8);
+  border-radius: var(--ao-radius-md);
 }
 
 .cc-crm__stat-icon [data-lucide],
 .cc-crm__stat-icon svg {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
 }
 
-.cc-crm__stat-icon--lagoon { background-color: var(--ai-accent-lagoon-soft); color: var(--ai-accent-lagoon-soft-fg); }
+.cc-crm__stat-icon--lagoon { background-color: var(--ao-accent-lagoon-soft); color: var(--ao-accent-lagoon-soft-fg); }
 
 /* Label: StatCard's breakdown label. Value: StatCard Xl's value (title, bold, `fixed-xl`). */
 .cc-crm__stat-label,
 .cc-crm__figure-label {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-xs);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-xs);
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 .cc-crm__stat-label {
@@ -163,10 +163,10 @@
 
 .cc-crm__stat-value {
   grid-area: value;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xl);
-  font-weight: var(--ai-font-bold);
-  line-height: var(--ai-leading-lg);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xl);
+  font-weight: var(--ao-font-bold);
+  line-height: var(--ao-leading-lg);
   font-variant-numeric: tabular-nums;
 }
 
@@ -174,14 +174,14 @@
   display: flex;
   flex: 1 1 0;
   align-items: center;
-  min-inline-size: var(--ai-spacing-8);
+  min-inline-size: var(--ao-spacing-8);
 }
 
 .cc-crm__link-line {
   position: relative;
   flex: 1 1 0;
-  min-inline-size: var(--ai-spacing-4);
-  border-block-start: 1px solid var(--ai-border-primary);
+  min-inline-size: var(--ao-spacing-4);
+  border-block-start: 1px solid var(--ao-border-primary);
 }
 
 /* The arrowhead: two 1px strokes, drawn as a rotated corner. */
@@ -190,24 +190,24 @@
   position: absolute;
   inset-inline-end: 0;
   inset-block-start: 0;
-  inline-size: var(--ai-spacing-3);
-  block-size: var(--ai-spacing-3);
-  border-block-start: 1px solid var(--ai-border-primary);
-  border-inline-end: 1px solid var(--ai-border-primary);
+  inline-size: var(--ao-spacing-3);
+  block-size: var(--ao-spacing-3);
+  border-block-start: 1px solid var(--ao-border-primary);
+  border-inline-end: 1px solid var(--ao-border-primary);
   transform: translateY(-50%) rotate(45deg);
   transform-origin: center;
 }
 
 .cc-crm__link-badge {
   flex: 0 0 auto;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   white-space: nowrap;
 }
 
 .cc-crm__link-badge [data-lucide],
 .cc-crm__link-badge svg {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
 }
 
 /* Win-rate gauge: the Wins chip as a ring filled to the rate (lagoon on its soft tint), the icon in a
@@ -220,18 +220,18 @@
 
 .cc-crm__gauge {
   position: relative;
-  border-radius: var(--ai-radius-full);
-  background: conic-gradient(var(--ai-accent-lagoon-solid) calc(var(--cc-crm-pct) * 1%), var(--ai-accent-lagoon-soft) 0);
-  color: var(--ai-accent-lagoon-soft-fg);
+  border-radius: var(--ao-radius-full);
+  background: conic-gradient(var(--ao-accent-lagoon-solid) calc(var(--cc-crm-pct) * 1%), var(--ao-accent-lagoon-soft) 0);
+  color: var(--ao-accent-lagoon-soft-fg);
   transition: --cc-crm-pct 900ms ease-out;
 }
 
 .cc-crm__gauge::before {
   content: "";
   position: absolute;
-  inset: var(--ai-spacing-1);
+  inset: var(--ao-spacing-1);
   border-radius: inherit;
-  background-color: var(--ai-surface-primary);
+  background-color: var(--ao-surface-primary);
 }
 
 .cc-crm__gauge [data-lucide],
@@ -245,7 +245,7 @@
 .cc-crm__figures {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr));
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   margin: 0;
 }
 
@@ -253,41 +253,41 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;   /* a label that wraps pushes nothing: values share a baseline row */
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
   min-inline-size: 0;
 }
 
 .cc-crm__figure + .cc-crm__figure {
-  padding-inline-start: var(--ai-spacing-4);
-  border-inline-start: 1px solid var(--ai-border-secondary);
+  padding-inline-start: var(--ao-spacing-4);
+  border-inline-start: 1px solid var(--ao-border-secondary);
 }
 
 .cc-crm__figure-value {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-sm);
-  font-weight: var(--ai-font-bold);
-  line-height: var(--ai-leading-lg);   /* the lead's line box, so all three values sit on one line */
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-sm);
+  font-weight: var(--ao-font-bold);
+  line-height: var(--ao-leading-lg);   /* the lead's line box, so all three values sit on one line */
+  color: var(--ao-text-primary);
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
 }
 
 .cc-crm__figure--lead .cc-crm__figure-value {
-  font-size: var(--ai-font-fixed-xl);
+  font-size: var(--ao-font-fixed-xl);
 }
 
 .cc-crm__chart {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
 .cc-crm__chart-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 .cc-crm__chart-head .chart__sub {
@@ -297,95 +297,95 @@
 /* `size-3` (192px): the two cards' charts sit side by side, so each is half a hero's height. */
 .cc-crm__canvas {
   position: relative;
-  block-size: var(--ai-size-3);
+  block-size: var(--ao-size-3);
 }
 
 .cc-crm__sub {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   align-self: start;
-  padding-block-start: var(--ai-spacing-5);
-  border-block-start: 1px solid var(--ai-border-secondary);
+  padding-block-start: var(--ao-spacing-5);
+  border-block-start: 1px solid var(--ao-border-secondary);
 }
 
 .cc-crm__sub-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 /* RecordSection's sub-heading scale: title, semibold, `fixed-xs`. */
 .cc-crm__sub-title {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
 }
 
 .cc-crm__more {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-3xs);
-  font-weight: var(--ai-font-medium);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-secondary);
+  gap: var(--ao-spacing-2);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-3xs);
+  font-weight: var(--ao-font-medium);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
   text-decoration: none;
   white-space: nowrap;
 }
 
 .cc-crm__more:hover {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
   text-decoration: none;
 }
 
 .cc-crm__more [data-lucide],
 .cc-crm__more svg {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
 }
 
 /* Share bars in the page's one data colour, lagoon (Mark, 2026-10-05: "one colour scheme on this page,
    lagoon"). `accent-lagoon-solid`, the charts' token, rather than `surface-brand`, so a client brand
    change cannot split the bars from the charts. Track: Live Dashboard's `surface-contrast`. */
 .cc-crm .cc-live__bar-fill {
-  background-color: var(--ai-accent-lagoon-solid);
+  background-color: var(--ao-accent-lagoon-solid);
 }
 
 .cc-crm__stage-figs {
   display: inline-flex;
   align-items: baseline;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   flex: 0 0 auto;
 }
 
 .cc-crm__stage-count {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-3xs);
-  font-weight: var(--ai-font-medium);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-3xs);
+  font-weight: var(--ao-font-medium);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
   font-variant-numeric: tabular-nums;
 }
 
 .cc-crm__note,
 .cc-crm__activity-foot {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-3xs);
-  font-weight: var(--ai-font-medium);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-3xs);
+  font-weight: var(--ao-font-medium);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
 }
 
 .cc-crm__activity-foot strong {
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-primary);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
 }
 
 /* ── Activity cards ─────────────────────────────────────────
@@ -394,7 +394,7 @@
 .cc-crm__activity-title {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   min-inline-size: 0;
 }
 
@@ -402,30 +402,30 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ai-spacing-3) var(--ai-spacing-4);
+  gap: var(--ao-spacing-3) var(--ao-spacing-4);
 }
 
 .cc-crm__activity-value {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-3xl);
-  font-weight: var(--ai-font-bold);
-  line-height: var(--ai-leading-xl);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-3xl);
+  font-weight: var(--ao-font-bold);
+  line-height: var(--ao-leading-xl);
+  color: var(--ao-text-primary);
   font-variant-numeric: tabular-nums;
 }
 
 .cc-crm__activity-head .badge [data-lucide],
 .cc-crm__activity-head .badge svg,
 .cc-crm__pipe .badge [data-lucide] {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
 }
 
 /* `size-1` (128px): a sparkline, not a second hero. */
 .cc-crm__spark {
   position: relative;
-  block-size: var(--ai-size-1);
+  block-size: var(--ao-size-1);
 }
 
 /* ── Narrow page column ─────────────────────────────────────
@@ -439,9 +439,9 @@
 
   .cc-crm__pair + .cc-crm__pair {
     padding-inline-start: 0;
-    padding-block-start: var(--ai-spacing-6);
+    padding-block-start: var(--ao-spacing-6);
     border-inline-start: 0;
-    border-block-start: 1px solid var(--ai-border-secondary);
+    border-block-start: 1px solid var(--ao-border-secondary);
   }
 }
 
@@ -455,12 +455,12 @@
   .cc-crm__pair {
     flex-direction: column;
     align-items: stretch;
-    gap: var(--ai-spacing-3);
+    gap: var(--ao-spacing-3);
   }
 
   .cc-crm__link {
     justify-content: center;
-    padding-inline-start: var(--ai-spacing-5);
+    padding-inline-start: var(--ao-spacing-5);
   }
 
   .cc-crm__link-line {
@@ -468,7 +468,7 @@
   }
 
   .cc-crm__link-badge {
-    margin-inline-start: var(--ai-spacing-8);
+    margin-inline-start: var(--ao-spacing-8);
   }
 }
 

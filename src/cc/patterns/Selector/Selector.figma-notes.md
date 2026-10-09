@@ -35,20 +35,20 @@ always the one being placed. The auto-scroll near the list's edges keeps a long 
 - **Sort:** the thumbnail, ⤒ ⤓ and the grip drop out. HTML5 drag does not exist on touch (`(hover: none)` hides the grip too), so ↑ ↓ and the typed position are the mobile way. A typed 1 means "top".
 - The footer wraps: the status line first, then the buttons.
 
-## Tokens (all `--ai-*`)
+## Tokens (all `--ao-*`)
 
 | Element | Token |
 |---|---|
-| Search cap / basis | `--ai-size-7` max, `--ai-size-5` basis (a cap, not a floor) |
-| Selected row (single), current row (sort) | `--ai-surface-brand-soft-extra` |
-| Tick, tile ring, drop line, moved flash | `--ai-icon-brand`, `--ai-border-brand` |
-| Media modal / sort modal width | `--ai-size-12` (960) / `--ai-size-11` (768) |
-| Scroll region cap | `--ai-size-10` |
-| Tile min | `--ai-size-1` (the Media Items grid's own is `--ai-size-2`; smaller because a picker wants more choices per screen) |
-| Sort thumb / position input | `--ai-spacing-8` square / `--ai-spacing-9` × `--ai-spacing-7` |
-| Hint bar | `--ai-surface-info-soft` |
+| Search cap / basis | `--ao-size-7` max, `--ao-size-5` basis (a cap, not a floor) |
+| Selected row (single), current row (sort) | `--ao-surface-brand-soft-extra` |
+| Tick, tile ring, drop line, moved flash | `--ao-icon-brand`, `--ao-border-brand` |
+| Media modal / sort modal width | `--ao-size-12` (960) / `--ao-size-11` (768) |
+| Scroll region cap | `--ao-size-10` |
+| Tile min | `--ao-size-1` (the Media Items grid's own is `--ao-size-2`; smaller because a picker wants more choices per screen) |
+| Sort thumb / position input | `--ao-spacing-8` square / `--ao-spacing-9` × `--ao-spacing-7` |
+| Hint bar | `--ao-surface-info-soft` |
 | Sort footer Reset (tertiary) | transparent at rest only; hover / pressed / focus keep the tertiary tokens (designer, 2026-09-29) |
-| Sort row move buttons (tertiary sm) | `--ai-border-secondary` border, the listing account chip's Case B override (designer, 2026-09-29), restated for hover / focus |
+| Sort row move buttons (tertiary sm) | `--ao-border-secondary` border, the listing account chip's Case B override (designer, 2026-09-29), restated for hover / focus |
 
 ## Needs Figma
 

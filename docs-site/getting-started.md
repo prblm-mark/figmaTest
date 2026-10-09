@@ -45,17 +45,17 @@ src/
 
 Each component folder contains:
 - `<Name>.html` — Standalone demo page
-- `<Name>.css` — BEM-structured styles using `--ai-*` tokens
+- `<Name>.css` — BEM-structured styles using `--ao-*` tokens
 - `<Name>.figma-notes.md` — Figma node mapping and variant matrix
 
 ## Token prefix
 
-All CSS custom properties use the `--ai-` prefix:
+All CSS custom properties use the `--ao-` prefix:
 
 ```css
-background-color: var(--ai-surface-primary);
-color: var(--ai-text-primary);
-border-radius: var(--ai-radius-md);
+background-color: var(--ao-surface-primary);
+color: var(--ao-text-primary);
+border-radius: var(--ao-radius-md);
 ```
 
 ## Dark mode

@@ -23,7 +23,7 @@
 
 ### Variants
 - **Default**: dashed border zone with cloud-upload icon and instructional text
-- **Active** (`.drag-drop--active`): border colour changes to `--ai-border-brand` during drag-over
+- **Active** (`.drag-drop--active`): border colour changes to `--ao-border-brand` during drag-over
 - **With Button** (`.drag-drop--with-btn`): includes a `.btn .btn--primary .btn--sm` browse button
 - **Error** (`.drag-drop--error`): border-error, icon circle tinted to error, error messaging
 
@@ -57,32 +57,32 @@
 
 | Figma Property            | CSS Token                            |
 |---------------------------|--------------------------------------|
-| Zone bg                   | `--ai-surface-primary`               |
-| Zone border               | `--ai-border-secondary`              |
-| Zone border (active)      | `--ai-border-brand`                  |
-| Zone border (error)       | `--ai-border-error`                  |
-| Zone radius               | `--ai-radius-lg`                     |
-| Zone padding              | `--ai-spacing-7`                     |
-| Zone gap                  | `--ai-spacing-5`                     |
-| Icon circle bg            | `--ai-surface-brand-soft-extra`  |
-| Icon circle bg (error)    | `--ai-surface-error-soft`        |
-| Icon circle radius        | `--ai-radius-full`                   |
-| Icon colour               | `--ai-icon-brand`                    |
-| Icon colour (error)       | `--ai-text-error`                    |
-| Icon size                 | `--ai-icon-size-lg`                  |
-| Title font                | `--ai-font-title`                    |
-| Title size                | `--ai-font-fixed-xs`                 |
-| Title colour              | `--ai-text-secondary`                |
-| Title strong colour       | `--ai-text-primary`                  |
-| Subtitle font             | `--ai-font-title`                    |
-| Subtitle size             | `--ai-font-fixed-xxs`               |
-| Subtitle colour           | `--ai-text-contrast`                 |
-| Text group gap            | `--ai-spacing-3`                     |
-| Transition                | `--ai-transition-default`            |
+| Zone bg                   | `--ao-surface-primary`               |
+| Zone border               | `--ao-border-secondary`              |
+| Zone border (active)      | `--ao-border-brand`                  |
+| Zone border (error)       | `--ao-border-error`                  |
+| Zone radius               | `--ao-radius-lg`                     |
+| Zone padding              | `--ao-spacing-7`                     |
+| Zone gap                  | `--ao-spacing-5`                     |
+| Icon circle bg            | `--ao-surface-brand-soft-extra`  |
+| Icon circle bg (error)    | `--ao-surface-error-soft`        |
+| Icon circle radius        | `--ao-radius-full`                   |
+| Icon colour               | `--ao-icon-brand`                    |
+| Icon colour (error)       | `--ao-text-error`                    |
+| Icon size                 | `--ao-icon-size-lg`                  |
+| Title font                | `--ao-font-title`                    |
+| Title size                | `--ao-font-fixed-xs`                 |
+| Title colour              | `--ao-text-secondary`                |
+| Title strong colour       | `--ao-text-primary`                  |
+| Subtitle font             | `--ao-font-title`                    |
+| Subtitle size             | `--ao-font-fixed-xxs`               |
+| Subtitle colour           | `--ao-text-contrast`                 |
+| Text group gap            | `--ao-spacing-3`                     |
+| Transition                | `--ao-transition-default`            |
 
 ---
 
 ## Notes
 
-- **280px min-height** is a fixed design value with no corresponding design token. It is hardcoded in CSS as there is no `--ai-*` equivalent.
+- **280px min-height** is a fixed design value with no corresponding design token. It is hardcoded in CSS as there is no `--ao-*` equivalent.
 - The "With Button" variant reuses the existing Button component (`btn btn--primary btn--sm`). `Button.css` must be loaded alongside `DragDropFile.css` when using this variant.

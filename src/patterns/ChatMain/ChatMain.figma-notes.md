@@ -60,43 +60,43 @@
 
 | Property | Token | Value |
 |---|---|---|
-| Background | `--ai-surface-primary` | #ffffff |
-| Container max-width | `--ai-size-11` | 768px |
-| Container padding (vertical) | `--ai-spacing-8` | 40px |
-| Container padding (horizontal) | `--ai-spacing-6` | 24px (desktop only) |
-| Container gap (mobile) | `--ai-spacing-6` | 24px |
-| Container gap (desktop) | `--ai-spacing-5` | 16px |
-| Title font | `--ai-font-title`, `--ai-font-bold` | Inter 700 |
-| Title size (mobile) | `--ai-font-fluid-2xl` | responsive |
-| Title size (desktop) | `--ai-font-fluid-4xl` | responsive |
-| Title leading (mobile) | `--ai-leading-lg` | 2rem |
-| Title leading (desktop) | `--ai-leading-xl` | 2.5rem |
-| Title color | `--ai-text-primary` | #1F2A37 |
-| Subtitle font | `--ai-font-body`, `--ai-font-regular` | Inter 400 |
-| Subtitle size (mobile) | `--ai-font-fluid-sm` | responsive |
-| Subtitle size (desktop) | `--ai-font-fluid-md` | responsive |
-| Subtitle color | `--ai-text-contrast` | #6B7280 |
-| Intro gap | `--ai-spacing-5` | 16px |
-| Intro padding-bottom (mobile) | `--ai-spacing-5` | 16px |
-| Intro padding-bottom (desktop) | `--ai-spacing-7` | 32px |
+| Background | `--ao-surface-primary` | #ffffff |
+| Container max-width | `--ao-size-11` | 768px |
+| Container padding (vertical) | `--ao-spacing-8` | 40px |
+| Container padding (horizontal) | `--ao-spacing-6` | 24px (desktop only) |
+| Container gap (mobile) | `--ao-spacing-6` | 24px |
+| Container gap (desktop) | `--ao-spacing-5` | 16px |
+| Title font | `--ao-font-title`, `--ao-font-bold` | Inter 700 |
+| Title size (mobile) | `--ao-font-fluid-2xl` | responsive |
+| Title size (desktop) | `--ao-font-fluid-4xl` | responsive |
+| Title leading (mobile) | `--ao-leading-lg` | 2rem |
+| Title leading (desktop) | `--ao-leading-xl` | 2.5rem |
+| Title color | `--ao-text-primary` | #1F2A37 |
+| Subtitle font | `--ao-font-body`, `--ao-font-regular` | Inter 400 |
+| Subtitle size (mobile) | `--ao-font-fluid-sm` | responsive |
+| Subtitle size (desktop) | `--ao-font-fluid-md` | responsive |
+| Subtitle color | `--ao-text-contrast` | #6B7280 |
+| Intro gap | `--ao-spacing-5` | 16px |
+| Intro padding-bottom (mobile) | `--ao-spacing-5` | 16px |
+| Intro padding-bottom (desktop) | `--ao-spacing-7` | 32px |
 | Suggestions grid (mobile) | `repeat(2, 1fr)` | 2 cols |
 | Suggestions grid (desktop) | `repeat(3, 1fr)` | 3 cols |
-| Suggestions gap | `--ai-spacing-5` | 16px |
-| Feedback font-size | `--ai-font-fixed-xxs` | 12px |
-| Feedback color | `--ai-text-contrast` | #6B7280 |
+| Suggestions gap | `--ao-spacing-5` | 16px |
+| Feedback font-size | `--ao-font-fixed-xxs` | 12px |
+| Feedback color | `--ao-text-contrast` | #6B7280 |
 
 ## Token Mapping — Scroll Area (Processing + Response)
 
 | Property | Token | Value |
 |---|---|---|
-| Container max-width | `--ai-size-11` | 768px |
-| Container padding | `--ai-spacing-8` `--ai-spacing-6` | 40px 24px |
-| Container gap | `--ai-spacing-8` | 40px |
-| Response font-family | `--ai-font-body` | Inter |
-| Response font-size | `--ai-font-fluid-sm` | 16px (responsive) |
-| Response line-height | `--ai-leading-md` | 24px |
-| Fade height | `--ai-size-2` | 160px |
-| Fade gradient | `--ai-gradient-surface-primary` | to bottom |
+| Container max-width | `--ao-size-11` | 768px |
+| Container padding | `--ao-spacing-8` `--ao-spacing-6` | 40px 24px |
+| Container gap | `--ao-spacing-8` | 40px |
+| Response font-family | `--ao-font-body` | Inter |
+| Response font-size | `--ao-font-fluid-sm` | 16px (responsive) |
+| Response line-height | `--ao-leading-md` | 24px |
+| Fade height | `--ao-size-2` | 160px |
+| Fade gradient | `--ao-gradient-surface-primary` | to bottom |
 
 ## Dependencies
 
@@ -115,4 +115,4 @@
 - Initial → Processing: GSAP fade-out of intro/suggestions, input slides to footer, ChatResponse timeline plays
 - Processing → Response: ChatResponse timeline completes, switches to response view
 - SuggestedQuestion click: auto-submits the question text
-- Transition: `--ai-transition-default` (150ms ease) for hover states
+- Transition: `--ao-transition-default` (150ms ease) for hover states

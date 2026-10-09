@@ -19,7 +19,7 @@ const SCRAMBLE_DEFAULTS = {
 const SUBTITLE_STAGES = [
   { text: 'Preparing quick answers',          offset: 0.1,    gap: null },
   { text: 'Searching 24,731 data sources',    offset: null,   gap: 0.2  },
-  { text: 'Here are your quick answers',      offset: null,   gap: 1.0, weight: 'var(--ai-font-medium)' },
+  { text: 'Here are your quick answers',      offset: null,   gap: 1.0, weight: 'var(--ao-font-medium)' },
 ];
 
 export function createWorkingIntroTimeline(el) {

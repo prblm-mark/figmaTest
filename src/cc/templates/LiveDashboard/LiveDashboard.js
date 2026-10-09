@@ -93,14 +93,14 @@
     id: 'ccLiveMarkers',
     afterDatasetsDraw: function (c) {
       var ctx = c.ctx, area = c.chartArea, x = c.scales.x, h = nowHour();
-      var line = tok('--ai-border-primary') || tok('--ai-text-contrast');
+      var line = tok('--ao-border-primary') || tok('--ao-text-contrast');
       ctx.save();
       /* Now */
       var nx = x.getPixelForValue(h);
-      ctx.strokeStyle = tok('--ai-text-contrast'); ctx.setLineDash([2, 3]); ctx.lineWidth = 1;
+      ctx.strokeStyle = tok('--ao-text-contrast'); ctx.setLineDash([2, 3]); ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(nx, area.top); ctx.lineTo(nx, area.bottom); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = tok('--ai-text-secondary'); ctx.font = '600 11px Inter, sans-serif'; ctx.textAlign = 'center';
+      ctx.fillStyle = tok('--ao-text-secondary'); ctx.font = '600 11px Inter, sans-serif'; ctx.textAlign = 'center';
       ctx.fillText('Now', nx, area.top - 6);
       /* Crosshair */
       var act = c.tooltip && c.tooltip.getActiveElements && c.tooltip.getActiveElements();
@@ -115,7 +115,7 @@
         var last = -1; ds.data.forEach(function (v, j) { if (v !== null) last = j; });
         if (last < 0) return;
         var pt = meta.data[last];
-        ctx.fillStyle = tok('--ai-text-secondary'); ctx.font = '600 11px Inter, sans-serif';
+        ctx.fillStyle = tok('--ao-text-secondary'); ctx.font = '600 11px Inter, sans-serif';
         var label = ds.label, w = ctx.measureText(label).width;
         var lx = Math.min(pt.x + 8, area.right - w), ly = pt.y + (di === 0 ? -8 : 14);
         ctx.textAlign = 'left'; ctx.fillText(label, lx, ly);
@@ -132,10 +132,10 @@
   function drawChart() {
     if (!window.Chart) return;
     var canvas = $('[data-canvas]');
-    var today = tok('--ai-accent-lagoon-solid'), average = tok('--ai-accent-purple-solid');
+    var today = tok('--ao-accent-lagoon-solid'), average = tok('--ao-accent-purple-solid');
     Chart.defaults.font.family = 'Inter, sans-serif';
     Chart.defaults.font.size = 12;
-    Chart.defaults.color = tok('--ai-text-contrast');
+    Chart.defaults.color = tok('--ao-text-contrast');
     var fill = function (ctx) {
       var c = ctx.chart, area = c.chartArea;
       if (!area) return today;
@@ -150,10 +150,10 @@
         datasets: [
           { label: 'Today', data: chartData(), borderColor: today, backgroundColor: fill, fill: true, tension: 0.35,
             borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, pointHoverBorderWidth: 2,
-            pointHoverBorderColor: tok('--ai-surface-primary'), pointHoverBackgroundColor: today, spanGaps: false },
+            pointHoverBorderColor: tok('--ao-surface-primary'), pointHoverBackgroundColor: today, spanGaps: false },
           { label: 'Average', data: LD.pageViews.average.slice(), borderColor: average, backgroundColor: average, fill: false,
             borderDash: [5, 4], tension: 0.35, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, pointHoverBorderWidth: 2,
-            pointHoverBorderColor: tok('--ai-surface-primary'), pointHoverBackgroundColor: average }
+            pointHoverBorderColor: tok('--ao-surface-primary'), pointHoverBackgroundColor: average }
         ]
       },
       options: {
@@ -163,7 +163,7 @@
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: tok('--ai-surface-invert'), titleColor: tok('--ai-text-invert'), bodyColor: tok('--ai-text-invert'),
+            backgroundColor: tok('--ao-surface-invert'), titleColor: tok('--ao-text-invert'), bodyColor: tok('--ao-text-invert'),
             padding: 10, cornerRadius: 6, boxPadding: 4, usePointStyle: true,
             callbacks: {
               title: function (items) { return items[0].label; },
@@ -178,7 +178,7 @@
                  var step = this.chart.width < 520 ? 6 : 3;
                  return i % step === 0 ? HOURS[i] : '';
                } } },
-          y: { beginAtZero: true, grid: { color: tok('--ai-border-secondary') }, border: { display: false },
+          y: { beginAtZero: true, grid: { color: tok('--ao-border-secondary') }, border: { display: false },
                ticks: { precision: 0, maxTicksLimit: 5, callback: function (v) { return v >= 1000 ? (v / 1000) + 'k' : v; } } }
         }
       },

@@ -27,14 +27,14 @@
 
 | Property | Token |
 |---|---|
-| gap | --ai-spacing-3 |
-| icon | --ai-icon-size-sm, --ai-surface-warning |
-| title | --ai-font-fixed-2xs SemiBold --ai-text-secondary |
-| description | --ai-font-fixed-2xs Regular --ai-text-contrast |
-| line height | --ai-leading-xs |
+| gap | --ao-spacing-3 |
+| icon | --ao-icon-size-sm, --ao-surface-warning |
+| title | --ao-font-fixed-2xs SemiBold --ao-text-secondary |
+| description | --ao-font-fixed-2xs Regular --ao-text-contrast |
+| line height | --ao-leading-xs |
 
 ## Token Gaps & Decisions
-Icon colour is `--ai-surface-warning` as drawn (no `--ai-icon-warning` token exists). Draft toggle icons mix Minus 24px / Plus 20px components — code uses one icon size. Only the first advisory has description copy in the design; the rest come from the SEO health check (backend).
+Icon colour is `--ao-surface-warning` as drawn (no `--ao-icon-warning` token exists). Draft toggle icons mix Minus 24px / Plus 20px components — code uses one icon size. Only the first advisory has description copy in the design; the rest come from the SEO health check (backend).
 
 ## Notes
 - Built 2026-09-28 from the View & Edit kit (section `3861:1902`, CC Light mode). The kit was

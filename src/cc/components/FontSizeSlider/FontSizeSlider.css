@@ -18,12 +18,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: var(--ai-spacing-8);
-  padding: 0 var(--ai-spacing-4);
+  height: var(--ao-spacing-8);
+  padding: 0 var(--ao-spacing-4);
   background-color: var(--cc-actions-menu-primary-bg);
-  border-radius: var(--ai-radius-md);
-  /* Width is intrinsic: inner input (--ai-size-1 = 128px) + horizontal
-   * padding (var(--ai-spacing-4) × 2 = 24px) = 152px, matching Figma. */
+  border-radius: var(--ao-radius-md);
+  /* Width is intrinsic: inner input (--ao-size-1 = 128px) + horizontal
+   * padding (var(--ao-spacing-4) × 2 = 24px) = 152px, matching Figma. */
 }
 
 /* ── Track + thumb ───────────────────────────────────── */
@@ -31,11 +31,11 @@
 .font-size-slider__input {
   appearance: none;
   -webkit-appearance: none;
-  width: var(--ai-size-1);
-  height: var(--ai-spacing-3);
+  width: var(--ao-size-1);
+  height: var(--ao-spacing-3);
   margin: 0;
   background-color: var(--cc-actions-menu-secondary-bg);
-  border-radius: var(--ai-radius-full);
+  border-radius: var(--ao-radius-full);
   outline: none;
   cursor: pointer;
   /* Filled portion painted by JS via background-image gradient */
@@ -45,14 +45,14 @@
 .font-size-slider__input::-webkit-slider-thumb {
   appearance: none;
   -webkit-appearance: none;
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  background-color: var(--ai-surface-brand);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  background-color: var(--ao-surface-brand);
   border: 2px solid var(--cc-actions-menu-secondary-bg);
-  border-radius: var(--ai-radius-full);
+  border-radius: var(--ao-radius-full);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   cursor: grab;
-  transition: transform var(--ai-transition-default);
+  transition: transform var(--ao-transition-default);
 }
 
 .font-size-slider__input:active::-webkit-slider-thumb {
@@ -61,14 +61,14 @@
 
 /* Firefox thumb */
 .font-size-slider__input::-moz-range-thumb {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  background-color: var(--ai-surface-brand);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  background-color: var(--ao-surface-brand);
   border: 2px solid var(--cc-actions-menu-secondary-bg);
-  border-radius: var(--ai-radius-full);
+  border-radius: var(--ao-radius-full);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   cursor: grab;
-  transition: transform var(--ai-transition-default);
+  transition: transform var(--ao-transition-default);
 }
 
 .font-size-slider__input:active::-moz-range-thumb {
@@ -77,26 +77,26 @@
 
 /* Firefox-native filled track (Webkit uses JS-painted gradient) */
 .font-size-slider__input::-moz-range-progress {
-  height: var(--ai-spacing-3);
-  background-color: var(--ai-surface-brand);
-  border-radius: var(--ai-radius-full);
+  height: var(--ao-spacing-3);
+  background-color: var(--ao-surface-brand);
+  border-radius: var(--ao-radius-full);
 }
 
 .font-size-slider__input::-moz-range-track {
-  height: var(--ai-spacing-3);
+  height: var(--ao-spacing-3);
   background-color: var(--cc-actions-menu-secondary-bg);
-  border-radius: var(--ai-radius-full);
+  border-radius: var(--ao-radius-full);
 }
 
 /* Focus ring on thumb */
 .font-size-slider__input:focus-visible::-webkit-slider-thumb {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1),
-              0 0 0 4px var(--ai-surface-brand-soft);
+              0 0 0 4px var(--ao-surface-brand-soft);
 }
 
 .font-size-slider__input:focus-visible::-moz-range-thumb {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1),
-              0 0 0 4px var(--ai-surface-brand-soft);
+              0 0 0 4px var(--ao-surface-brand-soft);
 }
 
 /* Suppress base.css global :focus-visible outline (handled via thumb halo) */

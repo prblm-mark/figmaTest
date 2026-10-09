@@ -19,52 +19,52 @@
     body { container-type: inline-size; container-name: cs-page; }
     body {
       margin: 0;
-      padding: var(--ai-spacing-7);
-      background: var(--ai-surface-minimal);
-      font-family: var(--ai-font-body);
-      color: var(--ai-text-primary);
+      padding: var(--ao-spacing-7);
+      background: var(--ao-surface-minimal);
+      font-family: var(--ao-font-body);
+      color: var(--ao-text-primary);
     }
-    h1 { font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xl); margin: 0 0 var(--ai-spacing-2); }
+    h1 { font-family: var(--ao-font-title); font-size: var(--ao-font-fixed-xl); margin: 0 0 var(--ao-spacing-2); }
     h2 {
-      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-md);
-      margin: var(--ai-spacing-8) 0 var(--ai-spacing-1);
+      font-family: var(--ao-font-title); font-size: var(--ao-font-fixed-md);
+      margin: var(--ao-spacing-8) 0 var(--ao-spacing-1);
     }
-    .lede { color: var(--ai-text-contrast); font-size: var(--ai-font-fixed-xs); margin: 0 0 var(--ai-spacing-5); max-width: 70ch; }
+    .lede { color: var(--ao-text-contrast); font-size: var(--ao-font-fixed-xs); margin: 0 0 var(--ao-spacing-5); max-width: 70ch; }
     .demo-row-label {
-      font-family: var(--ai-font-title);
-      font-size: var(--ai-font-fixed-xxs); font-weight: var(--ai-font-semibold);
-      color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em;
-      margin: var(--ai-spacing-5) 0 var(--ai-spacing-2);
+      font-family: var(--ao-font-title);
+      font-size: var(--ao-font-fixed-xxs); font-weight: var(--ao-font-semibold);
+      color: var(--ao-text-contrast); text-transform: uppercase; letter-spacing: 0.08em;
+      margin: var(--ao-spacing-5) 0 var(--ao-spacing-2);
     }
     /* The card is fluid and fills its container, so the demo supplies the container:
-       a room-list column. --ai-size-6 (320px) leaves the card near the 290px Figma
+       a room-list column. --ao-size-6 (320px) leaves the card near the 290px Figma
        draws it at, once the grid gap is accounted for. */
     .room-list {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(var(--ai-size-5), var(--ai-size-6)));
-      gap: var(--ai-spacing-5);
+      grid-template-columns: repeat(auto-fill, minmax(var(--ao-size-5), var(--ao-size-6)));
+      gap: var(--ao-spacing-5);
       align-items: start;
     }
-    .room-list--single { grid-template-columns: minmax(var(--ai-size-5), var(--ai-size-6)); }
+    .room-list--single { grid-template-columns: minmax(var(--ao-size-5), var(--ao-size-6)); }
     /* ── Mobile preview ──────────────────────────────────────────────────────
        An iframe of THIS page at 390px. An iframe carries its own viewport, so the
        component's own @media (max-width: 767px) fires inside it no matter how wide the
        outer window is — which is the only way to show the mobile rendering without
        duplicating markup or inventing a --mobile modifier. */
     .mobile-preview {
-      display: flex; flex-direction: column; gap: var(--ai-spacing-3);
+      display: flex; flex-direction: column; gap: var(--ao-spacing-3);
       inline-size: fit-content;
     }
     .mobile-preview__frame {
       inline-size: 390px; /* iPhone-class viewport — a device width, not a design token */
       block-size: 640px;
-      border: 1px solid var(--ai-border-secondary);
-      border-radius: var(--ai-radius-lg);
-      background: var(--ai-surface-primary);
+      border: 1px solid var(--ao-border-secondary);
+      border-radius: var(--ao-radius-lg);
+      background: var(--ao-surface-primary);
     }
     .mobile-preview__caption {
-      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xxs);
-      color: var(--ai-text-contrast); margin: 0;
+      font-family: var(--ao-font-title); font-size: var(--ao-font-fixed-xxs);
+      color: var(--ao-text-contrast); margin: 0;
     }
     /* Inside the frame: hide this section so it cannot load itself, and drop the page
        intro so the components start at the top. */
@@ -110,7 +110,7 @@
   <h2>Types — State=Default</h2>
   <p class="lede">Three types. <strong>Default and Seats Assigned look the same</strong> — they
   differ only in the data driving the bar and the label, both brand-coloured. Only <code>--full</code> changes anything visually: the bar turns
-  <code>--ai-surface-success</code> and the FULL badge replaces the seats-free text.</p>
+  <code>--ao-surface-success</code> and the FULL badge replaces the seats-free text.</p>
   <div class="room-list">
     <!-- TODO(backend:SeatingPlanner): room name, table count, seated count and capacity are all
          hardcoded → GET /crm/events/{eventId}/plans returning
@@ -191,7 +191,7 @@
 
   <h2>Types — State=Selected</h2>
   <p class="lede">Selected is a two-property delta on every type: background drops to
-  <code>--ai-surface-minimal</code> and the border goes <code>--ai-border-brand</code>. Verified
+  <code>--ao-surface-minimal</code> and the border goes <code>--ao-border-brand</code>. Verified
   identical on Default and Full, so it composes rather than branching per type.</p>
   <div class="room-list">
     <article class="room-card room-card--selected">

@@ -22,10 +22,10 @@ Icons are initialized globally in `js/app.js` — no per-component setup needed.
 Lucide SVGs default to 24x24px. Override with CSS using icon-size tokens:
 
 ```css
-.icon--sm  { width: 16px; height: 16px; }  /* --ai-icon-size-sm */
-.icon--md  { width: 20px; height: 20px; }  /* --ai-icon-size-md */
-.icon--lg  { width: 24px; height: 24px; }  /* --ai-icon-size-lg */
-.icon--xl  { width: 32px; height: 32px; }  /* --ai-icon-size-xl */
+.icon--sm  { width: 16px; height: 16px; }  /* --ao-icon-size-sm */
+.icon--md  { width: 20px; height: 20px; }  /* --ao-icon-size-md */
+.icon--lg  { width: 24px; height: 24px; }  /* --ao-icon-size-lg */
+.icon--xl  { width: 32px; height: 32px; }  /* --ao-icon-size-xl */
 ```
 
 Do not use arbitrary pixel sizes — stick to the values above.
@@ -33,14 +33,14 @@ Do not use arbitrary pixel sizes — stick to the values above.
 ## Color
 
 Lucide SVGs use `currentColor` for stroke, so icon color is inherited from CSS `color`.
-Always set icon color via `--ai-icon-*` tokens:
+Always set icon color via `--ao-icon-*` tokens:
 
 ```css
-.icon               { color: var(--ai-icon-primary); }
-.icon--secondary    { color: var(--ai-icon-secondary); }
-.icon--muted        { color: var(--ai-icon-contrast); }
-.icon--invert       { color: var(--ai-icon-invert); }
-.icon--brand        { color: var(--ai-icon-brand); }
+.icon               { color: var(--ao-icon-primary); }
+.icon--secondary    { color: var(--ao-icon-secondary); }
+.icon--muted        { color: var(--ao-icon-contrast); }
+.icon--invert       { color: var(--ao-icon-invert); }
+.icon--brand        { color: var(--ao-icon-brand); }
 ```
 
 ## Stroke width

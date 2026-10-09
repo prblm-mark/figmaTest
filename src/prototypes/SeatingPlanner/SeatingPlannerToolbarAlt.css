@@ -21,7 +21,7 @@
    right-aligned against the TITLE rather than grouped with the controls beneath
    it. It reads as a stray indent because that is exactly what it is.
 
-   640px = --ai-bp-sm. px in @media per CLAUDE.md §2 — @media cannot read custom
+   640px = --ao-bp-sm. px in @media per CLAUDE.md §2 — @media cannot read custom
    properties. 639 is "below sm".
    ============================================================================ */
 
@@ -33,7 +33,7 @@
 
 @media (max-width: 639px) {
   body[data-sp-tb] .sp-toolbar__spacer { display: none; }
-  body[data-sp-tb] .sp-toolbar { row-gap: var(--ai-spacing-3); }
+  body[data-sp-tb] .sp-toolbar { row-gap: var(--ao-spacing-3); }
 
   /* Abbreviated labels win below sm, full labels above. One rule for all three
      options — see the note on .sp-tb-short below.
@@ -73,7 +73,7 @@
 
 .sp-more { position: relative; display: none; }
 
-body[data-sp-tb="a"] .sp-more__menu { min-width: var(--ai-size-2); }
+body[data-sp-tb="a"] .sp-more__menu { min-width: var(--ao-size-2); }
 
 @media (max-width: 639px) {
   body[data-sp-tb="a"] .sp-more { display: inline-flex; }
@@ -119,11 +119,11 @@ body[data-sp-tb="a"] .sp-more__menu { min-width: var(--ai-size-2); }
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
-    gap: var(--ai-spacing-3);
-    padding: var(--ai-spacing-3) var(--ai-spacing-4);
-    border-top: 1px solid var(--ai-border-secondary);
-    background: var(--ai-surface-primary);
-    box-shadow: var(--ai-shadow-md);
+    gap: var(--ao-spacing-3);
+    padding: var(--ao-spacing-3) var(--ao-spacing-4);
+    border-top: 1px solid var(--ao-border-secondary);
+    background: var(--ao-surface-primary);
+    box-shadow: var(--ao-shadow-md);
   }
 
   /* Each cell is a full-width target; the split wrap has to stretch too or the
@@ -139,11 +139,11 @@ body[data-sp-tb="a"] .sp-more__menu { min-width: var(--ai-size-2); }
   /* The menu must open UPWARDS from a docked bar. */
   body[data-sp-tb="c"] .sp-toolbar__actions .sp-split__menu {
     top: auto;
-    bottom: calc(100% + var(--ai-spacing-2));
+    bottom: calc(100% + var(--ao-spacing-2));
   }
 
   /* Nothing may sit under the bar. */
-  body[data-sp-tb="c"] { padding-bottom: var(--ai-spacing-12); }
+  body[data-sp-tb="c"] { padding-bottom: var(--ao-spacing-12); }
 }
 
 /* ===========================================================================

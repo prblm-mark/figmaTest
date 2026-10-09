@@ -16,21 +16,21 @@
 
 .notification-badge__count {
   position: absolute;
-  top: var(--ai-spacing-3);
-  right: var(--ai-spacing-3);
+  top: var(--ao-spacing-3);
+  right: var(--ao-spacing-3);
   transform: translate(25%, -25%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: var(--ai-spacing-4);
-  min-height: var(--ai-spacing-5);
-  padding: 0 var(--ai-spacing-1);
-  background-color: var(--ai-surface-error);
-  border: 2px solid var(--ai-surface-primary);
-  border-radius: var(--ai-radius-full);
-  color: var(--ai-text-invert);
-  font-family: var(--ai-font-body);
-  font-weight: var(--ai-font-bold);
+  min-width: var(--ao-spacing-4);
+  min-height: var(--ao-spacing-5);
+  padding: 0 var(--ao-spacing-1);
+  background-color: var(--ao-surface-error);
+  border: 2px solid var(--ao-surface-primary);
+  border-radius: var(--ao-radius-full);
+  color: var(--ao-text-invert);
+  font-family: var(--ao-font-body);
+  font-weight: var(--ao-font-bold);
   font-size: 8px; /* badge counter — sub-token optical size, no semantic token (Figma value) */
   line-height: 1;
   pointer-events: none;

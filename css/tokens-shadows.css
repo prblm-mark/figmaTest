@@ -3,7 +3,7 @@
  * Shadows cannot be exported as DTCG variables from Figma, so these are
  * transcribed by hand from the Figma effect styles.
  *
- * Naming: --ai-shadow-{2xs|xs|sm|md|lg|xl|2xl} plus two component-specific levels
+ * Naming: --ao-shadow-{2xs|xs|sm|md|lg|xl|2xl} plus two component-specific levels
  * (card, cc-rail).
  *
  * Source of truth: the `shadow/*` effect styles in the Design System file
@@ -26,25 +26,25 @@
  */
 
 :root {
-  --ai-shadow-2xs: 0 1px 0 rgba(0, 0, 0, 0.05);
-  --ai-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --ao-shadow-2xs: 0 1px 0 rgba(0, 0, 0, 0.05);
+  --ao-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
   /* Note the NEGATIVE spreads from sm upward: the lower layer is pulled in so the
    * shadow reads as cast downward rather than as an even halo. */
-  --ai-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-  --ai-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --ai-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-  --ai-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-  --ai-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --ao-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --ao-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --ao-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --ao-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --ao-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
 
   /* Soft even card halo. AudioPlayer "Card with waveform" (Figma 3055:5453)
    * binds drop-shadow(0 0 10px rgba(0,0,0,0.05)). No Figma effect style exists
    * for it and it has no counterpart on the new scale (every step there is cast
    * downward), so it stays a one-off outside the sync. */
-  --ai-shadow-card: 0 0 10px rgba(0, 0, 0, 0.05);
+  --ao-shadow-card: 0 0 10px rgba(0, 0, 0, 0.05);
   /* Directional right-edge shadow for the CC SidebarMenu composite when
    * its menu panel is docked open. Light mode only. Figma node 4167:4735
    * binds drop-shadow(4px 0 4px rgba(0,0,0,0.2)) — raw, no style there. */
-  --ai-shadow-cc-rail: 4px 0 4px rgba(0, 0, 0, 0.2);
+  --ao-shadow-cc-rail: 4px 0 4px rgba(0, 0, 0, 0.2);
 }
 
 [data-theme="dark"] {
@@ -57,18 +57,18 @@
    * made) can match to the digit:
    *   0.10 = #0000001A   0.20 = #00000033
    */
-  --ai-shadow-2xs: 0 1px 0 rgba(0, 0, 0, 0.1);
-  --ai-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.1);
-  --ai-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 2px -1px rgba(0, 0, 0, 0.2);
-  --ai-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-  --ai-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
-  --ai-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
-  --ai-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  --ao-shadow-2xs: 0 1px 0 rgba(0, 0, 0, 0.1);
+  --ao-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --ao-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 2px -1px rgba(0, 0, 0, 0.2);
+  --ao-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --ao-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+  --ao-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  --ao-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
   /* No Figma style at either strength — derived from the light card value. */
-  --ai-shadow-card: 0 0 10px rgba(0, 0, 0, 0.1);
+  --ao-shadow-card: 0 0 10px rgba(0, 0, 0, 0.1);
   /* Deliberate exception to the dark rule, reaffirmed by the designer 2026-08-24:
    * no rail shadow in dark mode. A directional edge shadow is invisible against the
    * already-dark canvas, and doubling it would read as a black smear rather than
    * depth. Override only if a future Figma dark variant specifies one. */
-  --ai-shadow-cc-rail: none;
+  --ao-shadow-cc-rail: none;
 }

@@ -12,16 +12,16 @@
 
 | State | Trigger | Visual | Notes |
 |---|---|---|---|
-| Initial | — | `--ai-border-secondary` border, `--ai-surface-minimal` bg, `--ai-radius-sm` | Unchecked resting state |
-| Checked | Native `checked` attribute | `--ai-surface-brand` bg, `--ai-border-brand` border, white check icon | Lucide `check` icon (14x14) in `--ai-text-invert` |
+| Initial | — | `--ao-border-secondary` border, `--ao-surface-minimal` bg, `--ao-radius-sm` | Unchecked resting state |
+| Checked | Native `checked` attribute | `--ao-surface-brand` bg, `--ao-border-brand` border, white check icon | Lucide `check` icon (14x14) in `--ao-text-invert` |
 | Disabled | Native `disabled` attribute | 50% opacity, `cursor: not-allowed` | Works with both checked and unchecked |
 
 ### Optional elements
 
 | Element | Class | Visibility | Notes |
 |---|---|---|---|
-| Label text | `.checkbox__label` | Always shown | `--ai-text-primary`, `--ai-font-fixed-xs` |
-| Helper text | `.checkbox__helper` | Optional | `--ai-text-contrast`, `--ai-font-fixed-xxs`. Remove from HTML to hide |
+| Label text | `.checkbox__label` | Always shown | `--ao-text-primary`, `--ao-font-fixed-xs` |
+| Helper text | `.checkbox__helper` | Optional | `--ao-text-contrast`, `--ao-font-fixed-xxs`. Remove from HTML to hide |
 
 ### Usage examples
 
@@ -113,25 +113,25 @@
 
 | Figma Property         | CSS Token                        |
 | ---------------------- | -------------------------------- |
-| Indicator bg           | `--ai-surface-minimal`           |
-| Indicator border       | `--ai-border-secondary`          |
-| Indicator radius       | `--ai-radius-sm`                 |
-| Checked indicator bg   | `--ai-surface-brand`             |
-| Checked border         | `--ai-border-brand`              |
-| Check icon color       | `--ai-text-invert`               |
-| Focus ring inner       | `--ai-surface-primary`           |
-| Focus ring outer       | `--ai-surface-brand-soft`    |
-| Label text color       | `--ai-text-primary`              |
-| Helper text color      | `--ai-text-contrast`             |
-| Label font size        | `--ai-font-fixed-xs`             |
-| Helper font size       | `--ai-font-fixed-xxs`            |
-| Wrapper gap            | `--ai-spacing-3`                 |
-| Label gap              | `--ai-spacing-1`                 |
-| Transition             | `--ai-transition-default`        |
+| Indicator bg           | `--ao-surface-minimal`           |
+| Indicator border       | `--ao-border-secondary`          |
+| Indicator radius       | `--ao-radius-sm`                 |
+| Checked indicator bg   | `--ao-surface-brand`             |
+| Checked border         | `--ao-border-brand`              |
+| Check icon color       | `--ao-text-invert`               |
+| Focus ring inner       | `--ao-surface-primary`           |
+| Focus ring outer       | `--ao-surface-brand-soft`    |
+| Label text color       | `--ao-text-primary`              |
+| Helper text color      | `--ao-text-contrast`             |
+| Label font size        | `--ao-font-fixed-xs`             |
+| Helper font size       | `--ao-font-fixed-xxs`            |
+| Wrapper gap            | `--ao-spacing-3`                 |
+| Label gap              | `--ao-spacing-1`                 |
+| Transition             | `--ao-transition-default`        |
 
 ## Notes
 
 - Uses native `<input type="checkbox">` — no JavaScript needed for toggle behaviour
 - Checked state shows a Lucide `check` icon (14x14) inside the indicator
-- Indicator uses `--ai-radius-sm` (rounded square) vs Radio's `--ai-radius-full` (circle)
-- Checked background is `--ai-surface-brand` (solid brand fill) vs Radio's ring approach
+- Indicator uses `--ao-radius-sm` (rounded square) vs Radio's `--ao-radius-full` (circle)
+- Checked background is `--ao-surface-brand` (solid brand fill) vs Radio's ring approach

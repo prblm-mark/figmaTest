@@ -126,7 +126,7 @@ the work it exists to do; a component job that didn't block would ship invented 
 
 The gaps file is listed in the build report, reproduced in full in the PR body, and feeds the
 `## Token Gaps` section of `<Name>.figma-notes.md` at the `/build-component` stage. `/build-prototype`
-still may not add `--ai-*` tokens — recording a gap is not minting one.
+still may not add `--ao-*` tokens — recording a gap is not minting one.
 
 Escalation follows the same split: a prototype token gap is **not** escalated at all, and the Step 0
 hard stop (brief asks for a gallery of an existing component) goes to the **requester**, message-only,
@@ -135,7 +135,7 @@ because a rewritten brief is not a design decision.
 ### Why tier 1 survives as non-negotiable
 
 Re-tokenising does **not** make prototype token discipline redundant — it depends on it.
-`generate_figma_design` resolves `var(--ai-*)` to raw values during capture, and
+`generate_figma_design` resolves `var(--ao-*)` to raw values during capture, and
 `figma-plugin-retokenise` rebinds them **by value matching only** (`inferredVariables`, then
 hex→variable and float→variable maps; ambiguous matches are skipped). So:
 
@@ -411,7 +411,7 @@ become the display-side theme in future. So the three surfaces map to modes as:
 |---|---|
 | Display-side (Affino products) | base **Light/Dark** — reserved for this going forward |
 | Control Centre | CC Light/Dark |
-| AI / Chat | Chat Light/Dark, `--ai-chat-brand` accents |
+| AI / Chat | Chat Light/Dark, `--ao-chat-brand` accents |
 
 **Consequence for the pipeline:** which surface a prototype targets determines which modes it draws
 from, and `/build-prototype` had no concept of this. A brief must now name its target surface, and a

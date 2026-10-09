@@ -10,8 +10,8 @@
 
 | Size | Class | Height | Padding-x | Content gap | Label | Field | Field leading |
 |---|---|---|---|---|---|---|---|
-| Base (default) | `.input` | 40px (`--ai-spacing-8`) | 12px (`--ai-spacing-4`) | 8px (`--ai-spacing-3`) | 14px (`--ai-font-fixed-xs`) | 14px (`--ai-font-fixed-xs`) | 24px (`--ai-leading-md`) |
-| Small | `.input.input--sm` | 32px (`--ai-spacing-7`) | 12px (`--ai-spacing-4`) | 8px (`--ai-spacing-3`) | **13px (`--ai-font-fixed-2xs`)** | **13px (`--ai-font-fixed-2xs`)** | **16px (`--ai-leading-xs`)** |
+| Base (default) | `.input` | 40px (`--ao-spacing-8`) | 12px (`--ao-spacing-4`) | 8px (`--ao-spacing-3`) | 14px (`--ao-font-fixed-xs`) | 14px (`--ao-font-fixed-xs`) | 24px (`--ao-leading-md`) |
+| Small | `.input.input--sm` | 32px (`--ao-spacing-7`) | 12px (`--ao-spacing-4`) | 8px (`--ao-spacing-3`) | **13px (`--ao-font-fixed-2xs`)** | **13px (`--ao-font-fixed-2xs`)** | **16px (`--ao-leading-xs`)** |
 
 > **The Size axis steps typography, not just the box.** This table listed only height and padding
 > until 2026-08-28, and the CSS matched the table rather than Figma — so every `input--sm`
@@ -28,10 +28,10 @@
 
 | State | Trigger | Border colour | Notes |
 |---|---|---|---|
-| Default | — | `--ai-border-secondary` | Resting state |
-| Hover | `:hover` | `--ai-border-brand` | Mouse over the field |
-| Focus | `:focus-within` | `--ai-border-brand` + focus ring | Keyboard or click into field |
-| Error | `.input--error` | `--ai-border-error` + red focus ring | Validation failed — add class via JS |
+| Default | — | `--ao-border-secondary` | Resting state |
+| Hover | `:hover` | `--ao-border-brand` | Mouse over the field |
+| Focus | `:focus-within` | `--ao-border-brand` + focus ring | Keyboard or click into field |
+| Error | `.input--error` | `--ao-border-error` + red focus ring | Validation failed — add class via JS |
 | Disabled | `disabled` attribute | — | Not yet implemented in Figma |
 
 ### Optional elements
@@ -40,9 +40,9 @@
 |---|---|---|---|
 | Label | `.input__label` | Always shown | Remove from HTML to hide |
 | Label back button | `.input__label-back` | Optional (Figma `show label back`, hidden by default) | Back button left of the label. Wrap label + button in `.input__label-row`. See below. |
-| Left icon | `.input__icon` | Optional | Lucide icon, `--ai-icon-contrast` |
+| Left icon | `.input__icon` | Optional | Lucide icon, `--ao-icon-contrast` |
 | Clear button | `.input__clear` | Auto — shown when input has value | Uses `:has(:not(:placeholder-shown))`, no JS |
-| Help text | `.input__help` | Optional | Below the field. Turns `--ai-text-error` in error state |
+| Help text | `.input__help` | Optional | Below the field. Turns `--ao-text-error` in error state |
 
 **Label back button (`show label back`, added 2026-07-06):**
 ```html
@@ -100,16 +100,16 @@ Only wrap the label in `.input__label-row` when the back button is present; a ba
 
 | Size | State | Border token | Height |
 |---|---|---|---|
-| Base | Default | `--ai-border-secondary` | `--ai-spacing-8` (40px) |
-| Base | Hover | `--ai-border-brand` | `--ai-spacing-8` |
-| Base | Active | `--ai-border-brand` | `--ai-spacing-8` |
-| Base | Focus | `--ai-border-brand` | `--ai-spacing-8` |
-| Base | Error | `--ai-border-error` | `--ai-spacing-8` |
-| sm | Default | `--ai-border-secondary` | `--ai-spacing-7` (32px) |
-| sm | Hover | `--ai-border-brand` | `--ai-spacing-7` |
-| sm | Active | `--ai-border-brand` | `--ai-spacing-7` |
-| sm | Focus | `--ai-border-brand` | `--ai-spacing-7` |
-| sm | Error | `--ai-border-error` | `--ai-spacing-7` |
+| Base | Default | `--ao-border-secondary` | `--ao-spacing-8` (40px) |
+| Base | Hover | `--ao-border-brand` | `--ao-spacing-8` |
+| Base | Active | `--ao-border-brand` | `--ao-spacing-8` |
+| Base | Focus | `--ao-border-brand` | `--ao-spacing-8` |
+| Base | Error | `--ao-border-error` | `--ao-spacing-8` |
+| sm | Default | `--ao-border-secondary` | `--ao-spacing-7` (32px) |
+| sm | Hover | `--ao-border-brand` | `--ao-spacing-7` |
+| sm | Active | `--ao-border-brand` | `--ao-spacing-7` |
+| sm | Focus | `--ao-border-brand` | `--ao-spacing-7` |
+| sm | Error | `--ao-border-error` | `--ao-spacing-7` |
 
 Hover, Active, and Focus all share the same visual treatment (brand border) — implemented via `:hover` and `:focus-within` on `.input__wrap`.
 
@@ -124,7 +124,7 @@ the designer rather than guessed at:
 | Finding | Node | Why not built |
 |---|---|---|
 | `State=Slot`, Size=sm only | `3488:204564` | Renders identically to `Size=sm, State=Default` in the screenshot, and Base has no equivalent. Reads as a Figma authoring construct (a slot-enabled variant) rather than a state the CSS should express. An asymmetric axis — one size having a state the other lacks — is usually the tell. |
-| `Action Slot`, now BUILT | `3435:28465` inside `78:2017` | The fourth stack slot below Help. Was hidden in every variant and recorded here as "nothing to build until something is placed in it" — the Seating Planner Table form (`3515:178044`) is the first design to place something in it, so it is now built as `.input__action`. Tokens read off `…;3435:28465;3515:178540`: 11px `--ai-font-fixed-4xs`, `--ai-font-medium`, `--ai-leading-xs`, `--ai-text-brand`, 2px `--ai-spacing-0-5` gap, 12px `--ai-icon-size-xs` icon, `letter-spacing: 0.11px`. Its 8px offset is `.input`'s own column gap, so the row sits below the HELP line when help shows and below the FIELD when it does not — which is exactly why Figma's tier field measures 112px with help on and 88px with it off. Additive: no other consumer renders one. |
+| `Action Slot`, now BUILT | `3435:28465` inside `78:2017` | The fourth stack slot below Help. Was hidden in every variant and recorded here as "nothing to build until something is placed in it" — the Seating Planner Table form (`3515:178044`) is the first design to place something in it, so it is now built as `.input__action`. Tokens read off `…;3435:28465;3515:178540`: 11px `--ao-font-fixed-4xs`, `--ao-font-medium`, `--ao-leading-xs`, `--ao-text-brand`, 2px `--ao-spacing-0-5` gap, 12px `--ao-icon-size-xs` icon, `letter-spacing: 0.11px`. Its 8px offset is `.input`'s own column gap, so the row sits below the HELP line when help shows and below the FIELD when it does not — which is exactly why Figma's tier field measures 112px with help on and 88px with it off. Additive: no other consumer renders one. |
 | Base uses slots, sm uses frames | `78:2018` / `3435:27539` vs `78:2027` | Base wraps Label and Help in `Label Slot` / `Help Slot`; sm uses plain frames. Structural inconsistency between the two sizes, invisible in output. |
 
 ~~The Stepper set has one of its own: its help/error text is a raw `text-[12px]`.~~
@@ -147,43 +147,43 @@ raised a token-choice question rather than simply resolving.
 
 | Property | Figma variable | CSS variable |
 |---|---|---|
-| Container gap | `--ai-spacing-3` | `--ai-spacing-3` |
-| Label font (base) | `--ai-font-title`, `--ai-font-semibold`, `--ai-font-fixed-xs`, `--ai-leading-xs` | same |
-| Label color | `--ai-text-primary` | `--ai-text-primary` |
-| Label row gap (back btn ↔ label) | `--ai-spacing-3` | `--ai-spacing-3` |
-| Back btn bg | `--ai-btn-secondary-bg` (transparent) | `--ai-btn-secondary-bg` |
-| Back btn border | `--ai-btn-secondary-border` | `--ai-btn-secondary-border` |
-| Back btn padding | `--ai-spacing-2` (6px) | `--ai-spacing-2` |
-| Back btn radius | `--ai-radius-sm` (4px) | `--ai-radius-sm` |
-| Back btn icon size | 12px | `--ai-icon-size-xs` (0.75rem) |
-| Back btn icon/text color | `--ai-btn-secondary-text` | `--ai-btn-secondary-text` |
-| Field height (base) | `--ai-spacing-8` | `--ai-spacing-8` |
-| Field height (sm) | `--ai-spacing-7` | `--ai-spacing-7` |
-| Field padding-x (base) | `--ai-spacing-5` | `--ai-spacing-4` (user-directed change, 2026-06-01) |
-| Field padding-x (sm) | `--ai-spacing-4` | `--ai-spacing-4` (was `--ai-spacing-3` in code until 2026-08-28 — this row already claimed `-4`, so the CSS had drifted from its own notes) |
-| Field bg | `--ai-surface-primary` | `--ai-surface-primary` |
-| Field border (default) | `--ai-border-secondary` | `--ai-border-secondary` |
-| Field border (hover/focus) | `--ai-border-brand` | `--ai-border-brand` |
-| Field border (error) | `--ai-border-error` | `--ai-border-error` |
-| Content gap (base) | `--ai-spacing-3` | `--ai-spacing-3` |
-| Content gap (sm) | `--ai-spacing-3` | `--ai-spacing-3` (was `--ai-spacing-2` in code until 2026-08-28) |
-| Label font (sm) | `--ai-font-fixed-2xs` (13px) | same |
-| Input font (sm) | `--ai-font-fixed-2xs` (13px), `--ai-leading-xs` | same |
-| Icon size | — | `--ai-icon-size-sm` (16px) |
-| Icon color | `--ai-icon-contrast` | `--ai-icon-contrast` |
-| Input font (base) | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xs`, `--ai-leading-md` | same |
-| Input color (filled) | `--ai-text-primary` | `--ai-text-primary` |
-| Placeholder color | `--text/contrast-2` | `--ai-text-contrast` |
-| Help text font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-xs` | same |
-| Help text color | `--ai-text-secondary` | `--ai-text-secondary` |
-| Error help color | `--ai-text-error` | `--ai-text-error` |
+| Container gap | `--ao-spacing-3` | `--ao-spacing-3` |
+| Label font (base) | `--ao-font-title`, `--ao-font-semibold`, `--ao-font-fixed-xs`, `--ao-leading-xs` | same |
+| Label color | `--ao-text-primary` | `--ao-text-primary` |
+| Label row gap (back btn ↔ label) | `--ao-spacing-3` | `--ao-spacing-3` |
+| Back btn bg | `--ao-btn-secondary-bg` (transparent) | `--ao-btn-secondary-bg` |
+| Back btn border | `--ao-btn-secondary-border` | `--ao-btn-secondary-border` |
+| Back btn padding | `--ao-spacing-2` (6px) | `--ao-spacing-2` |
+| Back btn radius | `--ao-radius-sm` (4px) | `--ao-radius-sm` |
+| Back btn icon size | 12px | `--ao-icon-size-xs` (0.75rem) |
+| Back btn icon/text color | `--ao-btn-secondary-text` | `--ao-btn-secondary-text` |
+| Field height (base) | `--ao-spacing-8` | `--ao-spacing-8` |
+| Field height (sm) | `--ao-spacing-7` | `--ao-spacing-7` |
+| Field padding-x (base) | `--ao-spacing-5` | `--ao-spacing-4` (user-directed change, 2026-06-01) |
+| Field padding-x (sm) | `--ao-spacing-4` | `--ao-spacing-4` (was `--ao-spacing-3` in code until 2026-08-28 — this row already claimed `-4`, so the CSS had drifted from its own notes) |
+| Field bg | `--ao-surface-primary` | `--ao-surface-primary` |
+| Field border (default) | `--ao-border-secondary` | `--ao-border-secondary` |
+| Field border (hover/focus) | `--ao-border-brand` | `--ao-border-brand` |
+| Field border (error) | `--ao-border-error` | `--ao-border-error` |
+| Content gap (base) | `--ao-spacing-3` | `--ao-spacing-3` |
+| Content gap (sm) | `--ao-spacing-3` | `--ao-spacing-3` (was `--ao-spacing-2` in code until 2026-08-28) |
+| Label font (sm) | `--ao-font-fixed-2xs` (13px) | same |
+| Input font (sm) | `--ao-font-fixed-2xs` (13px), `--ao-leading-xs` | same |
+| Icon size | — | `--ao-icon-size-sm` (16px) |
+| Icon color | `--ao-icon-contrast` | `--ao-icon-contrast` |
+| Input font (base) | `--ao-font-body`, `--ao-font-regular`, `--ao-font-fixed-xs`, `--ao-leading-md` | same |
+| Input color (filled) | `--ao-text-primary` | `--ao-text-primary` |
+| Placeholder color | `--text/contrast-2` | `--ao-text-contrast` |
+| Help text font | `--ao-font-body`, `--ao-font-regular`, `--ao-font-fixed-xxs`, `--ao-leading-xs` | same |
+| Help text color | `--ao-text-secondary` | `--ao-text-secondary` |
+| Error help color | `--ao-text-error` | `--ao-text-error` |
 
 ## Token Gaps / Decisions
 
 | Property | Figma value | Resolution |
 |---|---|---|
-| Placeholder color | `--text/contrast-2` (#6b7280) | Mapped to `--ai-text-contrast` (approved) |
-| Error border | `--ai-text-error` in Figma | Using `--ai-border-error` (semantically correct — user to update Figma) |
+| Placeholder color | `--text/contrast-2` (#6b7280) | Mapped to `--ao-text-contrast` (approved) |
+| Error border | `--ao-text-error` in Figma | Using `--ao-border-error` (semantically correct — user to update Figma) |
 
 ## Notes
 - No Disabled state found in Figma — not implemented. Add if required.
@@ -192,18 +192,18 @@ raised a token-choice question rather than simply resolving.
 - **Label back button (`show label back`, node `3033:5171`):** in Figma this is a **Button
   component instance**, but its geometry (radius-sm, 12px icon, 6px padding, no fixed height)
   matches no variant of our shared Button component. Per user decision (2026-07-06) it is built
-  as a **scoped Case B element** (`.input__label-back`) reusing Button's `--ai-btn-secondary-*`
+  as a **scoped Case B element** (`.input__label-back`) reusing Button's `--ao-btn-secondary-*`
   tokens, rather than the `.btn` component. If a matching xs icon-button variant is later added
   to Button (with its own Figma variant), migrate this to use it.
 - **Icon naming mismatch:** the Figma layer is named `Icon/24px/ArrowRight` but the actual
   asset/visual is a **left-pointing arrow** (a back affordance). Implemented with Lucide
   `arrow-left`, which matches the visual and the "back" semantics.
 - Hover/pressed on the back button reuse Button's secondary state tokens
-  (`--ai-btn-secondary-bg-hover` / `-bg-pressed`); Figma only specifies the default state.
+  (`--ao-btn-secondary-bg-hover` / `-bg-pressed`); Figma only specifies the default state.
 
 ## The `--sm` 192px max-width was removed, 2026-08-25
 
-`.input--sm .input__wrap` carried `max-width: var(--ai-size-3)` (192px). It was **undocumented** —
+`.input--sm .input__wrap` carried `max-width: var(--ao-size-3)` (192px). It was **undocumented** —
 it appeared nowhere in these notes — and it sat on a *size* modifier, which governs height, padding
 and typography everywhere else in this component. The effect was that **no `input--sm` could ever
 fill its container.**
@@ -229,7 +229,7 @@ belongs.
 
 ## `.input__help` was 16px too tall (fixed 2026-08-27)
 
-`base.css` sets `p { margin: 0 0 var(--ai-spacing-5) }` — a 16px bottom margin on every
+`base.css` sets `p { margin: 0 0 var(--ao-spacing-5) }` — a 16px bottom margin on every
 paragraph — and `.input__help` never reset it. So **every input showing help or error text was
 16px taller than designed**, in every consumer, since the help element was added.
 
@@ -266,19 +266,19 @@ standalone component would have re-implemented all five and then drifted from th
 
 | Reference (Flowbite) | Ours | Note |
 |---|---|---|
-| `bg-neutral-secondary-medium` (buttons) | `--ai-surface-secondary` | |
-| `hover:bg-neutral-tertiary-medium` | `--ai-surface-contrast` | |
-| `border-default-medium` | `--ai-border-secondary` | the two hairlines flanking the field |
+| `bg-neutral-secondary-medium` (buttons) | `--ao-surface-secondary` | |
+| `hover:bg-neutral-tertiary-medium` | `--ao-surface-contrast` | |
+| `border-default-medium` | `--ao-border-secondary` | the two hairlines flanking the field |
 | `h-10` | inherited from `.input__wrap` (40px) | `--sm` gives 32 for free |
-| `px-3` → 40px wide button | `--ai-spacing-8` (40) | `--ai-spacing-7` (32) at `--sm` |
-| `w-4 h-4` icons | `--ai-icon-size-sm` | |
-| `text-sm`, centred | Input's own `--ai-font-fixed-xs` + `text-align: center` | |
+| `px-3` → 40px wide button | `--ao-spacing-8` (40) | `--ao-spacing-7` (32) at `--sm` |
+| `w-4 h-4` icons | `--ao-icon-size-sm` | |
+| `text-sm`, centred | Input's own `--ao-font-fixed-xs` + `text-align: center` | |
 | `max-w-[9rem]` | **dropped — fluid** | designer's call; 144px matches no token, and the control should fill whatever column holds it. The demo's narrow cells are the demo constraining it, not the component. |
 
 Two deliberate departures from the reference:
 
 1. **Only the buttons are tinted.** The reference tints the field too. Designer's call: the field
-   stays `--ai-surface-primary` so a stepper beside a text Input or a Select does not read as a
+   stays `--ao-surface-primary` so a stepper beside a text Input or a Select does not read as a
    different species of control.
 2. **Buttons are `disabled` at the bounds**, not merely dimmed — so the control cannot produce an
    invalid value, and the button leaves the tab order and reports itself to assistive tech.
@@ -307,8 +307,8 @@ about to increment or decrement.
 
 ### Verified (headless Chrome, 2026-08-27)
 
-40px at Base / 32px at `--sm`; 16px icons; buttons `--ai-surface-secondary` on an
-`--ai-surface-primary` field; 1px `--ai-border-secondary` hairlines; native spinner suppressed;
+40px at Base / 32px at `--sm`; 16px icons; buttons `--ao-surface-secondary` on an
+`--ao-surface-primary` field; 1px `--ao-border-secondary` hairlines; native spinner suppressed;
 `− ` disabled at min and `+` at max; clamping at both bounds; `input`+`change` both fired; empty
 field seeds correctly; typing past a bound re-syncs; no JS errors.
 
@@ -349,27 +349,27 @@ property for property:
 
 | Property | Figma Stepper | This build |
 |---|---|---|
-| label → control gap | `--ai-spacing-3` | ✓ (Input's own) |
-| container height | 32px at sm | `--ai-spacing-7` ✓ |
-| container bg | `--ai-surface-primary` | ✓ |
-| container border | 1px `--ai-border-secondary` | ✓ |
-| radius | `--ai-radius-md` | ✓ |
-| button bg | `--ai-surface-secondary` | ✓ |
-| button width | 32px at sm | `--ai-spacing-7` ✓ |
-| hairlines | `border-r` / `border-l` `--ai-border-secondary` | ✓ |
-| icon | 16px | `--ai-icon-size-sm` ✓ |
-| number (base) | centred, `--ai-font-fixed-xs`, `--ai-leading-md` | ✓ |
-| number (sm) | centred, `--ai-font-fixed-2xs`, `--ai-leading-md` | ✓ since 2026-08-28 |
-| label (base / sm) | `--ai-font-fixed-xs` / `--ai-font-fixed-2xs` | ✓ since 2026-08-28 |
-| help / error text | `--ai-font-fixed-3xs`, `--ai-leading-xs`, `--ai-font-body` | ✓ via `.input--stepper .input__help` |
-| help / error colour | `--ai-text-secondary` / `--ai-text-error` | ✓ (Input's own) |
+| label → control gap | `--ao-spacing-3` | ✓ (Input's own) |
+| container height | 32px at sm | `--ao-spacing-7` ✓ |
+| container bg | `--ao-surface-primary` | ✓ |
+| container border | 1px `--ao-border-secondary` | ✓ |
+| radius | `--ao-radius-md` | ✓ |
+| button bg | `--ao-surface-secondary` | ✓ |
+| button width | 32px at sm | `--ao-spacing-7` ✓ |
+| hairlines | `border-r` / `border-l` `--ao-border-secondary` | ✓ |
+| icon | 16px | `--ao-icon-size-sm` ✓ |
+| number (base) | centred, `--ao-font-fixed-xs`, `--ao-leading-md` | ✓ |
+| number (sm) | centred, `--ao-font-fixed-2xs`, `--ao-leading-md` | ✓ since 2026-08-28 |
+| label (base / sm) | `--ao-font-fixed-xs` / `--ao-font-fixed-2xs` | ✓ since 2026-08-28 |
+| help / error text | `--ao-font-fixed-3xs`, `--ao-leading-xs`, `--ao-font-body` | ✓ via `.input--stepper .input__help` |
+| help / error colour | `--ao-text-secondary` / `--ao-text-error` | ✓ (Input's own) |
 
 That is worth recording: the reference-to-token decisions held up against an independent redraw.
 
 **Re-audited 2026-08-28 — two of the three earlier "discrepancies" were not discrepancies:**
 
-1. **`--ai-chat-sidebar-text` on the number: RESOLVED in Figma.** Both sizes now bind
-   `--ai-text-primary` (re-read from `3567:105368` / `3567:105370`), which is what this build
+1. **`--ao-chat-sidebar-text` on the number: RESOLVED in Figma.** Both sizes now bind
+   `--ao-text-primary` (re-read from `3567:105368` / `3567:105370`), which is what this build
    always used. No action.
 2. **"Label is 13px where an ordinary Input label is 14px": MY ERROR, now adopted.** I compared
    the Stepper's **sm** label against the Input's **Base** label. Input's own sm label is 13px
@@ -382,8 +382,8 @@ That is worth recording: the reference-to-token decisions held up against an ind
    `padding: 0`. Sub-pixel, genuinely still a divergence.
 
 **One real difference between the two components, deliberately kept:** the Stepper's number holds
-`--ai-leading-md` (24px) at **both** sizes, where a plain Input's sm field steps down to
-`--ai-leading-xs` (16px). Figma binds it that way on `3567:105368`, so `.input--stepper
+`--ao-leading-md` (24px) at **both** sizes, where a plain Input's sm field steps down to
+`--ao-leading-xs` (16px). Figma binds it that way on `3567:105368`, so `.input--stepper
 .input__control` re-asserts 24px against the shared sm rule. That re-assert works by **source
 order**, not specificity — both selectors are two classes — so the stepper block must stay below
 the size block in `Input.css`.
@@ -400,14 +400,14 @@ Base/sm) and `3567:105373` / `3567:105372` (Error, Base/sm), verified on each Pa
 
 | Property | Figma | This build |
 |---|---|---|
-| font-size | `--ai-font-fixed-3xs` (12px) | `.input--stepper .input__help` — **the codebase's first use of `3xs`** |
-| line-height | `--ai-leading-xs` (16px) | ✓ Input's own |
-| family / weight | `--ai-font-body` / `--ai-font-regular` | ✓ Input's own |
-| colour | `--ai-text-secondary`, `--ai-text-error` on Error | ✓ Input's own |
+| font-size | `--ao-font-fixed-3xs` (12px) | `.input--stepper .input__help` — **the codebase's first use of `3xs`** |
+| line-height | `--ao-leading-xs` (16px) | ✓ Input's own |
+| family / weight | `--ao-font-body` / `--ao-font-regular` | ✓ Input's own |
+| colour | `--ao-text-secondary`, `--ao-text-error` on Error | ✓ Input's own |
 
 **The binding raised a question rather than settling one.** A plain Input's help binds
-`--ai-font-fixed-xxs` (through the `body/xxs` style); the Stepper's now binds
-`--ai-font-fixed-3xs`. Both are `0.75rem` / 12px in **every** mode, and `.input__help` is a
+`--ao-font-fixed-xxs` (through the `body/xxs` style); the Stepper's now binds
+`--ao-font-fixed-3xs`. Both are `0.75rem` / 12px in **every** mode, and `.input__help` is a
 single class shared by both components — so the two Figma components were asking the same element
 for two different tokens that happen to agree.
 
@@ -419,17 +419,17 @@ shares its value.
 That makes `.input--stepper .input__help` **visually inert today**, which is the point of writing
 it: if the ramp ever moves, each component renders the size it asked for instead of silently
 inheriting the other's. Proved it is really bound to `3xs` and not just coincidentally landing on
-12px by forcing `--ai-font-fixed-3xs` to `30px` on a wrapper — the Stepper's help followed to 30px,
+12px by forcing `--ao-font-fixed-3xs` to `30px` on a wrapper — the Stepper's help followed to 30px,
 the Input's stayed at 12px. **Two tokens with equal values cannot be told apart by measuring the
 result; perturb one and see which follows.**
 
-Unlike the `--ai-leading-md` re-assert on `.input__control`, this rule has **no order dependency** —
+Unlike the `--ao-leading-md` re-assert on `.input__control`, this rule has **no order dependency** —
 two classes beats the one-class `.input__help`, so specificity settles it wherever it sits.
 
 **Also resolved the same day: the font-family divergence.** Figma had the Stepper's help *and* its
-number on `--ai-font-title`; the designer repointed every non-title element to `--ai-font-body`
+number on `--ao-font-title`; the designer repointed every non-title element to `--ao-font-body`
 (label correctly stays `title`). Re-verified on `3567:105256` (Base number, 14px/body) and
-`3567:105239` (sm number, 13px/body). This build already used `--ai-font-body` on both, so no code
+`3567:105239` (sm number, 13px/body). This build already used `--ao-font-body` on both, so no code
 change was needed — the divergence closed from the Figma side.
 
 ## Resting shadow — `shadow/2xs` (2026-09-23) — REMOVED
@@ -443,5 +443,5 @@ filter bar elements in the Listings frame (`3645:148870`) and chose to make it
 it: every `.input__wrap`. In Figma it currently sits on the filter bar's instances (the
 sidebar's search Input has none), so Figma's component defaults trail this.
 
-Token: `--ai-shadow-2xs`. The focus rings (brand and error) replace it while focused, as they replace any resting shadow. Other field-like controls (Select, DatePicker, Textarea) were NOT changed; confirm whether they should match.
+Token: `--ao-shadow-2xs`. The focus rings (brand and error) replace it while focused, as they replace any resting shadow. Other field-like controls (Select, DatePicker, Textarea) were NOT changed; confirm whether they should match.
 

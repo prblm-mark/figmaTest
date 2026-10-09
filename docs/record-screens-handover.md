@@ -62,7 +62,7 @@ Add `?template=full` to any of them for the full-width layout. Kit components li
 7. **Container queries, never viewport queries, for layout.** The docked sidebar menu changes the
    content column with no window resize. Use `cs-page` and the components' own containers in CSS
    and a `ResizeObserver` in JS. **Never `matchMedia`.** (See §6 for the deliberate `@media` exceptions.)
-8. **Tokens only.** Every colour, size, space and radius is an `--ai-*` token. Borders and shadow
+8. **Tokens only.** Every colour, size, space and radius is an `--ao-*` token. Borders and shadow
    offsets are the only raw px. A value with no token is a question for the designer, not a hardcode.
 9. **Permissions decide what renders.** Edit, Save, Copy, + Add, Import, the step pencil and each
    field's editability must only appear for an operator allowed to use them. The backend supplies that.
@@ -99,11 +99,11 @@ SegmentedControl, Dropdown, Modal, ActionCard, Button.
 
 ### Layout
 
-- Main column + sidebar. Sidebar `max-width --ai-size-7` (384), gap `--ai-spacing-5`; sections
-  and panels are `--ai-spacing-5` apart. Page padding **matches the listing screens**
-  (`--ai-spacing-6`, `--ai-spacing-4` below 768; designer, 2026-09-29, for consistency).
+- Main column + sidebar. Sidebar `max-width --ao-size-7` (384), gap `--ao-spacing-5`; sections
+  and panels are `--ao-spacing-5` apart. Page padding **matches the listing screens**
+  (`--ao-spacing-6`, `--ao-spacing-4` below 768; designer, 2026-09-29, for consistency).
 - **Full width** (rail **Full width** button — `unfold-horizontal`, `fold-horizontal` when on — or `?template=full`; the **Minimise** button beside it is the separate condensed view, visual only): the page goes flush on
-  `--ai-surface-primary`, sections lose their radius (bottom border only), the main column gets a
+  `--ao-surface-primary`, sections lose their radius (bottom border only), the main column gets a
   right border. It is the shell's one switch (`control-width.js`), not a separate page; the
   choice is saved and followed on every CC screen. Handover `full-width-preference` (ControlScreen).
 - **Show sidebar** switch (far right of the tabs): **View defaults on, Edit defaults off**, then
@@ -117,10 +117,10 @@ SegmentedControl, Dropdown, Modal, ActionCard, Button.
 
 ### Field rows (FieldRow)
 
-- **Wide** rows: label column `--ai-size-3` (192), gap `--ai-spacing-5`. **Compact** (sidebar):
-  term column `--ai-size-1` (128), uniform across every panel.
-- Labels: **SemiBold, `--ai-text-primary`**, `--ai-font-fixed-xs`. They wrap, and the required
-  `*` (`--ai-text-error`) stays beside the text. Values: Regular, `--ai-text-primary`.
+- **Wide** rows: label column `--ao-size-3` (192), gap `--ao-spacing-5`. **Compact** (sidebar):
+  term column `--ao-size-1` (128), uniform across every panel.
+- Labels: **SemiBold, `--ao-text-primary`**, `--ao-font-fixed-xs`. They wrap, and the required
+  `*` (`--ao-text-error`) stays beside the text. Values: Regular, `--ao-text-primary`.
 - Edit kinds: Input, Select, Textarea, TagBox, MediaPicker, Rich text, Checkbox, Date, Datetime,
   Lookup, Image (MediaPicker + options), Multimedia, File, Colour. All are drawn in Figma.
 - **Image options:** content images (Main Image, Intro, Image Top, Image 1/2) carry Alt text,
@@ -158,7 +158,7 @@ SegmentedControl, Dropdown, Modal, ActionCard, Button.
   **Add to Contact List**), Record, Meta Information, Index Status, Audit, SEO Health.
 - SEO Health items expand inline (± and **Expand all**). Only advisory #1 has designer copy; the rest
   are placeholder text in the same voice. **Real descriptions must come from the SEO check.**
-- Sidebar chips (FactPanel values, viewer companies) carry `--ai-border-secondary` at rest *and*
+- Sidebar chips (FactPanel values, viewer companies) carry `--ao-border-secondary` at rest *and*
   on hover/focus, the listing account-chip treatment.
 - View: image file facts are hidden behind an **Image details** dropdown (designer, 2026-09-29).
 
@@ -217,12 +217,12 @@ All designer-confirmed (Mark) unless noted.
 |---|---|---|
 | Kit | Fix bindings semantically; every panel gets the standard header ("your recommendations are the way to go") | 2026-09-28 |
 | Header | One primary + one secondary, the rest in the kebab. Edit mode = Cancel + Save only. Icon-only header buttons below 768 (Add plus, Edit pencil, Cancel x, Save check), with `aria-label`s kept | 2026-09-30 |
-| Tabs | Active tab **SemiBold**, others Medium; underline `--ai-border-brand` | 2026-09-29 |
-| Labels | FieldRow labels SemiBold + `--ai-text-primary` (were Medium / secondary) | 2026-09-29 |
+| Tabs | Active tab **SemiBold**, others Medium; underline `--ao-border-brand` | 2026-09-29 |
+| Labels | FieldRow labels SemiBold + `--ao-text-primary` (were Medium / secondary) | 2026-09-29 |
 | Page padding | Same as the listing screens | 2026-09-29 |
 | Sidebar | Show sidebar: View on / Edit off, then per user per mode; resizable from 384 | 2026-09-28/29 |
 | Narrow | ≤1023 page: sidebar stacks **below** main in one column (no two-up, no masonry). ≤559 section: rows stack label over value | 2026-09-28 |
-| Mobile | Section padding `--ai-spacing-4`, title `fixed-xs`; tab labels and Show details `2xs`; top nav collapses to two crumbs | 2026-09-29/30 |
+| Mobile | Section padding `--ao-spacing-4`, title `fixed-xs`; tab labels and Show details `2xs`; top nav collapses to two crumbs | 2026-09-29/30 |
 | TagBox | Selected items only; picking happens in the Multi Select Modal | 2026-09-28 |
 | MediaPicker | Edit is icon-only (pencil); the thumbnail itself opens the picker; empty = Choose file | 2026-09-29 |
 | Image alignment | SegmentedControl (icon + text) replaces three radios | 2026-09-29 |
@@ -240,7 +240,7 @@ All designer-confirmed (Mark) unless noted.
 - **Tier 1, `@container cs-page (max-width: 1023px)`:** columns stack, sidebar below main in ONE
   column, the resize handle and the Show sidebar switch go, and the full-width divider moves under the main column.
 - **Tier 2, RecordSection is its own container:** at ≤559 its Wide rows stack label over value
-  (gap `--ai-spacing-3`) and the section padding tightens.
+  (gap `--ao-spacing-3`) and the section padding tightens.
 - **≤767 `cs-page`:** icon-only header and tab actions, Import hidden, smaller tab labels.
 - **Deliberate `@media` exceptions:** the Selector overlay (≤559). It is `position: fixed`, so it
   is viewport-sized. Touch (`hover: none`) hides the sort grip (HTML5 drag does not exist on touch,
@@ -259,7 +259,7 @@ All designer-confirmed (Mark) unless noted.
 - [ ] MediaPicker thumb is a `<button>` "Choose <field>"; after a trash, focus moves to Choose file.
 - [ ] Modals: Escape closes and focus returns to the trigger.
 - [ ] Generate's busy animation respects `prefers-reduced-motion`.
-- [ ] Contrast ≥ 4.5:1 text / 3:1 UI; focus ring `2px solid --ai-surface-brand`; 44×44 targets.
+- [ ] Contrast ≥ 4.5:1 text / 3:1 UI; focus ring `2px solid --ao-surface-brand`; 44×44 targets.
 
 ---
 

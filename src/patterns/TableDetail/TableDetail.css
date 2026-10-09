@@ -24,18 +24,18 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  /* Fixed 320px at both breakpoints — bound to --ai-size-6 in Figma, not a fluid width. */
-  inline-size: var(--ai-size-6);
-  /* FLOOR of --ai-size-5 (280) at the designer's request 2026-09-10. It does nothing on its own,
+  /* Fixed 320px at both breakpoints — bound to --ao-size-6 in Figma, not a fluid width. */
+  inline-size: var(--ao-size-6);
+  /* FLOOR of --ao-size-5 (280) at the designer's request 2026-09-10. It does nothing on its own,
    * since the width above is fixed — it bites wherever a caller makes the panel narrower, which
    * today means the Seating Planner's resizable rail. Figma has no min at all; it draws one fixed
    * width. See the notes for the two places that had to agree with this. */
-  min-inline-size: var(--ai-size-5);
+  min-inline-size: var(--ao-size-5);
   block-size: 100%;
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-lg);
-  background-color: var(--ai-surface-primary);
-  box-shadow: var(--ai-shadow-2xs);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-lg);
+  background-color: var(--ao-surface-primary);
+  box-shadow: var(--ao-shadow-2xs);
   /* Keeps the scrolling seat list clipped inside the rounded corners. */
   overflow: hidden;
 }
@@ -43,7 +43,7 @@
 /* ── Panel header ───────────────────────────────────────────────────────────
  * Never shrinks and never scrolls — the seat list scrolls beneath it.
  *
- * Figma sets `border-0` here while still carrying --ai-border-secondary as the border
+ * Figma sets `border-0` here while still carrying --ao-border-secondary as the border
  * colour: a zero-width border with a colour left on it. The rendered design shows no
  * divider under the header, so none is drawn. If a divider was intended, it needs a
  * width in Figma first. */
@@ -51,10 +51,10 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
   flex-shrink: 0;
   inline-size: 100%;
-  padding: var(--ai-spacing-5);
+  padding: var(--ao-spacing-5);
 }
 
 /* Row 1 of the header: the table name with the tier chip pushed to the far right.
@@ -71,7 +71,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   inline-size: 100%;
 }
 
@@ -85,7 +85,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
   inline-size: 100%;
   min-inline-size: 0;
 }
@@ -96,15 +96,15 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: var(--ai-font-title);
+  font-family: var(--ao-font-title);
   /* 16px semibold (designer, 2026-09-15), was 18px bold. The three sheet titles and the
      room card now share one weight, so the plan reads as a set of panels rather than a
      stack of competing headings. A DIVERGENCE from Figma, which still draws 18/bold —
      applied on instruction and recorded so a later audit reads it as intent, not drift. */
-  font-size: var(--ai-font-fixed-sm);
-  font-weight: var(--ai-font-semibold);
+  font-size: var(--ao-font-fixed-sm);
+  font-weight: var(--ao-font-semibold);
   line-height: normal;
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 /* Figma sets `shrink-0` on the pill instance. A layout concern of this row — nothing
@@ -117,14 +117,14 @@
 .table-detail__meta {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   max-inline-size: 100%;
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-medium);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-medium);
   line-height: normal;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 .table-detail__count {
@@ -139,27 +139,27 @@
   flex-shrink: 0;
 }
 
-/* The sponsor name is bound to --ai-font-body here, where TableCard's equivalent uses
- * --ai-font-title. Both resolve to Inter so it is visually a no-op, but the binding is
+/* The sponsor name is bound to --ao-font-body here, where TableCard's equivalent uses
+ * --ao-font-title. Both resolve to Inter so it is visually a no-op, but the binding is
  * inconsistent between the two components — flagged in figma-notes, built as drawn. */
 .table-detail__sponsor {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   min-inline-size: 0;
-  font-family: var(--ai-font-body);
-  line-height: var(--ai-leading-xs);
+  font-family: var(--ao-font-body);
+  line-height: var(--ao-leading-xs);
 }
 
 .table-detail__sponsor [data-lucide],
 .table-detail__sponsor svg {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
   flex-shrink: 0;
-  /* --ai-icon-secondary, NOT the --ai-icon-contrast TableCard's handshake uses. Resolved
+  /* --ao-icon-secondary, NOT the --ao-icon-contrast TableCard's handshake uses. Resolved
    * by get_variable_defs on the icon node (3472:85943); design context hides the colour
    * inside an SVG asset. */
-  color: var(--ai-icon-secondary);
+  color: var(--ao-icon-secondary);
 }
 
 .table-detail__sponsor-name {
@@ -181,23 +181,23 @@
   min-block-size: 0;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   inline-size: 100%;
-  padding-inline: var(--ai-spacing-5);
-  padding-block-end: var(--ai-spacing-5);
+  padding-inline: var(--ao-spacing-5);
+  padding-block-end: var(--ao-spacing-5);
   overflow-y: auto;
-  /* Transparent track, thin thumb in --ai-surface-secondary. The standard properties
+  /* Transparent track, thin thumb in --ao-surface-secondary. The standard properties
    * cover Firefox and Chrome 121+/Safari 18.2+; the -webkit- rules below carry older
    * WebKit. Same treatment as .chat-sidebar__sections, which is the existing precedent
    * for a thin scrollbar on a transparent track. */
-  scrollbar-color: var(--ai-surface-secondary) transparent;
+  scrollbar-color: var(--ao-surface-secondary) transparent;
   scrollbar-width: thin;
 }
 
 /* `width`, not `inline-size` — these are UA pseudo-elements and logical properties are
  * not reliably honoured on them. 6px matches the precedent, via the token. */
 .table-detail__list::-webkit-scrollbar {
-  width: var(--ai-spacing-2);
+  width: var(--ao-spacing-2);
 }
 
 .table-detail__list::-webkit-scrollbar-track {
@@ -205,8 +205,8 @@
 }
 
 .table-detail__list::-webkit-scrollbar-thumb {
-  background-color: var(--ai-surface-secondary);
-  border-radius: var(--ai-radius-full);
+  background-color: var(--ao-surface-secondary);
+  border-radius: var(--ao-radius-full);
 }
 
 /* ── Role legend ────────────────────────────────────────────────────────────
@@ -218,35 +218,35 @@
   align-items: flex-start;
   align-content: flex-start;
   /* Figma binds a split gap here — 4px row / 8px column. The column gap is Figma's;
-     only the ROW gap was tightened to --ai-spacing-0-5 (designer, 2026-08-25). */
-  row-gap: var(--ai-spacing-0-5);
-  column-gap: var(--ai-spacing-3);
+     only the ROW gap was tightened to --ao-spacing-0-5 (designer, 2026-08-25). */
+  row-gap: var(--ao-spacing-0-5);
+  column-gap: var(--ao-spacing-3);
   flex-shrink: 0;
   inline-size: 100%;
   margin: 0;
-  padding: var(--ai-spacing-3);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  background-color: var(--ai-surface-minimal);
+  padding: var(--ao-spacing-3);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  background-color: var(--ao-surface-minimal);
 }
 
 .table-detail__legend-item {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
   flex-shrink: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-4xs);
-  font-weight: var(--ai-font-medium);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-4xs);
+  font-weight: var(--ao-font-medium);
   line-height: normal;
-  color: var(--ai-text-secondary);
+  color: var(--ao-text-secondary);
 }
 
 .table-detail__swatch {
   flex-shrink: 0;
-  inline-size: var(--ai-spacing-3);
-  block-size: var(--ai-spacing-3);
-  border-radius: var(--ai-radius-xs);
+  inline-size: var(--ao-spacing-3);
+  block-size: var(--ao-spacing-3);
+  border-radius: var(--ao-radius-xs);
   background-color: var(--table-detail-role);
 }
 
@@ -254,7 +254,7 @@
  * One custom property per item, bound to the Seating Planner collection. The swatch
  * inherits it from its legend item. Unlike TableCard's legend this one DOES include
  * Host, so all five roles are covered. */
-.table-detail__legend-item { --table-detail-role: var(--ai-surface-contrast); }
+.table-detail__legend-item { --table-detail-role: var(--ao-surface-contrast); }
 .table-detail__legend-item--host     { --table-detail-role: var(--sp-host); }
 .table-detail__legend-item--vip      { --table-detail-role: var(--sp-vip); }
 .table-detail__legend-item--speaker  { --table-detail-role: var(--sp-speaker); }
@@ -268,7 +268,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   inline-size: 100%;
 }
 
@@ -292,10 +292,10 @@
   }
 
   .table-detail__list {
-    padding: var(--ai-spacing-3);
+    padding: var(--ao-spacing-3);
   }
 
   .table-detail__seats {
-    gap: var(--ai-spacing-2);
+    gap: var(--ao-spacing-2);
   }
 }

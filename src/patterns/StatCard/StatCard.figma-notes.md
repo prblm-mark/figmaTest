@@ -38,8 +38,8 @@ All 10 `Fill=Blue` variants = `stat-card--blue` (the default — no modifier nee
 
 | Modifier | Square | Icon |
 |---|---|---|
-| `stat-card--<colour>` | `--ai-accent-<colour>-solid` | `--ai-accent-<colour>-solid-fg` |
-| `+ stat-card--soft` | `--ai-accent-<colour>-soft` | `--ai-accent-<colour>-soft-fg` |
+| `stat-card--<colour>` | `--ao-accent-<colour>-solid` | `--ao-accent-<colour>-solid-fg` |
+| `+ stat-card--soft` | `--ao-accent-<colour>-soft` | `--ao-accent-<colour>-soft-fg` |
 
 Colours (19): `blue` (default), `mid-blue`, `dark-blue`, `emerald`,
 `orange`, `pink`, `red`, `green`, `purple`, `indigo`, `blue-radix`, `teal-radix`, `green-radix`,
@@ -76,39 +76,39 @@ For Chevron Down/Right variants, add `<div class="stat-card__chevron">` as a sib
 
 | Property | Token | Notes |
 |---|---|---|
-| Card bg | `var(--ai-surface-primary)` | white (transparent on `--no-card`) |
-| Card border | `1px solid var(--ai-border-secondary)` | (none on `--no-card`) |
-| Card shadow | `var(--ai-shadow-md)` | maps to Figma `light/shadow-md`; removed on `--no-card` |
-| Card radius | `var(--ai-radius-md)` | 8px (Figma bound `--ai-spacing-3` — designer-approved swap) |
-| Card gap (Base) | `var(--ai-spacing-4)` | 12px |
-| Card gap / padding (Sm) | `var(--ai-spacing-3)` | 8px |
-| Card min-height (Sm + card) | `var(--ai-spacing-10)` | 56px |
-| Title font-size (Sm) | `var(--ai-font-fixed-2xs)` | 13px |
-| Card gap (Lg) | `var(--ai-spacing-5)` | 16px |
-| Card padding (Base) | `var(--ai-spacing-4)` | 12px |
-| Card padding (Lg) | `var(--ai-spacing-5)` | 16px |
-| Card min-height (Base + card) | `var(--ai-spacing-11)` | 64px |
-| Card min-height (Lg + card) | `var(--ai-spacing-13)` | 80px |
-| Card min-height (Base + no-card) | `var(--ai-spacing-8)` | 40px |
-| Card min-height (Lg + no-card) | `var(--ai-spacing-9)` | 48px |
-| Icon-wrap bg (solid) | `var(--ai-accent-<colour>-solid)` | via `--stat-card-solid`; default `--ai-accent-blue-solid` |
-| Icon colour (solid) | `var(--ai-accent-<colour>-solid-fg)` | white, or Grey/850 on light squares |
-| Icon-wrap bg (soft) | `var(--ai-accent-<colour>-soft)` | via `--stat-card-soft` |
-| Icon colour (soft) | `var(--ai-accent-<colour>-soft-fg)` | |
-| Icon-wrap size (Base) | `var(--ai-spacing-8)` | 40px |
-| Icon-wrap size (Lg) | `var(--ai-spacing-9)` | 48px |
-| Icon-wrap radius | `var(--ai-radius-md)` | 8px |
-| Inner icon size (Base) | `var(--ai-icon-size-sm)` | 16px |
-| Inner icon size (Lg) | `var(--ai-icon-size-md)` | 20px |
-| Chevron icon size | `var(--ai-icon-size-sm)` | 16px (same in Base + Lg) |
-| Chevron colour | `var(--ai-icon-secondary)` | |
-| Text column gap | `var(--ai-spacing-1)` | 4px |
-| Title font | `var(--ai-font-body)` + `var(--ai-font-medium)` | Inter Medium |
-| Title size | `var(--ai-font-fixed-xs)` | 14px |
-| Title colour | `var(--ai-text-contrast)` | |
-| Value font | `var(--ai-font-title)` + `var(--ai-font-bold)` | Inter Bold |
-| Value size | `var(--ai-font-fixed-sm)` | 16px |
-| Value colour | `var(--ai-text-primary)` | |
+| Card bg | `var(--ao-surface-primary)` | white (transparent on `--no-card`) |
+| Card border | `1px solid var(--ao-border-secondary)` | (none on `--no-card`) |
+| Card shadow | `var(--ao-shadow-md)` | maps to Figma `light/shadow-md`; removed on `--no-card` |
+| Card radius | `var(--ao-radius-md)` | 8px (Figma bound `--ao-spacing-3` — designer-approved swap) |
+| Card gap (Base) | `var(--ao-spacing-4)` | 12px |
+| Card gap / padding (Sm) | `var(--ao-spacing-3)` | 8px |
+| Card min-height (Sm + card) | `var(--ao-spacing-10)` | 56px |
+| Title font-size (Sm) | `var(--ao-font-fixed-2xs)` | 13px |
+| Card gap (Lg) | `var(--ao-spacing-5)` | 16px |
+| Card padding (Base) | `var(--ao-spacing-4)` | 12px |
+| Card padding (Lg) | `var(--ao-spacing-5)` | 16px |
+| Card min-height (Base + card) | `var(--ao-spacing-11)` | 64px |
+| Card min-height (Lg + card) | `var(--ao-spacing-13)` | 80px |
+| Card min-height (Base + no-card) | `var(--ao-spacing-8)` | 40px |
+| Card min-height (Lg + no-card) | `var(--ao-spacing-9)` | 48px |
+| Icon-wrap bg (solid) | `var(--ao-accent-<colour>-solid)` | via `--stat-card-solid`; default `--ao-accent-blue-solid` |
+| Icon colour (solid) | `var(--ao-accent-<colour>-solid-fg)` | white, or Grey/850 on light squares |
+| Icon-wrap bg (soft) | `var(--ao-accent-<colour>-soft)` | via `--stat-card-soft` |
+| Icon colour (soft) | `var(--ao-accent-<colour>-soft-fg)` | |
+| Icon-wrap size (Base) | `var(--ao-spacing-8)` | 40px |
+| Icon-wrap size (Lg) | `var(--ao-spacing-9)` | 48px |
+| Icon-wrap radius | `var(--ao-radius-md)` | 8px |
+| Inner icon size (Base) | `var(--ao-icon-size-sm)` | 16px |
+| Inner icon size (Lg) | `var(--ao-icon-size-md)` | 20px |
+| Chevron icon size | `var(--ao-icon-size-sm)` | 16px (same in Base + Lg) |
+| Chevron colour | `var(--ao-icon-secondary)` | |
+| Text column gap | `var(--ao-spacing-1)` | 4px |
+| Title font | `var(--ao-font-body)` + `var(--ao-font-medium)` | Inter Medium |
+| Title size | `var(--ao-font-fixed-xs)` | 14px |
+| Title colour | `var(--ao-text-contrast)` | |
+| Value font | `var(--ao-font-title)` + `var(--ao-font-bold)` | Inter Bold |
+| Value size | `var(--ao-font-fixed-sm)` | 16px |
+| Value colour | `var(--ao-text-primary)` | |
 
 ---
 
@@ -116,10 +116,10 @@ For Chevron Down/Right variants, add `<div class="stat-card__chevron">` as a sib
 
 | # | Property | Figma | Resolution |
 |---|---|---|---|
-| 1 | Icon-wrap bg | ~~`Blue/600` primitive `#2563eb`~~ | **RESOLVED 2026-09-28** — `accent/*` semantic set added to Figma (84 vars); Figma variants rebound; CSS uses `--ai-accent-*`. |
-| 2 | Card radius binding | Figma binds `--ai-spacing-3` (8px) | User-approved: use `--ai-radius-md` instead (same value, correct semantic). |
+| 1 | Icon-wrap bg | ~~`Blue/600` primitive `#2563eb`~~ | **RESOLVED 2026-09-28** — `accent/*` semantic set added to Figma (84 vars); Figma variants rebound; CSS uses `--ao-accent-*`. |
+| 2 | Card radius binding | Figma binds `--ao-spacing-3` (8px) | User-approved: use `--ao-radius-md` instead (same value, correct semantic). |
 | 3 | Card width | Figma frame width 339px (no token) | User-approved: width is consumer-controlled — `width: 100%`. |
-| 4 | No card bg | Figma keeps `--ai-surface-primary` (white) | User-approved: render as `background: transparent` so the "no card" variant has no chrome whatsoever (literally just icon + text on the parent bg). |
+| 4 | No card bg | Figma keeps `--ao-surface-primary` (white) | User-approved: render as `background: transparent` so the "no card" variant has no chrome whatsoever (literally just icon + text on the parent bg). |
 
 ---
 
@@ -148,19 +148,19 @@ None — self-contained. Uses Lucide icons (`mail` default + `chevron-down` / `c
 - Soft squares on the palest ramps moved up for legibility on a white card: `mid-blue`,
   `dark-blue` → 200; `green` → 300.
 - **Muted Teal and Bright Teal removed** (2026-09-28) from StatCard in Figma and code — use `lagoon`
-  / `teal-radix`. Their `--ai-accent-*` tokens still exist (Lagoon-sourced) but nothing uses them.
+  / `teal-radix`. Their `--ao-accent-*` tokens still exist (Lagoon-sourced) but nothing uses them.
 - Solid Blue changed colour: stale `#2563eb` → current `Blue/600` `#0071d8`.
 
 ---
 
 ## History
 
-- 2026-09-28: Fill axis — 21 accent colours × solid/soft via new `--ai-accent-*` tokens; all 42 fills added to Figma on Base/Default (51 variants); icon-wrap primitive gap resolved; Figma variants rebound to `accent/*`.
+- 2026-09-28: Fill axis — 21 accent colours × solid/soft via new `--ao-accent-*` tokens; all 42 fills added to Figma on Base/Default (51 variants); icon-wrap primitive gap resolved; Figma variants rebound to `accent/*`.
 - 2026-05-28: Initial build from Figma frame `2758:3020`. All 10 variants implemented. 4 STOPs resolved (icon-wrap bg primitive, radius rebind, consumer-controlled width, transparent no-card bg).
 
 
 ## Sm size (designer, 2026-09-28)
-From the designer's live amends on Article Edit: gap + padding `--ai-spacing-3`, min-height `--ai-spacing-10`, title `--ai-font-fixed-2xs`. Icon block (32 / 16px icon), value and radius unchanged from Base. Built in Figma as 5 Blue variants like Lg; first consumer = the record screens' PerformanceSummary.
+From the designer's live amends on Article Edit: gap + padding `--ao-spacing-3`, min-height `--ao-spacing-10`, title `--ao-font-fixed-2xs`. Icon block (32 / 16px icon), value and radius unchanged from Base. Built in Figma as 5 Blue variants like Lg; first consumer = the record screens' PerformanceSummary.
 
 ## Size=Xl — code-first (2026-10-02)
 
@@ -189,6 +189,6 @@ The narrow rules key on `cs-page`, so the demo's body establishes that container
 
 ## Border (2026-10-02)
 
-The default edge stays `--ai-border-secondary`, matching Figma: StatCard is usually a card inside a panel. **Border rule (designer, 2026-10-02):** top-level panels use `border/card`, and cards INSIDE a panel keep the more prominent `border/secondary`.
-Where a StatCard IS a top-level card (the Orders totals tiles), the screen sets `--ai-border-card`
+The default edge stays `--ao-border-secondary`, matching Figma: StatCard is usually a card inside a panel. **Border rule (designer, 2026-10-02):** top-level panels use `border/card`, and cards INSIDE a panel keep the more prominent `border/secondary`.
+Where a StatCard IS a top-level card (the Orders totals tiles), the screen sets `--ao-border-card`
 (ListingScreen.css).

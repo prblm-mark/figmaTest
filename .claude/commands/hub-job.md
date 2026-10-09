@@ -65,7 +65,7 @@ If any pre-flight check fails: do not start the job. Report the failure (§ Esca
    |---|---|
    | Display-side (Affino products) | base **Light/Dark** — reserved for display-side going forward |
    | Control Centre | CC Light/Dark (`data-theme` + CC scoping) |
-   | AI / Chat | Chat Light/Dark, `--ai-chat-brand` accents |
+   | AI / Chat | Chat Light/Dark, `--ao-chat-brand` accents |
 
    A missing target surface is a **requester escalation** — message-only, like the Step 0 stop, since
    a rewritten brief is not a design decision. **Do not default it.** A Control Centre screen built
@@ -138,7 +138,7 @@ resolves here:
    - skill + step that stopped
    - the exact question, phrased as the skill phrases it
    - what was found: property name, Figma value, primitive name if identifiable, nearest existing
-     `--ai-*` tokens
+     `--ao-*` tokens
    - the options as the skill lists them (add a token / approve a `calc()` / approve a primitive / …)
    - the branch name and commit SHA
 4. **Raise it on the hub:**
@@ -348,7 +348,7 @@ design-kit read to this command as a fallback; the local checkout is the source 
 ## Hard limits
 
 - Never push to `main`; never merge a PR; never force-push a branch you did not create this run.
-- Never add or invent an `--ai-*` token to unblock yourself — that is an escalation, always.
+- Never add or invent an `--ao-*` token to unblock yourself — that is an escalation, always.
 - Never authenticate a new service or accept a new MCP server mid-job.
 - Never write a credential into a commit, a PR body, or a hub message.
 - Never run a second job before the first has been reported.

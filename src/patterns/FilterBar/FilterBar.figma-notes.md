@@ -44,10 +44,10 @@ Desktop fetched in full: Default, New View, Search. The rest are state/content p
   divider sits mid-card, so nothing needs clipping; clipping would crop the saved-views /
   kebab dropdown panels (which must escape the card).
 - **Row 1** (`.filter-bar__row--top`, `border-bottom`): `[lead (views) .....16px..... [Export · Search · kebab]]`,
-  px `--ai-spacing-5` / py `--ai-spacing-4`. **Export, the search field, and the kebab are grouped in
+  px `--ao-spacing-5` / py `--ao-spacing-4`. **Export, the search field, and the kebab are grouped in
   the `.filter-bar__actions` div** (Figma row-1 "Frame 230", e.g. 2989:6122) with an internal
-  `--ai-spacing-3` (8px) gap; the row's `--ai-spacing-5` (16px) gap only separates the lead from that
-  group. The **search is a persistent 192px field** (`--ai-size-3`) on desktop (Figma 2977:3803).
+  `--ao-spacing-3` (8px) gap; the row's `--ao-spacing-5` (16px) gap only separates the lead from that
+  group. The **search is a persistent 192px field** (`--ao-size-3`) on desktop (Figma 2977:3803).
 - **Row 2**: `[chips (flex-1, wrap) — "Add Filters" is the last chip in the flow]`, same padding.
   (In the Save View state a "Save view" CTA sits as a sibling after `__chips`, pinned right.)
 - **Search responsive behaviour:** desktop shows the persistent `.filter-bar__search-bar` field +
@@ -58,8 +58,8 @@ Desktop fetched in full: Default, New View, Search. The rest are state/content p
 - **Mobile (≤767px):** rows already stack; the **Export button is hidden** (`display:none`) per the
   Figma mobile variants; the **chips row wraps** to multiple lines (Figma mobile variant 2977:3804).
   The **New View "Create" CTA uses the small button** at mobile (`btn--sm` sizing applied to
-  `.filter-bar__create` in the media query — padding `--ai-spacing-4`, `min-height --ai-spacing-7`,
-  `font-size --ai-font-fluid-xxs`), per Figma mobile New View variant 2977:3806 (`button/sm`).
+  `.filter-bar__create` in the media query — padding `--ao-spacing-4`, `min-height --ao-spacing-7`,
+  `font-size --ao-font-fluid-xxs`), per Figma mobile New View variant 2977:3806 (`button/sm`).
   Desktop keeps `button/base`.
 
 ## Modes (JS — FilterBar.js)
@@ -68,7 +68,7 @@ Desktop fetched in full: Default, New View, Search. The rest are state/content p
 |---|---|---|
 | Search | `.filter-bar--search` | row 1 → back-arrow + full-width search Input (Export + actions hidden); **chips row 2 stays** |
 | New View | `.filter-bar--new-view` | row 1 views → "New view" Input + Create (Export + actions stay); **row 2 collapses to just Add Filters**. **Create** (`new-view-create`) appends the typed name to the saved-views list (`addView`, flagged `data-view-empty="1"`) + selects it (`selectView`) + re-wires its … (`Dropdown.initAll`); **×** cancels. A new (empty) view shows **only "Add Filters"** via `.filter-bar--view-empty` (non-destructive — chips stay in the DOM). Existing views keep their default chips; `selectView` toggles `--view-empty` from the row's flag, so switching back restores them. |
-| Alt Search | `.filter-bar--alt-search` | **mobile-only** alternative search treatment (Figma 2999:4699). Instead of the search icon + full-width takeover, the persistent `.filter-bar__search-bar` field is shown and **fills** row 1 (`flex:1`) between the views control and the kebab. The views trigger becomes a **plain borderless control** (`width:auto`, no border / bg / padding — not the 192px field) so the search gets the width; row-1 gap is `--ai-spacing-5` (16px) between the views control and the search field. Search icon hidden. Desktop unchanged. CSS-only (modifier on the root). |
+| Alt Search | `.filter-bar--alt-search` | **mobile-only** alternative search treatment (Figma 2999:4699). Instead of the search icon + full-width takeover, the persistent `.filter-bar__search-bar` field is shown and **fills** row 1 (`flex:1`) between the views control and the kebab. The views trigger becomes a **plain borderless control** (`width:auto`, no border / bg / padding — not the 192px field) so the search gets the width; row-1 gap is `--ao-spacing-5` (16px) between the views control and the search field. Search icon hidden. Desktop unchanged. CSS-only (modifier on the root). |
 | Save View | `.filter-bar--save-view` | a filter added/amended — **mock**: clicking the "Add Filters" chip (FilterItem bubbles `filter-item:toggle` with `open:true`) reveals the `.filter-bar__save` "Save view" CTA (Button `--primary --sm`) — the last child **inside** `__chips`, after "Add Filters". **Desktop:** `margin-left:auto` pins it to the right edge of the chip row. **Mobile (≤767px):** that margin is dropped so it flows right after "Add Filters" in the wrapping chips (Figma mobile 2989:6242). Clicking the CTA (`data-filter-action="save-view"`) is a mock "save" — drops the class + closes the Add Filters chip. **TODO(backend:Filters)** — real trigger is a persisted filter-set change. |
 
 **Saved-view selection + rename** (`FilterBar.js` `wireViews` —:
@@ -90,7 +90,7 @@ disambiguation; the … is on every row incl. the selected one and is always-vis
 | Actions | `.filter-bar__actions` | row-1 group (Figma "Frame 230"), 8px gap: **Export** + persistent search field (desktop) / search icon-btn (mobile) + kebab `.dropdown` |
 | Export | `.btn.btn--secondary.filter-bar__export` | first child of `.filter-bar__actions`; Button + `download` icon; hidden on mobile |
 | Search field (desktop) | `.input.filter-bar__search-bar` | persistent 192px Input; desktop only — replaced by the icon + takeover on mobile |
-| Chips (row 2) | `.filter-bar__chips` | flex-wrap, gap 6 (`--ai-spacing-2`, all sizes); chips are FilterItem **default (solid)** / `--selected`, **all `--rounded`** (pill `--ai-radius-full`, per user direction) |
+| Chips (row 2) | `.filter-bar__chips` | flex-wrap, gap 6 (`--ao-spacing-2`, all sizes); chips are FilterItem **default (solid)** / `--selected`, **all `--rounded`** (pill `--ao-radius-full`, per user direction) |
 | Add Filters | `.filter-item--empty.filter-item--rounded.filter-bar__add` | dashed pill; **last chip inside `__chips`** (in the flow, after the filter list) |
 | Save view CTA | `.btn.btn--primary.btn--sm.filter-bar__save` | composes Button (primary, sm); hidden until `.filter-bar--save-view`, then pinned right of row 2 |
 | Search / New-view / Create / Back | `.filter-bar__{search,new-view,create,back}` | compose Input / Button |
@@ -99,14 +99,14 @@ disambiguation; the … is on every row incl. the selected one and is always-vis
 
 Token set: surface-primary, border-secondary, spacing-3/4/5/8, size-3,
 radius-md, icon-contrast, icon-size-sm, font-body/fixed-xs/leading-md). The views trigger uses
-`--ai-font-regular`. Export button uses the Button component's
-`--ai-btn-secondary-*` tokens. Selected chips use `--ai-surface-info-soft` / `--ai-border-info`
+`--ao-font-regular`. Export button uses the Button component's
+`--ao-btn-secondary-*` tokens. Selected chips use `--ao-surface-info-soft` / `--ao-border-info`
 via the FilterItem component.
 
 ## Token Gaps
 
 None for the shell. Documented Figma artifact: the "Add Filters" **MinimalBadge** uses
-raw `#364153` (Gray/700) — replaced here with a proper **FilterItem `--empty`** (`--ai-text-primary`).
+raw `#364153` (Gray/700) — replaced here with a proper **FilterItem `--empty`** (`--ao-text-primary`).
 Outer frame width is `970px` in Figma (no token) — built **fluid**
 (`width: 100%`, consumer-controlled), so the arbitrary 970 is not hardcoded.
 
@@ -159,10 +159,10 @@ Corrected 2026-09-17; it had been base-size with no icons.
 | Property | Figma | Built as |
 |---|---|---|
 | Row height | 36px | **32px** — `dropdown-item--xs` |
-| Padding | `py --ai-spacing-2` / `px --ai-spacing-4` | `--ai-spacing-1` / `--ai-spacing-3` |
-| Label | `--ai-font-fixed-xs` (14px), regular | `--ai-font-fixed-2xs` (13px), medium |
-| Leading icon | 16px | 12px (`--ai-icon-size-xs`) |
-| Panel | `p --ai-spacing-3` (8px), `--ai-radius-md`, `--ai-border-secondary`, drop-shadow | as Figma, scoped — see below |
+| Padding | `py --ao-spacing-2` / `px --ao-spacing-4` | `--ao-spacing-1` / `--ao-spacing-3` |
+| Label | `--ao-font-fixed-xs` (14px), regular | `--ao-font-fixed-2xs` (13px), medium |
+| Leading icon | 16px | 12px (`--ao-icon-size-xs`) |
+| Panel | `p --ao-spacing-3` (8px), `--ao-radius-md`, `--ao-border-secondary`, drop-shadow | as Figma, scoped — see below |
 
 **Size=xs is a deliberate divergence from Figma** (designer, 2026-09-17: "make
 them xs on the dropdown__panel"). Figma draws these rows at 36px, i.e.
@@ -181,8 +181,8 @@ are both *named* `Icon/24px/Star` — stale layer names; the exported assets are
 the two above, so go by the asset, not the layer name.
 
 **The panel padding is scoped to this menu.** Figma's list frame binds
-`--ai-spacing-3` (8px) where the shared `.dropdown__panel` uses
-`--ai-spacing-4` (12px), so `.filter-bar__menu .dropdown__panel` overrides it
+`--ao-spacing-3` (8px) where the shared `.dropdown__panel` uses
+`--ao-spacing-4` (12px), so `.filter-bar__menu .dropdown__panel` overrides it
 rather than changing the panel every other dropdown uses.
 
 It was load-bearing at Size=sm: a 16px icon plus a `data-text` reserve measured
@@ -203,14 +203,14 @@ backwards:
 
 | Token | Base theme | CC theme |
 |---|---|---|
-| `--ai-btn-tertiary-bg` (rest) | `transparent` | **#e7edf0** — visible |
-| `--ai-btn-tertiary-bg-hover` | #f8fafc | **#f2f4f5** — *lighter than rest* |
+| `--ao-btn-tertiary-bg` (rest) | `transparent` | **#e7edf0** — visible |
+| `--ao-btn-tertiary-bg-hover` | #f8fafc | **#f2f4f5** — *lighter than rest* |
 
 So in CC a tertiary button is filled at rest and gets **lighter** on hover.
 Outside CC it behaves as the ghost button it is meant to be.
 
 Fixed by scoping `.filter-bar__views .btn--tertiary` to transparent, with
-`--ai-surface-secondary` on hover — the same `#e7edf0` the buttons were showing
+`--ao-surface-secondary` on hover — the same `#e7edf0` the buttons were showing
 at rest, and the same value `.dropdown-item:hover` uses in the panel directly
 above. **The grey is not removed, it is moved to where it belongs.**
 `:focus-visible` is aligned to hover on purpose: left alone it inherits the
@@ -220,10 +220,10 @@ mouse user on the same control.
 **This is the fourth independent workaround for the same token bug.**
 `Header.css` forces `.cc-header .btn--tertiary` transparent, and `AiAssistant.css`
 does it for two more selector groups — restoring the grey on hover with
-`var(--ai-btn-tertiary-bg)`, the same move arrived at separately. Four
+`var(--ao-btn-tertiary-bg)`, the same move arrived at separately. Four
 components patching one token says the token is wrong, not the components.
 
-**The real fix is in Figma**: give `--ai-btn-tertiary-bg` the transparent value
+**The real fix is in Figma**: give `--ao-btn-tertiary-bg` the transparent value
 in CC that it already has in the base theme, and let hover carry the grey. That
 makes all four blocks redundant — delete them when it lands.
 
@@ -271,12 +271,12 @@ The new Type's spec, recorded because it is what the look traces to:
 
 | | base `3679:17496` | sm `3679:99941` |
 |---|---|---|
-| height | `--ai-spacing-8` (40) | `--ai-spacing-7` (32) |
-| gap | `--ai-spacing-4` (12) | `--ai-spacing-3` (8) |
-| padding-inline | `--ai-spacing-4` (12) | `--ai-spacing-4` (12) |
-| text | `--ai-font-fluid-xs` (14) | `--ai-font-fluid-xxs` (12) |
+| height | `--ao-spacing-8` (40) | `--ao-spacing-7` (32) |
+| gap | `--ao-spacing-4` (12) | `--ao-spacing-3` (8) |
+| padding-inline | `--ao-spacing-4` (12) | `--ao-spacing-4` (12) |
+| text | `--ao-font-fluid-xs` (14) | `--ao-font-fluid-xxs` (12) |
 
-Both are `--ai-btn-secondary-bg` / `--ai-btn-secondary-border` / `--ai-radius-md`
+Both are `--ao-btn-secondary-bg` / `--ao-btn-secondary-border` / `--ao-radius-md`
 with a 16px trailing icon. Base and sm were fetched separately and **do differ
 beyond size** — the gap steps 12 → 8, which reading the base node alone would
 have missed.
@@ -307,7 +307,7 @@ own copy before anyone checked whether a component existed.
 
 `.filter-bar__export-split` was deleted and the wrapper is now `.btn-group`.
 Geometry measured identical before and after. What remains here is only what is
-genuinely FilterBar's: the chevron half's `--ai-spacing-4` inline padding and
+genuinely FilterBar's: the chevron half's `--ao-spacing-4` inline padding and
 the 160/8 panel sizing.
 
 `ButtonGroup.css` is now linked by this demo, ListingScreen and SeatingPlanner
@@ -335,7 +335,7 @@ since a hidden element has no box.
 
 `.filter-dropdowns` brings its own card chrome, so the wrapper adds none —
 nesting it in a `.dropdown__panel` would draw the border and shadow twice.
-Offset and layer match `.dropdown__panel` (`--ai-spacing-3`, z-index 10) so
+Offset and layer match `.dropdown__panel` (`--ao-spacing-3`, z-index 10) so
 every popover in the bar sits on one convention.
 
 ### The nested-chip trap
@@ -588,7 +588,7 @@ Fixed at the source rather than in the placement:
 - `.filter-bar` declares `container: fb-bar / inline-size`, so `cqi` in a
   picker now means the bar. Named, so the `@container cs-page` rules in this
   file and in FilterDropdowns.css still reach past it to the page column.
-- The More Filters floor became `min(var(--ai-size-6), 100cqi)`. A floor that
+- The More Filters floor became `min(var(--ao-size-6), 100cqi)`. A floor that
   cannot be met is just an overflow with a nicer name.
 
 Measured at 360 / 393 / 430 / 600 / 900 / 1400: the panel never exceeds the
@@ -599,11 +599,11 @@ used the same `cqi` — and now stops at 312px on a 314px bar instead of 329.
 ### …and then every OTHER picker, which was the same bug one layer down
 
 Reported straight after: More Filters was fixed, the rest still hung off. The
-base card is a flat `width: var(--ai-size-6)` — **320px, fixed** — which is
+base card is a flat `width: var(--ao-size-6)` — **320px, fixed** — which is
 6px wider than a 314px bar, so every ordinary picker had the same
 cannot-fit-cannot-be-placed problem the More Filters floor had.
 
-Now `width: min(var(--ai-size-6), 100cqi)`. The container resolves per context
+Now `width: min(var(--ao-size-6), 100cqi)`. The container resolves per context
 and is right in each: the BAR for a picker on the bar, the Multi Select Table
 card for a sub-filter inside one, and the viewport on the component's own demo
 page where there is no container at all (so the 320 still wins there).
@@ -627,7 +627,7 @@ overhang has nowhere to go.
 
 ## Mobile row padding is 8px — designer override of Figma
 
-2026-09-21. `.filter-bar__row` goes `--ai-spacing-4` (12px) → `--ai-spacing-3`
+2026-09-21. `.filter-bar__row` goes `--ao-spacing-4` (12px) → `--ao-spacing-3`
 (8px) below a 767px page column. On a phone the chips ARE the content, and the
 frame around them was taking room they needed: the chip row gains 8px at every
 narrow width (296px in a 314px bar at a 393px viewport).

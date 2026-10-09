@@ -6,7 +6,7 @@
  * Drive the initial state with ?state=resting|saved|newsearch (used for the
  * Figma capture so each state becomes its own frame).
  *
- * The source frames were a non-DS hex mock; this rebuild uses --ai-* tokens
+ * The source frames were a non-DS hex mock; this rebuild uses --ao-* tokens
  * and existing components (Datatables/Table, Badge, Button, SearchInput).
  * Prototype-only chrome (view tabs, filter chips) is built inline below.
  */
@@ -14,14 +14,14 @@
 /* ── Page + app card ──────────────────────────────────── */
 body {
   min-height: 100vh;
-  background: var(--ai-surface-minimal);
-  padding: var(--ai-spacing-6);
+  background: var(--ao-surface-minimal);
+  padding: var(--ao-spacing-6);
 }
 
 .fv-app {
-  background: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-lg);
+  background: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-lg);
   overflow: hidden;                 /* clip children to the rounded corners */
   max-width: 1024px;                /* layout dimension — no token match */
   margin: 0 auto;
@@ -32,83 +32,83 @@ body {
 .fv-tabs {
   display: flex;
   align-items: stretch;
-  gap: var(--ai-spacing-1);
-  padding: 0 var(--ai-spacing-5);
-  background: var(--ai-surface-primary);
-  border-bottom: 1px solid var(--ai-border-secondary);
+  gap: var(--ao-spacing-1);
+  padding: 0 var(--ao-spacing-5);
+  background: var(--ao-surface-primary);
+  border-bottom: 1px solid var(--ao-border-secondary);
 }
 
 .fv-tab {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  padding: var(--ai-spacing-3) var(--ai-spacing-4);
+  gap: var(--ao-spacing-2);
+  padding: var(--ao-spacing-3) var(--ao-spacing-4);
   border: 0;
   border-bottom: 2px solid transparent;
   background: transparent;
   cursor: pointer;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
   white-space: nowrap;
-  transition: color var(--ai-transition-default),
-              border-color var(--ai-transition-default);
+  transition: color var(--ao-transition-default),
+              border-color var(--ao-transition-default);
 }
 
-.fv-tab:hover { color: var(--ai-text-secondary); }
+.fv-tab:hover { color: var(--ao-text-secondary); }
 
 .fv-tab--active {
-  color: var(--ai-text-brand);
-  border-bottom-color: var(--ai-surface-brand);
-  font-weight: var(--ai-font-medium);
+  color: var(--ao-text-brand);
+  border-bottom-color: var(--ao-surface-brand);
+  font-weight: var(--ao-font-medium);
 }
 
 .fv-tab [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 .fv-tab__add {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--ai-spacing-2);
-  margin-left: var(--ai-spacing-1);
+  padding: var(--ao-spacing-2);
+  margin-left: var(--ao-spacing-1);
   border: 0;
   background: transparent;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
   cursor: pointer;
-  border-radius: var(--ai-radius-md);
+  border-radius: var(--ao-radius-md);
 }
-.fv-tab__add:hover { background: var(--ai-surface-minimal); color: var(--ai-text-secondary); }
-.fv-tab__add [data-lucide] { width: var(--ai-icon-size-sm); height: var(--ai-icon-size-sm); }
+.fv-tab__add:hover { background: var(--ao-surface-minimal); color: var(--ao-text-secondary); }
+.fv-tab__add [data-lucide] { width: var(--ao-icon-size-sm); height: var(--ao-icon-size-sm); }
 
 /* ── Filter bar ───────────────────────────────────────── */
 .fv-filterbar {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
-  min-height: var(--ai-spacing-9);
-  padding: var(--ai-spacing-3) var(--ai-spacing-5);
-  background: var(--ai-surface-primary);
-  border-bottom: 1px solid var(--ai-border-secondary);
+  gap: var(--ao-spacing-3);
+  min-height: var(--ao-spacing-9);
+  padding: var(--ao-spacing-3) var(--ao-spacing-5);
+  background: var(--ao-surface-primary);
+  border-bottom: 1px solid var(--ao-border-secondary);
 }
 
 /* Filter chips */
 .fv-chip {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  gap: var(--ao-spacing-2);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
   white-space: nowrap;
 }
-.fv-chip__key { color: var(--ai-text-contrast); }
-.fv-chip { color: var(--ai-text-secondary); }
+.fv-chip__key { color: var(--ao-text-contrast); }
+.fv-chip { color: var(--ao-text-secondary); }
 
 .fv-chip__remove {
   display: inline-flex;
@@ -117,18 +117,18 @@ body {
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
   cursor: pointer;
-  border-radius: var(--ai-radius-full);
+  border-radius: var(--ao-radius-full);
 }
-.fv-chip__remove:hover { color: var(--ai-text-primary); }
-.fv-chip__remove [data-lucide] { width: var(--ai-icon-size-sm); height: var(--ai-icon-size-sm); }
+.fv-chip__remove:hover { color: var(--ao-text-primary); }
+.fv-chip__remove [data-lucide] { width: var(--ao-icon-size-sm); height: var(--ao-icon-size-sm); }
 
 /* Right-aligned action cluster */
 .fv-filterbar__right {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   margin-left: auto;
 }
 
@@ -140,20 +140,20 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--ai-spacing-1);
+  padding: var(--ao-spacing-1);
   border: 0;
   background: transparent;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
   cursor: pointer;
-  border-radius: var(--ai-radius-full);
+  border-radius: var(--ao-radius-full);
 }
-.fv-search__close:hover { color: var(--ai-text-primary); }
-.fv-search__close [data-lucide] { width: var(--ai-icon-size-sm); height: var(--ai-icon-size-sm); }
+.fv-search__close:hover { color: var(--ao-text-primary); }
+.fv-search__close [data-lucide] { width: var(--ao-icon-size-sm); height: var(--ao-icon-size-sm); }
 
 /* ── Table region ─────────────────────────────────────── */
 .fv-table-region {
-  padding: var(--ai-spacing-5);
-  background: var(--ai-surface-minimal);
+  padding: var(--ao-spacing-5);
+  background: var(--ao-surface-minimal);
 }
 
 /* Right-align the Value column (numeric) — reads better in a deals table */

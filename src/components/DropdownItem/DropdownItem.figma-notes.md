@@ -19,23 +19,23 @@ renders it, labelled as not-a-Figma-variant — but the Figma set should gain th
 
 | Node | State | Type | Size | bg | Font weight | Text colour |
 |---|---|---|---|---|---|---|
-| `2699:2148` | Default | Default | Default | transparent | Regular | `--ai-text-primary` |
-| `2955:6736` | Default | Default | sm | transparent | Regular | `--ai-text-primary` |
-| `2699:2147` | Hover | Default | Default | `--ai-surface-secondary` | Medium | `--ai-text-primary` |
-| `2955:6733` | Hover | Default | sm | `--ai-surface-secondary` | Medium | `--ai-text-primary` |
-| `2699:2155` | Default | Warning | Default | transparent | Regular | `--ai-text-primary` |
-| `2955:6730` | Default | Warning | sm | transparent | Regular | `--ai-text-primary` |
-| `2699:2151` | Hover | Warning | Default | `--ai-surface-error` (red) | Semibold | white |
-| `2955:6727` | Hover | Warning | sm | `--ai-surface-error` (red) | Semibold | white |
-| `3393:29188` | Default | Default | **xs** | transparent | **Medium** | `--ai-text-primary` |
-| `3393:27610` | Hover | Default | **xs** | `--ai-surface-secondary` | **Medium** | `--ai-text-primary` |
+| `2699:2148` | Default | Default | Default | transparent | Regular | `--ao-text-primary` |
+| `2955:6736` | Default | Default | sm | transparent | Regular | `--ao-text-primary` |
+| `2699:2147` | Hover | Default | Default | `--ao-surface-secondary` | Medium | `--ao-text-primary` |
+| `2955:6733` | Hover | Default | sm | `--ao-surface-secondary` | Medium | `--ao-text-primary` |
+| `2699:2155` | Default | Warning | Default | transparent | Regular | `--ao-text-primary` |
+| `2955:6730` | Default | Warning | sm | transparent | Regular | `--ao-text-primary` |
+| `2699:2151` | Hover | Warning | Default | `--ao-surface-error` (red) | Semibold | white |
+| `2955:6727` | Hover | Warning | sm | `--ao-surface-error` (red) | Semibold | white |
+| `3393:29188` | Default | Default | **xs** | transparent | **Medium** | `--ao-text-primary` |
+| `3393:27610` | Hover | Default | **xs** | `--ao-surface-secondary` | **Medium** | `--ao-text-primary` |
 | — *(absent)* | Default | Warning | **xs** | — | — | — |
-| `3393:29193` | Hover | Warning | **xs** | `--ai-surface-error` (red) | Semibold | white |
+| `3393:29193` | Hover | Warning | **xs** | `--ao-surface-error` (red) | Semibold | white |
 
 **Default Warning is visually identical to Default Default.** Only the Hover state of the
 Warning variant shows the destructive red treatment.
 
-**Size=sm** changes only the vertical padding (`--ai-spacing-3` 8px → `--ai-spacing-2` 6px),
+**Size=sm** changes only the vertical padding (`--ao-spacing-3` 8px → `--ao-spacing-2` 6px),
 giving a 36px row vs 40px. Horizontal padding, gap, font, and radius are unchanged.
 
 **Size=xs** is not a proportional step down from sm — it changes four properties at once, all
@@ -45,20 +45,20 @@ read off `3393:29188` rather than scaled:
 |---|---|---|---|
 | Padding | 8px / 12px | 6px / 12px | **4px / 8px** |
 | Row height | 40px | 36px | **32px** |
-| Font size | `--ai-font-fixed-xs` (14) | 14 | **`--ai-font-fixed-2xs` (13)** |
+| Font size | `--ao-font-fixed-xs` (14) | 14 | **`--ao-font-fixed-2xs` (13)** |
 | Font weight | Regular | Regular | **Medium** |
-| Leading icon | `--ai-icon-size-sm` (16) | 16 | **`--ai-icon-size-xs` (12)** |
+| Leading icon | `--ao-icon-size-sm` (16) | 16 | **`--ao-icon-size-xs` (12)** |
 | Trailing tick | 16px | 16px | **16px — unchanged** |
-| Gap / radius | 8px / `--ai-radius-md` | same | same |
+| Gap / radius | 8px / `--ao-radius-md` | same | same |
 
 Two consequences of xs already being Medium: hover has **no weight change** (so the
 stable-width reservation is a no-op rather than wrong), and the leading-icon rule needs
 `:not(.dropdown-item__check)` so the trailing tick keeps its 16px.
 
 **Leading-icon colour differs by size, and is flagged.** The xs variant binds
-`--ai-icon-primary`; the Default/sm rows in this component are built with
-`--ai-icon-contrast`. Both were taken from Figma, so the component now carries both. Separately,
-the Seating Planner's Export menu instance re-binds the same icon to `--ai-icon-secondary` — see
+`--ao-icon-primary`; the Default/sm rows in this component are built with
+`--ao-icon-contrast`. Both were taken from Figma, so the component now carries both. Separately,
+the Seating Planner's Export menu instance re-binds the same icon to `--ao-icon-secondary` — see
 `SeatingPlanner.css`, where it is scoped as a contextual override rather than changed here.
 Three different icon colours for one row component is more likely a drift in Figma than an
 intention; raised for the designer 2026-09-09.
@@ -118,55 +118,55 @@ Items without `data-text` work too — they just reflow on hover like normal tex
 | Property | Token |
 |---|---|
 | Display | `flex`, `align-items: center` |
-| Gap | `var(--ai-spacing-3)` (8px) |
+| Gap | `var(--ao-spacing-3)` (8px) |
 | Width | `100%` (fills parent dropdown panel) |
-| Padding | `var(--ai-spacing-3) var(--ai-spacing-4)` (8px / 12px) |
-| Border-radius | `var(--ai-radius-md)` (8px) |
+| Padding | `var(--ao-spacing-3) var(--ao-spacing-4)` (8px / 12px) |
+| Border-radius | `var(--ao-radius-md)` (8px) |
 | Background | `transparent` |
 | Border | none |
-| Text colour | `var(--ai-text-primary)` |
-| Font-family | `var(--ai-font-title)` |
-| Font-weight | `var(--ai-font-regular)` |
-| Font-size | `var(--ai-font-fixed-xs)` (14px) |
-| Line-height | `var(--ai-leading-md)` (24px) |
-| Icon size | `var(--ai-icon-size-sm)` (16px) |
-| Icon colour | `var(--ai-icon-contrast)` |
+| Text colour | `var(--ao-text-primary)` |
+| Font-family | `var(--ao-font-title)` |
+| Font-weight | `var(--ao-font-regular)` |
+| Font-size | `var(--ao-font-fixed-xs)` (14px) |
+| Line-height | `var(--ao-leading-md)` (24px) |
+| Icon size | `var(--ao-icon-size-sm)` (16px) |
+| Icon colour | `var(--ao-icon-contrast)` |
 
 ### Size=sm
 
 | Property | Token |
 |---|---|
-| Vertical padding | `var(--ai-spacing-2)` (6px) — overrides the base 8px; horizontal padding unchanged |
+| Vertical padding | `var(--ao-spacing-2)` (6px) — overrides the base 8px; horizontal padding unchanged |
 
 ### Trailing tick (`.dropdown-item__check`)
 
 | Property | Token |
 |---|---|
 | Alignment | `margin-left: auto` (pushed to the right edge) |
-| Colour | `var(--ai-surface-brand)` (brand blue) |
+| Colour | `var(--ao-surface-brand)` (brand blue) |
 
 ### Hover (Default type)
 
 | Property | Token |
 |---|---|
-| Background | `var(--ai-surface-secondary)` |
-| Font-weight | `var(--ai-font-medium)` |
+| Background | `var(--ao-surface-secondary)` |
+| Font-weight | `var(--ao-font-medium)` |
 
 ### Hover (Warning type)
 
 | Property | Token |
 |---|---|
-| Background | `var(--ai-surface-error)` |
+| Background | `var(--ao-surface-error)` |
 | Text colour | `#ffffff` (Neutral/0 — primitive, approved) |
-| Font-weight | `var(--ai-font-semibold)` |
+| Font-weight | `var(--ao-font-semibold)` |
 | Icon colour | `#ffffff` (Neutral/0 — primitive, approved) |
 
 ### Focus
 
 | Property | Token |
 |---|---|
-| Default focus | `outline: 2px solid var(--ai-surface-brand); outline-offset: -2px` |
-| Warning focus | Same but with `--ai-border-error` outline colour |
+| Default focus | `outline: 2px solid var(--ao-surface-brand); outline-offset: -2px` |
+| Warning focus | Same but with `--ao-border-error` outline colour |
 
 ---
 
@@ -174,9 +174,9 @@ Items without `data-text` work too — they just reflow on hover like normal tex
 
 | Gap | Figma value | Resolution |
 |---|---|---|
-| Warning hover text + icon colour | `Neutral/0` (`#ffffff`) — primitive, no `--ai-*` semantic | Approved as raw `#ffffff` with `/* Neutral/0 — primitive, approved */` comment. **Theme-invariant**: stays white in dark mode (the red bg is also theme-invariant). Substituting `--ai-text-invert` would have been wrong — that token flips to `#1b1b1f` (near-black) in dark mode, breaking contrast on the red bg. |
+| Warning hover text + icon colour | `Neutral/0` (`#ffffff`) — primitive, no `--ao-*` semantic | Approved as raw `#ffffff` with `/* Neutral/0 — primitive, approved */` comment. **Theme-invariant**: stays white in dark mode (the red bg is also theme-invariant). Substituting `--ao-text-invert` would have been wrong — that token flips to `#1b1b1f` (near-black) in dark mode, breaking contrast on the red bg. |
 
-No structural token gaps. All sizes and other colours map to existing `--ai-*` tokens.
+No structural token gaps. All sizes and other colours map to existing `--ao-*` tokens.
 
 ---
 
@@ -205,4 +205,4 @@ the surrounding chrome (border, shadow, padding) — DropdownItem is only the ro
   for destructive actions. Dropdown demos updated to compose this class.
 - 2026-06-16: Added **Size=sm** axis (`.dropdown-item--sm`, vertical padding 6px → 36px row)
   and an optional **trailing tick** (`.dropdown-item__check`) for the Filter-views selected
-  style. Aligned the star icon colour to Figma's `--ai-icon-contrast` (was `--ai-icon-secondary`).
+  style. Aligned the star icon colour to Figma's `--ao-icon-contrast` (was `--ao-icon-secondary`).

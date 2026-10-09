@@ -10,23 +10,23 @@ ChatSidebarMenu appears as `data-name="ChatSidebarMenu"` inside the ChatSidebarI
 
 | Property | Token | Value |
 |---|---|---|
-| Padding | `--ai-spacing-3` | 8px |
-| Border radius | `--ai-radius-lg` | 16px |
-| Background | `var(--ai-chat-sidebar-bg)` | Base sidebar color (computed) |
-| Item font | `--ai-font-body` + `--ai-font-semibold` + `--ai-font-fluid-xxs` | Inter SemiBold 12px |
-| Item line-height | `--ai-leading-xs` | 16px |
-| Item height | `--ai-spacing-7` | 32px (fixed, no vertical padding) |
-| Item padding | `0` v / `--ai-spacing-3` h | 0 / 8px |
-| Item border-radius | `--ai-radius-md` | 8px |
-| Item gap (icon to text) | `--ai-spacing-3` | 8px |
-| Item text color | `var(--ai-chat-sidebar-text)` | Computed (dark on light bg, light on dark bg) |
-| Item hover bg | `var(--ai-chat-sidebar-hover-bg)` | Computed 8% overlay |
-| Item active bg | `var(--ai-chat-sidebar-active-bg)` | Computed 12% overlay |
-| Icon size | `--ai-icon-size-sm` | 16px |
+| Padding | `--ao-spacing-3` | 8px |
+| Border radius | `--ao-radius-lg` | 16px |
+| Background | `var(--ao-chat-sidebar-bg)` | Base sidebar color (computed) |
+| Item font | `--ao-font-body` + `--ao-font-semibold` + `--ao-font-fluid-xxs` | Inter SemiBold 12px |
+| Item line-height | `--ao-leading-xs` | 16px |
+| Item height | `--ao-spacing-7` | 32px (fixed, no vertical padding) |
+| Item padding | `0` v / `--ao-spacing-3` h | 0 / 8px |
+| Item border-radius | `--ao-radius-md` | 8px |
+| Item gap (icon to text) | `--ao-spacing-3` | 8px |
+| Item text color | `var(--ao-chat-sidebar-text)` | Computed (dark on light bg, light on dark bg) |
+| Item hover bg | `var(--ao-chat-sidebar-hover-bg)` | Computed 8% overlay |
+| Item active bg | `var(--ao-chat-sidebar-active-bg)` | Computed 12% overlay |
+| Icon size | `--ao-icon-size-sm` | 16px |
 
 ## Token gaps
 
-- **Menu shadow:** No `--ai-shadow-*` tokens exist. Raw values used (same precedent as SystemRole):
+- **Menu shadow:** No `--ao-shadow-*` tokens exist. Raw values used (same precedent as SystemRole):
   - Light: `0 2px 3px rgba(0, 0, 0, 0.1)`
   - Dark: `0 4px 4px rgba(0, 0, 0, 0.25)`
 
@@ -56,7 +56,7 @@ ChatSidebarMenu appears as `data-name="ChatSidebarMenu"` inside the ChatSidebarI
 ## Notes
 
 - Renamed from ChatMenu (Mar 2026)
-- Menu bg uses base sidebar color (`--ai-chat-sidebar-bg`) — shadow provides visual separation
+- Menu bg uses base sidebar color (`--ao-chat-sidebar-bg`) — shadow provides visual separation
 - Menu items use sidebar-computed colors instead of `btn--tertiary` tokens, because tertiary tokens flip with the global theme and would mismatch the sidebar context
 - Uses `position: fixed` to escape overflow clipping from scrollable sidebar containers. JS sets `top`/`left` from the trigger button's `getBoundingClientRect()` when opened.
 - Menu width is content-driven (`min-width: max-content`) — Figma shows 122px which is the natural content width

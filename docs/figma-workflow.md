@@ -14,10 +14,10 @@ FIGMA (design)
   ▼
 CLAUDE CODE (MCP tools)
   ├── get_design_context   → reads layout, spacing, colors from Figma
-  ├── get_variable_defs    → extracts which --ai-* tokens are applied
+  ├── get_variable_defs    → extracts which --ao-* tokens are applied
   └── get_code_connect_map → checks if component already exists in code
   │
-  │  Generates HTML/CSS using only --ai-* variables
+  │  Generates HTML/CSS using only --ao-* variables
   │  (CLAUDE.md enforces zero hardcoded values)
   ▼
 CODEBASE (src/components/)
@@ -56,7 +56,7 @@ This triggers a structured process that:
 1. Fetches metadata to enumerate all variants
 2. Fetches design context for each variant
 3. Scans for nested component dependencies
-4. Maps Figma variables to `--ai-*` tokens
+4. Maps Figma variables to `--ao-*` tokens
 5. Generates HTML, CSS, and figma-notes.md following the project's component architecture
 
 > **Do not use a freeform prompt.** The `/build-component` skill enforces the full variant audit,
@@ -73,7 +73,7 @@ Claude Code will call these MCP tools automatically:
 | `get_variable_defs` | Extracts which Figma variables (tokens) are bound to each layer |
 | `get_code_connect_map` | Checks if a code mapping already exists for this component |
 
-Claude then maps each Figma variable to its `--ai-*` counterpart using the table in `CLAUDE.md`,
+Claude then maps each Figma variable to its `--ao-*` counterpart using the table in `CLAUDE.md`,
 and generates the component files.
 
 ### Step 4: Review and test locally
@@ -106,7 +106,7 @@ built from Figma (that would be pointless — it already exists there).
 
 Claude Code will:
 1. Plan the screens and check for existing components
-2. Build HTML/CSS in `src/prototypes/<Name>/` using only `--ai-*` tokens
+2. Build HTML/CSS in `src/prototypes/<Name>/` using only `--ao-*` tokens
 3. Capture each screen to Figma via `generate_figma_design`
 4. Push frames to the **Prototypes page** in the Design System file
 
@@ -189,11 +189,11 @@ Claude Code will:
 
 | Check | Example issue |
 |---|---|
-| Token mismatch | CSS uses `--ai-surface-minimal` but Figma shows `--ai-surface-contrast` |
+| Token mismatch | CSS uses `--ao-surface-minimal` but Figma shows `--ao-surface-contrast` |
 | Missing variant | Figma has a Hover state that CSS doesn't implement |
-| Stale token | Component uses `--ai-chat-surface-primary` (removed) instead of `--ai-surface-primary` |
-| Wrong value | `border-radius: --ai-radius-sm` but Figma shows `--ai-radius-md` |
-| Font drift | CSS uses `--ai-font-body` where Figma style is `title/*` |
+| Stale token | Component uses `--ao-chat-surface-primary` (removed) instead of `--ao-surface-primary` |
+| Wrong value | `border-radius: --ao-radius-sm` but Figma shows `--ao-radius-md` |
+| Font drift | CSS uses `--ao-font-body` where Figma style is `title/*` |
 | Hardcoded value | CSS has a hex colour that should be a token |
 
 ### The output
@@ -256,7 +256,7 @@ css/
   ├── tokens-mobile.css       ← @media (max-width: 639px)
   └── tokens-minimised.css    ← [data-layout="minimised"]
   │
-  │  All components reference --ai-* variables automatically
+  │  All components reference --ao-* variables automatically
   ▼
 Browser / Build
 ```
@@ -274,7 +274,7 @@ variable name in the exported JSON (`com.figma.codeSyntax.WEB`) and ultimately i
    button in the top toolbar
 3. Select a variable collection (e.g. "Light")
 4. Click the **"<>"** (Code) button or the **Code syntax** option in the panel header
-5. For each variable, set the **Web** field to the `--ai-*` name (e.g. `--ai-surface-primary`)
+5. For each variable, set the **Web** field to the `--ao-*` name (e.g. `--ao-surface-primary`)
 
 This only needs to be done once per variable. New variables added later must have their Web
 code syntax set before exporting, or they will be silently omitted from `css/tokens.css`.
@@ -341,7 +341,7 @@ The export produces DTCG JSON with Figma's proprietary extensions (`com.figma.va
 
 Same flow as above, plus:
 - Ensure the new variable has **Web code syntax** set in Figma (see above)
-- Update the tables in `CLAUDE.md` Sections 2–3 with the new `--ai-*` variable
+- Update the tables in `CLAUDE.md` Sections 2–3 with the new `--ao-*` variable
 
 ---
 

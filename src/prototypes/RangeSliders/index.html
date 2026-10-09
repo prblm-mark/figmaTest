@@ -62,7 +62,7 @@
       <div class="rng-field">
         <div class="rng-field__head">
           <label class="rng-field__label" for="rng3">Brightness</label>
-          <span class="rng-field__value" style="color: var(--ai-text-contrast)">60</span>
+          <span class="rng-field__value" style="color: var(--ao-text-contrast)">60</span>
         </div>
         <div class="rng-wrap rng-wrap--disabled"><input id="rng3" class="rng" type="range" min="0" max="100" value="60" disabled><span class="rng-thumb"></span></div>
       </div>
@@ -120,8 +120,8 @@
       const max = Number(input.max) || 100;
       const value = Number(input.value);
       const pct = ((value - min) / (max - min)) * 100;
-      const fill = getComputedStyle(input).getPropertyValue('--ai-surface-brand').trim() || '#0071d8';
-      const track = getComputedStyle(input).getPropertyValue('--ai-surface-minimal').trim() || '#f6f6f7';
+      const fill = getComputedStyle(input).getPropertyValue('--ao-surface-brand').trim() || '#0071d8';
+      const track = getComputedStyle(input).getPropertyValue('--ao-surface-minimal').trim() || '#f6f6f7';
       input.style.background = `linear-gradient(to right, ${fill} 0% ${pct}%, ${track} ${pct}% 100%)`;
     }
 

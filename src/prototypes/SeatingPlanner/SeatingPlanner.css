@@ -10,7 +10,7 @@
  * Screen 1 was prototyped here first, then componentised as
  * src/cc/patterns/EventPicker/. The prototype kept a COPY of that CSS, which
  * drifted once the designer changed the component (heading icons dropped, the
- * pinned card's brand tint removed, mobile breakpoint moved to --ai-bp-md…), so
+ * pinned card's brand tint removed, mobile breakpoint moved to --ao-bp-md…), so
  * the states now LINK the component and use its `event-picker__*` classes.
  * Nothing about the picker lives in this file any more — do not re-add it. The
  * Copy-plans destination list uses the same component classes.
@@ -27,22 +27,22 @@
 
 body {
   min-height: 100vh;
-  background: var(--ai-surface-secondary);
+  background: var(--ao-surface-secondary);
 }
 
 .sp-page {
-  padding: var(--ai-spacing-7);
+  padding: var(--ao-spacing-7);
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-6);
+  gap: var(--ao-spacing-6);
 }
 
 .sp-page__title {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fluid-2xl);
-  font-weight: var(--ai-font-bold);
-  line-height: var(--ai-leading-lg);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fluid-2xl);
+  font-weight: var(--ao-font-bold);
+  line-height: var(--ao-leading-lg);
+  color: var(--ao-text-primary);
   margin: 0;
 }
 
@@ -52,11 +52,11 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--ai-spacing-4);
-  padding: var(--ai-spacing-11) var(--ai-spacing-7);
-  background: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-lg);
+  gap: var(--ao-spacing-4);
+  padding: var(--ao-spacing-11) var(--ao-spacing-7);
+  background: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-lg);
   text-align: center;
 }
 
@@ -64,33 +64,33 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-spacing-9);
-  height: var(--ai-spacing-9);
-  border-radius: var(--ai-radius-full);
-  background: var(--ai-surface-minimal);
-  color: var(--ai-icon-contrast);
+  width: var(--ao-spacing-9);
+  height: var(--ao-spacing-9);
+  border-radius: var(--ao-radius-full);
+  background: var(--ao-surface-minimal);
+  color: var(--ao-icon-contrast);
 }
 
 .sp-empty__icon [data-lucide] {
-  width: var(--ai-icon-size-lg);
-  height: var(--ai-icon-size-lg);
+  width: var(--ao-icon-size-lg);
+  height: var(--ao-icon-size-lg);
 }
 
 .sp-empty__title {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-md);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-md);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
   margin: 0;
 }
 
 .sp-empty__desc {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
   margin: 0;
 }
 
@@ -100,38 +100,38 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-5);
-  padding: var(--ai-spacing-6);
-  background: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-lg);
+  gap: var(--ao-spacing-5);
+  padding: var(--ao-spacing-6);
+  background: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-lg);
 }
 
 .sp-selected__label {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-medium);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-medium);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
   text-transform: uppercase;
-  letter-spacing: var(--ai-tracking-7);
-  margin: 0 0 var(--ai-spacing-2);
+  letter-spacing: var(--ao-tracking-7);
+  margin: 0 0 var(--ao-spacing-2);
 }
 
 .sp-selected__name {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-md);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-md);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
   margin: 0;
 }
 
 .sp-seated__track {
   width: 100%;
-  height: var(--ai-spacing-1); /* 4px */
-  background: var(--ai-surface-secondary);
-  border-radius: var(--ai-radius-full);
+  height: var(--ao-spacing-1); /* 4px */
+  background: var(--ao-surface-secondary);
+  border-radius: var(--ao-radius-full);
   overflow: hidden;
 }
 
@@ -140,8 +140,8 @@ body {
   height: 100%;
   /* --sp-seated-pct is a data value supplied per row, not a style decision */
   width: var(--sp-seated-pct, 0%);
-  background: var(--ai-surface-success);
-  border-radius: var(--ai-radius-full);
+  background: var(--ao-surface-success);
+  border-radius: var(--ao-radius-full);
 }
 
 
@@ -166,27 +166,27 @@ body {
 
 .sp-ws {
   min-height: 100vh;
-  padding: var(--ai-spacing-6);
-  background: var(--ai-surface-secondary);
+  padding: var(--ao-spacing-6);
+  background: var(--ao-surface-secondary);
 }
 
 .sp-ws__cols {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--ai-spacing-5);
-  margin-top: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
+  margin-top: var(--ao-spacing-5);
 }
 
 /* The rail only earns its width once there's room for the grid beside it */
 @media (min-width: 1280px) {
-  .sp-ws__cols { grid-template-columns: minmax(0, 1fr) var(--ai-size-8); }
+  .sp-ws__cols { grid-template-columns: minmax(0, 1fr) var(--ao-size-8); }
 }
 
 .sp-card {
-  padding: var(--ai-spacing-6);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-lg);
-  background: var(--ai-surface-primary);
+  padding: var(--ao-spacing-6);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-lg);
+  background: var(--ao-surface-primary);
 }
 
 /* ── Event bar ─────────────────────────────────────────────────────────── */
@@ -194,27 +194,27 @@ body {
 .sp-eventbar__top {
   display: flex;
   align-items: flex-start;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
 }
 
 .sp-eventbar__main { flex: 1; min-width: 0; }
 
 .sp-eventbar__name {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-lg);
-  font-weight: var(--ai-font-bold);
-  line-height: var(--ai-leading-md);
-  letter-spacing: var(--ai-tracking-2);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-lg);
+  font-weight: var(--ao-font-bold);
+  line-height: var(--ao-leading-md);
+  letter-spacing: var(--ao-tracking-2);
+  color: var(--ao-text-primary);
 }
 
 .sp-eventbar__meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ai-spacing-4);
-  margin: var(--ai-spacing-2) 0 0;
+  gap: var(--ao-spacing-4);
+  margin: var(--ao-spacing-2) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -222,19 +222,19 @@ body {
 .sp-eventbar__meta li {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  gap: var(--ao-spacing-2);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
 }
 
 .sp-eventbar__meta svg,
 .sp-eventbar__meta [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-secondary);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-secondary);
 }
 
 /* ── Seating plans row ─────────────────────────────────────────────────── */
@@ -243,58 +243,58 @@ body {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ai-spacing-4);
-  margin-top: var(--ai-spacing-5);
-  padding-top: var(--ai-spacing-5);
-  border-top: 1px solid var(--ai-border-secondary);
+  gap: var(--ao-spacing-4);
+  margin-top: var(--ao-spacing-5);
+  padding-top: var(--ao-spacing-5);
+  border-top: 1px solid var(--ao-border-secondary);
 }
 
 .sp-plans__label {
   flex: none;
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  letter-spacing: var(--ai-tracking-7);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  letter-spacing: var(--ao-tracking-7);
   text-transform: uppercase;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 /* A plan chip. Selecting one opens its table workspace. */
 .sp-plan {
   flex: none;
-  width: var(--ai-size-4);
-  padding: var(--ai-spacing-4);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  background: var(--ai-surface-primary);
+  width: var(--ao-size-4);
+  padding: var(--ao-spacing-4);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-primary);
   text-align: left;
   cursor: pointer;
-  transition: border-color var(--ai-transition-fast), box-shadow var(--ai-transition-fast);
+  transition: border-color var(--ao-transition-fast), box-shadow var(--ao-transition-fast);
 }
 
-.sp-plan:hover { border-color: var(--ai-border-contrast); }
+.sp-plan:hover { border-color: var(--ao-border-contrast); }
 
 .sp-plan--active {
-  border-color: var(--ai-border-brand);
-  box-shadow: 0 0 0 1px var(--ai-surface-brand);
+  border-color: var(--ao-border-brand);
+  box-shadow: 0 0 0 1px var(--ao-surface-brand);
 }
 
 .sp-plan__head {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
 }
 
 .sp-plan__name {
   flex: 1;
   min-width: 0;
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -306,12 +306,12 @@ body {
 .sp-plan .sp-seated__track { display: block; }
 
 .sp-plan__stats {
-  margin: var(--ai-spacing-1) 0 var(--ai-spacing-3);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  margin: var(--ao-spacing-1) 0 var(--ao-spacing-3);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
 }
 
 /* ── Shared icon-button (plan + table card actions) ────────────────────── */
@@ -320,31 +320,31 @@ body {
   flex: none;
   display: grid;
   place-items: center;
-  width: var(--ai-spacing-6);
-  height: var(--ai-spacing-6);
+  width: var(--ao-spacing-6);
+  height: var(--ao-spacing-6);
   padding: 0;
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-sm);
-  background: var(--ai-surface-primary);
-  color: var(--ai-icon-secondary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-sm);
+  background: var(--ao-surface-primary);
+  color: var(--ao-icon-secondary);
   cursor: pointer;
-  transition: background var(--ai-transition-fast), color var(--ai-transition-fast);
+  transition: background var(--ao-transition-fast), color var(--ao-transition-fast);
 }
 
 .sp-iconbtn:hover {
-  background: var(--ai-surface-minimal);
-  color: var(--ai-icon-primary);
+  background: var(--ao-surface-minimal);
+  color: var(--ao-icon-primary);
 }
 
 .sp-iconbtn svg,
 .sp-iconbtn [data-lucide] {
-  width: var(--ai-icon-size-xs);
-  height: var(--ai-icon-size-xs);
+  width: var(--ao-icon-size-xs);
+  height: var(--ao-icon-size-xs);
 }
 
 .sp-iconbtn--danger:hover {
-  background: var(--ai-surface-error-soft);
-  color: var(--ai-text-error);
+  background: var(--ao-surface-error-soft);
+  color: var(--ao-text-error);
 }
 
 /* ── Toolbar above the grid ────────────────────────────────────────────── */
@@ -353,18 +353,18 @@ body {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ai-spacing-4);
-  margin-bottom: var(--ai-spacing-5);
+  gap: var(--ao-spacing-4);
+  margin-bottom: var(--ao-spacing-5);
 }
 
 .sp-toolbar__title {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-bold);
-  letter-spacing: var(--ai-tracking-7);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-bold);
+  letter-spacing: var(--ao-tracking-7);
   text-transform: uppercase;
-  color: var(--ai-text-secondary);
+  color: var(--ao-text-secondary);
 }
 
 .sp-toolbar__spacer { flex: 1; }
@@ -372,11 +372,11 @@ body {
 .sp-toolbar__toggle {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-medium);
-  color: var(--ai-text-secondary);
+  gap: var(--ao-spacing-3);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-secondary);
 }
 
 /* Export is a split button: default action + a dropdown for the other formats */
@@ -391,7 +391,7 @@ body {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   margin-left: -1px;
-  padding-inline: var(--ai-spacing-2);
+  padding-inline: var(--ao-spacing-2);
 }
 
 .sp-split__wrap { position: relative; }
@@ -399,40 +399,40 @@ body {
 .sp-split__menu {
   position: absolute;
   z-index: 5;
-  top: calc(100% + var(--ai-spacing-2));
+  top: calc(100% + var(--ao-spacing-2));
   right: 0;
-  min-width: var(--ai-size-2);
-  padding: var(--ai-spacing-2);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  background: var(--ai-surface-primary);
-  box-shadow: var(--ai-shadow-md);
+  min-width: var(--ao-size-2);
+  padding: var(--ao-spacing-2);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-primary);
+  box-shadow: var(--ao-shadow-md);
 }
 
 .sp-split__item {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   width: 100%;
-  padding: var(--ai-spacing-3);
+  padding: var(--ao-spacing-3);
   border: none;
-  border-radius: var(--ai-radius-sm);
+  border-radius: var(--ao-radius-sm);
   background: none;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-medium);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-primary);
   text-align: left;
   cursor: pointer;
 }
 
-.sp-split__item:hover { background: var(--ai-surface-minimal); }
+.sp-split__item:hover { background: var(--ao-surface-minimal); }
 
 .sp-split__item svg,
 .sp-split__item [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-secondary);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-secondary);
 }
 
 /* ── Tables grid ───────────────────────────────────────────────────────── */
@@ -440,7 +440,7 @@ body {
 .sp-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
 @media (min-width: 768px)  { .sp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
@@ -448,137 +448,137 @@ body {
 @media (min-width: 1440px) { .sp-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 
 .sp-table {
-  padding: var(--ai-spacing-4);
-  border: 1px solid var(--ai-border-secondary);
+  padding: var(--ao-spacing-4);
+  border: 1px solid var(--ao-border-secondary);
   /* 3px so the tier edge reads at a glance; the rest of the border stays 1px */
   border-left: 3px solid transparent;
-  border-radius: var(--ai-radius-md);
-  background: var(--ai-surface-primary);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-primary);
   text-align: left;
   cursor: pointer;
-  transition: border-color var(--ai-transition-fast), box-shadow var(--ai-transition-fast);
+  transition: border-color var(--ao-transition-fast), box-shadow var(--ao-transition-fast);
 }
 
-.sp-table:hover { border-color: var(--ai-border-contrast); }
+.sp-table:hover { border-color: var(--ao-border-contrast); }
 
 .sp-table--selected {
-  border-color: var(--ai-border-brand);
-  border-left-color: var(--ai-border-brand);
-  box-shadow: 0 0 0 1px var(--ai-surface-brand);
+  border-color: var(--ao-border-brand);
+  border-left-color: var(--ao-border-brand);
+  box-shadow: 0 0 0 1px var(--ao-surface-brand);
 }
 
 /* Tier — a neutral rank ramp, never the only signal (see .sp-table__tier).
    Standard tier is deliberately unmarked. Real values land with TASK-342308. */
-.sp-table--tier-head    { border-left-color: var(--ai-border-primary); }
-.sp-table--tier-premium { border-left-color: var(--ai-border-contrast); }
+.sp-table--tier-head    { border-left-color: var(--ao-border-primary); }
+.sp-table--tier-premium { border-left-color: var(--ao-border-contrast); }
 
 .sp-table__head {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
 }
 
 .sp-table__name {
   flex: 1;
   min-width: 0;
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
 }
 
 /* The text half of the tier signal */
 .sp-table__tier {
   display: block;
-  margin-top: var(--ai-spacing-1);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-bold);
-  letter-spacing: var(--ai-tracking-7);
+  margin-top: var(--ao-spacing-1);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-bold);
+  letter-spacing: var(--ao-tracking-7);
   text-transform: uppercase;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 /* Sponsorship — the only gold on the screen, and only on the star */
 .sp-table__sponsor {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  margin: var(--ai-spacing-2) 0 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-medium);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-secondary);
+  gap: var(--ao-spacing-2);
+  margin: var(--ao-spacing-2) 0 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-medium);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-secondary);
 }
 
 .sp-table__sponsor svg,
 .sp-table__sponsor [data-lucide] {
   flex: none;
-  width: var(--ai-icon-size-xs);
-  height: var(--ai-icon-size-xs);
-  color: var(--ai-surface-warning);
+  width: var(--ao-icon-size-xs);
+  height: var(--ao-icon-size-xs);
+  color: var(--ao-surface-warning);
 }
 
 .sp-table__foot {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  margin-top: var(--ai-spacing-4);
+  gap: var(--ao-spacing-2);
+  margin-top: var(--ao-spacing-4);
 }
 
 .sp-table__count {
   flex: 1;
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-regular);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-regular);
+  color: var(--ao-text-secondary);
 }
 
 /* Seat dots — a compact read of who is on the table */
 .sp-table__dots {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--ai-spacing-1);
-  margin-top: var(--ai-spacing-3);
+  gap: var(--ao-spacing-1);
+  margin-top: var(--ao-spacing-3);
 }
 
 .sp-dot {
-  width: var(--ai-spacing-3);
-  height: var(--ai-spacing-3);
-  border-radius: var(--ai-radius-full);
-  background: var(--ai-surface-contrast);
+  width: var(--ao-spacing-3);
+  height: var(--ao-spacing-3);
+  border-radius: var(--ao-radius-full);
+  background: var(--ao-surface-contrast);
 }
 
 /* TOKEN GAP (flagged): six roles, five usable status hues — and brand is
    reserved for selection here. Rather than invent a purple, VIP and Guest share
    the neutral hue and are told apart by fill style. Revisit with TASK-342308 if
    the designer would rather add a sixth role colour to the DS. */
-.sp-dot--attendee { background: var(--ai-surface-info); }
-.sp-dot--sponsor  { background: var(--ai-surface-error); }
-.sp-dot--speaker  { background: var(--ai-surface-success); }
-.sp-dot--host     { background: var(--ai-surface-warning); }
-.sp-dot--vip      { background: var(--ai-surface-neutral); }
+.sp-dot--attendee { background: var(--ao-surface-info); }
+.sp-dot--sponsor  { background: var(--ao-surface-error); }
+.sp-dot--speaker  { background: var(--ao-surface-success); }
+.sp-dot--host     { background: var(--ao-surface-warning); }
+.sp-dot--vip      { background: var(--ao-surface-neutral); }
 
 .sp-dot--guest {
-  background: var(--ai-surface-primary);
-  border: 2px solid var(--ai-surface-neutral);
+  background: var(--ao-surface-primary);
+  border: 2px solid var(--ao-surface-neutral);
 }
 
 .sp-dot--empty {
-  background: var(--ai-surface-minimal);
-  border: 1px solid var(--ai-border-secondary);
+  background: var(--ao-surface-minimal);
+  border: 1px solid var(--ao-border-secondary);
 }
 
 .sp-grid__note {
-  margin: var(--ai-spacing-5) 0 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  margin: var(--ao-spacing-5) 0 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
 }
 
 /* ── Right rail ────────────────────────────────────────────────────────── */
@@ -586,7 +586,7 @@ body {
 .sp-rail {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
   min-width: 0;
 }
 
@@ -594,46 +594,46 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-lg);
-  background: var(--ai-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-lg);
+  background: var(--ao-surface-primary);
   overflow: hidden;
 }
 
 .sp-panel__head {
   flex: none;
-  padding: var(--ai-spacing-5);
-  border-bottom: 1px solid var(--ai-border-secondary);
+  padding: var(--ao-spacing-5);
+  border-bottom: 1px solid var(--ao-border-secondary);
 }
 
 .sp-panel__title-row {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 .sp-panel__title {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-md);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-md);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
 }
 
 .sp-panel__meta {
-  margin: var(--ai-spacing-2) 0 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  margin: var(--ao-spacing-2) 0 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
 }
 
 .sp-panel__body {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: var(--ai-spacing-4);
+  padding: var(--ao-spacing-4);
   /* Caps the rail so both panels stay on screen together */
   max-height: 30rem; /* 480px — no size token between 448 and 640 */
   scrollbar-width: thin;
@@ -641,9 +641,9 @@ body {
 
 .sp-panel__foot {
   flex: none;
-  padding: var(--ai-spacing-4) var(--ai-spacing-5);
-  border-top: 1px solid var(--ai-border-secondary);
-  background: var(--ai-surface-minimal);
+  padding: var(--ao-spacing-4) var(--ao-spacing-5);
+  border-top: 1px solid var(--ao-border-secondary);
+  background: var(--ao-surface-minimal);
 }
 
 /* ── Seat list ─────────────────────────────────────────────────────────── */
@@ -651,12 +651,12 @@ body {
 .sp-seat {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-3);
-  margin-bottom: var(--ai-spacing-2);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  background: var(--ai-surface-primary);
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-3);
+  margin-bottom: var(--ao-spacing-2);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-primary);
 }
 
 .sp-seat:last-child { margin-bottom: 0; }
@@ -665,25 +665,25 @@ body {
   flex: none;
   display: grid;
   place-items: center;
-  width: var(--ai-spacing-6);
-  height: var(--ai-spacing-6);
-  border-radius: var(--ai-radius-full);
-  background: var(--ai-surface-minimal);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-contrast);
+  width: var(--ao-spacing-6);
+  height: var(--ao-spacing-6);
+  border-radius: var(--ao-radius-full);
+  background: var(--ao-surface-minimal);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-contrast);
 }
 
 .sp-seat__person { flex: 1; min-width: 0; }
 
 .sp-seat__name {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -691,65 +691,65 @@ body {
 
 .sp-seat__org {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
 }
 
 .sp-seat__actions {
   flex: none;
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
 }
 
 /* Stacked reorder arrows keep the row height down */
 .sp-seat__reorder {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-px);
+  gap: var(--ao-spacing-px);
 }
 
 .sp-seat__reorder .sp-iconbtn {
-  height: var(--ai-spacing-4);
-  border-radius: var(--ai-radius-sm);
+  height: var(--ao-spacing-4);
+  border-radius: var(--ao-radius-sm);
 }
 
 /* An empty seat is an invitation, not an error */
 .sp-seat--empty {
   border-style: dashed;
-  background: var(--ai-surface-minimal);
+  background: var(--ao-surface-minimal);
 }
 
-.sp-seat--empty .sp-seat__name { color: var(--ai-text-contrast); font-weight: var(--ai-font-regular); }
+.sp-seat--empty .sp-seat__name { color: var(--ao-text-contrast); font-weight: var(--ao-font-regular); }
 
 /* ── Role tags ─────────────────────────────────────────────────────────── */
 
 .sp-role {
   flex: none;
-  padding: var(--ai-spacing-0-5) var(--ai-spacing-3);
-  border-radius: var(--ai-radius-full);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-bold);
-  letter-spacing: var(--ai-tracking-6);
+  padding: var(--ao-spacing-0-5) var(--ao-spacing-3);
+  border-radius: var(--ao-radius-full);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-bold);
+  letter-spacing: var(--ao-tracking-6);
   text-transform: uppercase;
-  color: var(--ai-text-invert);
+  color: var(--ao-text-invert);
   white-space: nowrap;
 }
 
-.sp-role--attendee { background: var(--ai-surface-info); }
-.sp-role--sponsor  { background: var(--ai-surface-error); }
-.sp-role--speaker  { background: var(--ai-surface-success); }
-.sp-role--host     { background: var(--ai-surface-warning); }
-.sp-role--vip      { background: var(--ai-surface-neutral); }
+.sp-role--attendee { background: var(--ao-surface-info); }
+.sp-role--sponsor  { background: var(--ao-surface-error); }
+.sp-role--speaker  { background: var(--ao-surface-success); }
+.sp-role--host     { background: var(--ao-surface-warning); }
+.sp-role--vip      { background: var(--ao-surface-neutral); }
 
 /* Guest matches its outlined dot */
 .sp-role--guest {
-  background: var(--ai-surface-primary);
-  border: 1px solid var(--ai-surface-neutral);
-  color: var(--ai-text-primary);
+  background: var(--ao-surface-primary);
+  border: 1px solid var(--ao-surface-neutral);
+  color: var(--ao-text-primary);
 }
 
 /* ── Legend ────────────────────────────────────────────────────────────── */
@@ -757,7 +757,7 @@ body {
 .sp-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--ai-spacing-3) var(--ai-spacing-4);
+  gap: var(--ao-spacing-3) var(--ao-spacing-4);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -766,47 +766,47 @@ body {
 .sp-legend li {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-medium);
-  color: var(--ai-text-secondary);
+  gap: var(--ao-spacing-2);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-secondary);
 }
 
 /* ── Unassigned tray ───────────────────────────────────────────────────── */
 
 .sp-tray__hint {
-  margin: 0 0 var(--ai-spacing-4);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  margin: 0 0 var(--ao-spacing-4);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
 }
 
 .sp-person {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-3);
-  margin-bottom: var(--ai-spacing-2);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  background: var(--ai-surface-primary);
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-3);
+  margin-bottom: var(--ao-spacing-2);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-primary);
   cursor: grab;
 }
 
 .sp-person:last-child { margin-bottom: 0; }
-.sp-person:hover { border-color: var(--ai-border-contrast); }
+.sp-person:hover { border-color: var(--ao-border-contrast); }
 
 .sp-person__name {
   flex: 1;
   min-width: 0;
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -814,37 +814,37 @@ body {
 
 .sp-person__org {
   flex: none;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-contrast);
 }
 
 /* ── Empty states ──────────────────────────────────────────────────────── */
 
 .sp-emptypanel {
-  padding: var(--ai-spacing-11) var(--ai-spacing-6);
-  border: 1px dashed var(--ai-border-contrast);
-  border-radius: var(--ai-radius-lg);
-  background: var(--ai-surface-primary);
+  padding: var(--ao-spacing-11) var(--ao-spacing-6);
+  border: 1px dashed var(--ao-border-contrast);
+  border-radius: var(--ao-radius-lg);
+  background: var(--ao-surface-primary);
   text-align: center;
 }
 
 .sp-emptypanel__title {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-md);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-md);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
 }
 
 .sp-emptypanel__desc {
-  margin: var(--ai-spacing-2) auto 0;
-  max-width: var(--ai-size-9);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  margin: var(--ao-spacing-2) auto 0;
+  max-width: var(--ao-size-9);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
 }
 
 /* Rows hidden by the "Only free seats" filter */
@@ -857,12 +857,12 @@ body {
 .sp-toast-host {
   position: fixed;
   z-index: 40;
-  bottom: var(--ai-spacing-6);
+  bottom: var(--ao-spacing-6);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 
@@ -882,32 +882,32 @@ body {
 .sp-plans__none {
   flex: none;
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
 }
 
 /* Required-field marker. Paired with aria-required on the control, so the
    asterisk is decoration rather than the only signal. */
-.sp-req { color: var(--ai-text-error); }
+.sp-req { color: var(--ao-text-error); }
 
 /* Tables / Seats per table / Table shape sit on one row */
 .sp-newplan__row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
 /* The event name in the modal title is context, not the heading itself */
 .sp-newplan__context {
-  font-weight: var(--ai-font-regular);
-  color: var(--ai-text-contrast);
+  font-weight: var(--ao-font-regular);
+  color: var(--ao-text-contrast);
 }
 
 /* Select has no help slot of its own; borrow the Input one for consistency */
-.sp-newplan__row .sel + .input__help { display: block; margin-top: var(--ai-spacing-2); }
+.sp-newplan__row .sel + .input__help { display: block; margin-top: var(--ao-spacing-2); }
 
 
 /* ==========================================================================
@@ -920,8 +920,8 @@ body {
 .sp-states {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--ai-spacing-5);
-  margin-top: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
+  margin-top: var(--ao-spacing-5);
 }
 
 @media (min-width: 1024px) {
@@ -929,52 +929,52 @@ body {
 }
 
 .sp-states__group {
-  padding: var(--ai-spacing-6);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-lg);
-  background: var(--ai-surface-primary);
+  padding: var(--ao-spacing-6);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-lg);
+  background: var(--ao-surface-primary);
 }
 
 .sp-states__title {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-sm);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-sm);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
 }
 
 .sp-states__note {
-  margin: var(--ai-spacing-2) 0 var(--ai-spacing-5);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  margin: var(--ao-spacing-2) 0 var(--ao-spacing-5);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
 }
 
 .sp-states__note code {
-  font-size: var(--ai-font-fixed-xxs);
-  color: var(--ai-text-secondary);
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-secondary);
 }
 
 .sp-states__list {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
 }
 
 .sp-states__foot {
-  margin: var(--ai-spacing-6) 0 0;
-  padding: var(--ai-spacing-5);
-  border: 1px dashed var(--ai-border-contrast);
-  border-radius: var(--ai-radius-md);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-contrast);
+  margin: var(--ao-spacing-6) 0 0;
+  padding: var(--ao-spacing-5);
+  border: 1px dashed var(--ao-border-contrast);
+  border-radius: var(--ao-radius-md);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-contrast);
 }
 
 
@@ -989,23 +989,23 @@ body {
 
 .sp-confirm__copy {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
 }
 
-.sp-confirm__copy strong { font-weight: var(--ai-font-semibold); }
+.sp-confirm__copy strong { font-weight: var(--ao-font-semibold); }
 
 /* The consequence, one step quieter than the question */
 .sp-confirm__detail {
-  margin: var(--ai-spacing-2) 0 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-contrast);
+  margin: var(--ao-spacing-2) 0 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-contrast);
 }
 
 
@@ -1021,17 +1021,17 @@ body {
 
 .sp-copy__intro {
   margin: 0;
-  padding: var(--ai-spacing-5) var(--ai-spacing-6) 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-contrast);
+  padding: var(--ao-spacing-5) var(--ao-spacing-6) 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-contrast);
 }
 
 .sp-copy__intro strong {
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-primary);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
 }
 
 
@@ -1047,7 +1047,7 @@ body {
    which are nearly identical. Rather than invent six hues:
 
      · the five RANKED tiers get an ordered ramp derived from ONE existing
-       token (--ai-border-primary mixed toward the paper), so they read as a
+       token (--ao-border-primary mixed toward the paper), so they read as a
        rank rather than six unrelated categories;
      · Sponsor is not a rank, so it reuses the gold that already means
        sponsorship on this card (the ★) — one hue, one meaning;
@@ -1060,12 +1060,12 @@ body {
    six role colours already on the card. Flagged, not silently invented.
    ========================================================================== */
 
-.sp-table--tier-head    { border-left-color: var(--ai-border-primary); }
-.sp-table--tier-vip     { border-left-color: color-mix(in srgb, var(--ai-border-primary) 80%, var(--ai-surface-primary)); }
-.sp-table--tier-gold    { border-left-color: color-mix(in srgb, var(--ai-border-primary) 62%, var(--ai-surface-primary)); }
-.sp-table--tier-silver  { border-left-color: color-mix(in srgb, var(--ai-border-primary) 44%, var(--ai-surface-primary)); }
-.sp-table--tier-bronze  { border-left-color: color-mix(in srgb, var(--ai-border-primary) 26%, var(--ai-surface-primary)); }
-.sp-table--tier-sponsor { border-left-color: var(--ai-surface-warning); }
+.sp-table--tier-head    { border-left-color: var(--ao-border-primary); }
+.sp-table--tier-vip     { border-left-color: color-mix(in srgb, var(--ao-border-primary) 80%, var(--ao-surface-primary)); }
+.sp-table--tier-gold    { border-left-color: color-mix(in srgb, var(--ao-border-primary) 62%, var(--ao-surface-primary)); }
+.sp-table--tier-silver  { border-left-color: color-mix(in srgb, var(--ao-border-primary) 44%, var(--ao-surface-primary)); }
+.sp-table--tier-bronze  { border-left-color: color-mix(in srgb, var(--ao-border-primary) 26%, var(--ao-surface-primary)); }
+.sp-table--tier-sponsor { border-left-color: var(--ao-surface-warning); }
 
 /* ── Account lookup (Sponsor field) ─────────────────────────────────────── */
 
@@ -1074,74 +1074,74 @@ body {
 .sp-lookup__menu {
   position: absolute;
   z-index: 5;
-  top: calc(100% + var(--ai-spacing-2));
+  top: calc(100% + var(--ao-spacing-2));
   left: 0;
   right: 0;
   max-height: 12rem; /* 192px — a scannable handful, then scroll */
   overflow-y: auto;
-  padding: var(--ai-spacing-2);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  background: var(--ai-surface-primary);
-  box-shadow: var(--ai-shadow-md);
+  padding: var(--ao-spacing-2);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-primary);
+  box-shadow: var(--ao-shadow-md);
   scrollbar-width: thin;
 }
 
 .sp-lookup__item {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   width: 100%;
-  padding: var(--ai-spacing-3);
+  padding: var(--ao-spacing-3);
   border: none;
-  border-radius: var(--ai-radius-sm);
+  border-radius: var(--ao-radius-sm);
   background: none;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-primary);
   text-align: left;
   cursor: pointer;
 }
 
-.sp-lookup__item:hover { background: var(--ai-surface-minimal); }
+.sp-lookup__item:hover { background: var(--ao-surface-minimal); }
 
 .sp-lookup__item svg,
 .sp-lookup__item [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-surface-warning);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-surface-warning);
 }
 
 .sp-lookup__none {
-  padding: var(--ai-spacing-3);
+  padding: var(--ao-spacing-3);
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-contrast);
 }
 
 /* The chosen sponsor, shown as a removable chip below the field */
 .sp-lookup__chosen {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  margin-top: var(--ai-spacing-2);
-  padding: var(--ai-spacing-2) var(--ai-spacing-3);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  background: var(--ai-surface-minimal);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-medium);
-  color: var(--ai-text-primary);
+  gap: var(--ao-spacing-2);
+  margin-top: var(--ao-spacing-2);
+  padding: var(--ao-spacing-2) var(--ao-spacing-3);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-minimal);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-primary);
   width: fit-content;
 }
 
 .sp-lookup__chosen svg,
 .sp-lookup__chosen [data-lucide] {
-  width: var(--ai-icon-size-xs);
-  height: var(--ai-icon-size-xs);
-  color: var(--ai-surface-warning);
+  width: var(--ao-icon-size-xs);
+  height: var(--ao-icon-size-xs);
+  color: var(--ao-surface-warning);
 }
 
 /* ── Capacity note ──────────────────────────────────────────────────────
@@ -1151,37 +1151,37 @@ body {
 .sp-capacity__note {
   grid-column: 1 / -1;
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-contrast);
 }
 
 .sp-capacity__note--warn {
   display: flex;
   align-items: flex-start;
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-3) var(--ai-spacing-4);
-  border: 1px solid var(--ai-border-warning);
-  border-radius: var(--ai-radius-md);
-  background: var(--ai-surface-warning-soft);
-  color: var(--ai-text-warning);
-  font-weight: var(--ai-font-medium);
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-3) var(--ao-spacing-4);
+  border: 1px solid var(--ao-border-warning);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-warning-soft);
+  color: var(--ao-text-warning);
+  font-weight: var(--ao-font-medium);
 }
 
 .sp-capacity__note--warn svg,
 .sp-capacity__note--warn [data-lucide] {
   flex: none;
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 /* Seats + Shape share a row, and the note spans beneath them */
 .sp-tableform__row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
 
@@ -1230,36 +1230,36 @@ body {
    brand edge from an open untiered table.
    ──────────────────────────────────────────────────────────────────────────── */
 
-.sp-table[data-sp-tier] { border-left-color: var(--sp-tier-colour, var(--ai-border-secondary)); }
+.sp-table[data-sp-tier] { border-left-color: var(--sp-tier-colour, var(--ao-border-secondary)); }
 
 .sp-table:not([data-sp-tier]):not(.sp-table--selected) {
-  border-left-color: var(--ai-border-secondary);
+  border-left-color: var(--ao-border-secondary);
 }
 
 /* ── Table types manager ────────────────────────────────────────────────── */
 
 .sp-types__intro {
   margin: 0;
-  padding: var(--ai-spacing-5) var(--ai-spacing-6) var(--ai-spacing-4);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-contrast);
+  padding: var(--ao-spacing-5) var(--ao-spacing-6) var(--ao-spacing-4);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-contrast);
 }
 
 .sp-types__list {
   max-height: 22rem; /* 352px — 7 seed rows without the dialog growing off-screen */
   overflow-y: auto;
-  padding: 0 var(--ai-spacing-6);
+  padding: 0 var(--ao-spacing-6);
   scrollbar-width: thin;
 }
 
 .sp-types__row {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-3) 0;
-  border-bottom: 1px solid var(--ai-border-secondary);
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-3) 0;
+  border-bottom: 1px solid var(--ao-border-secondary);
 }
 
 .sp-types__row:last-child { border-bottom: none; }
@@ -1268,19 +1268,19 @@ body {
 .sp-types__swatch {
   flex: none;
   position: relative;
-  width: var(--ai-spacing-9);
-  height: var(--ai-spacing-8);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-sm);
+  width: var(--ao-spacing-9);
+  height: var(--ao-spacing-8);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-sm);
   overflow: hidden;
   cursor: pointer;
 }
 
 .sp-types__swatch input[type="color"] {
   position: absolute;
-  inset: calc(-1 * var(--ai-spacing-2));
-  width: calc(100% + var(--ai-spacing-4));
-  height: calc(100% + var(--ai-spacing-4));
+  inset: calc(-1 * var(--ao-spacing-2));
+  width: calc(100% + var(--ao-spacing-4));
+  height: calc(100% + var(--ao-spacing-4));
   padding: 0;
   border: none;
   background: none;
@@ -1292,22 +1292,22 @@ body {
 /* Standard can't be removed — say why instead of showing a dead control */
 .sp-types__default {
   flex: none;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-medium);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-contrast);
 }
 
 .sp-types__reorder {
   flex: none;
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-px);
+  gap: var(--ao-spacing-px);
 }
 
 .sp-types__reorder .sp-iconbtn {
-  height: var(--ai-spacing-4);
-  border-radius: var(--ai-radius-sm);
+  height: var(--ao-spacing-4);
+  border-radius: var(--ao-radius-sm);
 }
 
 /* ── Add-a-type row ─────────────────────────────────────────────────────── */
@@ -1315,10 +1315,10 @@ body {
 .sp-types__add {
   display: flex;
   align-items: flex-end;
-  gap: var(--ai-spacing-4);
-  padding: var(--ai-spacing-5) var(--ai-spacing-6);
-  border-top: 1px solid var(--ai-border-secondary);
-  background: var(--ai-surface-minimal);
+  gap: var(--ao-spacing-4);
+  padding: var(--ao-spacing-5) var(--ao-spacing-6);
+  border-top: 1px solid var(--ao-border-secondary);
+  background: var(--ao-surface-minimal);
 }
 
 .sp-types__add-name { flex: 1; min-width: 0; }
@@ -1327,14 +1327,14 @@ body {
   flex: none;
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
 }
 
 .sp-types__label {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-secondary);
 }
 
 
@@ -1357,11 +1357,11 @@ body {
    ========================================================================== */
 
 .sp-assign__help {
-  margin: var(--ai-spacing-3) 0 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  margin: var(--ao-spacing-3) 0 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
 }
 
 /* The list scrolls, not the modal body: the search field above it and the guest
@@ -1370,7 +1370,7 @@ body {
 .sp-assign__results {
   max-height: 360px;
   overflow-y: auto;
-  margin-top: var(--ai-spacing-5);
+  margin-top: var(--ao-spacing-5);
   scrollbar-width: thin;
 }
 
@@ -1379,19 +1379,19 @@ body {
 }
 
 .sp-assign__results::-webkit-scrollbar-thumb {
-  border-radius: var(--ai-radius-full);
-  background: var(--ai-border-secondary);
+  border-radius: var(--ao-radius-full);
+  background: var(--ao-border-secondary);
 }
 
 /* Source heading — same uppercase micro-label as the tier text */
 .sp-assign__group {
-  margin: var(--ai-spacing-5) 0 var(--ai-spacing-2);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-bold);
-  letter-spacing: var(--ai-tracking-7);
+  margin: var(--ao-spacing-5) 0 var(--ao-spacing-2);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-bold);
+  letter-spacing: var(--ao-tracking-7);
   text-transform: uppercase;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 .sp-assign__group:first-child { margin-top: 0; }
@@ -1399,20 +1399,20 @@ body {
 .sp-assign__row {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   width: 100%;
-  padding: var(--ai-spacing-3);
+  padding: var(--ao-spacing-3);
   border: none;
-  border-radius: var(--ai-radius-md);
+  border-radius: var(--ao-radius-md);
   background: none;
   text-align: left;
   cursor: pointer;
 }
 
-.sp-assign__row:hover { background: var(--ai-surface-minimal); }
+.sp-assign__row:hover { background: var(--ao-surface-minimal); }
 
 .sp-assign__row:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: -2px;
 }
 
@@ -1420,11 +1420,11 @@ body {
   flex: 1;
   min-width: 0;
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1432,42 +1432,42 @@ body {
 
 .sp-assign__meta {
   flex: none;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-contrast);
 }
 
 /* No match — the term is almost certainly a guest who isn't in the system, so
    offer to carry it straight into the guest fields instead of retyping it. */
 .sp-assign__none {
-  padding: var(--ai-spacing-5) var(--ai-spacing-3);
+  padding: var(--ao-spacing-5) var(--ao-spacing-3);
   text-align: center;
 }
 
 .sp-assign__none p {
-  margin: 0 0 var(--ai-spacing-4);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  margin: 0 0 var(--ao-spacing-4);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
 }
 
-.sp-assign__none strong { color: var(--ai-text-primary); }
+.sp-assign__none strong { color: var(--ao-text-primary); }
 
 /* ── Add a guest manually ───────────────────────────────────────────────── */
 
 .sp-assign__manual {
-  margin-top: var(--ai-spacing-5);
-  padding-top: var(--ai-spacing-5);
-  border-top: 1px solid var(--ai-border-secondary);
+  margin-top: var(--ao-spacing-5);
+  padding-top: var(--ao-spacing-5);
+  border-top: 1px solid var(--ao-border-secondary);
 }
 
 .sp-assign__hint {
-  margin: 0 0 var(--ai-spacing-4);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  margin: 0 0 var(--ao-spacing-4);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
 }
 
 /* Name + Company share the top row; Role + Add sit beneath, so nothing is
@@ -1475,14 +1475,14 @@ body {
 .sp-assign__manual-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 .sp-assign__manual-foot {
   display: flex;
   align-items: flex-end;
-  gap: var(--ai-spacing-3);
-  margin-top: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
+  margin-top: var(--ao-spacing-3);
 }
 
 .sp-assign__manual-foot .sp-assign__role { flex: 1; min-width: 0; }
@@ -1507,61 +1507,61 @@ body {
    ========================================================================== */
 
 .sp-tray__list {
-  margin-top: var(--ai-spacing-4);
+  margin-top: var(--ao-spacing-4);
 }
 
 .sp-tray__empty {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  margin-top: var(--ai-spacing-4);
-  padding: var(--ai-spacing-7) var(--ai-spacing-5);
-  border: 1px dashed var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  gap: var(--ao-spacing-2);
+  margin-top: var(--ao-spacing-4);
+  padding: var(--ao-spacing-7) var(--ao-spacing-5);
+  border: 1px dashed var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
   text-align: center;
 }
 
-/* There is no --ai-icon-success token; the DS carries success only as
-   surface/text/border. Using --ai-text-success on the icon follows the pattern
-   .sp-capacity__note--warn already set with --ai-text-warning. Flagged in the
+/* There is no --ao-icon-success token; the DS carries success only as
+   surface/text/border. Using --ao-text-success on the icon follows the pattern
+   .sp-capacity__note--warn already set with --ao-text-warning. Flagged in the
    handover rather than invented as a new token. */
 .sp-tray__empty svg,
 .sp-tray__empty [data-lucide] {
-  width: var(--ai-icon-size-md);
-  height: var(--ai-icon-size-md);
-  color: var(--ai-text-success);
+  width: var(--ao-icon-size-md);
+  height: var(--ao-icon-size-md);
+  color: var(--ao-text-success);
 }
 
 .sp-tray__empty-title {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
 }
 
 .sp-tray__empty-desc {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
 }
 
 /* "No match" — a filtered-out pool is not the same as an empty one */
 .sp-tray__none {
-  margin: var(--ai-spacing-4) 0 0;
-  padding: var(--ai-spacing-4) var(--ai-spacing-3);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  margin: var(--ao-spacing-4) 0 0;
+  padding: var(--ao-spacing-4) var(--ao-spacing-3);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
   text-align: center;
 }
 
-.sp-tray__none strong { color: var(--ai-text-primary); }
+.sp-tray__none strong { color: var(--ao-text-primary); }
 
 
 /* ==========================================================================
@@ -1592,14 +1592,14 @@ body {
 /* Picked up by tap/keyboard. Unlike a drag there is no cursor to follow, so the
    row has to hold the state visibly until it is placed or cancelled. */
 .sp-picked {
-  border-color: var(--ai-border-brand);
-  box-shadow: 0 0 0 1px var(--ai-border-brand);
+  border-color: var(--ao-border-brand);
+  box-shadow: 0 0 0 1px var(--ao-border-brand);
 }
 
 /* A legal destination */
 .sp-drop {
-  border-color: var(--ai-border-success);
-  background: var(--ai-surface-success-soft);
+  border-color: var(--ao-border-success);
+  background: var(--ao-surface-success-soft);
 }
 
 /* An occupied seat: the two people exchange places, which is a different
@@ -1607,34 +1607,34 @@ body {
 .sp-drop--swap::after {
   content: 'Swap';
   margin-left: auto;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  letter-spacing: var(--ai-tracking-7);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  letter-spacing: var(--ao-tracking-7);
   text-transform: uppercase;
-  color: var(--ai-text-success);
+  color: var(--ao-text-success);
 }
 
 /* A refusal — a full table, or the pool when the person is already unassigned */
 .sp-drop--reject {
-  border-color: var(--ai-border-error);
-  background: var(--ai-surface-error-soft);
+  border-color: var(--ao-border-error);
+  background: var(--ao-surface-error-soft);
   cursor: not-allowed;
 }
 
 .sp-drop--reject::after {
   content: attr(data-sp-reject);
   margin-left: auto;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-error);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-error);
 }
 
 /* The pool is a drop target for unseating, so it needs a visible boundary while
    something is in the air — otherwise there is nothing to aim at. */
 .sp-panel.sp-drop {
-  border-color: var(--ai-border-success);
+  border-color: var(--ao-border-success);
 }
 
 /* ── The placement bar: what pick-then-place uses instead of a cursor ────── */
@@ -1642,17 +1642,17 @@ body {
 .sp-place {
   position: fixed;
   left: 50%;
-  bottom: var(--ai-spacing-6);
+  bottom: var(--ao-spacing-6);
   transform: translateX(-50%);
   z-index: 40;
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-4);
-  max-width: calc(100% - var(--ai-spacing-7));
-  padding: var(--ai-spacing-4) var(--ai-spacing-5);
-  border: 1px solid var(--ai-border-brand);
-  border-radius: var(--ai-radius-full);
-  background: var(--ai-surface-primary);
+  gap: var(--ao-spacing-4);
+  max-width: calc(100% - var(--ao-spacing-7));
+  padding: var(--ao-spacing-4) var(--ao-spacing-5);
+  border: 1px solid var(--ao-border-brand);
+  border-radius: var(--ao-radius-full);
+  background: var(--ao-surface-primary);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
 }
 
@@ -1660,26 +1660,26 @@ body {
 
 .sp-place__text {
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
 }
 
-.sp-place__text strong { color: var(--ai-text-primary); }
+.sp-place__text strong { color: var(--ao-text-primary); }
 
 .sp-place svg,
 .sp-place [data-lucide] {
   flex: none;
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-brand);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-brand);
 }
 
 /* Rows are keyboard-operable, so they need a focus ring of their own */
 .sp-person:focus-visible,
 .sp-seat:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
 }
 
@@ -1702,11 +1702,11 @@ body {
 .sp-layout__preview {
   display: block;
   width: 100%;
-  max-height: var(--ai-size-7); /* 384px */
+  max-height: var(--ao-size-7); /* 384px */
   object-fit: contain;
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  background: var(--ai-surface-minimal);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-minimal);
 }
 
 /* A PDF can't be shown as an image, so it gets a document card instead of a
@@ -1714,19 +1714,19 @@ body {
 .sp-layout__doc {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-4);
-  padding: var(--ai-spacing-6);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  background: var(--ai-surface-minimal);
+  gap: var(--ao-spacing-4);
+  padding: var(--ao-spacing-6);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-minimal);
 }
 
 .sp-layout__doc svg,
 .sp-layout__doc [data-lucide] {
   flex: none;
-  width: var(--ai-icon-size-xl);
-  height: var(--ai-icon-size-xl);
-  color: var(--ai-icon-secondary);
+  width: var(--ao-icon-size-xl);
+  height: var(--ao-icon-size-xl);
+  color: var(--ao-icon-secondary);
 }
 
 .sp-layout__doc-main { flex: 1; min-width: 0; }
@@ -1735,19 +1735,19 @@ body {
 .sp-layout__meta {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
-  margin-top: var(--ai-spacing-4);
+  gap: var(--ao-spacing-3);
+  margin-top: var(--ao-spacing-4);
 }
 
 .sp-layout__name {
   flex: 1;
   min-width: 0;
   margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1755,34 +1755,34 @@ body {
 
 .sp-layout__size {
   flex: none;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-contrast);
 }
 
 .sp-layout__hint {
-  margin: var(--ai-spacing-4) 0 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  margin: var(--ao-spacing-4) 0 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
 }
 
 /* Whether a plan HAS a layout is otherwise invisible until you open the popup,
    so the toolbar button carries a dot. Not in the reference — an addition. */
 .sp-toolbar [data-sp-action="room-layout"][data-sp-has-layout="true"]::after {
   content: '';
-  width: var(--ai-spacing-2);
-  height: var(--ai-spacing-2);
-  border-radius: var(--ai-radius-full);
-  background: var(--ai-surface-success);
+  width: var(--ao-spacing-2);
+  height: var(--ao-spacing-2);
+  border-radius: var(--ao-radius-full);
+  background: var(--ao-surface-success);
 }
 
 /* The plan name in the dialog title, as the reference shows it — lighter than
    "Room layout" so the title reads as heading + context. No DS equivalent. */
 .sp-layout__plan {
-  font-weight: var(--ai-font-regular);
-  color: var(--ai-text-contrast);
+  font-weight: var(--ao-font-regular);
+  color: var(--ao-text-contrast);
 }
 
 
@@ -1805,107 +1805,107 @@ body {
    `.modal__body p`, which is two classes and outranks a lone element class, so a
    single-class rule here silently loses its size, weight and colour. */
 .sp-export__doc {
-  padding: var(--ai-spacing-6);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  background: var(--ai-surface-primary);
+  padding: var(--ao-spacing-6);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-primary);
 }
 
 .sp-export__doc .sp-export__title {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-md);
-  font-weight: var(--ai-font-bold);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-md);
+  font-weight: var(--ao-font-bold);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
 }
 
 .sp-export__doc .sp-export__meta {
-  margin: var(--ai-spacing-2) 0 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  margin: var(--ao-spacing-2) 0 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
 }
 
 .sp-export__doc .sp-export__table {
-  margin: var(--ai-spacing-6) 0 var(--ai-spacing-3);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-sm);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  margin: var(--ao-spacing-6) 0 var(--ao-spacing-3);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-sm);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
 }
 
 /* the fill count and the tier sit beside the table name, quieter than it */
 .sp-export__doc .sp-export__table span {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-regular);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-regular);
+  color: var(--ao-text-contrast);
 }
 
 .sp-export__list {
   margin: 0;
-  padding-left: var(--ai-spacing-6);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-lg);
-  color: var(--ai-text-primary);
+  padding-left: var(--ao-spacing-6);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-lg);
+  color: var(--ao-text-primary);
 }
 
 /* Role in brackets after the name, as the reference has it. Muted, because the
    name is the thing you are scanning for. */
-.sp-export__role { color: var(--ai-text-secondary); }
+.sp-export__role { color: var(--ao-text-secondary); }
 
 .sp-export__doc .sp-export__empty {
-  margin: var(--ai-spacing-3) 0 0;
-  padding-left: var(--ai-spacing-6);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
+  margin: var(--ao-spacing-3) 0 0;
+  padding-left: var(--ao-spacing-6);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
   font-style: italic;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 /* Which format you are about to download, above the preview */
 .modal__body .sp-export__format {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
-  margin: 0 0 var(--ai-spacing-5);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  gap: var(--ao-spacing-3);
+  margin: 0 0 var(--ao-spacing-5);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
 }
 
 .sp-export__format svg,
 .sp-export__format [data-lucide] {
   flex: none;
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-secondary);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-secondary);
 }
 
-.sp-export__format strong { color: var(--ai-text-primary); }
+.sp-export__format strong { color: var(--ao-text-primary); }
 
 /* The grid preview (CSV / Excel) scrolls inside the modal body */
 .sp-export__grid {
-  max-height: var(--ai-size-7); /* 384px */
+  max-height: var(--ao-size-7); /* 384px */
   overflow: auto;
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
   scrollbar-width: thin;
 }
 
 .sp-export__doc-scroll {
-  max-height: var(--ai-size-7);
+  max-height: var(--ao-size-7);
   overflow-y: auto;
   scrollbar-width: thin;
 }
 
 /* ============================================================================
-   PLANS ACTIONS — abbreviate the labels below --ai-bp-sm (Mark, 2026-08-03)
+   PLANS ACTIONS — abbreviate the labels below --ao-bp-sm (Mark, 2026-08-03)
    ----------------------------------------------------------------------------
    "New plan" / "Copy plans" become "New" / "Copy" under 640px, where the plans
    action row is the widest thing in the appbar. The droppable word is a span
@@ -1917,7 +1917,7 @@ body {
    2.5.3 (Label in Name) holds because the visible word is contained in the
    accessible name.
 
-   px rather than var(--ai-bp-sm), per CLAUDE.md §2: @media cannot read custom
+   px rather than var(--ao-bp-sm), per CLAUDE.md §2: @media cannot read custom
    properties. 639 = 640 - 1, the width below the sm breakpoint.
    ============================================================================ */
 

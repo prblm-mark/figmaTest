@@ -3,13 +3,13 @@
 .skeleton {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
 }
 
 .skeleton__line {
-  height: var(--ai-spacing-5);
-  border-radius: var(--ai-radius-sm);
-  background: var(--ai-skeleton-base);
+  height: var(--ao-spacing-5);
+  border-radius: var(--ao-radius-sm);
+  background: var(--ao-skeleton-base);
 }
 
 /* ── Line widths ─────────────────────────────────────── */
@@ -26,11 +26,11 @@
   background:
     linear-gradient(
       90deg,
-      var(--ai-skeleton-base) 0%,
-      var(--ai-skeleton-base) 30%,
-      var(--ai-skeleton-highlight) 50%,
-      var(--ai-skeleton-base) 70%,
-      var(--ai-skeleton-base) 100%
+      var(--ao-skeleton-base) 0%,
+      var(--ao-skeleton-base) 30%,
+      var(--ao-skeleton-highlight) 50%,
+      var(--ao-skeleton-base) 70%,
+      var(--ao-skeleton-base) 100%
     );
   background-size: 300% 100%;
   will-change: background-position;

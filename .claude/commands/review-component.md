@@ -63,7 +63,7 @@ For every component marked as existing, run a quick audit:
    - Tokens in Figma not present in CSS (missing or wrong token)
    - Variants/states in Figma not implemented in CSS
    - CSS classes with no Figma counterpart (spurious — candidate for removal)
-   - Token gaps (design values with no `--ai-*` token — apply the same stop rule as `/build-component` Step 5)
+   - Token gaps (design values with no `--ao-*` token — apply the same stop rule as `/build-component` Step 5)
 
 **Flag contextual overrides before marking status.** If a child component instance within the
 parent has a property set differently from the child's base design (e.g. title width changed,
@@ -77,12 +77,12 @@ propose which case it is:
 Wait for confirmation before including it in the build plan.
 
 **Critical — check for token drift.** Before marking a component as current, cross-reference
-every `--ai-*` token used in the component's CSS against the current `css/tokens.css` and
+every `--ao-*` token used in the component's CSS against the current `css/tokens.css` and
 `css/tokens-dark.css`. Flag as `⚠ Outdated` if:
-- The component uses a semantic token (e.g. `--ai-text-invert`) where a more specific token
-  now exists for that role (e.g. `--ai-btn-primary-text` was added specifically so primary
-  button text stays white in dark mode, rather than inverting with `--ai-text-invert`)
-- A new `--ai-*` token has been added to the token files that the component should be using
+- The component uses a semantic token (e.g. `--ao-text-invert`) where a more specific token
+  now exists for that role (e.g. `--ao-btn-primary-text` was added specifically so primary
+  button text stays white in dark mode, rather than inverting with `--ao-text-invert`)
+- A new `--ao-*` token has been added to the token files that the component should be using
   but isn't — run `npm run tokens` first to ensure the generated CSS is current, then grep
   the token files for any variables not yet referenced in the component CSS
 
@@ -95,7 +95,7 @@ Mark the component as:
 
 ### 4. Resolve token gaps
 
-If any audit (Steps 2 or 3) surfaces a design value with no `--ai-*` semantic token:
+If any audit (Steps 2 or 3) surfaces a design value with no `--ao-*` semantic token:
 
 **STOP. Do not produce the build plan yet.**
 Report each gap — property name, affected component/state, Figma value, primitive name if
@@ -166,9 +166,9 @@ When the parent component HTML references a child component:
   The correct implementation is `@media (max-width: 767px)` rules in the component CSS.
   Breakpoint: `max-width: 767px` = mobile, 768px+ = desktop.
 - **Button variant identification:** When auditing a component that contains a Button instance, always verify the button's Figma variant (`Type=Primary`, `Type=Secondary`, `Type=Tertiary` etc.) via `get_metadata` on the Button component set — not just the background colour. Secondary and tertiary both use white bg; absence of a `border` class in design context is a secondary signal, but the variant name is definitive. Flag as `⚠ Outdated` if the wrong variant class is used.
-- **Font family audit rule:** When reviewing component CSS, cross-check every `font-family` token against the font-style name in design context: `title/*` → `--ai-font-title`; `body/*` → `--ai-font-body`. Flag any element using `--ai-font-body` where the design context shows a `title/*` style as `⚠ Outdated`.
-- **Dimension values use `rem`** — all spacing, sizing, font-size, line-height, and border-radius values are `rem` via `--ai-*` tokens (16px = 1rem). Border widths (`1px`, `2px`) and box-shadow pixel offsets stay as `px`. Flag any hardcoded `px` dimension value (that is NOT a border-width or shadow offset) as `⚠ Outdated`. If the value cannot be expressed as an `--ai-*` token, apply the hardcoded dimension stop rule: report it to the user before continuing.
-- **Fluid tokens are automatically responsive** — `--ai-font-fluid-*` tokens change value at
+- **Font family audit rule:** When reviewing component CSS, cross-check every `font-family` token against the font-style name in design context: `title/*` → `--ao-font-title`; `body/*` → `--ao-font-body`. Flag any element using `--ao-font-body` where the design context shows a `title/*` style as `⚠ Outdated`.
+- **Dimension values use `rem`** — all spacing, sizing, font-size, line-height, and border-radius values are `rem` via `--ao-*` tokens (16px = 1rem). Border widths (`1px`, `2px`) and box-shadow pixel offsets stay as `px`. Flag any hardcoded `px` dimension value (that is NOT a border-width or shadow offset) as `⚠ Outdated`. If the value cannot be expressed as an `--ao-*` token, apply the hardcoded dimension stop rule: report it to the user before continuing.
+- **Fluid tokens are automatically responsive** — `--ao-font-fluid-*` tokens change value at
   ≤767px via `tokens-mobile.css`. If a component has hardcoded font-size overrides in a mobile
   block for fluid token values, flag those as spurious — they are already handled by the token layer.
 - **Mobile child-component sizing** — when auditing a Device=Mobile variant, always compare

@@ -17,8 +17,8 @@
 /* The search leads the facet row and takes the room the facets leave. A cap, not a floor
  * (CLAUDE.md §4a), so a narrow modal wraps the facets under it instead of overflowing. */
 .selector__search {
-  flex: 1 1 var(--ai-size-5);
-  max-inline-size: var(--ai-size-7);
+  flex: 1 1 var(--ao-size-5);
+  max-inline-size: var(--ao-size-7);
   min-inline-size: 0;
 }
 
@@ -34,10 +34,10 @@
 .selector__status {
   margin-inline-end: auto;
   min-inline-size: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-2xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -47,12 +47,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   margin: 0;
-  padding: var(--ai-spacing-7) var(--ai-spacing-5);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);
-  color: var(--ai-text-secondary);
+  padding: var(--ao-spacing-7) var(--ao-spacing-5);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-secondary);
 }
 
 .selector__empty[hidden] { display: none; }
@@ -69,9 +69,9 @@
 
 .selector__empty svg,
 .selector__hint svg {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
-  color: var(--ai-icon-contrast);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+  color: var(--ao-icon-contrast);
   flex-shrink: 0;
 }
 
@@ -86,15 +86,15 @@
  * hangs over the results) is clipped by the modal's own overflow. Still shrinks on a short
  * viewport (flex-shrink + min 0 inside the modal's 100% height cap). */
 .selector__region {
-  flex: 1 1 var(--ai-size-10);
+  flex: 1 1 var(--ao-size-10);
   min-block-size: 0;
 }
 
 /* The same for the table pickers (single + multi): FilterDropdowns caps the region at 384;
  * this makes 384 its height too. */
 [data-selector] .filter-dropdowns__table-region {
-  flex: 1 1 var(--ai-size-7);
-  block-size: var(--ai-size-7);
+  flex: 1 1 var(--ao-size-7);
+  block-size: var(--ao-size-7);
   min-block-size: 0;
 }
 
@@ -118,10 +118,10 @@
  * than the modal; Selector.js nudges it left if it would cross the modal's right edge. */
 .selector__facet-panel {
   position: absolute;
-  inset-block-start: calc(100% + var(--ai-spacing-2));
+  inset-block-start: calc(100% + var(--ao-spacing-2));
   inset-inline-start: 0;
   z-index: 2;
-  inline-size: var(--ai-size-5);
+  inline-size: var(--ao-size-5);
   max-inline-size: none;
   cursor: default;
 }
@@ -141,7 +141,7 @@
   flex: 1 1 auto;
   align-items: baseline;
   min-inline-size: 0;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   inline-size: 100%;
 }
 
@@ -149,8 +149,8 @@
 .selector__facet-count {
   margin-inline-start: auto;
   flex-shrink: 0;
-  font-size: var(--ai-font-fixed-xxs);
-  color: var(--ai-text-secondary);
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-secondary);
   font-variant-numeric: tabular-nums;
 }
 
@@ -158,39 +158,39 @@
 
 .selector__row { cursor: pointer; }
 
-.selector__row:hover td { background-color: var(--ai-surface-minimal); }
+.selector__row:hover td { background-color: var(--ao-surface-minimal); }
 
 /* The name cell's button is what a keyboard reaches; the row is the pointer's shortcut. */
 .selector__pick {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   padding: 0;
   border: 0;
   background: none;
   font: inherit;
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-primary);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
   text-align: start;
   cursor: pointer;
 }
 
 .selector__pick:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
-  border-radius: var(--ai-radius-sm);
+  border-radius: var(--ao-radius-sm);
 }
 
 /* The tick holds its space on every row so names line up whether or not they are chosen. */
 .selector__tick {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
-  color: var(--ai-icon-brand);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+  color: var(--ao-icon-brand);
   visibility: hidden;
   flex-shrink: 0;
 }
 
-.selector__row--selected td { background-color: var(--ai-surface-brand-soft-extra); }
+.selector__row--selected td { background-color: var(--ao-surface-brand-soft-extra); }
 .selector__row--selected .selector__tick { visibility: visible; }
 
 /* Paired columns (Article step lookup, 2026-09-30): both are long free text, so neither may
@@ -202,14 +202,14 @@
 
 /* ── Media ────────────────────────────────────────────── */
 
-.selector--media.modal { width: var(--ai-size-12); }
+.selector--media.modal { width: var(--ao-size-12); }
 
 .selector__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--ai-size-1), 1fr));
-  gap: var(--ai-spacing-5);
+  grid-template-columns: repeat(auto-fill, minmax(var(--ao-size-1), 1fr));
+  gap: var(--ao-spacing-5);
   margin: 0;
-  padding: var(--ai-spacing-5);
+  padding: var(--ao-spacing-5);
   list-style: none;
 }
 
@@ -218,7 +218,7 @@
 .selector__tile {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   inline-size: 100%;
   padding: 0;
   border: 0;
@@ -233,11 +233,11 @@
   position: relative;
   display: block;
   aspect-ratio: 1 / 1;
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  background-color: var(--ai-surface-secondary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  background-color: var(--ao-surface-secondary);
   overflow: hidden;
-  transition: border-color var(--ai-transition-default), box-shadow var(--ai-transition-default);
+  transition: border-color var(--ao-transition-default), box-shadow var(--ao-transition-default);
 }
 
 .selector__tile-media img {
@@ -254,52 +254,52 @@
   justify-content: center;
   inline-size: 100%;
   block-size: 100%;
-  color: var(--ai-icon-contrast);
+  color: var(--ao-icon-contrast);
 }
 
 .selector__tile-glyph svg {
-  inline-size: var(--ai-icon-size-xl);
-  block-size: var(--ai-icon-size-xl);
+  inline-size: var(--ao-icon-size-xl);
+  block-size: var(--ao-icon-size-xl);
 }
 
-.selector__tile:hover .selector__tile-media { border-color: var(--ai-border-brand); }
+.selector__tile:hover .selector__tile-media { border-color: var(--ao-border-brand); }
 
 .selector__tile:focus-visible { outline: none; }
 .selector__tile:focus-visible .selector__tile-media {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
 }
 
 .selector__tile[aria-pressed="true"] .selector__tile-media {
-  border-color: var(--ai-border-brand);
-  box-shadow: 0 0 0 1px var(--ai-border-brand);
+  border-color: var(--ao-border-brand);
+  box-shadow: 0 0 0 1px var(--ao-border-brand);
 }
 
 /* The selected badge. A brand disc holding the check, in the PRIMARY BUTTON's own label colour
- * — the approved on-brand pairing in every theme. It was `--ai-text-contrast` (the placeholder
+ * — the approved on-brand pairing in every theme. It was `--ao-text-contrast` (the placeholder
  * grey) with padding on the SVG itself, which shrank the tick to ~12px and left a plain teal dot
  * on a photo (designer screenshot, 2026-09-29). The ring in the card colour separates it from
  * any image behind it. */
 .selector__tile-check {
   position: absolute;
-  inset-block-start: var(--ai-spacing-2);
-  inset-inline-end: var(--ai-spacing-2);
+  inset-block-start: var(--ao-spacing-2);
+  inset-inline-end: var(--ao-spacing-2);
   display: flex;
   align-items: center;
   justify-content: center;
-  inline-size: var(--ai-spacing-6);
-  block-size: var(--ai-spacing-6);
-  border-radius: var(--ai-radius-full);
-  background-color: var(--ai-surface-brand);
-  box-shadow: 0 0 0 2px var(--ai-surface-primary);
-  color: var(--ai-btn-primary-text);
+  inline-size: var(--ao-spacing-6);
+  block-size: var(--ao-spacing-6);
+  border-radius: var(--ao-radius-full);
+  background-color: var(--ao-surface-brand);
+  box-shadow: 0 0 0 2px var(--ao-surface-primary);
+  color: var(--ao-btn-primary-text);
   opacity: 0;
-  transition: opacity var(--ai-transition-default);
+  transition: opacity var(--ao-transition-default);
 }
 
 .selector__tile-check svg {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
   stroke-width: 3;
 }
 
@@ -308,29 +308,29 @@
 .selector__tile-text {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
   min-inline-size: 0;
 }
 
 .selector__tile-name,
 .selector__tile-meta {
-  font-family: var(--ai-font-body);
+  font-family: var(--ao-font-body);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .selector__tile-name {
-  font-size: var(--ai-font-fixed-2xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  font-size: var(--ao-font-fixed-2xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
 }
 
 .selector__tile-meta {
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-secondary);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-secondary);
 }
 
 .selector__mine { flex: 0 0 auto; }
@@ -341,16 +341,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--ai-spacing-4);
-  padding: 0 var(--ai-spacing-5) var(--ai-spacing-5);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
-  color: var(--ai-text-secondary);
+  gap: var(--ao-spacing-4);
+  padding: 0 var(--ao-spacing-5) var(--ao-spacing-5);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-2xs);
+  color: var(--ao-text-secondary);
 }
 
 /* ── Sort ─────────────────────────────────────────────── */
 
-.selector--sort.modal { width: var(--ai-size-11); }
+.selector--sort.modal { width: var(--ao-size-11); }
 
 /* Reset — tertiary with NO fill at rest (designer, 2026-09-29), so it reads as the quieter
  * sibling of Cancel / Save order. Only the DEFAULT is overridden: hover, pressed and focus keep
@@ -363,13 +363,13 @@
 .selector__hint {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   margin: 0;
-  padding: var(--ai-spacing-3) var(--ai-spacing-5);
-  background-color: var(--ai-surface-info-soft);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
-  color: var(--ai-text-secondary);
+  padding: var(--ao-spacing-3) var(--ao-spacing-5);
+  background-color: var(--ao-surface-info-soft);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-2xs);
+  color: var(--ao-text-secondary);
 }
 
 .selector__hint[hidden] { display: none; }
@@ -377,9 +377,9 @@
 .selector__sort-list {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
   margin: 0;
-  padding: var(--ai-spacing-3);
+  padding: var(--ao-spacing-3);
   list-style: none;
 }
 
@@ -388,35 +388,35 @@
 .selector__sort-row {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
-  padding: var(--ai-spacing-2) var(--ai-spacing-3);
-  border-radius: var(--ai-radius-sm);
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-2) var(--ao-spacing-3);
+  border-radius: var(--ao-radius-sm);
   border-block: 1px solid transparent;
 }
 
-.selector__sort-row:hover { background-color: var(--ai-surface-minimal); }
+.selector__sort-row:hover { background-color: var(--ao-surface-minimal); }
 
 .selector__sort-row--current,
-.selector__sort-row--current:hover { background-color: var(--ai-surface-brand-soft-extra); }
+.selector__sort-row--current:hover { background-color: var(--ao-surface-brand-soft-extra); }
 
 /* A row that just moved, so the eye can follow it (cleared by Selector.js). */
-.selector__sort-row--moved { box-shadow: inset 2px 0 0 var(--ai-border-brand); }
+.selector__sort-row--moved { box-shadow: inset 2px 0 0 var(--ao-border-brand); }
 
 .selector__sort-row--dragging { opacity: 0.5; }
-.selector__sort-row--over-before { border-block-start-color: var(--ai-border-brand); }
-.selector__sort-row--over-after { border-block-end-color: var(--ai-border-brand); }
+.selector__sort-row--over-before { border-block-start-color: var(--ao-border-brand); }
+.selector__sort-row--over-after { border-block-end-color: var(--ao-border-brand); }
 
 .selector__grip {
   display: flex;
   align-items: center;
-  color: var(--ai-icon-contrast);
+  color: var(--ao-icon-contrast);
   cursor: grab;
   flex-shrink: 0;
 }
 
 .selector__grip svg {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
 }
 
 /* Drag is paused while a search narrows the list — a drop between two rows that are not
@@ -428,30 +428,30 @@
  * (feedback_intrinsic_size_floor). */
 .selector__position {
   flex: 0 0 auto;
-  inline-size: var(--ai-spacing-9);
-  block-size: var(--ai-spacing-7);
-  padding: 0 var(--ai-spacing-2);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-sm);
-  background-color: var(--ai-surface-primary);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  inline-size: var(--ao-spacing-9);
+  block-size: var(--ao-spacing-7);
+  padding: 0 var(--ao-spacing-2);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-sm);
+  background-color: var(--ao-surface-primary);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-2xs);
   font-variant-numeric: tabular-nums;
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
   text-align: center;
 }
 
 .selector__position:focus-visible {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 1px;
 }
 
 .selector__sort-thumb {
   flex: 0 0 auto;
-  inline-size: var(--ai-spacing-8);
-  block-size: var(--ai-spacing-8);
-  border-radius: var(--ai-radius-sm);
-  background-color: var(--ai-surface-secondary);
+  inline-size: var(--ao-spacing-8);
+  block-size: var(--ao-spacing-8);
+  border-radius: var(--ao-radius-sm);
+  background-color: var(--ao-surface-secondary);
   overflow: hidden;
 }
 
@@ -467,12 +467,12 @@
   min-inline-size: 0;
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-primary);
+  gap: var(--ao-spacing-3);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-2xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
 }
 
 .selector__this { flex-shrink: 0; }
@@ -480,11 +480,11 @@
 .selector__sort-actions {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
   flex-shrink: 0;
 }
 
-/* Move buttons — `btn btn--tertiary btn--sm` plus the subtle `--ai-border-secondary` line the
+/* Move buttons — `btn btn--tertiary btn--sm` plus the subtle `--ao-border-secondary` line the
  * listing rows' account chip and the Steps author chip carry (Case B contextual override,
  * designer 2026-09-29): a borderless button disappears into the tinted current row and the
  * hover tint. Restated for hover and focus because `.btn--tertiary:hover` sets the transparent
@@ -492,7 +492,7 @@
 .selector__sort-actions .btn--tertiary,
 .selector__sort-actions .btn--tertiary:hover,
 .selector__sort-actions .btn--tertiary:focus-visible {
-  border-color: var(--ai-border-secondary);
+  border-color: var(--ao-border-secondary);
 }
 
 /* The first row cannot go up and the last cannot go down: disabled, not hidden, so the
@@ -506,7 +506,7 @@
   .selector__sort-actions [data-sort-move="top"],
   .selector__sort-actions [data-sort-move="bottom"] { display: none; }
 
-  .selector__sort-title { flex-wrap: wrap; gap: var(--ai-spacing-1); }
+  .selector__sort-title { flex-wrap: wrap; gap: var(--ao-spacing-1); }
 
   /* Touch has no HTML5 drag; the arrows and the position are the way to reorder there. */
   .selector__grip { display: none; }

@@ -1,6 +1,6 @@
 /**
  * Brand theme detection — sets data-brand-theme="light|dark" on the container
- * element so CSS color-mix() rules can derive readable colors from --ai-chat-brand.
+ * element so CSS color-mix() rules can derive readable colors from --ao-chat-brand.
  *
  * Re-run after theme changes or brand color customisation.
  */
@@ -38,7 +38,7 @@ function parseColor(str) {
 
 export function initBrandTheme(el) {
   const brand = getComputedStyle(el)
-    .getPropertyValue('--ai-chat-brand').trim();
+    .getPropertyValue('--ao-chat-brand').trim();
   const { r, g, b } = parseColor(brand);
   const lum = getLuminance(r, g, b);
   el.setAttribute('data-brand-theme', lum > 0.5 ? 'light' : 'dark');

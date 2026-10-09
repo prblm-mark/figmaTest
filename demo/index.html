@@ -1,6 +1,6 @@
 <!doctype html>
 <!-- DARK BY DEFAULT (designer, 2026-09-14). `data-theme` is how this system switches
-     theme, so every `--ai-*` colour below resolves to its dark value with nothing else to
+     theme, so every `--ao-*` colour below resolves to its dark value with nothing else to
      change; the sizes, type and radii are theme-independent and unaffected.
 
      Set on the element rather than left to `prefers-color-scheme`: a client opening the
@@ -36,30 +36,30 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background-color: var(--ai-surface-minimal);
-      font-family: var(--ai-font-body);
-      color: var(--ai-text-primary);
+      background-color: var(--ao-surface-minimal);
+      font-family: var(--ao-font-body);
+      color: var(--ao-text-primary);
       display: flex;
       flex-direction: column;
     }
 
     .page {
       width: 100%;
-      max-width: var(--ai-size-12);        /* 960 */
+      max-width: var(--ao-size-12);        /* 960 */
       margin-inline: auto;
-      padding: var(--ai-spacing-9) var(--ai-spacing-6);
+      padding: var(--ao-spacing-9) var(--ao-spacing-6);
       flex: 1 1 auto;
     }
 
-    .masthead { margin-block-end: var(--ai-spacing-9); }
+    .masthead { margin-block-end: var(--ao-spacing-9); }
 
     .masthead__brand {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: var(--ai-spacing-3);
-      margin-block-end: var(--ai-spacing-6);
+      gap: var(--ao-spacing-3);
+      margin-block-end: var(--ao-spacing-6);
     }
 
     /* INLINE SVG, not an <img>, so the wordmark can take a token colour: the file ships with the
@@ -67,7 +67,7 @@
        `fill="currentColor"`, so this one declaration drives it — and it follows the theme, which a
        two-tone asset could not.
 
-       `--ai-text-brand` rather than `--ai-surface-brand`: this is a wordmark, read as text, and it
+       `--ao-text-brand` rather than `--ao-surface-brand`: this is a wordmark, read as text, and it
        is the token the eyebrow above already uses — #007a8d in light, #30b6c2 in dark, both sitting
        correctly against their own background.
 
@@ -76,59 +76,59 @@
     .masthead__mark {
       width: 167px;
       height: 38px;
-      color: var(--ai-text-brand);
+      color: var(--ao-text-brand);
     }
 
     .masthead__eyebrow {
       margin: 0;
-      font-family: var(--ai-font-title);
-      font-size: var(--ai-font-fixed-xxs);
-      font-weight: var(--ai-font-semibold);
-      line-height: var(--ai-leading-xs);
-      letter-spacing: var(--ai-tracking-6);
+      font-family: var(--ao-font-title);
+      font-size: var(--ao-font-fixed-xxs);
+      font-weight: var(--ao-font-semibold);
+      line-height: var(--ao-leading-xs);
+      letter-spacing: var(--ao-tracking-6);
       text-transform: uppercase;
-      color: var(--ai-text-brand);
+      color: var(--ao-text-brand);
     }
 
     .masthead__title {
-      margin: var(--ai-spacing-2) 0 0;
-      font-family: var(--ai-font-title);
-      font-size: var(--ai-font-fluid-3xl);
-      font-weight: var(--ai-font-bold);
-      line-height: var(--ai-leading-2xl);
+      margin: var(--ao-spacing-2) 0 0;
+      font-family: var(--ao-font-title);
+      font-size: var(--ao-font-fluid-3xl);
+      font-weight: var(--ao-font-bold);
+      line-height: var(--ao-leading-2xl);
     }
 
     .masthead__intro {
-      margin: var(--ai-spacing-4) 0 0;
-      max-width: var(--ai-size-11);        /* 768 — a comfortable measure */
-      font-size: var(--ai-font-fluid-sm);
-      line-height: var(--ai-leading-md);      /* 24 (designer, 2026-09-14) */
-      color: var(--ai-text-secondary);
+      margin: var(--ao-spacing-4) 0 0;
+      max-width: var(--ao-size-11);        /* 768 — a comfortable measure */
+      font-size: var(--ao-font-fluid-sm);
+      line-height: var(--ao-leading-md);      /* 24 (designer, 2026-09-14) */
+      color: var(--ao-text-secondary);
     }
 
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(var(--ai-size-4), 1fr));
-      gap: var(--ai-spacing-5);
+      grid-template-columns: repeat(auto-fit, minmax(var(--ao-size-4), 1fr));
+      gap: var(--ao-spacing-5);
     }
 
     .card {
       display: flex;
       flex-direction: column;
-      gap: var(--ai-spacing-3);
-      padding: var(--ai-spacing-6);
-      background-color: var(--ai-surface-primary);
-      border: 1px solid var(--ai-border-secondary);
-      border-radius: var(--ai-radius-lg);
+      gap: var(--ao-spacing-3);
+      padding: var(--ao-spacing-6);
+      background-color: var(--ao-surface-primary);
+      border: 1px solid var(--ao-border-secondary);
+      border-radius: var(--ao-radius-lg);
       color: inherit;
       text-decoration: none;
-      transition: border-color var(--ai-transition-default),
-                  box-shadow var(--ai-transition-default);
+      transition: border-color var(--ao-transition-default),
+                  box-shadow var(--ao-transition-default);
     }
 
     .card:hover {
-      border-color: var(--ai-border-brand);
-      box-shadow: var(--ai-shadow-md);
+      border-color: var(--ao-border-brand);
+      box-shadow: var(--ao-shadow-md);
       /* base.css styles every `a:hover` with a brand colour AND an underline, and both INHERIT —
          so on a card that is itself the anchor, the title and paragraphs turn brand and underline
          together. `.card` sets `color: inherit` but that loses to `a:hover` on specificity, so it
@@ -138,7 +138,7 @@
     }
 
     .card:focus-visible {
-      outline: 2px solid var(--ai-surface-brand);
+      outline: 2px solid var(--ao-surface-brand);
       outline-offset: 2px;
     }
 
@@ -146,64 +146,64 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      inline-size: var(--ai-spacing-9);
-      block-size: var(--ai-spacing-9);
-      border-radius: var(--ai-radius-md);
-      background-color: var(--ai-surface-brand-soft);
-      color: var(--ai-icon-brand);
+      inline-size: var(--ao-spacing-9);
+      block-size: var(--ao-spacing-9);
+      border-radius: var(--ao-radius-md);
+      background-color: var(--ao-surface-brand-soft);
+      color: var(--ao-icon-brand);
     }
 
     .card__icon [data-lucide] {
-      inline-size: var(--ai-icon-size-lg);
-      block-size: var(--ai-icon-size-lg);
+      inline-size: var(--ao-icon-size-lg);
+      block-size: var(--ao-icon-size-lg);
     }
 
     .card__title {
-      margin: var(--ai-spacing-2) 0 0;
-      font-family: var(--ai-font-title);
-      font-size: var(--ai-font-fixed-md);
-      font-weight: var(--ai-font-semibold);
-      line-height: var(--ai-leading-md);
+      margin: var(--ao-spacing-2) 0 0;
+      font-family: var(--ao-font-title);
+      font-size: var(--ao-font-fixed-md);
+      font-weight: var(--ao-font-semibold);
+      line-height: var(--ao-leading-md);
     }
 
     .card__text {
       margin: 0;
-      font-size: var(--ai-font-fixed-xs);
-      line-height: var(--ai-leading-sm);      /* 20 (designer, 2026-09-14) */
-      color: var(--ai-text-secondary);
+      font-size: var(--ao-font-fixed-xs);
+      line-height: var(--ao-leading-sm);      /* 20 (designer, 2026-09-14) */
+      color: var(--ao-text-secondary);
     }
 
     /* PARTS. A second, denser grid: these are reference pages rather than the two things a
        client is meant to click first, so they are visually subordinate to `.cards` — smaller
        tiles, a smaller icon, no lead paragraph — while still reading as the same family. */
     .section {
-      margin-block-start: var(--ai-spacing-9);
+      margin-block-start: var(--ao-spacing-9);
     }
 
     .section__title {
       margin: 0;
-      font-family: var(--ai-font-title);
-      font-size: var(--ai-font-fixed-lg);
-      font-weight: var(--ai-font-semibold);
-      line-height: var(--ai-leading-lg);
+      font-family: var(--ao-font-title);
+      font-size: var(--ao-font-fixed-lg);
+      font-weight: var(--ao-font-semibold);
+      line-height: var(--ao-leading-lg);
     }
 
     .section__intro {
-      margin: var(--ai-spacing-3) 0 0;
-      max-width: var(--ai-size-11);
-      font-size: var(--ai-font-fixed-xs);
-      line-height: var(--ai-leading-md);
-      color: var(--ai-text-secondary);
+      margin: var(--ao-spacing-3) 0 0;
+      max-width: var(--ao-size-11);
+      font-size: var(--ao-font-fixed-xs);
+      line-height: var(--ao-leading-md);
+      color: var(--ao-text-secondary);
     }
 
     .section__label {
-      margin: var(--ai-spacing-6) 0 var(--ai-spacing-3);
-      font-size: var(--ai-font-fixed-xxs);
-      font-weight: var(--ai-font-semibold);
-      line-height: var(--ai-leading-xs);
-      letter-spacing: var(--ai-tracking-6);
+      margin: var(--ao-spacing-6) 0 var(--ao-spacing-3);
+      font-size: var(--ao-font-fixed-xxs);
+      font-weight: var(--ao-font-semibold);
+      line-height: var(--ao-leading-xs);
+      letter-spacing: var(--ao-tracking-6);
       text-transform: uppercase;
-      color: var(--ai-text-secondary);
+      color: var(--ao-text-secondary);
     }
 
     /* `auto-fill`, not `auto-fit`: these are two separate grids with six tiles and four, so at a
@@ -212,33 +212,33 @@
        would disagree about tile size. `auto-fill` keeps the track count and they line up. */
     .parts {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(var(--ai-size-4), 1fr));
-      gap: var(--ai-spacing-3);
+      grid-template-columns: repeat(auto-fill, minmax(var(--ao-size-4), 1fr));
+      gap: var(--ao-spacing-3);
     }
 
     .part {
       display: flex;
       align-items: center;
-      gap: var(--ai-spacing-3);
-      padding: var(--ai-spacing-4);
-      background-color: var(--ai-surface-primary);
-      border: 1px solid var(--ai-border-secondary);
-      border-radius: var(--ai-radius-md);
+      gap: var(--ao-spacing-3);
+      padding: var(--ao-spacing-4);
+      background-color: var(--ao-surface-primary);
+      border: 1px solid var(--ao-border-secondary);
+      border-radius: var(--ao-radius-md);
       color: inherit;
       text-decoration: none;
-      transition: border-color var(--ai-transition-default),
-                  box-shadow var(--ai-transition-default);
+      transition: border-color var(--ao-transition-default),
+                  box-shadow var(--ao-transition-default);
     }
 
     .part:hover {
-      border-color: var(--ai-border-brand);
-      box-shadow: var(--ai-shadow-sm);
+      border-color: var(--ao-border-brand);
+      box-shadow: var(--ao-shadow-sm);
       color: inherit;                 /* see `.card:hover` — both of these inherit from `a:hover` */
       text-decoration: none;
     }
 
     .part:focus-visible {
-      outline: 2px solid var(--ai-surface-brand);
+      outline: 2px solid var(--ao-surface-brand);
       outline-offset: 2px;
     }
 
@@ -247,16 +247,16 @@
       align-items: center;
       justify-content: center;
       flex: none;
-      inline-size: var(--ai-spacing-8);
-      block-size: var(--ai-spacing-8);
-      border-radius: var(--ai-radius-sm);
-      background-color: var(--ai-surface-brand-soft);
-      color: var(--ai-icon-brand);
+      inline-size: var(--ao-spacing-8);
+      block-size: var(--ao-spacing-8);
+      border-radius: var(--ao-radius-sm);
+      background-color: var(--ao-surface-brand-soft);
+      color: var(--ao-icon-brand);
     }
 
     .part__icon [data-lucide] {
-      inline-size: var(--ai-icon-size-md);
-      block-size: var(--ai-icon-size-md);
+      inline-size: var(--ao-icon-size-md);
+      block-size: var(--ao-icon-size-md);
     }
 
     /* `min-inline-size: 0` so a long name ellipsises instead of pushing the tile wider than its
@@ -269,9 +269,9 @@
     .part__name {
       display: block;
       margin: 0;
-      font-size: var(--ai-font-fixed-xs);
-      font-weight: var(--ai-font-semibold);
-      line-height: var(--ai-leading-sm);
+      font-size: var(--ao-font-fixed-xs);
+      font-weight: var(--ao-font-semibold);
+      line-height: var(--ao-leading-sm);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -280,35 +280,35 @@
     .part__text {
       display: block;
       margin: 0;
-      font-size: var(--ai-font-fixed-3xs);
-      line-height: var(--ai-leading-xs);
-      color: var(--ai-text-secondary);
+      font-size: var(--ao-font-fixed-3xs);
+      line-height: var(--ao-leading-xs);
+      color: var(--ao-text-secondary);
     }
 
     .note {
-      margin-block-start: var(--ai-spacing-9);
-      padding: var(--ai-spacing-5);
-      border-inline-start: 2px solid var(--ai-border-brand);
-      background-color: var(--ai-surface-primary);
-      border-start-end-radius: var(--ai-radius-md);
-      border-end-end-radius: var(--ai-radius-md);
+      margin-block-start: var(--ao-spacing-9);
+      padding: var(--ao-spacing-5);
+      border-inline-start: 2px solid var(--ao-border-brand);
+      background-color: var(--ao-surface-primary);
+      border-start-end-radius: var(--ao-radius-md);
+      border-end-end-radius: var(--ao-radius-md);
     }
 
     .note p {
       margin: 0;
-      font-size: var(--ai-font-fixed-xs);
-      line-height: var(--ai-leading-md);
-      color: var(--ai-text-secondary);
+      font-size: var(--ao-font-fixed-xs);
+      line-height: var(--ao-leading-md);
+      color: var(--ao-text-secondary);
     }
 
-    .note p + p { margin-block-start: var(--ai-spacing-3); }
+    .note p + p { margin-block-start: var(--ao-spacing-3); }
 
     .footer {
-      padding: var(--ai-spacing-6);
+      padding: var(--ao-spacing-6);
       text-align: center;
-      font-size: var(--ai-font-fixed-xxs);
-      line-height: var(--ai-leading-xs);
-      color: var(--ai-text-contrast);
+      font-size: var(--ao-font-fixed-xxs);
+      line-height: var(--ao-leading-xs);
+      color: var(--ao-text-contrast);
     }
   </style>
 </head>

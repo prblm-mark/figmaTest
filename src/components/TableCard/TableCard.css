@@ -28,16 +28,16 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   /* Fluid: fills its cell in the tables grid. Figma draws 289px, which has no token;
-   * the bound min-width does — --ai-size-4 (240px), the same at both breakpoints. */
+   * the bound min-width does — --ao-size-4 (240px), the same at both breakpoints. */
   inline-size: 100%;
-  min-inline-size: var(--ai-size-4);
-  padding: var(--ai-spacing-5);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-lg);
-  background-color: var(--ai-surface-primary);
-  box-shadow: var(--ai-shadow-2xs);
+  min-inline-size: var(--ao-size-4);
+  padding: var(--ao-spacing-5);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-lg);
+  background-color: var(--ao-surface-primary);
+  box-shadow: var(--ao-shadow-2xs);
 }
 
 /* ── Header: title row above a full-width sponsor row ────────────────────────
@@ -58,7 +58,7 @@
 .table-card__titles {
   display: flex;
   align-items: flex-start;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   inline-size: 100%;
 }
 
@@ -73,11 +73,11 @@
   flex: 1 0 0;
   min-inline-size: 0;
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-sm);
-  font-weight: var(--ai-font-bold);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-sm);
+  font-weight: var(--ao-font-bold);
   line-height: normal;
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 /* The select trigger, stretched over the whole card. Same pattern as RoomCard:
@@ -123,7 +123,7 @@
 }
 
 .table-card:has(.table-card__select:focus-visible) {
-  outline: 2px solid var(--ai-surface-brand);
+  outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
 }
 
@@ -132,28 +132,28 @@
  * the 16px icon plus its 6px padding-top, so the height is left to the content rather than
  * pinned — and it now measures 18px, since the padding changed below.
  *
- * `padding-block-start` is --ai-spacing-0-5 (2px) at the designer's request 2026-09-10, where
- * Figma binds --ai-spacing-2 (6px) — confirmed on the sponsor row's own variable defs
+ * `padding-block-start` is --ao-spacing-0-5 (2px) at the designer's request 2026-09-10, where
+ * Figma binds --ao-spacing-2 (6px) — confirmed on the sponsor row's own variable defs
  * (3476:106259), not inferred. A deliberate divergence; Figma wants updating.
  *
- * The `gap` is untouched and stays at --ai-spacing-2: Figma binds the same token to both, but
+ * The `gap` is untouched and stays at --ao-spacing-2: Figma binds the same token to both, but
  * only the padding was asked about, and they do different jobs — one sets the row's distance from
  * the title, the other the icon's from the name. */
 .table-card__sponsor {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   inline-size: 100%;
   margin: 0;
-  padding-block-start: var(--ai-spacing-0-5);
+  padding-block-start: var(--ao-spacing-0-5);
 }
 
 .table-card__sponsor [data-lucide],
 .table-card__sponsor svg {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
   flex-shrink: 0;
-  color: var(--ai-icon-contrast);
+  color: var(--ao-icon-contrast);
 }
 
 .table-card__sponsor-name {
@@ -163,28 +163,28 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-medium);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-medium);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
 }
 
 /* ── Rules ──────────────────────────────────────────────────────────────────
  * Figma draws these as `line` nodes, whose stroke get_design_context hides inside an
  * SVG asset. get_variable_defs on the node (3470:85258) resolves it to
- * --ai-border-secondary. hr is unstyled in base.css, so it is reset here. */
+ * --ao-border-secondary. hr is unstyled in base.css, so it is reset here. */
 .table-card__rule {
   flex-shrink: 0;
   inline-size: 100%;
   margin: 0;
   border: 0;
-  border-block-start: 1px solid var(--ai-border-secondary);
+  border-block-start: 1px solid var(--ao-border-secondary);
 }
 
 /* ── Capacity bar + legend ──────────────────────────────────────────────────
- * Figma binds --ai-font-fixed-6xs (a FONT SIZE token) as the 9px gap here and as the
- * legend's column gap. Snapped to --ai-spacing-3 (8px) by the designer 2026-08-25 so
+ * Figma binds --ao-font-fixed-6xs (a FONT SIZE token) as the 9px gap here and as the
+ * legend's column gap. Snapped to --ao-spacing-3 (8px) by the designer 2026-08-25 so
  * a type token is not driving layout. */
 /* The visualisation block ABSORBS any extra card height (designer, 2026-09-10).
  *
@@ -204,17 +204,17 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   flex: 1 1 auto;
   inline-size: 100%;
 }
 
 .table-card__bar {
   display: flex;
-  gap: var(--ai-spacing-px);
+  gap: var(--ao-spacing-px);
   inline-size: 100%;
-  block-size: var(--ai-spacing-3);
-  border-radius: var(--ai-radius-sm);
+  block-size: var(--ao-spacing-3);
+  border-radius: var(--ao-radius-sm);
   overflow: hidden;
 }
 
@@ -233,32 +233,32 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  row-gap: var(--ai-spacing-0-5);
-  column-gap: var(--ai-spacing-3);
+  row-gap: var(--ao-spacing-0-5);
+  column-gap: var(--ao-spacing-3);
   inline-size: 100%;
 }
 
 .table-card__legend-item {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
   flex-shrink: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-6xs);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-6xs);
   /* Designer addition — Figma has regular here. At 9px, medium carries better against
      the surrounding text without reading as bold. */
-  font-weight: var(--ai-font-medium);
+  font-weight: var(--ao-font-medium);
   line-height: normal;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
 }
 
 .table-card__swatch {
   flex-shrink: 0;
-  inline-size: var(--ai-spacing-3);
-  block-size: var(--ai-spacing-3);
-  /* 2px. --ai-radius-xs was added for this on 2026-08-25 — radius-sm (4px) would
+  inline-size: var(--ao-spacing-3);
+  block-size: var(--ao-spacing-3);
+  /* 2px. --ao-radius-xs was added for this on 2026-08-25 — radius-sm (4px) would
    * visibly round an 8px square. */
-  border-radius: var(--ai-radius-xs);
+  border-radius: var(--ao-radius-xs);
   background-color: var(--table-card-role);
 }
 
@@ -275,7 +275,7 @@
  * unrecognised role renders as an empty seat rather than as nothing. */
 .table-card__seg,
 .table-card__legend-item {
-  --table-card-role: var(--ai-surface-contrast);
+  --table-card-role: var(--ao-surface-contrast);
 }
 
 .table-card__seg--attendee,
@@ -300,7 +300,7 @@
  *
  * Nothing else was needed — `--sp-host` already exists in all four seating palettes
  * (`#f76b15` in the default). Without this rule a Host segment fell through to the
- * `--ai-surface-contrast` default and rendered IDENTICALLY to an empty seat, which is the
+ * `--ao-surface-contrast` default and rendered IDENTICALLY to an empty seat, which is the
  * one thing a role colour must never do. */
 .table-card__seg--host,
 .table-card__legend-item--host { --table-card-role: var(--sp-host); }
@@ -318,17 +318,17 @@
 .table-card__count-group {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   min-inline-size: 0;
 }
 
 .table-card__count {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-medium);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-medium);
   line-height: normal;
-  color: var(--ai-text-secondary);
+  color: var(--ao-text-secondary);
   white-space: nowrap;
 }
 
@@ -339,13 +339,13 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
   flex-shrink: 0;
 }
 
 /* ── State: Selected ────────────────────────────────────────────────────────
- * A two-property delta, verified on Populated (3470:85479). Both --ai-surface-primary
- * and --ai-surface-minimal appear in the variant's variable list, so this was read from
+ * A two-property delta, verified on Populated (3470:85479). Both --ao-surface-primary
+ * and --ao-surface-minimal appear in the variant's variable list, so this was read from
  * the design context rather than inferred — the card itself takes minimal. */
 /* `--drop-target` shares this rule rather than copying it (designer, 2026-09-10: "when an
  * attendee is dragged over a table card, can we use the selected state styling to indicate drop
@@ -363,8 +363,8 @@
  * variant appearing. */
 .table-card--selected,
 .table-card--drop-target {
-  border-color: var(--ai-border-brand);
-  background-color: var(--ai-surface-minimal);
+  border-color: var(--ao-border-brand);
+  background-color: var(--ao-surface-minimal);
 }
 
 /* ── Device: Mobile ─────────────────────────────────────────────────────────
@@ -377,18 +377,18 @@
  * this element being narrow, so they key on `cs-page`. See the contract in CLAUDE.md §responsive. */
 @container cs-page (max-width: 767px) {
   .table-card {
-    padding: var(--ai-spacing-4);
+    padding: var(--ao-spacing-4);
   }
 
   .table-card__name {
-    font-size: var(--ai-font-fixed-xs);
+    font-size: var(--ao-font-fixed-xs);
   }
 
   /* NO sponsor-row override any more. There was one — 4px, added 2026-08-25 because the smaller
      14px title left the row looking loosely attached — but once desktop moved to 2px on
      2026-09-10 it made mobile LOOSER than desktop, the reverse of its own purpose. Dropped at
-     the designer's request, so the row is --ai-spacing-0-5 (2px) at both breakpoints. Figma keeps
-     --ai-spacing-2 (6px) at both and wants updating.
+     the designer's request, so the row is --ao-spacing-0-5 (2px) at both breakpoints. Figma keeps
+     --ao-spacing-2 (6px) at both and wants updating.
 
      Left as a comment rather than silently deleted: the mobile value was a deliberate designer
      call once, and a bare absence would invite someone to "restore" it. */

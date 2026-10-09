@@ -12,16 +12,16 @@
 
 | State | Trigger | Visual | Notes |
 |---|---|---|---|
-| Initial | — | `--ai-border-secondary` border, `--ai-surface-minimal` bg | Unchecked resting state |
-| Checked | Native `checked` attribute | 4px `--ai-border-brand` ring, `--ai-surface-primary` center | Ring effect via thick border |
+| Initial | — | `--ao-border-secondary` border, `--ao-surface-minimal` bg | Unchecked resting state |
+| Checked | Native `checked` attribute | 4px `--ao-border-brand` ring, `--ao-surface-primary` center | Ring effect via thick border |
 | Disabled | Native `disabled` attribute | 50% opacity, `cursor: not-allowed` | Works with both checked and unchecked |
 
 ### Optional elements
 
 | Element | Class | Visibility | Notes |
 |---|---|---|---|
-| Label text | `.radio__label` | Always shown | `--ai-text-primary`, `--ai-font-fixed-xs` |
-| Helper text | `.radio__helper` | Optional | `--ai-text-contrast`, `--ai-font-fixed-xxs`. Remove from HTML to hide |
+| Label text | `.radio__label` | Always shown | `--ao-text-primary`, `--ao-font-fixed-xs` |
+| Helper text | `.radio__helper` | Optional | `--ao-text-contrast`, `--ao-font-fixed-xxs`. Remove from HTML to hide |
 
 ### Usage examples
 
@@ -100,25 +100,25 @@
 
 | Figma Property       | CSS Token                        |
 | -------------------- | -------------------------------- |
-| Indicator bg         | `--ai-surface-minimal`           |
-| Indicator border     | `--ai-border-secondary`          |
-| Checked indicator bg | `--ai-surface-primary`           |
-| Checked border       | `--ai-border-brand`              |
-| Checked border width | `--ai-spacing-1` (4px)           |
-| Focus ring inner     | `--ai-surface-primary`           |
-| Focus ring outer     | `--ai-surface-brand-soft`    |
-| Label text color     | `--ai-text-primary`              |
-| Helper text color    | `--ai-text-contrast`             |
-| Label font size      | `--ai-font-fixed-xs`             |
-| Helper font size     | `--ai-font-fixed-xxs`            |
-| Indicator radius     | `--ai-radius-full`               |
-| Wrapper gap          | `--ai-spacing-3`                 |
-| Label gap            | `--ai-spacing-1`                 |
-| Transition           | `--ai-transition-default`        |
+| Indicator bg         | `--ao-surface-minimal`           |
+| Indicator border     | `--ao-border-secondary`          |
+| Checked indicator bg | `--ao-surface-primary`           |
+| Checked border       | `--ao-border-brand`              |
+| Checked border width | `--ao-spacing-1` (4px)           |
+| Focus ring inner     | `--ao-surface-primary`           |
+| Focus ring outer     | `--ao-surface-brand-soft`    |
+| Label text color     | `--ao-text-primary`              |
+| Helper text color    | `--ao-text-contrast`             |
+| Label font size      | `--ao-font-fixed-xs`             |
+| Helper font size     | `--ao-font-fixed-xxs`            |
+| Indicator radius     | `--ao-radius-full`               |
+| Wrapper gap          | `--ao-spacing-3`                 |
+| Label gap            | `--ao-spacing-1`                 |
+| Transition           | `--ao-transition-default`        |
 
 ## Notes
 
 - Uses native `<input type="radio">` — no JavaScript needed for selection behaviour
 - The `name` attribute on radio inputs handles single-select group behaviour natively
-- Checked state uses a thick 4px border (`--ai-spacing-1`) to create the filled ring effect
+- Checked state uses a thick 4px border (`--ao-spacing-1`) to create the filled ring effect
 - Disabled state applies `opacity: 0.5` and `cursor: not-allowed`

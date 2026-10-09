@@ -45,32 +45,32 @@ Type controls layout; State controls which item is selected/expanded and whether
 | Property | Token |
 |---|---|
 | Panel bg | `--cc-mainmenu-secondary-bg` |
-| Submenu item font size | `--ai-font-fixed-2xs` (13) — **was `--ai-font-fixed-xs` (14) from Figma; designer, 2026-09-25** |
-| Panel width | `--ai-size-4` (240) — **narrowed from Figma's `--ai-size-5` (280) by the designer, 2026-09-25**; Figma wants updating |
-| Panel padding | `--ai-spacing-4` (12 — Control/Analysis/Favourites); `10px` (CRM only) |
-| Panel gap | `--ai-spacing-3` (8 — Control/Analysis/Favourites); `10px` (CRM only) |
-| Items gap | `--ai-spacing-1` (4) |
-| Search field bg | `--ai-surface-minimal` (user override; was `--ai-surface-primary`) |
-| Search field border | `--ai-border-secondary`; `:focus-within` → `--ai-border-brand` + double box-shadow ring (`--ai-surface-brand-soft`), mirroring the Input component (the nested input has `outline:none`, so the wrapper carries the focus indicator) |
-| Search field height / padding | 40 / `--ai-spacing-5` horizontal |
-| Search placeholder | `--ai-text-contrast` |
-| Search input typed | `--ai-text-primary` |
-| Submenu padding | `--ai-spacing-3` `--ai-spacing-4` (8 / 12) |
-| Submenu item gap | `--ai-spacing-2` (6) |
-| Submenu item colour | `--ai-text-invert-secondary` |
-| Submenu action icon (pin / trash) | rest: `--ai-icon-invert-secondary`, opacity 0 → 0.7 on row hover → 1 + `--cc-mainmenu-icon` on icon hover |
-| Pinned action icon | always-visible (opacity 1); colour stays `--ai-icon-invert-secondary` at rest, promotes to `--cc-mainmenu-icon` on hover (shared action `:hover` rule); `svg { fill: currentColor }` overrides Lucide's `fill="none"` so the pin reads solid |
+| Submenu item font size | `--ao-font-fixed-2xs` (13) — **was `--ao-font-fixed-xs` (14) from Figma; designer, 2026-09-25** |
+| Panel width | `--ao-size-4` (240) — **narrowed from Figma's `--ao-size-5` (280) by the designer, 2026-09-25**; Figma wants updating |
+| Panel padding | `--ao-spacing-4` (12 — Control/Analysis/Favourites); `10px` (CRM only) |
+| Panel gap | `--ao-spacing-3` (8 — Control/Analysis/Favourites); `10px` (CRM only) |
+| Items gap | `--ao-spacing-1` (4) |
+| Search field bg | `--ao-surface-minimal` (user override; was `--ao-surface-primary`) |
+| Search field border | `--ao-border-secondary`; `:focus-within` → `--ao-border-brand` + double box-shadow ring (`--ao-surface-brand-soft`), mirroring the Input component (the nested input has `outline:none`, so the wrapper carries the focus indicator) |
+| Search field height / padding | 40 / `--ao-spacing-5` horizontal |
+| Search placeholder | `--ao-text-contrast` |
+| Search input typed | `--ao-text-primary` |
+| Submenu padding | `--ao-spacing-3` `--ao-spacing-4` (8 / 12) |
+| Submenu item gap | `--ao-spacing-2` (6) |
+| Submenu item colour | `--ao-text-invert-secondary` |
+| Submenu action icon (pin / trash) | rest: `--ao-icon-invert-secondary`, opacity 0 → 0.7 on row hover → 1 + `--cc-mainmenu-icon` on icon hover |
+| Pinned action icon | always-visible (opacity 1); colour stays `--ao-icon-invert-secondary` at rest, promotes to `--cc-mainmenu-icon` on hover (shared action `:hover` rule); `svg { fill: currentColor }` overrides Lucide's `fill="none"` so the pin reads solid |
 | CRM `crm-btn` width | 100% (fills its `crm-group` parent) |
-| CRM `crm-btn` icon size | `--ai-icon-size-md` (20) |
-| CRM `crm-btn` icon colour | rest: `--ai-icon-invert-secondary`, hover: `--cc-mainmenu-icon` (label hover: `--ai-text-invert`) |
-| CRM Recent heading colour | `--ai-text-invert` (white, bold) |
-| CRM Recent item colour | rest: `--ai-text-invert-secondary`, hover: `--ai-text-invert` |
-| CRM Recent chevron colour | rest: `--ai-icon-invert-secondary`, hover (on row): `--cc-mainmenu-icon` |
+| CRM `crm-btn` icon size | `--ao-icon-size-md` (20) |
+| CRM `crm-btn` icon colour | rest: `--ao-icon-invert-secondary`, hover: `--cc-mainmenu-icon` (label hover: `--ao-text-invert`) |
+| CRM Recent heading colour | `--ao-text-invert` (white, bold) |
+| CRM Recent item colour | rest: `--ao-text-invert-secondary`, hover: `--ao-text-invert` |
+| CRM Recent chevron colour | rest: `--ao-icon-invert-secondary`, hover (on row): `--cc-mainmenu-icon` |
 | CRM Recent chevron rotation | `rotate(-90deg)` so chevron-down points right |
-| CRM `show-toggle` font | `--ai-font-fixed-xxs` (12) |
-| CRM `show-toggle` colours | label rest: `--ai-text-invert-secondary`, hover: `--ai-text-invert`; icon rest: `--ai-icon-invert-secondary`, hover: `--cc-mainmenu-icon` |
+| CRM `show-toggle` font | `--ao-font-fixed-xxs` (12) |
+| CRM `show-toggle` colours | label rest: `--ao-text-invert-secondary`, hover: `--ao-text-invert`; icon rest: `--ao-icon-invert-secondary`, hover: `--cc-mainmenu-icon` |
 
-**Duotone rule (applies to all Types):** every icon inside the Menu panel uses `--ai-icon-invert-secondary` at rest and promotes to `--cc-mainmenu-icon` on its hover/active state; every label uses `--ai-text-invert-secondary` at rest and promotes to `--ai-text-invert` on hover. This matches the MainMenuItem and Sidebar contrast convention so the navy chrome reads as a single coherent system.
+**Duotone rule (applies to all Types):** every icon inside the Menu panel uses `--ao-icon-invert-secondary` at rest and promotes to `--cc-mainmenu-icon` on its hover/active state; every label uses `--ao-text-invert-secondary` at rest and promotes to `--ao-text-invert` on hover. This matches the MainMenuItem and Sidebar contrast convention so the navy chrome reads as a single coherent system.
 
 The MainMenuItem rows inside `.cc-menu__items` (Control / Analysis) compose the `.cc-main-menu-item` component documented separately.
 
@@ -78,5 +78,5 @@ The MainMenuItem rows inside `.cc-menu__items` (Control / Analysis) compose the 
 
 - **Pin interaction** is wired in the SidebarMenu pattern (`sidebar-menu.js` → `initSubmenuPins`), not in this demo. At runtime a pin button is injected into every nav sub-item (rows that already own an action — the Favourites trash rows — are skipped); clicking it toggles `.cc-menu__submenu-item--pinned`, which floats the row to the top (`order:-1`) and fills the icon. Pinned state is in-memory only — flagged `TODO(backend:ControlScreen) [submenu-pins]`. The Menu demo shows one statically-pinned row ("Article Archive Profiles") to illustrate the visual; the demo itself loads no JS.
 - **Scrolled state** in v1 is just the layout: no brand / no search. Hooking a real scroll-shadow that appears when the items list actually scrolls is a follow-up (no JS yet).
-- **CRM-only tokens** like the 10px gap/padding don't exist in the token system as `--ai-spacing-*` values. Hardcoded with comments per the project convention for one-off optical values inside CSS.
+- **CRM-only tokens** like the 10px gap/padding don't exist in the token system as `--ao-spacing-*` values. Hardcoded with comments per the project convention for one-off optical values inside CSS.
 - The Type=Analysis variant omits the search input per Figma. If the consuming app needs search there, treat it as an override.

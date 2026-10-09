@@ -18,18 +18,18 @@ The demo is the source of truth, ahead of Figma, as agreed on TASK-446102. Run
 
 ## 1. Rules that come with this pass
 
-1. **Two border tokens, one rule.** Top-level panels use `--ai-border-card`, and so do their own inner
-   dividers. Cards INSIDE a panel keep `--ai-border-secondary`, which is deliberately more prominent.
+1. **Two border tokens, one rule.** Top-level panels use `--ao-border-card`, and so do their own inner
+   dividers. Cards INSIDE a panel keep `--ao-border-secondary`, which is deliberately more prominent.
    The two are identical except in **CC dark**, where card is Grey/750 `#293548` and secondary is
    Grey/700 `#334155`. So in CC dark the nested cards must look a touch brighter than the panel around
    them. That's intended; please don't "fix" it.
-2. **Card shadow.** Top-level cards carry `--ai-shadow-2xs` in standard width and **none in full width**.
+2. **Card shadow.** Top-level cards carry `--ao-shadow-2xs` in standard width and **none in full width**.
    Nested cards keep their own Figma shadows. The one exception is ViewerItem, which now has no shadow.
 3. **Full width is flat.** No scroll shadows of any kind in full width. Standard width shows
-   `--ai-shadow-sm` under the header once the page scrolls.
+   `--ao-shadow-sm` under the header once the page scrolls.
 4. **Money is GBP-first.** Pound-sterling Lucide icons (`receipt-pound-sterling`, `badge-pound-sterling`);
    `receipt` and `dollar-sign` are not used. £ is always the headline figure, and other currencies follow.
-5. As before: tokens only (`--ai-*`), container queries not `matchMedia`, and the record-screen HTML is
+5. As before: tokens only (`--ao-*`), container queries not `matchMedia`, and the record-screen HTML is
    **generated**. Edit `record_markup.py` and run `python3 _generate.py`, never the HTML.
 
 ---
@@ -61,9 +61,9 @@ The demo is the source of truth, ahead of Figma, as agreed on TASK-446102. Run
 | Token | Mode | Was | Now |
 |---|---|---|---|
 | `components/cc/header/secondary-bg` (`--cc-header-secondary-bg`) | CCDark | Grey/700 `#334155` | **Grey/800 `#1E293B`** |
-| `surface/extra-minimal` (`--ai-surface-extra-minimal`) | CCDark | Grey/700 `#334155` | **Grey/750 `#293548`**. Text-contrast and brand text on it now pass AA |
-| `components/global/button/secondary-border` (`--ai-btn-secondary-border`) | CCDark | Grey/500 `#64748B` | **Grey/600 `#475569`** |
-| **NEW** `border/card` (`--ai-border-card`) | all | — | = `border/secondary` in every mode **except CCDark: Grey/750 `#293548`** |
+| `surface/extra-minimal` (`--ao-surface-extra-minimal`) | CCDark | Grey/700 `#334155` | **Grey/750 `#293548`**. Text-contrast and brand text on it now pass AA |
+| `components/global/button/secondary-border` (`--ao-btn-secondary-border`) | CCDark | Grey/500 `#64748B` | **Grey/600 `#475569`** |
+| **NEW** `border/card` (`--ao-border-card`) | all | — | = `border/secondary` in every mode **except CCDark: Grey/750 `#293548`** |
 
 The button border change makes icon-only secondary buttons noticeably fainter in CC dark (1.93:1 on a card).
 That's a designer decision, flagged for the record.
@@ -75,11 +75,11 @@ That's a designer decision, flagged for the record.
 - **Full width closes the sidebar menu.** Switching full width ON from the rail closes any open menu panel,
   docked or flyout. Loading a page already in full width leaves it alone, and switching back re-opens nothing.
 - **Scroll state.** `control-width.js` sets `.cc-control__chrome--scrolled` whenever the page's `scrollTop > 0`.
-  - Standard width: the header group gets `--ai-shadow-sm` (only when it contains a `.cc-header`).
-  - Full width: a 1px `--ai-border-secondary` line appears under the flush chrome instead, drawn as a
+  - Standard width: the header group gets `--ao-shadow-sm` (only when it contains a `.cc-header`).
+  - Full width: a 1px `--ao-border-secondary` line appears under the flush chrome instead, drawn as a
     shadow so nothing shifts.
 - **Full-width scrollbar:** the page scrollbar's track gets a 1px left rule. WebKit/Blink draw it with
-  `::-webkit-scrollbar` at `--ai-spacing-4`, and Firefox keeps `scrollbar-color`.
+  `::-webkit-scrollbar` at `--ao-spacing-4`, and Firefox keeps `scrollbar-color`.
 - **Dark mode, full width:** a left rule on the content column (between the menu and the content), a rule
   under the top nav, and no 1px side padding on the chrome.
 - **Dark mode, standard width:** a `spacing-px` gap in `.cc-header-group` draws the line between the top nav
@@ -96,9 +96,9 @@ That's a designer decision, flagged for the record.
     drop beneath it below 768px.
   - In full width the panel is a flush strip: no outer card, a rule between the tiles and one beneath.
   - Data contract: §5.
-- **Cards:** the FilterBar, Datatables and the totals tiles get `--ai-border-card` on their outer edge and
-  `--ai-shadow-2xs`, with none in full width.
-- **Inputs on `--ai-surface-minimal`:** the saved-views trigger, the search / new-view inputs in the
+- **Cards:** the FilterBar, Datatables and the totals tiles get `--ao-border-card` on their outer edge and
+  `--ao-shadow-2xs`, with none in full width.
+- **Inputs on `--ao-surface-minimal`:** the saved-views trigger, the search / new-view inputs in the
   FilterBar's top row, and the rows-per-page select. The filter-picker inputs are unchanged.
 
 ### 3.4 StatCard: new Size=Xl (code-first)
@@ -117,27 +117,27 @@ The full spec is in `src/patterns/StatCard/StatCard.figma-notes.md`. StatCard's 
 
 ### 3.5 Record screens (View / Edit / Steps, all six)
 
-- **Cards:** RecordTabs, every RecordSection and the sidebar FactPanels get `--ai-border-card` + `--ai-shadow-2xs`,
+- **Cards:** RecordTabs, every RecordSection and the sidebar FactPanels get `--ao-border-card` + `--ao-shadow-2xs`,
   in standard width only.
   - In full width the tabs and sections stay flush rules.
   - FactPanels keep `border/card` in full width but drop the shadow.
-- **Section header divider:** `.record-section__header` uses `--ai-border-card` in standard width.
+- **Section header divider:** `.record-section__header` uses `--ao-border-card` in standard width.
 - **Performance panel:** the three StatCards are **solid** fill (no `--soft`). The accounts box, chart and StatCards
   inside it stay on `border/secondary` (in-panel).
 - **ViewerItem:** no shadow, and the border stays `border/secondary`.
 
 ### 3.6 Seating Planner
 
-- **Cards:** the event header, room bar, Tables sheet, Table Detail and empty-state card get `--ai-border-card` +
-  `--ai-shadow-2xs` in standard width, along with the event header's `.seating-header__bar` divider.
+- **Cards:** the event header, room bar, Tables sheet, Table Detail and empty-state card get `--ao-border-card` +
+  `--ao-shadow-2xs` in standard width, along with the event header's `.seating-header__bar` divider.
   - The pinned room bar's `.is-stuck` `shadow-sm` still wins.
   - Room / Table / Attendee cards stay on `border/secondary`.
-- **Search:** "Find a table" sits on `--ai-surface-minimal`.
+- **Search:** "Find a table" sits on `--ao-surface-minimal`.
 - **Scroll shadow:** the shell's header-group scroll shadow no longer doubles the planner's own chrome shadow.
 - **Full width:**
   - no scroll shadows (the chrome's `.is-scrolled` and the room bar's `.is-stuck` are both off);
   - in dark, the event bar's and stuck room bar's top borders are transparent, so there is a single rule under the nav;
-  - the page scrollbar's track is `--ai-surface-primary`, matching the sheets.
+  - the page scrollbar's track is `--ao-surface-primary`, matching the sheets.
 
 ---
 

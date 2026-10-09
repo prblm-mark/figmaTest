@@ -32,16 +32,16 @@
 - **sm** (`.file-input--sm`): 32px height, smaller padding and font
 
 ### Types
-- **Default**: neutral grey button (`--ai-surface-secondary`)
-- **Brand** (`.file-input--brand`): brand-coloured button (`--ai-surface-brand`)
-- **Error** (`.file-input--error`): error-coloured button (`--ai-surface-error`), red border on field, error help text
+- **Default**: neutral grey button (`--ao-surface-secondary`)
+- **Brand** (`.file-input--brand`): brand-coloured button (`--ao-surface-brand`)
+- **Error** (`.file-input--error`): error-coloured button (`--ao-surface-error`), red border on field, error help text
 
 ### States
 - **Initial**: placeholder text "No file chosen", clear button hidden
-- **Selected** (`.file-input--selected`): filename displayed, clear button visible, text colour promoted to `--ai-text-primary`
+- **Selected** (`.file-input--selected`): filename displayed, clear button visible, text colour promoted to `--ao-text-primary`
 
 ### Focus
-- Focus-within promotes field border to `--ai-border-brand` (or `--ai-border-error` in error state)
+- Focus-within promotes field border to `--ao-border-brand` (or `--ao-border-error` in error state)
 
 ### Usage
 ```html
@@ -70,27 +70,27 @@
 
 | Figma Property       | CSS Token                          |
 |----------------------|------------------------------------|
-| Label font           | `--ai-font-title`                  |
-| Label weight         | `--ai-font-semibold`               |
-| Label size           | `--ai-font-fixed-xs`               |
-| Label colour         | `--ai-text-primary`                |
-| Button bg (default)  | `--ai-surface-secondary`           |
-| Button bg (brand)    | `--ai-surface-brand`               |
-| Button bg (error)    | `--ai-surface-error`               |
-| Button text (default)| `--ai-text-secondary`              |
-| Button text (brand)  | `--ai-btn-primary-text`            |
-| Button text (error)  | `--ai-btn-primary-text`            |
-| Field bg             | `--ai-surface-primary`             |
-| Field border         | `--ai-border-secondary`            |
-| Field border (focus) | `--ai-border-brand`                |
-| Field border (error) | `--ai-border-error`                |
-| Field text (initial) | `--ai-text-contrast`               |
-| Field text (selected)| `--ai-text-primary`                |
-| Help text colour     | `--ai-text-secondary`              |
-| Help text (error)    | `--ai-text-error`                  |
-| Icon size            | `--ai-icon-size-sm`                |
-| Clear icon colour    | `--ai-icon-contrast`               |
-| Container gap        | `--ai-spacing-3`                   |
-| Button padding       | `--ai-spacing-5`                   |
-| Button padding (sm)  | `--ai-spacing-4`                   |
-| Border radius        | `--ai-radius-md`                   |
+| Label font           | `--ao-font-title`                  |
+| Label weight         | `--ao-font-semibold`               |
+| Label size           | `--ao-font-fixed-xs`               |
+| Label colour         | `--ao-text-primary`                |
+| Button bg (default)  | `--ao-surface-secondary`           |
+| Button bg (brand)    | `--ao-surface-brand`               |
+| Button bg (error)    | `--ao-surface-error`               |
+| Button text (default)| `--ao-text-secondary`              |
+| Button text (brand)  | `--ao-btn-primary-text`            |
+| Button text (error)  | `--ao-btn-primary-text`            |
+| Field bg             | `--ao-surface-primary`             |
+| Field border         | `--ao-border-secondary`            |
+| Field border (focus) | `--ao-border-brand`                |
+| Field border (error) | `--ao-border-error`                |
+| Field text (initial) | `--ao-text-contrast`               |
+| Field text (selected)| `--ao-text-primary`                |
+| Help text colour     | `--ao-text-secondary`              |
+| Help text (error)    | `--ao-text-error`                  |
+| Icon size            | `--ao-icon-size-sm`                |
+| Clear icon colour    | `--ao-icon-contrast`               |
+| Container gap        | `--ao-spacing-3`                   |
+| Button padding       | `--ao-spacing-5`                   |
+| Button padding (sm)  | `--ao-spacing-4`                   |
+| Border radius        | `--ao-radius-md`                   |

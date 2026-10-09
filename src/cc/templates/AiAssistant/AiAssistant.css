@@ -3,8 +3,8 @@
  * Tier: Template
  * Composes: ChatHeader, ChatMain (custom Initial intro)
  *
- * CC-themed sibling of AiChatMinimised. 320px wide (--ai-size-6) vs 384px
- * (--ai-size-7) in the AI Chat version. Draggable via header + top-edge
+ * CC-themed sibling of AiChatMinimised. 320px wide (--ao-size-6) vs 384px
+ * (--ao-size-7) in the AI Chat version. Draggable via header + top-edge
  * vertical resize handle — same interactions as AiChatMinimised, reused
  * verbatim.
  *
@@ -21,20 +21,20 @@
 
 .ai-assistant {
   position: fixed;
-  bottom: var(--ai-spacing-6);
-  right: var(--ai-spacing-6);
-  width: var(--_panel-width, var(--ai-size-6));
-  max-width: min(var(--ai-size-9), calc(100vw - var(--ai-spacing-5) * 2));
+  bottom: var(--ao-spacing-6);
+  right: var(--ao-spacing-6);
+  width: var(--_panel-width, var(--ao-size-6));
+  max-width: min(var(--ao-size-9), calc(100vw - var(--ao-spacing-5) * 2));
   height: var(--_panel-height, 668px);
-  max-height: calc(100vh - var(--ai-spacing-6) * 2);
+  max-height: calc(100vh - var(--ao-spacing-6) * 2);
   min-height: 320px;
   display: flex;
   flex-direction: column;
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-xl);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-xl);
   overflow: clip;
-  box-shadow: var(--ai-shadow-xl);
+  box-shadow: var(--ao-shadow-xl);
 }
 
 /* ── Resize handles (top edge + left edge) ──────────── */
@@ -42,44 +42,44 @@
 .ai-assistant__resize-handle {
   position: absolute;
   z-index: 5;
-  border-radius: var(--ai-radius-full);
+  border-radius: var(--ao-radius-full);
 }
 
 .ai-assistant__resize-handle--top {
   top: -3px;
-  left: var(--ai-spacing-6);
-  right: var(--ai-spacing-6);
+  left: var(--ao-spacing-6);
+  right: var(--ao-spacing-6);
   height: 6px;
   cursor: ns-resize;
 }
 
 .ai-assistant__resize-handle--bottom {
   bottom: -3px;
-  left: var(--ai-spacing-6);
-  right: var(--ai-spacing-6);
+  left: var(--ao-spacing-6);
+  right: var(--ao-spacing-6);
   height: 6px;
   cursor: ns-resize;
 }
 
 .ai-assistant__resize-handle--left {
   left: -3px;
-  top: var(--ai-spacing-6);
-  bottom: var(--ai-spacing-6);
+  top: var(--ao-spacing-6);
+  bottom: var(--ao-spacing-6);
   width: 6px;
   cursor: ew-resize;
 }
 
 .ai-assistant__resize-handle--right {
   right: -3px;
-  top: var(--ai-spacing-6);
-  bottom: var(--ai-spacing-6);
+  top: var(--ao-spacing-6);
+  bottom: var(--ao-spacing-6);
   width: 6px;
   cursor: ew-resize;
 }
 
 .ai-assistant__resize-handle:hover,
 .ai-assistant--resizing .ai-assistant__resize-handle {
-  background-color: var(--ai-border-secondary);
+  background-color: var(--ao-border-secondary);
 }
 
 /* ── Sidebar overlay ─────────────────────────────────── */
@@ -90,7 +90,7 @@
   z-index: 15;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--ai-transition-slow);
+  transition: opacity var(--ao-transition-slow);
 }
 
 .ai-assistant--sidebar-open .ai-assistant__overlay {
@@ -106,11 +106,11 @@
   left: 0;
   bottom: 0;
   z-index: 20;
-  width: var(--ai-size-5);
-  max-width: calc(100% - var(--ai-spacing-9));
-  border-radius: 0 0 0 var(--ai-radius-xl);
+  width: var(--ao-size-5);
+  max-width: calc(100% - var(--ao-spacing-9));
+  border-radius: 0 0 0 var(--ao-radius-xl);
   transform: translateX(-100%);
-  transition: transform var(--ai-transition-slow), box-shadow var(--ai-transition-slow);
+  transition: transform var(--ao-transition-slow), box-shadow var(--ao-transition-slow);
   box-shadow: none;
   overflow: hidden;
 }
@@ -156,11 +156,11 @@
   min-width: 0;
   text-align: center;
   padding-right: 40px; /* offset for the right-side window buttons so the title visually centres in the available middle zone */
-  font-family: var(--ai-font-body);
-  font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
   font-feature-settings: 'case' 1;
   white-space: nowrap;
   overflow: hidden;
@@ -175,22 +175,22 @@
    * paragraphs sit tight to the input. */
   justify-content: flex-end;
   height: 100%;
-  padding: var(--ai-spacing-5) 0;
-  gap: var(--ai-spacing-5);
+  padding: var(--ao-spacing-5) 0;
+  gap: var(--ao-spacing-5);
 }
 
 .ai-assistant__welcome {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
   width: 100%;
-  padding: 0 var(--ai-spacing-5);
-  font-family: var(--ai-font-body);
-  font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-xs);
+  padding: 0 var(--ao-spacing-5);
+  font-family: var(--ao-font-body);
+  font-weight: var(--ao-font-regular);
+  font-size: var(--ao-font-fixed-xs);
   line-height: 1.5;
-  color: var(--ai-text-secondary);
+  color: var(--ao-text-secondary);
 }
 
 .ai-assistant__welcome p {
@@ -221,7 +221,7 @@
 /* ── Dark mode: tertiary button hover on chat surface ── */
 
 [data-theme="dark"] .ai-assistant .btn--tertiary:hover {
-  background-color: var(--ai-surface-minimal);
+  background-color: var(--ao-surface-minimal);
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -232,59 +232,59 @@
 /* ── ChatMain: initial-inner ──────────────────────────── */
 
 .ai-assistant .chat-main__initial-inner {
-  gap: var(--ai-spacing-5);
-  padding: var(--ai-spacing-5) 0;
+  gap: var(--ao-spacing-5);
+  padding: var(--ao-spacing-5) 0;
 }
 
 /* ── ChatMain: intro ──────────────────────────────────── */
 
 .ai-assistant .chat-main__intro {
-  gap: var(--ai-spacing-3);
-  padding: 0 var(--ai-spacing-5) 0;
+  gap: var(--ao-spacing-3);
+  padding: 0 var(--ao-spacing-5) 0;
 }
 
 /* ── ChatMain: title — pinned to base ─────────────────── */
 
 .ai-assistant .chat-main__title {
-  font-size: var(--ai-font-fixed-xl);
-  line-height: var(--ai-leading-lg);
+  font-size: var(--ao-font-fixed-xl);
+  line-height: var(--ao-leading-lg);
 }
 
 /* ── ChatMain: subtitle — pinned to base ──────────────── */
 
 .ai-assistant .chat-main__subtitle {
-  font-size: var(--ai-font-fixed-xs);
+  font-size: var(--ao-font-fixed-xs);
 }
 
 /* ── ChatMain: input wrap — mobile padding ────────────── */
 
 .ai-assistant .chat-main__input-wrap {
-  padding: 0 var(--ai-spacing-5);
+  padding: 0 var(--ao-spacing-5);
 }
 
 /* ── ChatMain: suggestions — 2-column, mobile gaps ────── */
 
 .ai-assistant .chat-main__suggestions {
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--ai-spacing-4);
-  padding: 0 var(--ai-spacing-5);
+  gap: var(--ao-spacing-4);
+  padding: 0 var(--ao-spacing-5);
 }
 
 /* ── ChatMain: container — mobile padding ─────────────── */
 
 .ai-assistant .chat-main__container {
-  padding: var(--ai-spacing-5);
+  padding: var(--ao-spacing-5);
 }
 
 /* ── SourcesCarousel: pin to mobile layout ────────────── */
 
 .ai-assistant .sources-card {
-  flex: 0 0 calc((100% / 1.5) - (var(--ai-spacing-3) * (0.5 / 1.5)));
+  flex: 0 0 calc((100% / 1.5) - (var(--ao-spacing-3) * (0.5 / 1.5)));
 }
 
 .ai-assistant .sources-card__inner {
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   align-items: stretch;
 }
 
@@ -309,53 +309,53 @@
 /* ── ChatResponseTable: pin to mobile font sizes ─────── */
 
 .ai-assistant .chat-response-table {
-  font-size: var(--ai-font-fixed-xs);
+  font-size: var(--ao-font-fixed-xs);
 }
 
 .ai-assistant .chat-response-table th {
-  font-size: var(--ai-font-fixed-xxs);
+  font-size: var(--ao-font-fixed-xxs);
 }
 
 /* ── ChatMain: code block — pinned to mobile ──────────── */
 
 .ai-assistant .chat-main__response code {
-  font-size: var(--ai-font-fixed-xxs);
+  font-size: var(--ao-font-fixed-xxs);
 }
 
 /* ── ChatMain: response — fixed font ──────────────────── */
 
 .ai-assistant .chat-main__response {
-  font-size: var(--ai-font-fixed-xs);
+  font-size: var(--ao-font-fixed-xs);
 }
 
 /* ── ChatMain: processing answer — mobile spacing ─────── */
 
 .ai-assistant .chat-main__processing .chat-response__skeletons {
-  margin-top: var(--ai-spacing-6);
+  margin-top: var(--ao-spacing-6);
 }
 
 .ai-assistant .chat-main__processing .chat-response__answer {
-  margin-top: var(--ai-spacing-5);
+  margin-top: var(--ao-spacing-5);
 }
 
 .ai-assistant .chat-main__processing .chat-response__answer p {
-  font-size: var(--ai-font-fixed-xs);
+  font-size: var(--ao-font-fixed-xs);
 }
 
 /* ── ChatMain: scrollbar — transparent track, sidebar-active thumb ── */
 
 .ai-assistant .chat-main__initial,
 .ai-assistant .chat-main__scroll {
-  --_min-scroll-track: color-mix(in srgb, var(--ai-surface-primary) 94%, rgb(38 55 88));
-  --_min-scroll-thumb: color-mix(in srgb, var(--ai-surface-primary) 82%, rgb(38 55 88));
+  --_min-scroll-track: color-mix(in srgb, var(--ao-surface-primary) 94%, rgb(38 55 88));
+  --_min-scroll-thumb: color-mix(in srgb, var(--ao-surface-primary) 82%, rgb(38 55 88));
   scrollbar-color: var(--_min-scroll-thumb) var(--_min-scroll-track);
   scrollbar-width: thin;
 }
 
 [data-theme="dark"] .ai-assistant .chat-main__initial,
 [data-theme="dark"] .ai-assistant .chat-main__scroll {
-  --_min-scroll-track: color-mix(in srgb, var(--ai-surface-primary) 95%, white);
-  --_min-scroll-thumb: color-mix(in srgb, var(--ai-surface-primary) 80%, white);
+  --_min-scroll-track: color-mix(in srgb, var(--ao-surface-primary) 95%, white);
+  --_min-scroll-thumb: color-mix(in srgb, var(--ao-surface-primary) 80%, white);
 }
 
 .ai-assistant .chat-main__initial::-webkit-scrollbar,
@@ -371,7 +371,7 @@
 .ai-assistant .chat-main__initial::-webkit-scrollbar-thumb,
 .ai-assistant .chat-main__scroll::-webkit-scrollbar-thumb {
   background-color: var(--_min-scroll-thumb);
-  border-radius: var(--ai-radius-full);
+  border-radius: var(--ao-radius-full);
   border: 2px solid transparent;
   background-clip: padding-box;
 }
@@ -379,21 +379,21 @@
 /* ── ChatMain: footer input — mobile padding ──────────── */
 
 .ai-assistant .chat-main__input {
-  padding: 0 var(--ai-spacing-5) var(--ai-spacing-5);
+  padding: 0 var(--ao-spacing-5) var(--ao-spacing-5);
 }
 
 /* ── SuggestedQuestion: icon — mobile size ────────────── */
 
 .ai-assistant .suggested-question [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 /* ── SuggestedQuestion: text — mobile font ────────────── */
 
 .ai-assistant .suggested-question__text {
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-xs);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
 }
 
 /* ── SuggestedQuestion: subtext hidden (mobile) ───────── */
@@ -405,7 +405,7 @@
 /* ── WorkingIntro: gap — mobile ───────────────────────── */
 
 .ai-assistant .working-intro {
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
 }
 
 /* ── WorkingIntro: title row — stacked (mobile) ───────── */
@@ -413,47 +413,47 @@
 .ai-assistant .working-intro__title-row {
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 /* ── WorkingIntro: title — mobile font ────────────────── */
 
 .ai-assistant .working-intro__title {
-  font-size: var(--ai-font-fixed-sm);
+  font-size: var(--ao-font-fixed-sm);
 }
 
 /* ── WorkingIntro: subtitle — mobile font ─────────────── */
 
 .ai-assistant .working-intro__subtitle {
-  font-size: var(--ai-font-fixed-xs);
+  font-size: var(--ao-font-fixed-xs);
 }
 
 /* ── MessageBubble: padding — mobile ──────────────────── */
 
 .ai-assistant .msg-bubble {
-  padding-left: var(--ai-spacing-8);
+  padding-left: var(--ao-spacing-8);
 }
 
 /* ── MessageBubble: text — mobile font ────────────────── */
 
 .ai-assistant .msg-bubble__text {
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-sm);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
 }
 
 /* ── MessageInput: box padding — mobile ───────────────── */
 
 .ai-assistant .msg-input__box {
-  padding: var(--ai-spacing-4);
-  background-color: var(--ai-surface-elevated-1);
-  border-color: var(--ai-border-secondary);
+  padding: var(--ao-spacing-4);
+  background-color: var(--ao-surface-elevated-1);
+  border-color: var(--ao-border-secondary);
   box-shadow: none;
 }
 
 .ai-assistant .msg-input__box:focus-within {
-  border-color: var(--ai-border-brand);
-  box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px var(--ai-surface-brand-soft);
+  border-color: var(--ao-border-brand);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px var(--ao-surface-brand-soft);
   outline: none;
 }
 
@@ -464,7 +464,7 @@
 /* ── MessageInput: textarea — pinned to base ──────────── */
 
 .ai-assistant .msg-input__textarea {
-  font-size: var(--ai-font-fixed-xs);
+  font-size: var(--ao-font-fixed-xs);
 }
 
 /* ── MessageInput: hide filter button + disclaimer in CC AiAssistant ── */
@@ -485,13 +485,13 @@
 .ai-assistant .chat-header .btn--tertiary:hover,
 .ai-assistant .msg-bubble__actions .btn--tertiary:hover,
 .ai-assistant .chat-main__response-actions .btn--tertiary:hover {
-  background-color: var(--ai-btn-tertiary-bg);
+  background-color: var(--ao-btn-tertiary-bg);
 }
 
 /* ── SourcesLink (link variant): invert default/hover bg ── */
 
 .ai-assistant .sources-link--link {
-  background: var(--ai-surface-minimal);
+  background: var(--ao-surface-minimal);
 }
 
 .ai-assistant .sources-link--link:hover {
@@ -501,11 +501,11 @@
 /* ── Inline code + table scroll thumb: secondary surface ── */
 
 .ai-assistant .chat-main__response code {
-  background-color: var(--ai-surface-secondary);
+  background-color: var(--ao-surface-secondary);
 }
 
 .ai-assistant .chat-response-table-scroll::-webkit-scrollbar-thumb {
-  background-color: var(--ai-surface-secondary);
+  background-color: var(--ao-surface-secondary);
 }
 
 /* ── SourcesCarousel: hide card thumbnail in CC AiAssistant ── */
@@ -517,7 +517,7 @@
 /* Bleed carousel to right edge of chat container (cancels the
  * .chat-main__container right padding so cards overflow to the edge). */
 .ai-assistant .sources-carousel {
-  margin-right: calc(var(--ai-spacing-5) * -1);
+  margin-right: calc(var(--ao-spacing-5) * -1);
 }
 
 /* Drag-to-scroll affordance for desktop (JS-wired in AiAssistant.html) */
@@ -531,18 +531,18 @@
  * above), so the transparent→solid gradient is mostly hidden behind the
  * opaque input. We re-position it as a thin band *above* the footer so the
  * full gradient renders in the visible area. Theme-safe: the gradient is
- * built from --ai-surface-primary via Relative Color Syntax, so it
+ * built from --ao-surface-primary via Relative Color Syntax, so it
  * resolves correctly across light / dark / CC / CC-dark. */
 
 .ai-assistant .chat-main__fade {
   bottom: 100%;
-  height: var(--ai-spacing-10);
+  height: var(--ao-spacing-10);
 }
 
 .ai-assistant .sources-card__text {
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
 }
 
 .ai-assistant .sources-card__title {
-  line-height: var(--ai-leading-sm);
+  line-height: var(--ao-leading-sm);
 }

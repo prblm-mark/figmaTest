@@ -10,61 +10,61 @@
 .fact-panel {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
+  gap: var(--ao-spacing-4);
   min-width: 0;
-  padding: var(--ai-spacing-5);
-  background-color: var(--ai-surface-extra-minimal);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  padding: var(--ao-spacing-5);
+  background-color: var(--ao-surface-extra-minimal);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
 }
 
 .fact-panel__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-3);
-  padding-bottom: var(--ai-spacing-4);
-  border-bottom: 1px solid var(--ai-border-secondary);
+  gap: var(--ao-spacing-3);
+  padding-bottom: var(--ao-spacing-4);
+  border-bottom: 1px solid var(--ao-border-secondary);
 }
 
 .fact-panel__title-block {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-0-5);
+  gap: var(--ao-spacing-0-5);
   min-width: 0;
 }
 
 .fact-panel__title {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fixed-sm);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fixed-sm);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
 }
 
 .fact-panel__subtitle {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-4xs);
-  line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-regular);
+  font-size: var(--ao-font-fixed-4xs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
 }
 
 .fact-panel__trailing {
   display: flex;
   flex-shrink: 0;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 /* Header badge (the Performance LIVE indicator) — 11px bold, smaller than the
  * Badge base 12px semibold. Case B contextual override (designer, 2026-09-28);
  * the Badge component is unchanged. */
 .fact-panel__trailing .badge {
-  font-size: var(--ai-font-fixed-4xs);
-  font-weight: var(--ai-font-bold);
+  font-size: var(--ao-font-fixed-4xs);
+  font-weight: var(--ao-font-bold);
 }
 
 /* Reorderable panels (code-first, 2026-10-05) — the page's script adds --sortable on pointer
@@ -88,7 +88,7 @@
 .fact-list {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   margin: 0;
 }
 
@@ -96,8 +96,8 @@
  * The same quiet text treatment as the FactList terms. */
 .fact-panel__empty {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
 }

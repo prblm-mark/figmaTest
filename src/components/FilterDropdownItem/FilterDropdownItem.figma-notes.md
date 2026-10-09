@@ -14,14 +14,14 @@ filter dropdown / listbox.
 | Node ID | Type | State | bg | Check | Built |
 |---|---|---|---|---|---|
 | 3032:18151 | Initial | Default | transparent | hidden | ✅ |
-| 3032:18148 | Initial | Hover | `--ai-surface-minimal` | hidden | ✅ |
+| 3032:18148 | Initial | Hover | `--ao-surface-minimal` | hidden | ✅ |
 | 3032:18150 | Selected | Default | transparent | visible | ✅ |
-| 3032:18149 | Selected | Hover | `--ai-surface-minimal` | visible | ✅ |
+| 3032:18149 | Selected | Hover | `--ao-surface-minimal` | visible | ✅ |
 
 **Axis independence (verified):** `Type` only toggles the check's *visibility* — the
 CircleCheck icon is present in every variant's layer tree (confirmed in the Initial
 variant's design context) and merely hidden when Initial. `State=Hover` only adds the
-`--ai-surface-minimal` background (confirmed on both Selected/Hover and — same fill —
+`--ao-surface-minimal` background (confirmed on both Selected/Hover and — same fill —
 via the shared token). CSS represents the cross-product with one `--selected` modifier
 + the `:hover` pseudo-class rather than 4 rules.
 
@@ -40,7 +40,7 @@ via the shared token). CSS represents the cross-product with one `--selected` mo
 |---|---|
 | Row container | `.filter-dropdown-item` (`<button>`, fills container; Figma frame = 280px) |
 | Selected (Type) | `.filter-dropdown-item--selected` (reveals the check) |
-| Hover (State) | `:hover` → `--ai-surface-minimal` |
+| Hover (State) | `:hover` → `--ao-surface-minimal` |
 | Text block | `.filter-dropdown-item__text` |
 | Title | `.filter-dropdown-item__name` |
 | Sub text (optional, `showSubText`) | `.filter-dropdown-item__sub` |
@@ -50,28 +50,28 @@ via the shared token). CSS represents the cross-product with one `--selected` mo
 
 | Property | Figma variable | CSS variable |
 |---|---|---|
-| Row gap / padding-x | `--ai-spacing-3` (8px) | `--ai-spacing-3` |
-| Row padding-y | `--ai-spacing-2` (6px) | `--ai-spacing-2` |
-| Row radius | `--ai-spacing-3` (8px) *(see gap)* | `--ai-radius-md` (8px) |
-| Hover bg | `--ai-surface-minimal` | `--ai-surface-minimal` |
-| Title | `--ai-font-body` medium, `--ai-font-fixed-xs` (14px), `--ai-leading-sm` (20px) | same |
-| Title colour | `--ai-text-primary` | `--ai-text-primary` |
-| Sub text | `--ai-font-body` regular, `--ai-font-fixed-xxs` (12px) | same |
-| Sub text colour | `--ai-text-secondary` | `--ai-text-secondary` |
-| Check size | 16px | `--ai-icon-size-sm` |
-| Check colour | `--ai-surface-success` (#059669) | `--ai-surface-success` |
+| Row gap / padding-x | `--ao-spacing-3` (8px) | `--ao-spacing-3` |
+| Row padding-y | `--ao-spacing-2` (6px) | `--ao-spacing-2` |
+| Row radius | `--ao-spacing-3` (8px) *(see gap)* | `--ao-radius-md` (8px) |
+| Hover bg | `--ao-surface-minimal` | `--ao-surface-minimal` |
+| Title | `--ao-font-body` medium, `--ao-font-fixed-xs` (14px), `--ao-leading-sm` (20px) | same |
+| Title colour | `--ao-text-primary` | `--ao-text-primary` |
+| Sub text | `--ao-font-body` regular, `--ao-font-fixed-xxs` (12px) | same |
+| Sub text colour | `--ao-text-secondary` | `--ao-text-secondary` |
+| Check size | 16px | `--ao-icon-size-sm` |
+| Check colour | `--ao-surface-success` (#059669) | `--ao-surface-success` |
 
 ## Token Gaps / Decisions
-- **No token gaps** — every value maps to an existing `--ai-*` token.
-- **Radius binding quirk:** Figma bound the row `border-radius` to `--ai-spacing-3` (a
-  *spacing* token, 8px). Used `--ai-radius-md` instead — identical value (8px) and the
+- **No token gaps** — every value maps to an existing `--ao-*` token.
+- **Radius binding quirk:** Figma bound the row `border-radius` to `--ao-spacing-3` (a
+  *spacing* token, 8px). Used `--ao-radius-md` instead — identical value (8px) and the
   correct semantic category for a radius. Flagged to the user; no visual difference.
 
 ## Notes
 - **Icon (Lucide):** Figma layer `Icon/24px/CircleCheck` → Lucide `circle-check`. It renders
-  at 16px (`--ai-icon-size-sm`) despite the 24px component name (base component size, not placed size).
-- **Check colour** uses `--ai-surface-success` (a surface token) exactly as Figma bound it —
-  there is no dedicated `--ai-icon-success` token.
+  at 16px (`--ao-icon-size-sm`) despite the 24px component name (base component size, not placed size).
+- **Check colour** uses `--ao-surface-success` (a surface token) exactly as Figma bound it —
+  there is no dedicated `--ao-icon-success` token.
 - **Width:** the Figma frame is 280px, but the item is built `width: 100%` to fill whatever
   dropdown / listbox contains it (280px is the artboard width, not a fixed component size).
 - **Footer/selected reveal:** the check occupies reserved 16px space even when hidden

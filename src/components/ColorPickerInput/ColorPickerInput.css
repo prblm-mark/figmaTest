@@ -8,19 +8,19 @@
 .color-picker-input {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   height: 40px;
-  padding: 0 var(--ai-spacing-5);
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  padding: 0 var(--ao-spacing-5);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
   cursor: pointer;
-  transition: border-color var(--ai-transition-default);
+  transition: border-color var(--ao-transition-default);
   position: relative;
 }
 
 .color-picker-input:hover {
-  border-color: var(--ai-border-brand);
+  border-color: var(--ao-border-brand);
 }
 
 /* ── Color swatch ────────────────────────────────────── */
@@ -31,18 +31,18 @@
   justify-content: center;
   width: 20px;
   height: 20px;
-  padding: var(--ai-spacing-1);
-  border-radius: var(--ai-radius-full);
+  padding: var(--ao-spacing-1);
+  border-radius: var(--ao-radius-full);
   flex-shrink: 0;
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
   box-sizing: border-box;
 }
 
 .color-picker-input__swatch-inner {
   width: 100%;
   height: 100%;
-  border-radius: var(--ai-radius-full);
+  border-radius: var(--ao-radius-full);
 }
 
 /* ── Hex text ────────────────────────────────────────── */
@@ -50,11 +50,11 @@
 .color-picker-input__value {
   flex: 1 0 0;
   min-width: 0;
-  font-family: var(--ai-font-body);
-  font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-body);
+  font-weight: var(--ao-font-regular);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
   font-feature-settings: 'case' 1;
   margin: 0;
 }
@@ -75,9 +75,9 @@
 /* ── Focus ───────────────────────────────────────────── */
 
 .color-picker-input:has(.color-picker-input__native:focus-visible) {
-  border-color: var(--ai-border-brand);
-  box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px var(--ai-surface-brand-soft);
+  border-color: var(--ao-border-brand);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px var(--ao-surface-brand-soft);
 }
 
 /* ── Chip variant ────────────────────────────────────────────────────────────
@@ -86,15 +86,15 @@
  * Figma: the Seating Planner's "Manage table types" modal (`lRKvtYSU3SvO5hbMT33jxw`,
  * `1:43245` desktop / `1:44462` mobile) puts one of these at the head of every tier row and
  * one in the add-a-tier band. It is drawn as a `Field` 52x40 — white, 1px
- * --ai-border-secondary, --ai-radius-md, 6px padding — wrapping a 40x28 rectangle at
- * --ai-radius-xs (2px, which is exactly the token, not a near miss).
+ * --ao-border-secondary, --ao-radius-md, 6px padding — wrapping a 40x28 rectangle at
+ * --ao-radius-xs (2px, which is exactly the token, not a near miss).
  *
  * Case A rather than a screen-scoped copy (designer, 2026-09-09): a second colour control in
  * the codebase is the duplication the build rules warn about, and this is the same control in a
  * smaller dress. Purely additive — the base shape and every existing usage are untouched.
  *
  * WIDTH IS THE ONE COMPOSED VALUE. 52 matches no single spacing token, so it is built as
- * `--ai-spacing-8` (40) + `--ai-spacing-4` (12). The OUTER box is then exactly Figma's 52x40,
+ * `--ao-spacing-8` (40) + `--ao-spacing-4` (12). The OUTER box is then exactly Figma's 52x40,
  * which is what affects the row layout.
  *
  * The chip inside comes out 38x26 rather than Figma's 40x28. That is the documented Figma
@@ -103,12 +103,12 @@
  * the same arithmetic (its "17/13" is 16/12 plus the stroke). Matching the rectangle exactly
  * would push the outer box to 54x42 and break the row. */
 .color-picker-input--chip {
-  inline-size: calc(var(--ai-spacing-8) + var(--ai-spacing-4));   /* 52 */
+  inline-size: calc(var(--ao-spacing-8) + var(--ao-spacing-4));   /* 52 */
   /* No `height: auto` companion here. `block-size` and `height` are the SAME property, so an
    * `auto` written after this line to "reset the base" silently clobbered it and collapsed the
    * control to 14px — measured. The base's own 40px is what this replaces, with the token. */
-  block-size: var(--ai-spacing-8);                                /* 40 */
-  padding: var(--ai-spacing-2);                                   /* 6 */
+  block-size: var(--ao-spacing-8);                                /* 40 */
+  padding: var(--ao-spacing-2);                                   /* 6 */
   gap: 0;
   flex-shrink: 0;
 }
@@ -123,12 +123,12 @@
   block-size: 100%;
   padding: 0;
   border: 0;
-  border-radius: var(--ai-radius-xs);   /* 2px */
+  border-radius: var(--ao-radius-xs);   /* 2px */
   background-color: transparent;
 }
 
 .color-picker-input--chip .color-picker-input__swatch-inner {
-  border-radius: var(--ai-radius-xs);
+  border-radius: var(--ao-radius-xs);
 }
 
 /* The hex string has no room in a 52px control, and Figma draws none. Hidden rather than

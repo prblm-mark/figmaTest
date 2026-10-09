@@ -41,7 +41,7 @@ function parseColor(str) {
 
 export function initSidebarTheme(sidebarEl) {
   const bg = getComputedStyle(sidebarEl)
-    .getPropertyValue('--ai-chat-sidebar-bg').trim();
+    .getPropertyValue('--ao-chat-sidebar-bg').trim();
   const { r, g, b } = parseColor(bg);
   const lum = getLuminance(r, g, b);
   sidebarEl.setAttribute('data-sidebar-theme', lum > 0.5 ? 'light' : 'dark');

@@ -226,8 +226,8 @@ export function initAiAssistantShell(root, opts = {}) {
   // across all 4 edges.
   //
   // Constraints (also enforced via CSS max-width / max-height):
-  //   width  : --ai-size-6 (320px) … --ai-size-9 (512px)
-  //   height : 320px … 100vh − (--ai-spacing-6 × 2)
+  //   width  : --ao-size-6 (320px) … --ao-size-9 (512px)
+  //   height : 320px … 100vh − (--ao-spacing-6 × 2)
   {
     const attachResize = (handleId, edge) => {
       const handle = root.querySelector('#' + handleId);
@@ -263,9 +263,9 @@ export function initAiAssistantShell(root, opts = {}) {
 
         const styles = getComputedStyle(root);
         const rootFont = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-        minW = parseFloat(styles.getPropertyValue('--ai-size-6')) * rootFont;
-        maxW = parseFloat(styles.getPropertyValue('--ai-size-9')) * rootFont;
-        const spacing6 = parseFloat(styles.getPropertyValue('--ai-spacing-6')) * rootFont;
+        minW = parseFloat(styles.getPropertyValue('--ao-size-6')) * rootFont;
+        maxW = parseFloat(styles.getPropertyValue('--ao-size-9')) * rootFont;
+        const spacing6 = parseFloat(styles.getPropertyValue('--ao-spacing-6')) * rootFont;
         maxH = window.innerHeight - spacing6 * 2;
 
         e.preventDefault();

@@ -73,7 +73,7 @@ function ratio(fg, bg) {
 // ─── Pairings ─────────────────────────────────────────────────────────────────
 // Only pairings the design system actually produces. `need` is the AA threshold:
 // 4.5 for normal text, 3 for large text / icons / meaningful UI boundaries.
-// A transparent background resolves against --ai-surface-primary (the page).
+// A transparent background resolves against --ao-surface-primary (the page).
 
 // severity:
 //   'blocking' — SC 1.4.3 text contrast, or a boundary/indicator SC 1.4.11 clearly covers
@@ -84,91 +84,91 @@ function ratio(fg, bg) {
 //   'exempt'   — WCAG explicitly excludes it (disabled controls). Informational only.
 const T = (fg, bg, need, group, note, severity = 'blocking') => ({ fg, bg, need, group, note, severity });
 
-const SURFACES = ['--ai-surface-primary', '--ai-surface-elevated-1', '--ai-surface-elevated-2',
-                  '--ai-surface-minimal', '--ai-surface-secondary'];
+const SURFACES = ['--ao-surface-primary', '--ao-surface-elevated-1', '--ao-surface-elevated-2',
+                  '--ao-surface-minimal', '--ao-surface-secondary'];
 const STATUSES = ['info', 'success', 'warning', 'error', 'neutral'];
 
 const PAIRS = [];
 
 // A. Body text on the surfaces it sits on
 for (const s of SURFACES) {
-  for (const t of ['--ai-text-primary', '--ai-text-secondary', '--ai-text-contrast']) {
+  for (const t of ['--ao-text-primary', '--ao-text-secondary', '--ao-text-contrast']) {
     PAIRS.push(T(t, s, 4.5, 'Body text on surfaces'));
   }
 }
 PAIRS.push(
-  T('--ai-text-invert', '--ai-surface-invert', 4.5, 'Body text on surfaces'),
-  T('--ai-text-invert-secondary', '--ai-surface-invert', 4.5, 'Body text on surfaces'),
-  T('--ai-text-primary', '--ai-surface-input', 4.5, 'Body text on surfaces'),
-  T('--ai-text-contrast', '--ai-surface-input', 4.5, 'Body text on surfaces', 'placeholder'),
-  T('--ai-text-brand', '--ai-surface-primary', 4.5, 'Body text on surfaces'),
-  T('--ai-text-brand', '--ai-surface-brand-soft-extra', 4.5, 'Body text on surfaces'),
+  T('--ao-text-invert', '--ao-surface-invert', 4.5, 'Body text on surfaces'),
+  T('--ao-text-invert-secondary', '--ao-surface-invert', 4.5, 'Body text on surfaces'),
+  T('--ao-text-primary', '--ao-surface-input', 4.5, 'Body text on surfaces'),
+  T('--ao-text-contrast', '--ao-surface-input', 4.5, 'Body text on surfaces', 'placeholder'),
+  T('--ao-text-brand', '--ao-surface-primary', 4.5, 'Body text on surfaces'),
+  T('--ao-text-brand', '--ao-surface-brand-soft-extra', 4.5, 'Body text on surfaces'),
 );
 
 // B/C. Status: text on soft fill, text on page, invert text on the solid fill, borders
 for (const s of STATUSES) {
   PAIRS.push(
-    T(`--ai-text-${s}`, `--ai-surface-${s}-soft`, 4.5, 'Status text on soft fill'),
-    T(`--ai-text-${s}`, '--ai-surface-primary', 4.5, 'Status text on page'),
-    T('--ai-text-invert', `--ai-surface-${s}`, 4.5, 'Invert text on solid status fill'),
+    T(`--ao-text-${s}`, `--ao-surface-${s}-soft`, 4.5, 'Status text on soft fill'),
+    T(`--ao-text-${s}`, '--ao-surface-primary', 4.5, 'Status text on page'),
+    T('--ao-text-invert', `--ao-surface-${s}`, 4.5, 'Invert text on solid status fill'),
     // The tinted fill and the coloured text already carry the status; the border is
     // reinforcement, so 1.4.11 arguably does not require 3:1 here.
-    T(`--ai-border-${s}`, '--ai-surface-primary', 3, 'Status border on page', null, 'advisory'),
-    T(`--ai-border-${s}`, `--ai-surface-${s}-soft`, 3, 'Status border on soft fill', null, 'advisory'),
+    T(`--ao-border-${s}`, '--ao-surface-primary', 3, 'Status border on page', null, 'advisory'),
+    T(`--ao-border-${s}`, `--ao-surface-${s}-soft`, 3, 'Status border on soft fill', null, 'advisory'),
   );
 }
 
 // D. Buttons
 PAIRS.push(
-  T('--ai-btn-primary-text', '--ai-btn-primary-bg', 4.5, 'Buttons'),
-  T('--ai-btn-primary-text-hover', '--ai-btn-primary-bg-hover', 4.5, 'Buttons', 'hover'),
-  T('--ai-btn-primary-text', '--ai-btn-primary-bg-pressed', 4.5, 'Buttons', 'pressed'),
-  T('--ai-btn-secondary-text', '--ai-btn-secondary-bg', 4.5, 'Buttons', 'transparent bg'),
-  T('--ai-btn-secondary-text-hover', '--ai-btn-secondary-bg-hover', 4.5, 'Buttons', 'hover'),
-  T('--ai-btn-secondary-text', '--ai-btn-secondary-bg-pressed', 4.5, 'Buttons', 'pressed'),
-  T('--ai-btn-tertiary-text', '--ai-btn-tertiary-bg', 4.5, 'Buttons', 'transparent bg'),
-  T('--ai-btn-tertiary-text-hover', '--ai-btn-tertiary-bg-hover', 4.5, 'Buttons', 'hover'),
-  T('--ai-btn-tertiary-text', '--ai-btn-tertiary-bg-pressed', 4.5, 'Buttons', 'pressed'),
-  T('--ai-btn-text-disabled', '--ai-btn-bg-disabled', 4.5, 'Buttons', 'disabled control', 'exempt'),
+  T('--ao-btn-primary-text', '--ao-btn-primary-bg', 4.5, 'Buttons'),
+  T('--ao-btn-primary-text-hover', '--ao-btn-primary-bg-hover', 4.5, 'Buttons', 'hover'),
+  T('--ao-btn-primary-text', '--ao-btn-primary-bg-pressed', 4.5, 'Buttons', 'pressed'),
+  T('--ao-btn-secondary-text', '--ao-btn-secondary-bg', 4.5, 'Buttons', 'transparent bg'),
+  T('--ao-btn-secondary-text-hover', '--ao-btn-secondary-bg-hover', 4.5, 'Buttons', 'hover'),
+  T('--ao-btn-secondary-text', '--ao-btn-secondary-bg-pressed', 4.5, 'Buttons', 'pressed'),
+  T('--ao-btn-tertiary-text', '--ao-btn-tertiary-bg', 4.5, 'Buttons', 'transparent bg'),
+  T('--ao-btn-tertiary-text-hover', '--ao-btn-tertiary-bg-hover', 4.5, 'Buttons', 'hover'),
+  T('--ao-btn-tertiary-text', '--ao-btn-tertiary-bg-pressed', 4.5, 'Buttons', 'pressed'),
+  T('--ao-btn-text-disabled', '--ao-btn-bg-disabled', 4.5, 'Buttons', 'disabled control', 'exempt'),
 );
 
 // E. Icons (3:1 as meaningful graphical objects)
-for (const s of ['--ai-surface-primary', '--ai-surface-minimal', '--ai-surface-secondary']) {
-  for (const i of ['--ai-icon-primary', '--ai-icon-secondary', '--ai-icon-brand']) {
+for (const s of ['--ao-surface-primary', '--ao-surface-minimal', '--ao-surface-secondary']) {
+  for (const i of ['--ao-icon-primary', '--ao-icon-secondary', '--ao-icon-brand']) {
     PAIRS.push(T(i, s, 3, 'Icons on surfaces'));
   }
   // icon-contrast is documented as the muted/disabled icon — decorative by intent.
-  PAIRS.push(T('--ai-icon-contrast', s, 3, 'Icons on surfaces', 'muted/disabled icon', 'advisory'));
+  PAIRS.push(T('--ao-icon-contrast', s, 3, 'Icons on surfaces', 'muted/disabled icon', 'advisory'));
 }
 PAIRS.push(
-  T('--ai-icon-invert', '--ai-surface-invert', 3, 'Icons on surfaces'),
-  T('--ai-icon-invert-secondary', '--ai-surface-invert', 3, 'Icons on surfaces'),
+  T('--ao-icon-invert', '--ao-surface-invert', 3, 'Icons on surfaces'),
+  T('--ao-icon-invert-secondary', '--ao-surface-invert', 3, 'Icons on surfaces'),
 );
 
 // F/G. Structural borders and the focus indicator
 PAIRS.push(
-  T('--ai-border-primary', '--ai-surface-primary', 3, 'Structural borders'),
-  T('--ai-border-secondary', '--ai-surface-primary', 3, 'Structural borders', 'default input/card border — a control boundary'),
-  T('--ai-border-contrast', '--ai-surface-primary', 3, 'Structural borders'),
-  T('--ai-btn-secondary-border', '--ai-surface-primary', 3, 'Buttons', 'outline button boundary'),
-  T('--ai-border-brand', '--ai-surface-primary', 3, 'Focus indicator'),
-  T('--ai-surface-brand', '--ai-surface-primary', 3, 'Focus indicator', 'focus ring'),
-  T('--ai-surface-brand', '--ai-surface-minimal', 3, 'Focus indicator', 'focus ring'),
-  T('--ai-datatable-table-border', '--ai-datatable-table-bg', 3, 'Structural borders', 'table gridlines', 'advisory'),
+  T('--ao-border-primary', '--ao-surface-primary', 3, 'Structural borders'),
+  T('--ao-border-secondary', '--ao-surface-primary', 3, 'Structural borders', 'default input/card border — a control boundary'),
+  T('--ao-border-contrast', '--ao-surface-primary', 3, 'Structural borders'),
+  T('--ao-btn-secondary-border', '--ao-surface-primary', 3, 'Buttons', 'outline button boundary'),
+  T('--ao-border-brand', '--ao-surface-primary', 3, 'Focus indicator'),
+  T('--ao-surface-brand', '--ao-surface-primary', 3, 'Focus indicator', 'focus ring'),
+  T('--ao-surface-brand', '--ao-surface-minimal', 3, 'Focus indicator', 'focus ring'),
+  T('--ao-datatable-table-border', '--ao-datatable-table-bg', 3, 'Structural borders', 'table gridlines', 'advisory'),
 );
 
 // H. Chat surfaces
 PAIRS.push(
-  T('--ai-chat-msg-text', '--ai-chat-msg-bg', 4.5, 'Chat'),
-  T('--ai-chat-sidebar-text', '--ai-chat-sidebar-bg', 4.5, 'Chat'),
-  T('--ai-text-primary', '--ai-src-carousel-card-bg', 4.5, 'Chat', 'sources carousel card'),
+  T('--ao-chat-msg-text', '--ao-chat-msg-bg', 4.5, 'Chat'),
+  T('--ao-chat-sidebar-text', '--ao-chat-sidebar-bg', 4.5, 'Chat'),
+  T('--ao-text-primary', '--ao-src-carousel-card-bg', 4.5, 'Chat', 'sources carousel card'),
 );
 
 // I. Datatable
-for (const bg of ['--ai-datatable-table-header-bg', '--ai-datatable-table-footer-bg',
-                  '--ai-datatable-table-expanded-bg', '--ai-datatable-table-subheader-bg']) {
-  PAIRS.push(T('--ai-text-primary', bg, 4.5, 'Datatable'),
-             T('--ai-text-secondary', bg, 4.5, 'Datatable'));
+for (const bg of ['--ao-datatable-table-header-bg', '--ao-datatable-table-footer-bg',
+                  '--ao-datatable-table-expanded-bg', '--ao-datatable-table-subheader-bg']) {
+  PAIRS.push(T('--ao-text-primary', bg, 4.5, 'Datatable'),
+             T('--ao-text-secondary', bg, 4.5, 'Datatable'));
 }
 
 // J. CC component tokens.
@@ -187,8 +187,8 @@ PAIRS.push(...[
   T('--cc-actions-menu-icon', '--cc-actions-menu-secondary-bg', 3, 'CC chrome'),
   T('--cc-actions-menu-icon-active', '--cc-actions-menu-primary-bg', 3, 'CC chrome'),
   T('--cc-actions-menu-icon-active', '--cc-actions-menu-secondary-bg', 3, 'CC chrome'),
-  T('--ai-text-primary', '--cc-ui-primary-bg', 4.5, 'CC chrome'),
-  T('--ai-text-primary', '--cc-ui-secondary-bg', 4.5, 'CC chrome'),
+  T('--ao-text-primary', '--cc-ui-primary-bg', 4.5, 'CC chrome'),
+  T('--ao-text-primary', '--cc-ui-secondary-bg', 4.5, 'CC chrome'),
 ].map(p => ({ ...p, modes: CC_ONLY })));
 
 // ─── Run ──────────────────────────────────────────────────────────────────────
@@ -196,7 +196,7 @@ PAIRS.push(...[
 const results = [];
 for (const mode of MODES) {
   const pal = loadPalette(mode.file);
-  const pageBg = parseColor(pal['--ai-surface-primary']);
+  const pageBg = parseColor(pal['--ao-surface-primary']);
   for (const p of PAIRS) {
     if (p.modes && !p.modes.includes(mode.key)) continue;
     const rawFg = pal[p.fg], rawBg = pal[p.bg];
@@ -210,7 +210,7 @@ for (const mode of MODES) {
     results.push({
       mode: mode.key, ...p,
       fgVal: rawFg,
-      bgVal: bgTransparent ? `${rawBg} over ${pal['--ai-surface-primary']}` : rawBg,
+      bgVal: bgTransparent ? `${rawBg} over ${pal['--ao-surface-primary']}` : rawBg,
       ratio: r, pass: r >= p.need,
     });
   }

@@ -35,11 +35,11 @@ Automates the post-export token workflow after a manual Figma re-export.
    git diff css/
    ```
 
-   Report the full diff to the user so they can see exactly which `--ai-*` values changed.
+   Report the full diff to the user so they can see exactly which `--ao-*` values changed.
 
 4. **Triage affected components**
 
-   Cross-reference every changed `--ai-*` variable name against component CSS files in
+   Cross-reference every changed `--ao-*` variable name against component CSS files in
    `src/components/`, `src/patterns/`, and `src/templates/`.
 
    For each changed token, list the component files that reference it.

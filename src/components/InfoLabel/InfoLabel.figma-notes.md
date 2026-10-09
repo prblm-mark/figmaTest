@@ -16,17 +16,17 @@
 
 | Property | Figma variable | CSS variable | Value |
 |---|---|---|---|
-| Gap | `--ai-spacing-3` | `--ai-spacing-3` | 8px |
-| Text font family | `--ai-font-title` | `--ai-font-title` | Inter |
-| Text font size | `--ai-font-fixed-xxs` | `--ai-font-fixed-xxs` | 12px |
-| Text font weight | `--ai-font-semibold` | `--ai-font-semibold` | 600 |
-| Text line height | `--ai-leading-xs` | `--ai-leading-xs` | 16px |
-| Text color | `--ai-text-primary` | `--ai-text-primary` | #1f2a37 |
-| Icon size | — | `--ai-icon-size-sm` (16px) | — |
-| Icon color | `--ai-icon-primary` | `--ai-icon-primary` | #1f2a37 |
+| Gap | `--ao-spacing-3` | `--ao-spacing-3` | 8px |
+| Text font family | `--ao-font-title` | `--ao-font-title` | Inter |
+| Text font size | `--ao-font-fixed-xxs` | `--ao-font-fixed-xxs` | 12px |
+| Text font weight | `--ao-font-semibold` | `--ao-font-semibold` | 600 |
+| Text line height | `--ao-leading-xs` | `--ao-leading-xs` | 16px |
+| Text color | `--ao-text-primary` | `--ao-text-primary` | #1f2a37 |
+| Icon size | — | `--ao-icon-size-sm` (16px) | — |
+| Icon color | `--ao-icon-primary` | `--ao-icon-primary` | #1f2a37 |
 
 ## Token Gaps
-None — all design values map to `--ai-*` semantic tokens.
+None — all design values map to `--ao-*` semantic tokens.
 
 ## Notes
 - Icon: Figma uses `Icon/16px/Info` → Lucide `info`

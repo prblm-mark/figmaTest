@@ -5,11 +5,11 @@
  * Variants: State=Initial/Active/Disabled × Size=xs/SM/Default/LG
  *
  * SM is the implicit default (no modifier). Active track uses
- * `--ai-surface-brand` (system blue). For Chat / StyleSettings, a contextual
- * override in StyleSettings.css repaints the track with `--ai-chat-brand`.
+ * `--ao-surface-brand` (system blue). For Chat / StyleSettings, a contextual
+ * override in StyleSettings.css repaints the track with `--ao-chat-brand`.
  *
  * Track / thumb dimensions are sub-token optical sizes (some sizes like
- * 20px, 28px, 44px, 20px-thumb don't map to --ai-spacing-* tokens). They
+ * 20px, 28px, 44px, 20px-thumb don't map to --ao-spacing-* tokens). They
  * are kept as raw px with comments — same exception class as letter-spacing.
  */
 
@@ -18,7 +18,7 @@
 .toggle {
   display: inline-flex;
   align-items: flex-start;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
   padding: 1px 0;
   background: none;
   border: none;
@@ -29,12 +29,12 @@
 
 .toggle__track {
   position: relative;
-  width: var(--ai-spacing-8); /* 40px */
+  width: var(--ao-spacing-8); /* 40px */
   height: 20px; /* sub-token optical */
   flex-shrink: 0;
-  background-color: var(--ai-border-secondary);
-  border-radius: var(--ai-radius-full);
-  transition: background-color var(--ai-transition-default);
+  background-color: var(--ao-border-secondary);
+  border-radius: var(--ao-radius-full);
+  transition: background-color var(--ao-transition-default);
 }
 
 /* ── Thumb / knob (SM default — 16×16) ───────────────── */
@@ -43,21 +43,21 @@
   position: absolute;
   top: 2px;
   left: 2.5px;
-  width: var(--ai-spacing-5); /* 16px */
-  height: var(--ai-spacing-5);
-  background-color: var(--ai-surface-primary);
-  border-radius: var(--ai-radius-full);
-  transition: left var(--ai-transition-default);
+  width: var(--ao-spacing-5); /* 16px */
+  height: var(--ao-spacing-5);
+  background-color: var(--ao-surface-primary);
+  border-radius: var(--ao-radius-full);
+  transition: left var(--ao-transition-default);
 }
 
 /* ── Active state ────────────────────────────────────── */
 
 .toggle--active .toggle__track {
-  background-color: var(--ai-surface-brand);
+  background-color: var(--ao-surface-brand);
 }
 
 .toggle--active .toggle__knob {
-  left: calc(100% - var(--ai-spacing-5) - 2.5px);
+  left: calc(100% - var(--ao-spacing-5) - 2.5px);
 }
 
 /* ── Disabled state ──────────────────────────────────── */
@@ -68,7 +68,7 @@
 }
 
 .toggle--disabled .toggle__track {
-  background-color: var(--ai-border-secondary);
+  background-color: var(--ao-border-secondary);
 }
 
 /* ── Size: xxs (24×12 track, 8px thumb) ─────────────── */
@@ -78,40 +78,40 @@
    `--disabled` still composes if a consumer ever needs it. */
 
 .toggle--xxs .toggle__track {
-  width: var(--ai-spacing-6); /* 24px */
-  height: var(--ai-spacing-4); /* 12px */
+  width: var(--ao-spacing-6); /* 24px */
+  height: var(--ao-spacing-4); /* 12px */
 }
 
 .toggle--xxs .toggle__knob {
-  width: var(--ai-spacing-3); /* 8px */
-  height: var(--ai-spacing-3);
+  width: var(--ao-spacing-3); /* 8px */
+  height: var(--ao-spacing-3);
 }
 
 .toggle--xxs.toggle--active .toggle__knob {
-  left: calc(100% - var(--ai-spacing-3) - 2.5px);
+  left: calc(100% - var(--ao-spacing-3) - 2.5px);
 }
 
 /* ── Size: xs (32×16 track, 12px thumb) ─────────────── */
 
 .toggle--xs .toggle__track {
-  width: var(--ai-spacing-7); /* 32px */
-  height: var(--ai-spacing-5); /* 16px */
+  width: var(--ao-spacing-7); /* 32px */
+  height: var(--ao-spacing-5); /* 16px */
 }
 
 .toggle--xs .toggle__knob {
-  width: var(--ai-spacing-4); /* 12px */
-  height: var(--ai-spacing-4);
+  width: var(--ao-spacing-4); /* 12px */
+  height: var(--ao-spacing-4);
 }
 
 .toggle--xs.toggle--active .toggle__knob {
-  left: calc(100% - var(--ai-spacing-4) - 2.5px);
+  left: calc(100% - var(--ao-spacing-4) - 2.5px);
 }
 
 /* ── Size: Default (44×24 track, 20px thumb) ────────── */
 
 .toggle--default .toggle__track {
   width: 44px; /* sub-token optical */
-  height: var(--ai-spacing-6); /* 24px */
+  height: var(--ao-spacing-6); /* 24px */
 }
 
 .toggle--default .toggle__knob {
@@ -124,37 +124,37 @@
 }
 
 .toggle--default .toggle__label-text {
-  font-size: var(--ai-font-fixed-sm); /* 16px on Default */
-  font-weight: var(--ai-font-regular);
+  font-size: var(--ao-font-fixed-sm); /* 16px on Default */
+  font-weight: var(--ao-font-regular);
 }
 
 .toggle--default .toggle__helper {
-  font-size: var(--ai-font-fixed-xs); /* 14px on Default */
+  font-size: var(--ao-font-fixed-xs); /* 14px on Default */
 }
 
 /* ── Size: LG (56×28 track, 24px thumb) ─────────────── */
 
 .toggle--lg .toggle__track {
-  width: var(--ai-spacing-10); /* 56px */
+  width: var(--ao-spacing-10); /* 56px */
   height: 28px; /* sub-token optical */
 }
 
 .toggle--lg .toggle__knob {
-  width: var(--ai-spacing-6); /* 24px */
-  height: var(--ai-spacing-6);
+  width: var(--ao-spacing-6); /* 24px */
+  height: var(--ao-spacing-6);
 }
 
 .toggle--lg.toggle--active .toggle__knob {
-  left: calc(100% - var(--ai-spacing-6) - 2.5px);
+  left: calc(100% - var(--ao-spacing-6) - 2.5px);
 }
 
 .toggle--lg .toggle__label-text {
-  font-size: var(--ai-font-fixed-sm); /* 16px on LG */
-  font-weight: var(--ai-font-regular);
+  font-size: var(--ao-font-fixed-sm); /* 16px on LG */
+  font-weight: var(--ao-font-regular);
 }
 
 .toggle--lg .toggle__helper {
-  font-size: var(--ai-font-fixed-xs); /* 14px on LG */
+  font-size: var(--ao-font-fixed-xs); /* 14px on LG */
 }
 
 /* ── Label ───────────────────────────────────────────── */
@@ -165,29 +165,29 @@
 }
 
 .toggle__label-text {
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-medium);
-  font-size: var(--ai-font-fixed-xs);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-xs);
   line-height: 1.25;
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
   margin: 0;
 }
 
 .toggle--disabled .toggle__label-text {
-  color: var(--ai-icon-contrast);
+  color: var(--ao-icon-contrast);
 }
 
 .toggle__helper {
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-xxs);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-regular);
+  font-size: var(--ao-font-fixed-xxs);
   line-height: 1.5;
-  color: var(--ai-text-contrast);
+  color: var(--ao-text-contrast);
   margin: 0;
 }
 
 .toggle--disabled .toggle__helper {
-  color: var(--ai-icon-contrast);
+  color: var(--ao-icon-contrast);
 }
 
 /* ── Focus ───────────────────────────────────────────── */
@@ -197,6 +197,6 @@
 }
 
 .toggle:focus-visible .toggle__track {
-  box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px var(--ai-surface-brand-soft);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px var(--ao-surface-brand-soft);
 }

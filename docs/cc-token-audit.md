@@ -165,12 +165,12 @@ The AI system holds brand invariant (always `#0071D8`). This is a structural dif
 
 The slot count mismatch means the merge isn't straight aliasing — you need to either:
 - **Extend AI** to add `text-5`, `text-6`, `surface-8`, `input-1/2/3` (clean superset, but new vocabulary for AI components to optionally use)
-- **Collapse CC** down to AI's slots (lossy — Text 5 and Text 6 both map to `--ai-text-contrast`)
-- **Keep both vocabularies** with CC-specific tokens like `--ai-cc-text-5` (verbose, but no information loss)
+- **Collapse CC** down to AI's slots (lossy — Text 5 and Text 6 both map to `--ao-text-contrast`)
+- **Keep both vocabularies** with CC-specific tokens like `--ao-cc-text-5` (verbose, but no information loss)
 
 **3. CC's "Success" colour (`green/700` = `#22A573`) is what got used for the Send QR Codes CTA in the Event Attendees screen — not Primary.** Either the designer wanted a "positive action" framing for the bulk send, or used green for visual contrast. Worth confirming.
 
-**4. AI tokens use named slots (`--ai-text-primary`, `--ai-surface-elevated-1`); CC uses numbered slots (`text-1`, `surface-1`). When merging, pick a naming convention.** Numbered is easier to extend; named is more semantic. Mixed (`--ai-text-primary` for the most-used + `--ai-text-5/6` for extensions) is awkward.
+**4. AI tokens use named slots (`--ao-text-primary`, `--ao-surface-elevated-1`); CC uses numbered slots (`text-1`, `surface-1`). When merging, pick a naming convention.** Numbered is easier to extend; named is more semantic. Mixed (`--ao-text-primary` for the most-used + `--ao-text-5/6` for extensions) is awkward.
 
 ---
 
@@ -178,26 +178,26 @@ The slot count mismatch means the merge isn't straight aliasing — you need to 
 
 | CC token | Value | AI equivalent |
 |---|---|---|
-| `size-1` | 4px | `--ai-spacing-1` (4px = 0.25rem) ✓ |
-| `size-2` | 8px | `--ai-spacing-3` (8px) ✓ |
-| `size-3-5` | 14px | (no exact — between `--ai-spacing-4` (12px) and `--ai-spacing-5` (16px)) |
-| `size-6` | 24px | `--ai-spacing-6` (24px) ✓ |
-| `font-size-2` | 14px | `--ai-font-fixed-xs` ✓ |
+| `size-1` | 4px | `--ao-spacing-1` (4px = 0.25rem) ✓ |
+| `size-2` | 8px | `--ao-spacing-3` (8px) ✓ |
+| `size-3-5` | 14px | (no exact — between `--ao-spacing-4` (12px) and `--ao-spacing-5` (16px)) |
+| `size-6` | 24px | `--ao-spacing-6` (24px) ✓ |
+| `font-size-2` | 14px | `--ao-font-fixed-xs` ✓ |
 | `font-size-3` | 15px | (no exact — AI has 14 / 16) |
-| `font-size-5` | 18px | `--ai-font-fixed-md` (18px) ✓ |
-| `font-size-6` | 20px | `--ai-font-fixed-lg` (20px) ✓ |
-| `font-weight-6` | 600 | `--ai-font-semibold` ✓ |
-| `line-height-1/fs-2` | 14px | `--ai-leading-xs` (16px) — close |
+| `font-size-5` | 18px | `--ao-font-fixed-md` (18px) ✓ |
+| `font-size-6` | 20px | `--ao-font-fixed-lg` (20px) ✓ |
+| `font-weight-6` | 600 | `--ao-font-semibold` ✓ |
+| `line-height-1/fs-2` | 14px | `--ao-leading-xs` (16px) — close |
 | `border-radius-3` | 6px | (no exact — AI has 4 / 8 / 16) |
-| `border-radius-4` | 8px | `--ai-radius-md` (8px) ✓ |
+| `border-radius-4` | 8px | `--ao-radius-md` (8px) ✓ |
 | `letter-spacing-0` | 0 | (default — no token) ✓ |
 
 **Observations:**
 - Spacing scale: CC uses half-step values (`size-3-5` = 14px). AI scale skips this — would need a new primitive or accept rounding to 12 or 16.
-- Font sizes: CC has 15px (`font-size-3`) which AI doesn't have. Close to AI's `--ai-font-fixed-xs` (14px).
+- Font sizes: CC has 15px (`font-size-3`) which AI doesn't have. Close to AI's `--ao-font-fixed-xs` (14px).
 - Radius: CC has 6px (`border-radius-3`) which AI doesn't have. AI has 4 / 8 / 16.
 
-⚠ **Decision needed for the modes work:** CC modes are themable colours only; spacing/typography/radius are **collection-wide primitives**, not per-mode. So if you want to keep CC's exact spacing/font/radius values, you'd add them as new primitives (`--ai-spacing-3-5: 0.875rem`, etc.) — which is a separate decision from "create the CC modes."
+⚠ **Decision needed for the modes work:** CC modes are themable colours only; spacing/typography/radius are **collection-wide primitives**, not per-mode. So if you want to keep CC's exact spacing/font/radius values, you'd add them as new primitives (`--ao-spacing-3-5: 0.875rem`, etc.) — which is a separate decision from "create the CC modes."
 
 For the modes work specifically, you can ignore non-colour tokens.
 
@@ -213,11 +213,11 @@ How do AI's 4 text / 7 surface semantics co-exist with CC's 6 text / 8 surface /
 
 | Approach | Pros | Cons |
 |---|---|---|
-| **A. Extend AI** — add `--ai-text-5`, `--ai-text-6`, `--ai-surface-8`, `--ai-input-1/2/3` | One canonical vocabulary; lossless | New tokens to maintain; existing components don't use them |
+| **A. Extend AI** — add `--ao-text-5`, `--ao-text-6`, `--ao-surface-8`, `--ao-input-1/2/3` | One canonical vocabulary; lossless | New tokens to maintain; existing components don't use them |
 | **B. Collapse CC** — map every CC slot onto an existing AI slot | Smallest token surface | Lossy — Text 5 ↔ Text 6 distinctions disappear; designers may push back |
-| **C. Dual vocabulary** — CC tokens live as `--ai-cc-text-1` … `--ai-cc-surface-8` | No information loss; AI tokens stay untouched | Two parallel systems; defeats the consolidation goal |
+| **C. Dual vocabulary** — CC tokens live as `--ao-cc-text-1` … `--ao-cc-surface-8` | No information loss; AI tokens stay untouched | Two parallel systems; defeats the consolidation goal |
 
-**My recommendation: A.** Adopt CC's slot count as the canonical vocabulary going forward (text-1..6, surface-1..8, input-1..3) and rename current AI semantics to fit (e.g. `--ai-text-primary` → `--ai-text-1`). This is a bigger rename but produces one consistent system. If renaming AI semantics is too disruptive, B with a documented mapping is the pragmatic fallback.
+**My recommendation: A.** Adopt CC's slot count as the canonical vocabulary going forward (text-1..6, surface-1..8, input-1..3) and rename current AI semantics to fit (e.g. `--ao-text-primary` → `--ao-text-1`). This is a bigger rename but produces one consistent system. If renaming AI semantics is too disruptive, B with a documented mapping is the pragmatic fallback.
 
 ### Decision 2 — Brand model
 
@@ -229,7 +229,7 @@ CC Primary shifts between modes (teal in Light, light-blue in Dark). AI Primary 
 | **B. CC unifies brand to teal** (Light's value) and uses it in Dark too | Drops the dark-mode light-blue accent. Cleaner but loses an existing distinction. |
 | **C. AI moves to per-mode brand** | Lets AI optionally shift brand in Dark. Probably overkill if you don't need it. |
 
-**My recommendation: A.** Just allow per-mode brand. It's the same pattern the brand-derived chat tokens already use (`--ai-chat-brand` is editable). Costs nothing to support.
+**My recommendation: A.** Just allow per-mode brand. It's the same pattern the brand-derived chat tokens already use (`--ao-chat-brand` is editable). Costs nothing to support.
 
 ### Decision 3 — CC's "Success" green and the green CTA
 
@@ -255,21 +255,21 @@ Once Decision 1 is taken, AI's current semantics rename to match CC's numbering:
 
 | Current AI | New canonical |
 |---|---|
-| `--ai-text-primary` | `--ai-text-1` |
-| `--ai-text-secondary` | `--ai-text-2` |
-| `--ai-text-contrast` | `--ai-text-3` |
-| (new) | `--ai-text-4` |
-| (new) | `--ai-text-5` |
-| (new) | `--ai-text-6` |
-| `--ai-text-invert` | (keep as-is — CC has `Primary Text` for invert) |
-| `--ai-surface-primary` | `--ai-surface-1` |
-| `--ai-surface-elevated-1` | `--ai-surface-2` |
-| `--ai-surface-elevated-2` | `--ai-surface-3` |
-| `--ai-surface-minimal` | `--ai-surface-4` |
-| `--ai-surface-secondary` | `--ai-surface-5` |
-| `--ai-surface-contrast` | `--ai-surface-6` |
-| `--ai-surface-invert` | (keep as-is) |
-| (new) | `--ai-surface-7`, `--ai-surface-8` |
+| `--ao-text-primary` | `--ao-text-1` |
+| `--ao-text-secondary` | `--ao-text-2` |
+| `--ao-text-contrast` | `--ao-text-3` |
+| (new) | `--ao-text-4` |
+| (new) | `--ao-text-5` |
+| (new) | `--ao-text-6` |
+| `--ao-text-invert` | (keep as-is — CC has `Primary Text` for invert) |
+| `--ao-surface-primary` | `--ao-surface-1` |
+| `--ao-surface-elevated-1` | `--ao-surface-2` |
+| `--ao-surface-elevated-2` | `--ao-surface-3` |
+| `--ao-surface-minimal` | `--ao-surface-4` |
+| `--ao-surface-secondary` | `--ao-surface-5` |
+| `--ao-surface-contrast` | `--ao-surface-6` |
+| `--ao-surface-invert` | (keep as-is) |
+| (new) | `--ao-surface-7`, `--ao-surface-8` |
 
 (Alternative: keep current AI names for AI Light/Dark and only add the missing extensions — a smaller change. Decision 1 controls which path.)
 
@@ -277,57 +277,57 @@ Once Decision 1 is taken, AI's current semantics rename to match CC's numbering:
 
 | Canonical token | CC Light value |
 |---|---|
-| `--ai-text-1` | `#0F3B53` (mid-blue/800) |
-| `--ai-text-2` | `#134A68` (mid-blue/700) |
-| `--ai-text-3` | `#335562` (dark-blue/600) |
-| `--ai-text-4` | `#426E86` (mid-blue/600) |
-| `--ai-text-5` | `#667F89` (dark-blue/500) |
-| `--ai-text-6` | `#D0DBE1` (mid-blue/300) |
-| `--ai-surface-1` | `#E7EDF0` (mid-blue/200) |
-| `--ai-surface-2` | `#FFFFFF` |
-| `--ai-surface-3` | `#FFFFFF` |
-| `--ai-surface-4` | `#D0DBE1` (mid-blue/300) |
-| `--ai-surface-5` | `#134A68` (mid-blue/700) |
-| `--ai-surface-6` | `#0F3B53` (mid-blue/800) |
-| `--ai-surface-7` | `#E7EDF0` (mid-blue/200) |
-| `--ai-surface-8` | `#FFFFFF` |
-| `--ai-input-1` | `#FFFFFF` |
-| `--ai-input-2` | `#A1B7C3` (mid-blue/400) |
-| `--ai-input-3` | `#7192A4` (mid-blue/500) |
-| `--ai-surface-brand` (Primary) | `#3391A4` (teal/600) |
-| `--ai-surface-brand-hover` (Primary Focus) | `#00758D` (teal/700) |
-| `--ai-text-invert` (Primary Text) | `#FFFFFF` |
-| `--ai-surface-error` | `#DC2626` (red/600) |
-| `--ai-surface-warning` | `#FB923C` (orange/400) |
-| `--ai-surface-success` | `#22A573` (green/700) |
+| `--ao-text-1` | `#0F3B53` (mid-blue/800) |
+| `--ao-text-2` | `#134A68` (mid-blue/700) |
+| `--ao-text-3` | `#335562` (dark-blue/600) |
+| `--ao-text-4` | `#426E86` (mid-blue/600) |
+| `--ao-text-5` | `#667F89` (dark-blue/500) |
+| `--ao-text-6` | `#D0DBE1` (mid-blue/300) |
+| `--ao-surface-1` | `#E7EDF0` (mid-blue/200) |
+| `--ao-surface-2` | `#FFFFFF` |
+| `--ao-surface-3` | `#FFFFFF` |
+| `--ao-surface-4` | `#D0DBE1` (mid-blue/300) |
+| `--ao-surface-5` | `#134A68` (mid-blue/700) |
+| `--ao-surface-6` | `#0F3B53` (mid-blue/800) |
+| `--ao-surface-7` | `#E7EDF0` (mid-blue/200) |
+| `--ao-surface-8` | `#FFFFFF` |
+| `--ao-input-1` | `#FFFFFF` |
+| `--ao-input-2` | `#A1B7C3` (mid-blue/400) |
+| `--ao-input-3` | `#7192A4` (mid-blue/500) |
+| `--ao-surface-brand` (Primary) | `#3391A4` (teal/600) |
+| `--ao-surface-brand-hover` (Primary Focus) | `#00758D` (teal/700) |
+| `--ao-text-invert` (Primary Text) | `#FFFFFF` |
+| `--ao-surface-error` | `#DC2626` (red/600) |
+| `--ao-surface-warning` | `#FB923C` (orange/400) |
+| `--ao-surface-success` | `#22A573` (green/700) |
 
 ### CC Dark overrides (per-token)
 
 | Canonical token | CC Dark value |
 |---|---|
-| `--ai-text-1` | `#F1F5F9` (grey/100) |
-| `--ai-text-2` | `#E2E8F0` (grey/200) |
-| `--ai-text-3` | `#94A3B8` (grey/400) |
-| `--ai-text-4` | `#CBD5E1` (grey/300) |
-| `--ai-text-5` | `#94A3B8` (grey/400) |
-| `--ai-text-6` | `#CBD5E1` (grey/300) |
-| `--ai-surface-1` | `#0F172A` (grey/900) |
-| `--ai-surface-2` | `#334155` (grey/700) |
-| `--ai-surface-3` | `#1E293B` (grey/800) |
-| `--ai-surface-4` | `#334155` (grey/700) |
-| `--ai-surface-5` | `#334155` (grey/700) |
-| `--ai-surface-6` | `#1E293B` (grey/800) |
-| `--ai-surface-7` | `#1E293B` (grey/800) |
-| `--ai-surface-8` | `#0F172A` (grey/900) |
-| `--ai-input-1` | `#0F172A` (grey/900) |
-| `--ai-input-2` | `#475569` (grey/600) |
-| `--ai-input-3` | `#00AFBE` (light-blue/700) |
-| `--ai-surface-brand` (Primary) | `#00AFBE` (light-blue/700) |
-| `--ai-surface-brand-hover` (Primary Focus) | `#33BFCB` (light-blue/600) |
-| `--ai-text-invert` (Primary Text) | `#F1F5F9` (grey/100) |
-| `--ai-surface-error` | `#EF4444` (red/500) |
-| `--ai-surface-warning` | `#FB923C` (orange/400) — to confirm |
-| `--ai-surface-success` | `#22A573` (green/700) — to confirm |
+| `--ao-text-1` | `#F1F5F9` (grey/100) |
+| `--ao-text-2` | `#E2E8F0` (grey/200) |
+| `--ao-text-3` | `#94A3B8` (grey/400) |
+| `--ao-text-4` | `#CBD5E1` (grey/300) |
+| `--ao-text-5` | `#94A3B8` (grey/400) |
+| `--ao-text-6` | `#CBD5E1` (grey/300) |
+| `--ao-surface-1` | `#0F172A` (grey/900) |
+| `--ao-surface-2` | `#334155` (grey/700) |
+| `--ao-surface-3` | `#1E293B` (grey/800) |
+| `--ao-surface-4` | `#334155` (grey/700) |
+| `--ao-surface-5` | `#334155` (grey/700) |
+| `--ao-surface-6` | `#1E293B` (grey/800) |
+| `--ao-surface-7` | `#1E293B` (grey/800) |
+| `--ao-surface-8` | `#0F172A` (grey/900) |
+| `--ao-input-1` | `#0F172A` (grey/900) |
+| `--ao-input-2` | `#475569` (grey/600) |
+| `--ao-input-3` | `#00AFBE` (light-blue/700) |
+| `--ao-surface-brand` (Primary) | `#00AFBE` (light-blue/700) |
+| `--ao-surface-brand-hover` (Primary Focus) | `#33BFCB` (light-blue/600) |
+| `--ao-text-invert` (Primary Text) | `#F1F5F9` (grey/100) |
+| `--ao-surface-error` | `#EF4444` (red/500) |
+| `--ao-surface-warning` | `#FB923C` (orange/400) — to confirm |
+| `--ao-surface-success` | `#22A573` (green/700) — to confirm |
 
 ---
 

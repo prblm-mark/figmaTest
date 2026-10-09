@@ -124,7 +124,7 @@
    *
    * HEIGHT PLUS ONE ROW GAP. Animating the height alone is not enough: a 0-height grid item still
    * sits in a row with a gap either side, so a close would fade to nothing and the list would
-   * STILL jump by one `--ai-spacing-3` as the element left, and an open would start 8px tall
+   * STILL jump by one `--ao-spacing-3` as the element left, and an open would start 8px tall
    * rather than flush. The margin cancels exactly that gap, so the closed end of the animation is
    * byte-for-byte the layout with no panel in it.
    *
@@ -151,7 +151,7 @@
    * ALWAYS FINISHES. `transitionend` can fail to arrive — a display change, a cancelled
    * transition, an interrupted tap — and a state change must never be hostage to an animation, so
    * a timer finishes it regardless. Whichever runs first disarms the other. */
-  var DETAIL_MS = 250;                /* keep in step with --ai-transition-slow */
+  var DETAIL_MS = 250;                /* keep in step with --ao-transition-slow */
   var ANIMATING = 'is-animating';
   var cancelDetailAnim = null;
 
@@ -552,7 +552,7 @@
             '</div>' +
             /* The name MUST be wrapped in `__sponsor-name`. Emitted as a bare text node it
              * inherited the card's typography — measured 16px/400/24px in #335562 against the
-             * 12px/500/16px `--ai-text-contrast` the row binds in Figma (3476:106259). The row's
+             * 12px/500/16px `--ao-text-contrast` the row binds in Figma (3476:106259). The row's
              * own gap and 6px padding were right, so only the name was wrong, which is why it
              * read as a styling bug rather than a missing element. */
             (t.sponsor
@@ -1903,7 +1903,7 @@
     document.dispatchEvent(new CustomEvent('sp:toast', {
       detail: {
         /* Type=ERROR, not success — Figma 1:43029 / 1:44173 place TriangleAlert with the
-         * --ai-border-error ring where the create and edit toasts use BadgeCheck. A removal is
+         * --ao-border-error ring where the create and edit toasts use BadgeCheck. A removal is
          * reported as a warning. Copy keeps the bold-subject / plain-verb / bold-object shape. */
         type: 'error',
         parts: [

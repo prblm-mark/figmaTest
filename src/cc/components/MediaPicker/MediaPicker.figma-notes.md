@@ -24,13 +24,13 @@
 
 | Property | Token |
 |---|---|
-| thumb size | --ai-spacing-10 (56) |
-| thumb bg / border / radius | --ai-surface-minimal / --ai-border-secondary / --ai-radius-md (designer amend 2026-09-29, was -sm — flag for Figma) |
-| image icon | --ai-icon-size-md, --ai-icon-secondary |
-| gap thumb→actions / between buttons | --ai-spacing-4 / --ai-spacing-2 |
+| thumb size | --ao-spacing-10 (56) |
+| thumb bg / border / radius | --ao-surface-minimal / --ao-border-secondary / --ao-radius-md (designer amend 2026-09-29, was -sm — flag for Figma) |
+| image icon | --ao-icon-size-md, --ao-icon-secondary |
+| gap thumb→actions / between buttons | --ao-spacing-4 / --ao-spacing-2 |
 
 ## Token Gaps & Decisions
-Figma image icon is bound to `--ai-border-primary`; code uses `--ai-icon-secondary` (same #667f89 in CC, correct semantic). Edit/delete wiring is backend.
+Figma image icon is bound to `--ao-border-primary`; code uses `--ao-icon-secondary` (same #667f89 in CC, correct semantic). Edit/delete wiring is backend.
 
 ## Notes
 - Built 2026-09-28 from the View & Edit kit (section `3861:1902`, CC Light mode). The kit was
@@ -46,7 +46,7 @@ The Edit action is now `btn btn--secondary btn--sm btn--icon` with only the penc
 
 ## Thumbnail opens the selector (designer, 2026-09-29)
 
-`.media-picker__thumb` is now a `<button>` (`aria-label="Choose <field>"`). Clicking the image or the empty placeholder opens the Selector Type=Media, the same as Edit. On hover it takes a `--ai-border-brand` border, and focus shows the standard ring. The file kind (audio) keeps a plain span thumb.
+`.media-picker__thumb` is now a `<button>` (`aria-label="Choose <field>"`). Clicking the image or the empty placeholder opens the Selector Type=Media, the same as Edit. On hover it takes a `--ao-border-brand` border, and focus shows the standard ring. The file kind (audio) keeps a plain span thumb.
 
 ## Empty vs filled (designer, 2026-09-29)
 

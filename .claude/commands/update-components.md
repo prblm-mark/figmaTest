@@ -55,14 +55,14 @@ If no token values changed (diff is empty AND no files were newly created), repo
 
 Check that desktop fluid font values are LARGER than mobile fluid values for the same variables.
 
-Read `css/tokens.css` and `css/tokens-mobile.css` and compare `--ai-font-fluid-sm`:
+Read `css/tokens.css` and `css/tokens-mobile.css` and compare `--ao-font-fluid-sm`:
 - Desktop (tokens.css): should be `1rem` (16px)
 - Mobile (tokens-mobile.css): should be `0.875rem` (14px)
 
 Desktop > Mobile for all fluid sizes = ✓ correct order.
 
 If ANY fluid value is smaller on desktop than on mobile, STOP and report:
-> "Mode order error detected: --ai-font-fluid-[X] is [Xrem] on desktop but [Yrem] on mobile (desktop should be larger). Check FigmaTokens/Typography/ source files."
+> "Mode order error detected: --ao-font-fluid-[X] is [Xrem] on desktop but [Yrem] on mobile (desktop should be larger). Check FigmaTokens/Typography/ source files."
 
 Do not continue until this is resolved.
 
@@ -70,14 +70,14 @@ Do not continue until this is resolved.
 
 ## Step 3 — Triage components
 
-Read the CSS file for each component. Check which `--ai-*` tokens it uses.
+Read the CSS file for each component. Check which `--ao-*` tokens it uses.
 Cross-reference each token against the change manifest from Step 1.
 
 Build a triage table:
 
 | Component | CSS file | Tokens changed | Action |
 |---|---|---|---|
-| Button | Button.css | --ai-btn-primary | Review + update |
+| Button | Button.css | --ao-btn-primary | Review + update |
 | InfoLabel | InfoLabel.css | none | Skip |
 | … | … | … | … |
 
@@ -87,7 +87,7 @@ Components with "Review + update" proceed to Step 4.
 Also flag any component that:
 - Uses a token whose value CHANGED (not just added)
 - Uses a hardcoded hex or px value that should now map to a changed token
-- Should NOW use a newly-added token (e.g. `--ai-surface-minimal`) based on its Figma design
+- Should NOW use a newly-added token (e.g. `--ao-surface-minimal`) based on its Figma design
 
 ---
 
@@ -101,7 +101,7 @@ Call `get_design_context` for each variant of the component. Do NOT skip variant
 Call `get_variable_defs` to identify any token gaps.
 
 Follow all rules from CLAUDE.md §6 (Figma → Code Workflow):
-- Token gap rule: STOP and report any property with no `--ai-*` semantic token
+- Token gap rule: STOP and report any property with no `--ao-*` semantic token
 - Contextual override rule: STOP and flag any anomaly vs the child component design
 - Interaction discovery rule: STOP if any JS-interaction variants are found that lack JS
 
@@ -163,7 +163,7 @@ Push if the user pre-approved it in Step 0.
 
 All rules from `CLAUDE.md` apply at every step:
 - Never infer token values — always fetch from Figma
-- Token gap rule: STOP on any missing `--ai-*` semantic token
+- Token gap rule: STOP on any missing `--ao-*` semantic token
 - Contextual override rule: STOP and flag before writing any code
 - Transition prompt rule: ask before adding any `transition` CSS
 - No hardcoded hex or px dimension values

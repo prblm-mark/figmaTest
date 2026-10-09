@@ -59,36 +59,36 @@ Range single/dual are the same calendar with `mode=range` and 1 or 2 panels.
 ### Cell state modifiers
 | Modifier | Treatment | Token |
 |---|---|---|
-| (base) current-month day | text-primary regular | `--ai-text-primary` |
-| `--muted` | adjacent-month day | `--ai-text-contrast` |
-| `--today` | grey bg + brand bold | `--ai-surface-minimal` + `--ai-text-brand` + `--ai-font-bold` |
-| `--selected` | brand fill + white semibold | `--ai-surface-brand` + `--ai-text-invert` + `--ai-font-semibold` |
-| `--range-start` / `--range-end` | brand fill, rounded on one side only | `--ai-surface-brand` + `--ai-text-invert` |
-| `--in-range` | soft band + brand medium, square | `--ai-surface-brand-soft-extra` + `--ai-text-brand` + `--ai-font-medium` |
-| `--disabled` | 50% opacity, not-allowed | `opacity: 0.5` + `--ai-text-contrast` |
-| `--current` (month/year grid) | same as `--today` | `--ai-surface-minimal` + `--ai-text-brand` bold |
-| hover (enabled, unselected) | subtle grey | `--ai-surface-minimal` |
+| (base) current-month day | text-primary regular | `--ao-text-primary` |
+| `--muted` | adjacent-month day | `--ao-text-contrast` |
+| `--today` | grey bg + brand bold | `--ao-surface-minimal` + `--ao-text-brand` + `--ao-font-bold` |
+| `--selected` | brand fill + white semibold | `--ao-surface-brand` + `--ao-text-invert` + `--ao-font-semibold` |
+| `--range-start` / `--range-end` | brand fill, rounded on one side only | `--ao-surface-brand` + `--ao-text-invert` |
+| `--in-range` | soft band + brand medium, square | `--ao-surface-brand-soft-extra` + `--ao-text-brand` + `--ao-font-medium` |
+| `--disabled` | 50% opacity, not-allowed | `opacity: 0.5` + `--ao-text-contrast` |
+| `--current` (month/year grid) | same as `--today` | `--ao-surface-minimal` + `--ao-text-brand` bold |
+| hover (enabled, unselected) | subtle grey | `--ao-surface-minimal` |
 
 ## Token Mapping
 
 | Property | Token |
 |---|---|
-| Calendar bg / border / radius | `--ai-surface-primary` / `--ai-border-secondary` (1px) / `--ai-radius-md` |
-| Calendar shadow | `--ai-shadow-xl` (Figma `0 0 10px .05, 0 2px 1px .1` — mapped to the standard card/popover token) |
-| Calendar padding | `--ai-spacing-5` (16px) |
-| Month panel gap (dual) | `--ai-spacing-6` (24px) |
-| Cell size | `--ai-spacing-7` (32px), grid gap `--ai-spacing-1` (4px) |
-| Cell radius | `--ai-radius-md` |
-| Day / title font | `--ai-font-title` `--ai-font-fixed-xs` (14px) `--ai-leading-xs` |
-| Weekday / footer / month-year-cell font | `--ai-font-fixed-xxs` (12px) |
-| Nav / field icon | `--ai-icon-size-sm` (16px), `--ai-icon-contrast` |
-| Footer border / padding | `--ai-border-secondary` top, `--ai-spacing-4` (12px) |
+| Calendar bg / border / radius | `--ao-surface-primary` / `--ao-border-secondary` (1px) / `--ao-radius-md` |
+| Calendar shadow | `--ao-shadow-xl` (Figma `0 0 10px .05, 0 2px 1px .1` — mapped to the standard card/popover token) |
+| Calendar padding | `--ao-spacing-5` (16px) |
+| Month panel gap (dual) | `--ao-spacing-6` (24px) |
+| Cell size | `--ao-spacing-7` (32px), grid gap `--ao-spacing-1` (4px) |
+| Cell radius | `--ao-radius-md` |
+| Day / title font | `--ao-font-title` `--ao-font-fixed-xs` (14px) `--ao-leading-xs` |
+| Weekday / footer / month-year-cell font | `--ao-font-fixed-xxs` (12px) |
+| Nav / field icon | `--ao-icon-size-sm` (16px), `--ao-icon-contrast` |
+| Footer border / padding | `--ao-border-secondary` top, `--ao-spacing-4` (12px) |
 
 ## Token Gaps / Decisions
-- **None.** Every colour, spacing, radius, and type value maps to an existing `--ai-*` token.
+- **None.** Every colour, spacing, radius, and type value maps to an existing `--ao-*` token.
 - Calendar shadow: Figma specifies `0 0 10px rgba(0,0,0,.05), 0 2px 1px rgba(0,0,0,.1)`; used the
-  standard popover token — originally `--ai-shadow-lg` (`0 0 20px …, 0 2px 2px …`), optical, within
-  tolerance. Re-pointed to `--ai-shadow-xl` (`0 20px 25px -5px …, 0 8px 10px -6px …`) in the
+  standard popover token — originally `--ao-shadow-lg` (`0 0 20px …, 0 2px 2px …`), optical, within
+  tolerance. Re-pointed to `--ao-shadow-xl` (`0 20px 25px -5px …, 0 8px 10px -6px …`) in the
   2026-09-23 shadow rework, where every old-`lg` consumer moved to the new `xl` step.
 
 ## Notes

@@ -27,7 +27,7 @@ This is a **CC-themed sibling** of `src/templates/AiChatMinimised/`:
 
 | Property | AiChatMinimised (AI Chat) | AiAssistant (CC) |
 |---|---|---|
-| Width | 384px (`--ai-size-7`) | 320px (`--ai-size-6`) |
+| Width | 384px (`--ao-size-7`) | 320px (`--ao-size-6`) |
 | Theme | AI default | `data-brand="cc"` |
 | Header title | Assistant selector dropdown ("Support Assistant ▾") | Plain text "Affino Assistant" |
 | Initial screen | SuggestedQuestion grid + intro | Custom welcome paragraphs only |
@@ -39,7 +39,7 @@ This is a **CC-themed sibling** of `src/templates/AiChatMinimised/`:
 | Close | Hides widget | Same |
 
 The CSS / HTML structure is a clone of AiChatMinimised with `.ai-chat-min` →
-`.ai-assistant` rename, `--ai-size-7` → `--ai-size-6`, and the simplified header +
+`.ai-assistant` rename, `--ao-size-7` → `--ao-size-6`, and the simplified header +
 custom Initial content.
 
 ---
@@ -68,18 +68,18 @@ custom Initial content.
 
 | Property | Token | Notes |
 |---|---|---|
-| Width | `var(--ai-size-6)` (320px) | Figma default. User-resizable via top-edge handle. |
+| Width | `var(--ao-size-6)` (320px) | Figma default. User-resizable via top-edge handle. |
 | Height | `var(--_panel-height, 668px)` | CSS variable set by resize JS. Min 320px. Max 100vh − 48px. |
-| Border-radius | `var(--ai-radius-xl)` (24px) | |
-| Background | `var(--ai-surface-primary)` | |
-| Shadow | `var(--ai-shadow-xl)` | |
-| Header border-bottom | `1px solid var(--ai-border-secondary)` | |
-| Title font | `var(--ai-font-body)` semibold, `var(--ai-font-fixed-xs)` (14px), `var(--ai-leading-md)` | |
-| Title colour | `var(--ai-text-primary)` | |
-| Welcome paragraphs | `var(--ai-font-body)` regular, `var(--ai-font-fixed-xs)` (14px), line-height 1.5 | |
-| Welcome colour | `var(--ai-text-secondary)` | |
+| Border-radius | `var(--ao-radius-xl)` (24px) | |
+| Background | `var(--ao-surface-primary)` | |
+| Shadow | `var(--ao-shadow-xl)` | |
+| Header border-bottom | `1px solid var(--ao-border-secondary)` | |
+| Title font | `var(--ao-font-body)` semibold, `var(--ao-font-fixed-xs)` (14px), `var(--ao-leading-md)` | |
+| Title colour | `var(--ao-text-primary)` | |
+| Welcome paragraphs | `var(--ao-font-body)` regular, `var(--ao-font-fixed-xs)` (14px), line-height 1.5 | |
+| Welcome colour | `var(--ao-text-secondary)` | |
 
-All values come from existing `--ai-*` semantic tokens. No token gaps — the CC
+All values come from existing `--ao-*` semantic tokens. No token gaps — the CC
 theme picks up `data-brand="cc"` and re-paints surfaces / brand colours via the
 tokens-cc.css overrides.
 
@@ -94,7 +94,7 @@ listener checks `closest('button')` first.
 
 **Resize** — top-edge handle (`#resize-handle`) with `cursor: ns-resize`.
 Pointerdown → tracks vertical delta → updates `--_panel-height`. Min 320px,
-max `calc(100vh - var(--ai-spacing-6) * 2)`.
+max `calc(100vh - var(--ao-spacing-6) * 2)`.
 
 **Sidebar** — PanelLeft button toggles `.ai-assistant--sidebar-open`. CSS
 slide-in via `transform: translateX(-100%) → 0`. Overlay click also closes.
@@ -112,13 +112,13 @@ here, so direct submit) or submit the textarea → transitions via GSAP.
 
 ## Token gaps
 
-None. All values map to existing `--ai-*` tokens.
+None. All values map to existing `--ao-*` tokens.
 
 ---
 
 ## Notes
 
-- `--ai-size-6` resolves to 320px — matches the Figma frame width exactly.
+- `--ao-size-6` resolves to 320px — matches the Figma frame width exactly.
 - The Initial screen IS the only structural divergence from the standard chat
   pattern. Once the user submits a question it transitions to Processing /
   Response which use the standard ChatMain markup. Both inherit the mobile-
@@ -132,7 +132,7 @@ None. All values map to existing `--ai-*` tokens.
 
 - 2026-05-27: Initial template scaffold. Cloned from
   `src/templates/AiChatMinimised/` with `.ai-chat-min` → `.ai-assistant` rename
-  and `--ai-size-7` → `--ai-size-6` (384 → 320px). Header simplified (assistant
+  and `--ao-size-7` → `--ao-size-6` (384 → 320px). Header simplified (assistant
   selector removed, replaced with plain "Affino Assistant" title). Initial
   state replaced with the verbatim welcome paragraph block from Figma
   `4151:8248`. CC theme via `data-brand="cc"` on `<html>`. Drag + top-edge

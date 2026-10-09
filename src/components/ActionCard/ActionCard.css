@@ -1,24 +1,24 @@
-/* ActionCard component — uses only --ai-* design tokens.
+/* ActionCard component — uses only --ao-* design tokens.
    A single-row card: a title that fills the row plus a trailing action
    (an xs Tertiary Button, or a right-chevron affordance). */
 
 .action-card {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-6);
+  gap: var(--ao-spacing-6);
   width: 100%;
-  min-height: var(--ai-spacing-10);
-  padding: var(--ai-spacing-4);
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
+  min-height: var(--ao-spacing-10);
+  padding: var(--ao-spacing-4);
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
   text-decoration: none;
-  transition: border-color var(--ai-transition-default);
+  transition: border-color var(--ao-transition-default);
 }
 
 /* Hover darkens the border for both Action variants (Figma State=Hover). */
 .action-card:hover {
-  border-color: var(--ai-border-primary);
+  border-color: var(--ao-border-primary);
   text-decoration: none;
 }
 
@@ -30,20 +30,20 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-medium);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-sm);
-  letter-spacing: var(--ai-tracking-5);
-  color: var(--ai-text-primary);
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  letter-spacing: var(--ao-tracking-5);
+  color: var(--ao-text-primary);
 }
 
 /* Right-chevron affordance (Action=Right Chevron variant). */
 .action-card__chevron {
   flex-shrink: 0;
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-secondary);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-secondary);
 }
 
 /* ── Description (code-first, 2026-09-30 — Article steps "Add a step" chooser; flag for Figma) ──
@@ -55,7 +55,7 @@
   display: flex;
   flex: 1 1 0;
   flex-direction: column;
-  gap: var(--ai-spacing-1);
+  gap: var(--ao-spacing-1);
   min-width: 0;
 }
 
@@ -64,11 +64,11 @@
 
 .action-card__desc {
   margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-2xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-secondary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-2xs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
 }
 
 /* Unavailable choice (code-first): stays readable so its description can say why, but takes
@@ -78,4 +78,4 @@
   opacity: 0.5;
 }
 
-.action-card--disabled:hover { border-color: var(--ai-border-secondary); }
+.action-card--disabled:hover { border-color: var(--ao-border-secondary); }

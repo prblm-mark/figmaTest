@@ -11,7 +11,7 @@
 
 .breadcrumb {
   display: inline-block;
-  font-family: var(--ai-font-title);
+  font-family: var(--ao-font-title);
 }
 
 .breadcrumb__list {
@@ -22,7 +22,7 @@
    * truncating rather than by growing. */
   flex-wrap: nowrap;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   /* Lets the list shrink below its content width, which is what makes the ellipsis reachable —
    * without it a flex item never goes under min-content and the trail just overflows instead. */
   min-inline-size: 0;
@@ -39,13 +39,13 @@
  * `text-overflow: ellipsis`, and clientW 40 against scrollW 42 — i.e. genuinely overflowing and
  * still clipping FLUSH, with no ellipsis drawn.
  *
- * Vertical centring survives the change: `height` and `line-height` are both `--ai-leading-md`, so
+ * Vertical centring survives the change: `height` and `line-height` are both `--ao-leading-md`, so
  * a single line of text sits centred without needing `align-items`. */
 .breadcrumb__item {
   display: block;
-  height: var(--ai-leading-md);
-  font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-md);
+  height: var(--ao-leading-md);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
   /* Same reason as the list: each crumb must be allowed under its own min-content. */
   min-inline-size: 0;
   overflow: hidden;
@@ -66,15 +66,15 @@
 .breadcrumb__link {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
-  color: var(--ai-text-secondary);
-  font-weight: var(--ai-font-medium);
+  gap: var(--ao-spacing-2);
+  color: var(--ao-text-secondary);
+  font-weight: var(--ao-font-medium);
   text-decoration: none;
-  transition: color var(--ai-transition-default);
+  transition: color var(--ao-transition-default);
 }
 
 .breadcrumb__link:hover {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 /* Items whose content is a FLEX CONTROL get their flex box back. The `<li>` became `display: block`
@@ -129,8 +129,8 @@
 
 /* Current page (last item, non-clickable) */
 .breadcrumb__item--current {
-  color: var(--ai-text-primary);
-  font-weight: var(--ai-font-semibold);
+  color: var(--ao-text-primary);
+  font-weight: var(--ao-font-semibold);
 }
 
 /* Separator (chevron-right between items) */
@@ -138,63 +138,63 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-contrast);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-contrast);
 }
 
 .breadcrumb__separator [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 /* Home icon link */
 .breadcrumb__link--home {
-  color: var(--ai-icon-secondary);
+  color: var(--ao-icon-secondary);
 }
 
 .breadcrumb__link--home [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 .breadcrumb__link--home:hover {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 /* Dropdown trigger button (Type=Dropdown) — text + chevron-down */
 .breadcrumb__dropdown {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
   background: transparent;
   border: 0;
   padding: 0;
-  color: var(--ai-text-secondary);
+  color: var(--ao-text-secondary);
   font-family: inherit;
   font-size: inherit;
-  font-weight: var(--ai-font-medium);
+  font-weight: var(--ao-font-medium);
   line-height: inherit;
   cursor: pointer;
-  transition: color var(--ai-transition-default);
+  transition: color var(--ao-transition-default);
 }
 
 .breadcrumb__dropdown:hover {
-  color: var(--ai-text-primary);
+  color: var(--ao-text-primary);
 }
 
 .breadcrumb__dropdown [data-lucide] {
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
 }
 
 /* ── Type=Solid Background ────────────────────────────── */
 
 .breadcrumb--solid .breadcrumb__list {
-  background-color: var(--ai-surface-minimal);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-md);
-  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+  background-color: var(--ao-surface-minimal);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  padding: var(--ao-spacing-3) var(--ao-spacing-5);
 }
 
 /* ── Focus ────────────────────────────────────────────── */
@@ -202,7 +202,7 @@
 
 /* ── Below the sm breakpoint (640px) ────────────────────────────────────────
  * Tighter gaps on small screens (designer, 2026-08-28): the list and the dropdown trigger both go
- * from `--ai-spacing-2` (6px) to `--ai-spacing-1` (4px). 639px because `max-width` is inclusive and
+ * from `--ao-spacing-2` (6px) to `--ao-spacing-1` (4px). 639px because `max-width` is inclusive and
  * sm is 640 — the same value ControlHub's single-column block already uses.
  *
  * ANONYMOUS `@container`, deliberately. This component establishes no container of its own, so the
@@ -221,10 +221,10 @@
  * establishes one itself, per CLAUDE.md §4a. */
 @container (max-width: 639px) {
   .breadcrumb__list {
-    gap: var(--ai-spacing-1);
+    gap: var(--ao-spacing-1);
   }
 
   .breadcrumb__dropdown {
-    gap: var(--ai-spacing-1);
+    gap: var(--ao-spacing-1);
   }
 }

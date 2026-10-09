@@ -29,16 +29,16 @@
 
 | Property | Token |
 |---|---|
-| bar | --ai-surface-primary, 1px --ai-border-secondary, --ai-radius-md; Full: radius-none, bottom border |
-| bar padding / gap | --ai-spacing-0-5 top, --ai-spacing-5 sides / --ai-spacing-5 |
-| tab | padding --ai-spacing-5 0, gap --ai-spacing-2, --ai-font-fixed-xs Medium --ai-leading-sm |
-| tab colour | --ai-text-contrast → active --ai-text-brand |
-| underline | 2px transparent → active --ai-border-brand |
-| count | --ai-surface-info-soft, --ai-radius-full, 0 --ai-spacing-2, min-width --ai-spacing-6, --ai-font-fixed-xxs SemiBold --ai-text-info |
-| actions | gap --ai-spacing-3, padding-right --ai-spacing-4 |
+| bar | --ao-surface-primary, 1px --ao-border-secondary, --ao-radius-md; Full: radius-none, bottom border |
+| bar padding / gap | --ao-spacing-0-5 top, --ao-spacing-5 sides / --ao-spacing-5 |
+| tab | padding --ao-spacing-5 0, gap --ao-spacing-2, --ao-font-fixed-xs Medium --ao-leading-sm |
+| tab colour | --ao-text-contrast → active --ao-text-brand |
+| underline | 2px transparent → active --ao-border-brand |
+| count | --ao-surface-info-soft, --ao-radius-full, 0 --ao-spacing-2, min-width --ao-spacing-6, --ao-font-fixed-xxs SemiBold --ao-text-info |
+| actions | gap --ao-spacing-3, padding-right --ao-spacing-4 |
 
 ## Token Gaps & Decisions
-Draft active underline was `Lagoon/10` (no token) → `--ai-border-brand` (designer). Inactive underline was the borrowed `--ai-btn-primary-border` → transparent. Tabs are links: Details / Article steps are separate screens.
+Draft active underline was `Lagoon/10` (no token) → `--ao-border-brand` (designer). Inactive underline was the borrowed `--ao-btn-primary-border` → transparent. Tabs are links: Details / Article steps are separate screens.
 
 ## Notes
 - Built 2026-09-28 from the View & Edit kit (section `3861:1902`, CC Light mode). The kit was
@@ -53,11 +53,11 @@ On View / Edit only, in `.record-tabs__actions` (far right): DS Toggle xxs + "Sh
 
 ## Active tab weight (designer, 2026-09-29)
 
-`.record-tab--active` is **SemiBold** (`--ai-font-semibold`); the other tabs stay Medium. Flag for Figma.
+`.record-tab--active` is **SemiBold** (`--ao-font-semibold`); the other tabs stay Medium. Flag for Figma.
 
 ## Mobile (designer, 2026-09-30)
 
-`@container cs-page (max-width: 767px)`: the Steps actions hide **Import** (`.record-tabs__import`) and make every icon + label tab action icon-only — **+ Add**, and **Cancel** (`x`) / **Save** (`check`) on the Import / Add step forms (32px square via `.record-tabs__actions .btn:has(> .record-tabs__btn-label)`, label hidden, `aria-label` kept) — at ~390 the tabs, Import and Add ran into each other. The bar itself tightens to gap `--ai-spacing-3` and padding `--ai-spacing-0-5 --ai-spacing-4 0` (desktop `spacing-5` for both), and the gap between tabs (`.record-tabs__list`) to `--ai-spacing-3` (desktop `spacing-5`). Tab labels (`.record-tab`) step down to `--ai-font-fixed-2xs` (desktop `xs`).
+`@container cs-page (max-width: 767px)`: the Steps actions hide **Import** (`.record-tabs__import`) and make every icon + label tab action icon-only — **+ Add**, and **Cancel** (`x`) / **Save** (`check`) on the Import / Add step forms (32px square via `.record-tabs__actions .btn:has(> .record-tabs__btn-label)`, label hidden, `aria-label` kept) — at ~390 the tabs, Import and Add ran into each other. The bar itself tightens to gap `--ao-spacing-3` and padding `--ao-spacing-0-5 --ao-spacing-4 0` (desktop `spacing-5` for both), and the gap between tabs (`.record-tabs__list`) to `--ao-spacing-3` (desktop `spacing-5`). Tab labels (`.record-tab`) step down to `--ao-font-fixed-2xs` (desktop `xs`).
 
 ## Figma build 2026-09-30
 Set `3871:3246` now: Width × **Actions (None | Steps | Form | Sidebar)** × **Device (Desktop | Mobile)** — 14 variants

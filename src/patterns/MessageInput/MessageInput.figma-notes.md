@@ -40,49 +40,49 @@ MessageInput is a pattern-tier component. It is the chat input bar containing a 
 
 | Property | Token | Value |
 |---|---|---|
-| Input box bg | `--ai-surface-secondary` | #ffffff |
-| Input box border | `--ai-border-secondary` | #d1d5db |
-| Input box padding (desktop) | `--ai-spacing-6` | 24px |
-| Input box padding (mobile/min) | `--ai-spacing-5` | 16px |
-| Input box gap | `--ai-spacing-5` | 16px |
-| Input box radius | `--ai-radius-lg` | 16px |
-| Input box shadow | `--ai-shadow-md` | 0 2px 10px rgba(0,0,0,0.1) |
-| Input box max-width | `--ai-size-11` | 768px |
-| Placeholder color | `--ai-text-contrast` | #6b7280 |
-| Placeholder font (desktop) | `--ai-font-fixed-sm` | 16px |
-| Placeholder font (mobile/min) | `--ai-font-fluid-sm` | responsive |
+| Input box bg | `--ao-surface-secondary` | #ffffff |
+| Input box border | `--ao-border-secondary` | #d1d5db |
+| Input box padding (desktop) | `--ao-spacing-6` | 24px |
+| Input box padding (mobile/min) | `--ao-spacing-5` | 16px |
+| Input box gap | `--ao-spacing-5` | 16px |
+| Input box radius | `--ao-radius-lg` | 16px |
+| Input box shadow | `--ao-shadow-md` | 0 2px 10px rgba(0,0,0,0.1) |
+| Input box max-width | `--ao-size-11` | 768px |
+| Placeholder color | `--ao-text-contrast` | #6b7280 |
+| Placeholder font (desktop) | `--ao-font-fixed-sm` | 16px |
+| Placeholder font (mobile/min) | `--ao-font-fluid-sm` | responsive |
 | Placeholder font-feature | `'ss04' 1, 'cv01' 1, 'calt' 0, 'kern' 0` | OpenType |
-| Send btn disabled bg | `--ai-btn-bg-disabled` | #d1d5db |
+| Send btn disabled bg | `--ao-btn-bg-disabled` | #d1d5db |
 | Send btn disabled opacity | `0.8` | 80% (raw, approved) |
-| Send btn active bg | `--ai-btn-primary-bg` | #0071d8 |
-| Filter container radius | `--ai-radius-md` | 8px |
-| Disclaimer font | `--ai-font-fixed-xxs` | 12px |
-| Disclaimer line-height | `--ai-leading-xs` | 16px |
-| Disclaimer color | `--ai-text-contrast` | #6b7280 |
-| Disclaimer tracking | `--ai-tracking-5` | 0.0125em |
+| Send btn active bg | `--ao-btn-primary-bg` | #0071d8 |
+| Filter container radius | `--ao-radius-md` | 8px |
+| Disclaimer font | `--ao-font-fixed-xxs` | 12px |
+| Disclaimer line-height | `--ao-leading-xs` | 16px |
+| Disclaimer color | `--ao-text-contrast` | #6b7280 |
+| Disclaimer tracking | `--ao-tracking-5` | 0.0125em |
 | Disclaimer feature | `'case' 1` | OpenType |
-| Disclaimer padding | `--ai-spacing-3` v / `--ai-spacing-6` h | 8px / 24px |
-| Filter popover bg | `--ai-surface-secondary` | #ffffff |
-| Filter popover border | `--ai-border-secondary` | #d1d5db |
-| Filter popover radius | `--ai-radius-md` | 8px |
-| Filter popover shadow | `--ai-shadow-xl` | card elevation |
-| Filter popover width | `--ai-size-1` | 128px (Figma: 120px, rounded to closest token) |
+| Disclaimer padding | `--ao-spacing-3` v / `--ao-spacing-6` h | 8px / 24px |
+| Filter popover bg | `--ao-surface-secondary` | #ffffff |
+| Filter popover border | `--ao-border-secondary` | #d1d5db |
+| Filter popover radius | `--ao-radius-md` | 8px |
+| Filter popover shadow | `--ao-shadow-xl` | card elevation |
+| Filter popover width | `--ao-size-1` | 128px (Figma: 120px, rounded to closest token) |
 | Filter popover padding | `1px` | thin inner border effect |
-| Filter item min-height | `--ai-spacing-7` | 32px (Figma: 35px, rounded to closest token) |
-| Filter item padding | `--ai-spacing-4` | 12px |
-| Filter item font | `--ai-font-fixed-xs` | 14px |
-| Filter item text | `--ai-text-primary` | #1f2a37 |
-| Filter item font-family | `--ai-font-title` | Inter |
-| Selected item weight | `--ai-font-medium` | 500 |
-| Check icon size | `--ai-icon-size-sm` | 16px |
+| Filter item min-height | `--ao-spacing-7` | 32px (Figma: 35px, rounded to closest token) |
+| Filter item padding | `--ao-spacing-4` | 12px |
+| Filter item font | `--ao-font-fixed-xs` | 14px |
+| Filter item text | `--ao-text-primary` | #1f2a37 |
+| Filter item font-family | `--ao-font-title` | Inter |
+| Selected item weight | `--ao-font-medium` | 500 |
+| Check icon size | `--ao-icon-size-sm` | 16px |
 
 ## Token Gaps
 
 | Property | Figma value | Resolution |
 |---|---|---|
-| Filter container `border-radius-3` | 6px | Approved: use `--ai-radius-md` (8px) — closest token |
-| Filter popover width | 120px | Approved: use `--ai-size-1` (128px) — closest token |
-| Filter item height | 35px | Approved: use `--ai-spacing-7` (32px) — closest token |
+| Filter container `border-radius-3` | 6px | Approved: use `--ao-radius-md` (8px) — closest token |
+| Filter popover width | 120px | Approved: use `--ao-size-1` (128px) — closest token |
+| Filter item height | 35px | Approved: use `--ao-spacing-7` (32px) — closest token |
 | Send disabled opacity | 80% | Approved: raw `0.8` |
 | Filter popover `spacing/px` | 1px | Approved: raw `1px` (border-like spacing) |
 
@@ -101,7 +101,7 @@ MessageInput is a pattern-tier component. It is the chat input bar containing a 
 
 ## Notes
 
-- Mobile layout via `@media (max-width: 767px)`: padding shrinks to `--ai-spacing-5`, placeholder uses `--ai-font-fluid-sm`, send button hidden in default (visible when `.msg-input--active` or `.msg-input--filtered`)
+- Mobile layout via `@media (max-width: 767px)`: padding shrinks to `--ao-spacing-5`, placeholder uses `--ao-font-fluid-sm`, send button hidden in default (visible when `.msg-input--active` or `.msg-input--filtered`)
 - Minimised layout via `[data-layout="minimised"]`: same sizing as mobile but both buttons always visible
 - Active state: JS listens for `input` event on textarea, adds `.msg-input--active` when non-empty
 - Filtered state: when a duration is selected from the popover, JS adds `.msg-input--filtered` to the wrapper and writes the selected label into `.msg-input__filter-label`. The filter button expands from icon-only to icon + label with the tertiary hover background to signal an active filter

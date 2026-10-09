@@ -14,7 +14,7 @@ hero:
 
 features:
   - title: Token-Driven
-    details: Every visual value comes from --ai-* design tokens. Generated from Figma, consumed by CSS.
+    details: Every visual value comes from --ao-* design tokens. Generated from Figma, consumed by CSS.
   - title: Figma Synced
     details: Bidirectional workflow — Figma components map to code via Code Connect. Tokens exported as DTCG JSON.
   - title: Dark Mode

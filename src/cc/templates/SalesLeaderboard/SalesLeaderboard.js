@@ -249,7 +249,7 @@
       ctx.save();
       var act = c.tooltip && c.tooltip.getActiveElements && c.tooltip.getActiveElements();
       if (act && act.length) {
-        ctx.strokeStyle = tok('--ai-border-primary') || tok('--ai-text-contrast'); ctx.lineWidth = 1;
+        ctx.strokeStyle = tok('--ao-border-primary') || tok('--ao-text-contrast'); ctx.lineWidth = 1;
         ctx.beginPath(); ctx.moveTo(act[0].element.x, area.top); ctx.lineTo(act[0].element.x, area.bottom); ctx.stroke();
       }
       /* Direct labels at each line's last point: text in text ink, beside the coloured mark. */
@@ -258,7 +258,7 @@
         var last = -1; ds.data.forEach(function (v, j) { if (v !== null) last = j; });
         if (last < 0) return;
         var pt = meta.data[last];
-        ctx.fillStyle = tok('--ai-text-secondary'); ctx.font = '600 11px Inter, sans-serif';
+        ctx.fillStyle = tok('--ao-text-secondary'); ctx.font = '600 11px Inter, sans-serif';
         var w = ctx.measureText(ds.label).width;
         ctx.textAlign = 'left';
         ctx.fillText(ds.label, Math.min(pt.x + 8, area.right - w), pt.y + (di === 0 ? -8 : 14));
@@ -269,10 +269,10 @@
   function drawChart() {
     if (!window.Chart) return;
     var y = new Date().getFullYear();
-    var thisYear = tok('--ai-accent-lagoon-solid'), lastYear = tok('--ai-accent-purple-solid');
+    var thisYear = tok('--ao-accent-lagoon-solid'), lastYear = tok('--ao-accent-purple-solid');
     Chart.defaults.font.family = 'Inter, sans-serif';
     Chart.defaults.font.size = 12;
-    Chart.defaults.color = tok('--ai-text-contrast');
+    Chart.defaults.color = tok('--ao-text-contrast');
     var fill = function (ctx) {
       var area = ctx.chart.chartArea;
       if (!area) return thisYear;
@@ -280,7 +280,7 @@
       g.addColorStop(0, thisYear + '40'); g.addColorStop(1, thisYear + '00');
       return g;
     };
-    var point = { pointRadius: 0, pointHoverRadius: 5, pointHoverBorderWidth: 2, pointHoverBorderColor: tok('--ai-surface-primary') };
+    var point = { pointRadius: 0, pointHoverRadius: 5, pointHoverBorderWidth: 2, pointHoverBorderColor: tok('--ao-surface-primary') };
     chart = new Chart($('[data-canvas]'), {
       type: 'line',
       data: {
@@ -302,7 +302,7 @@
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: tok('--ai-surface-invert'), titleColor: tok('--ai-text-invert'), bodyColor: tok('--ai-text-invert'),
+            backgroundColor: tok('--ao-surface-invert'), titleColor: tok('--ao-text-invert'), bodyColor: tok('--ao-text-invert'),
             padding: 10, cornerRadius: 6, boxPadding: 4, usePointStyle: true,
             callbacks: {
               title: function (items) { return MONTHS_LONG[items[0].dataIndex] + (items[0].dataIndex === new Date().getMonth() ? ' (to date)' : ''); },
@@ -312,7 +312,7 @@
         },
         scales: {
           x: { grid: { display: false }, border: { display: false }, ticks: { maxRotation: 0, autoSkip: true, autoSkipPadding: 8 } },
-          y: { beginAtZero: true, grid: { color: tok('--ai-border-secondary') }, border: { display: false },
+          y: { beginAtZero: true, grid: { color: tok('--ao-border-secondary') }, border: { display: false },
                ticks: { maxTicksLimit: 5, callback: function (v) { return short(v); } } }
         }
       },

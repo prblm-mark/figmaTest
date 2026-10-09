@@ -51,10 +51,10 @@ agents conflating two different design systems, and must state:
 - It is **not** the Hub's own UI design system (`hub.affino.com`, React + Tailwind, internal-only).
   The two share no tokens. `design_kit` / `design_components_list` / `design-system-extract` describe
   the **Hub's** system, not this one.
-- Every visual value comes from an `--ai-*` token; the canonical tables live in
+- Every visual value comes from an `--ao-*` token; the canonical tables live in
   `affino-design-system-tokens`.
 - The target-surface → token-mode map: display-side → base Light/Dark; Control Centre → CC Light/Dark;
-  AI/Chat → Chat Light/Dark + `--ai-chat-brand`.
+  AI/Chat → Chat Light/Dark + `--ao-chat-brand`.
 - The GitHub Pages URL as the always-current source, and that briefs for design-system work are filed
   with the `ads-job` label.
 

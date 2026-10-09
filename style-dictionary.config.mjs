@@ -136,12 +136,12 @@ StyleDictionary.registerTransform({
 /**
  * Use Figma's codeSyntax.WEB value as the CSS variable name.
  * This ensures exact parity between what Figma calls a variable and its CSS name.
- * Example: "--ai-surface-primary" → strips "--" → "ai-surface-primary"
- *          CSS format adds "--" back → "--ai-surface-primary"
+ * Example: "--ao-surface-primary" → strips "--" → "ai-surface-primary"
+ *          CSS format adds "--" back → "--ao-surface-primary"
  *
  * Sanitise dots: a "." is not a valid CSS custom-property name character (it
- * terminates the ident), so a WEB codeSyntax like "--ai-spacing-0.5" produces
- * an unusable `var(--ai-spacing-0.5)`. Replace "." with "-" → "--ai-spacing-0-5"
+ * terminates the ident), so a WEB codeSyntax like "--ao-spacing-0.5" produces
+ * an unusable `var(--ao-spacing-0.5)`. Replace "." with "-" → "--ao-spacing-0-5"
  * (matches the token's own "0-5" path key). Designers can also correct the WEB
  * codeSyntax in Figma; this keeps the output valid regardless.
  */
@@ -152,7 +152,7 @@ StyleDictionary.registerTransform({
     const web = token.$extensions?.['com.figma.codeSyntax']?.WEB;
     if (web) return web.replace(/^--/, '').replace(/\./g, '-');
     // Fallback: derive from path (for tokens without codeSyntax — filtered out anyway)
-    return ['ai', ...token.path]
+    return ['ao', ...token.path]
       .join('-')
       .toLowerCase()
       .replace(/\s+/g, '-');
@@ -170,7 +170,7 @@ StyleDictionary.registerTransform({
  *
  * The path fallback is retained deliberately: without it, a future seating variable added
  * WITHOUT a WEB name would fall through to name/figma-web's `ai`-prefixed derivation and
- * silently land in the core --ai-* namespace. The fallback keeps it in --sp-*.
+ * silently land in the core --ao-* namespace. The fallback keeps it in --sp-*.
  */
 StyleDictionary.registerTransform({
   name: 'name/seating-planner',
@@ -547,7 +547,7 @@ await sdCCDark.buildAllPlatforms();
 // Prototype-scoped role colours for the Seating Planner (attendee/VIP/speaker/table
 // tiers). Three interchangeable palettes, one per Figma mode.
 //
-// Namespaced `--sp-*`, NOT `--ai-*`: these are prototype role colours, not core
+// Namespaced `--sp-*`, NOT `--ao-*`: these are prototype role colours, not core
 // design-system semantics, and must not be reachable from component CSS by accident.
 // The Figma variables carry no codeSyntax.WEB, so names come from the path via the
 // name/seating-planner transform.
@@ -619,12 +619,12 @@ for (const { mode, slug } of seatingModes) {
 // ─── Output collision guard ───────────────────────────────────────────────────
 // Style Dictionary warns about token collisions but still emits every duplicate
 // declaration, so the LAST one silently wins in the cascade. That is how a Figma
-// codeSyntax copy-paste (five font sizes all named --ai-font-fixed-4xl) turned
+// codeSyntax copy-paste (five font sizes all named --ao-font-fixed-4xl) turned
 // `h1` from 32px into 72px with nothing but a soft build warning.
 //
 // This guard re-reads what was actually written and fails the build on any custom
 // property declared more than once with DIFFERENT values. Identical-value duplicates
-// are reported as benign and do not fail (e.g. --ai-spacing-0 from both spacing.0
+// are reported as benign and do not fail (e.g. --ao-spacing-0 from both spacing.0
 // and size.0, which are both 0).
 //
 // Files are written before this runs, so a failure never leaves you without CSS —
@@ -692,4 +692,28 @@ if (hardCollisions.length) {
 
   if (process.env.TOKENS_ALLOW_COLLISIONS !== '1') process.exit(1);
   console.error('TOKENS_ALLOW_COLLISIONS=1 set — continuing despite collisions.\n');
+}
+
+// ── Legacy --ai-* aliases (2026-10-09) ───────────────────────────────────────────────────────────
+// The token prefix changed from --ai- to --ao- (Affino; the system outgrew the AI plugins). For the
+// transition, css/tokens-legacy-ai.css maps every --ai-x to var(--ao-x) so code not yet renamed
+// (Lion's) keeps working. Declared on every element, not :root, so a scoped re-definition of an
+// --ao- token (dark mode, data-brand, data-layout, data-surface) still flows through its alias.
+// Not loaded by this repo's pages. TEMPORARY — delete this block and the file once Lion has moved.
+{
+  const { readdirSync, writeFileSync } = await import('node:fs');
+  const names = new Set();
+  // Token files, plus --ao- properties declared in source CSS (base.css transitions, computed chat colours).
+  const files = readdirSync('css').filter((n) => n.startsWith('tokens') && n.endsWith('.css') && n !== 'tokens-legacy-ai.css')
+    .map((n) => `css/${n}`)
+    .concat(readdirSync('src', { recursive: true }).filter((n) => n.endsWith('.css')).map((n) => `src/${n}`));
+  for (const f of files) {
+    for (const m of readFileSync(f, 'utf8').matchAll(/(--ao-[a-z0-9-]+)\s*:/g)) names.add(m[1]);
+  }
+  const lines = [...names].sort().map((n) => `  --ai-${n.slice(5)}: var(${n});`);
+  writeFileSync('css/tokens-legacy-ai.css',
+    '/* GENERATED by `npm run tokens` — do not edit. TEMPORARY legacy aliases: --ai-* → --ao-* (2026-10-09).\n' +
+    ' * Link it after the token files only where old --ai- names are still in use. Remove once migrated. */\n' +
+    `*, *::before, *::after {\n${lines.join('\n')}\n}\n`);
+  console.log(`\n✔︎ css/tokens-legacy-ai.css  (${names.size} legacy --ai- aliases)`);
 }

@@ -12,19 +12,19 @@ Single variant — no props.
 | Property | Figma variable | CSS value |
 |---|---|---|
 | Background | `Neutral/950` | `#0c121c` — approved primitive |
-| Border radius | `--ai-radius-lg` | `var(--ai-radius-lg)` |
-| Padding | `--ai-spacing-5` | `var(--ai-spacing-5)` |
+| Border radius | `--ao-radius-lg` | `var(--ao-radius-lg)` |
+| Padding | `--ao-spacing-5` | `var(--ao-spacing-5)` |
 | Text color | `Neutral/0` | `#ffffff` — approved primitive |
-| Text font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-xs` | same |
+| Text font | `--ao-font-body`, `--ao-font-regular`, `--ao-font-fixed-xxs`, `--ao-leading-xs` | same |
 
 ## Token Gaps / Approved Primitives
 
 | Property | Value | Resolution |
 |---|---|---|
-| Width | `351px` | No `--ai-*` token. Hardcoded as `width: 351px` with comment. |
+| Width | `351px` | No `--ao-*` token. Hardcoded as `width: 351px` with comment. |
 | Background color | `Neutral/950` = `#0c121c` | No semantic token exists. Approved primitive — tooltip is intentionally a fixed dark panel in both light and dark themes. |
 | Text color | `Neutral/0` = `#ffffff` | No semantic token used here. Approved primitive — always white on the dark panel regardless of theme. |
-| Box shadow | `rgba(0,0,0,0.15)` | No `--ai-shadow-*` token exists. Approved primitive — black shadow is visually appropriate on both themes. |
+| Box shadow | `rgba(0,0,0,0.15)` | No `--ao-shadow-*` token exists. Approved primitive — black shadow is visually appropriate on both themes. |
 
 ## Notes
 - **Theme behaviour:** The tooltip background is intentionally fixed dark (`#0c121c`) in both

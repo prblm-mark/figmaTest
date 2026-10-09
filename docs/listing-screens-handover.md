@@ -46,7 +46,7 @@ If you remember nothing else:
 7. **The selection bar and table header are sticky** under the CC header. This works only while
    the page keeps the hooks and overflow rules in §6 — don't wrap the table in anything that
    sets `overflow`.
-8. **Tokens only.** Every colour, size, space and radius is an `--ai-*` token. A value with no
+8. **Tokens only.** Every colour, size, space and radius is an `--ao-*` token. A value with no
    token is a question for the designer, not a hardcode.
 9. **Row values are escaped.** Everything goes through `esc()` in `ListingScreen.js` — that is
    the seam where API data arrives. Keep real data verbatim (trailing spaces, odd names).
@@ -244,7 +244,7 @@ it.
 - First click on a new column sorts **descending**; clicking again reverses.
 - Compares values, not rendered text; a value is numeric only if the whole value is.
 - Re-sorting returns to page 1. `aria-sort` is set on the header cell.
-- The active chevron is **neutral** (`--ai-text-primary`), not brand — brand read as a link.
+- The active chevron is **neutral** (`--ao-text-primary`), not brand — brand read as a link.
 
 ### Pagination
 
@@ -275,10 +275,10 @@ it.
   48px on a phone table). Must not render for a row the operator may not edit.
 - **Kebab**: opens the detail row with the columns that didn't fit. When nothing is missing it
   says "Every column is showing at this width."
-- **Row control hover**: pencil and kebab gain `1px solid --ai-border-secondary` on hover,
+- **Row control hover**: pencil and kebab gain `1px solid --ao-border-secondary` on hover,
   reserved as a transparent border at rest so nothing shifts.
 - **Account chip / bordered tertiary buttons**: tertiary's own border token is transparent, so
-  these carry `--ai-border-secondary` at rest *and* through hover/focus (otherwise they vanish
+  these carry `--ao-border-secondary` at rest *and* through hover/focus (otherwise they vanish
   against the hover tint).
 
 ### Empty state
@@ -310,7 +310,7 @@ it.
 - **Actions = one Select per verb group + one Apply.** A select's first row repeats its label and
   picking it unsets the select. **Apply is disabled until a select holds a value.** One Apply
   sends every set select. (Delete should gain a confirm step when wired.)
-- Background `--ai-datatable-table-expanded-bg` — it is a *state of the table*, not a notice.
+- Background `--ao-datatable-table-expanded-bg` — it is a *state of the table*, not a notice.
 - On a narrow table the actions take their own line in a **2-column grid**, the 160px select cap
   comes off, and inline padding tightens 16 → 12px.
 - Selection is kept across paging, filtering and sorting in the demo; only Clear or a reload
@@ -323,7 +323,7 @@ it.
 - **The column header pins too** — directly under the CC header, or directly under the bar when
   rows are ticked. Select-all stays reachable.
 - **No shadow on the pinned bar or header — for now** (designer, 2026-09-23; they carried
-  `--ai-shadow-sm` before). The pinned header still draws its own bottom line. The `--stuck` state
+  `--ao-shadow-sm` before). The pinned header still draws its own bottom line. The `--stuck` state
   classes are still set, so a treatment can return as one CSS rule. Do not add shadows back on
   your own.
 - **Rows don't jump** when the bar appears or goes: Chrome's scroll anchoring handles it, and
@@ -373,12 +373,12 @@ it.
 
 ## 8. Styling rules
 
-- **Tokens only** (`--ai-*`). Borders and shadow offsets may be raw px; nothing else.
-- **Shadows** use the 7-step scale (`--ai-shadow-2xs` … `2xl`); dark mode is derived (light × 2).
+- **Tokens only** (`--ao-*`). Borders and shadow offsets may be raw px; nothing else.
+- **Shadows** use the 7-step scale (`--ao-shadow-2xs` … `2xl`); dark mode is derived (light × 2).
   **None on the listing screens for now** (designer, 2026-09-23): no resting shadow on inputs,
   secondary buttons, the views select or the grid card controls, and none on the sticky stack.
 - **Dark mode** works through `data-theme="dark"` — never write theme-specific values in a screen.
-- **Icons** are Lucide `<i data-lucide="…">`, sized with `--ai-icon-size-*`.
+- **Icons** are Lucide `<i data-lucide="…">`, sized with `--ao-icon-size-*`.
 - **`white-space: nowrap` is inherited by every table cell** (Table.css). Anything that must wrap
   inside a cell — detail lists, empty-state text, picker tables — needs `white-space: normal`.
   This has bitten three times.
@@ -414,7 +414,7 @@ alignment, **do not take the demo as the reference** — follow this note in the
 - [ ] Select-all has an accessible name; the selection count is `aria-live`.
 - [ ] Hover-revealed controls also appear on focus and on touch devices.
 - [ ] Visually hidden labels keep their accessible names (icon-only layout switch etc.).
-- [ ] Contrast ≥ 4.5:1 text / 3:1 UI; focus ring `2px solid --ai-surface-brand`; 44×44 targets.
+- [ ] Contrast ≥ 4.5:1 text / 3:1 UI; focus ring `2px solid --ao-surface-brand`; 44×44 targets.
 
 ---
 

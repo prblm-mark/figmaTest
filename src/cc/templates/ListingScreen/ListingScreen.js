@@ -1139,9 +1139,9 @@
      All three are Button at `btn--icon btn--xs` (24x24, 12px icon), TERTIARY
      (designer, 2026-09-22). The first build used secondary on the reasoning
      that these sit on a photograph and need a fill — which had it exactly
-     backwards: `--ai-btn-secondary-bg` is `rgba(0,0,0,0)` in every mode, so
+     backwards: `--ao-btn-secondary-bg` is `rgba(0,0,0,0)` in every mode, so
      secondary was a bordered box with NO fill over the picture, while
-     `--ai-btn-tertiary-bg` is solid under the CC brand (#e7edf0 light,
+     `--ao-btn-tertiary-bg` is solid under the CC brand (#e7edf0 light,
      #334155 dark). Checked the resolved values this time instead of reasoning
      from the names.
 
@@ -1903,7 +1903,7 @@
 
   var SNUG_MAX = 224;          // px — a snug column's ceiling, see sizeColumns
   var SNUG_MIN = 128;          // px — and its floor, so a chip is never cropped
-  var FLUID_MIN = 192;         // px — matches --ai-size-3, the Customer floor
+  var FLUID_MIN = 192;         // px — matches --ao-size-3, the Customer floor
 
   /* Hand `spare` out in equal shares to the columns that can use it — the
      fluid one and the snug ones — and return whatever is left for the fluid

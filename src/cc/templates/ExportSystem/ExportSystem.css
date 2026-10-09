@@ -8,18 +8,18 @@
 /* Gap between the result banner and the two sections: UpdateScreen's (the record screens'
  * card gap). */
 .cc-control__page.cc-export {
-  gap: var(--ai-spacing-5);
+  gap: var(--ao-spacing-5);
 }
 
 /* Top-level cards: border/card + shadow/2xs in standard width, flat in full width — the CC
  * top-level card rule, as UpdateScreen and the record screens apply it. */
 .cc-control:not([data-cc-width="full"]) .cc-export .record-section {
-  border-color: var(--ai-border-card);
-  box-shadow: var(--ai-shadow-2xs);
+  border-color: var(--ao-border-card);
+  box-shadow: var(--ao-shadow-2xs);
 }
 
 .cc-control:not([data-cc-width="full"]) .cc-export .record-section__header {
-  border-bottom-color: var(--ai-border-card);
+  border-bottom-color: var(--ao-border-card);
 }
 
 .cc-control[data-cc-width="full"] .cc-control__page.cc-export {
@@ -34,7 +34,7 @@
 .cc-export__result {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-5);   /* the page's own gap, so two banners space like the cards */
+  gap: var(--ao-spacing-5);   /* the page's own gap, so two banners space like the cards */
 }
 
 /* ── Targets ───────────────────────────────────────────────
@@ -44,8 +44,8 @@
    so the grid reflows with the docked menu and needs no breakpoint. */
 .cc-export__targets {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--ai-size-4)), 1fr));
-  gap: var(--ai-spacing-4) var(--ai-spacing-6);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--ao-size-4)), 1fr));
+  gap: var(--ao-spacing-4) var(--ao-spacing-6);
 }
 
 /* Export + Select all. The 8px gap is the Button group spacing UpdateScreen uses beside Run. */
@@ -53,7 +53,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ai-spacing-3);
+  gap: var(--ao-spacing-3);
 }
 
 /* The Spinner inside the busy Export button sits like a leading icon. */

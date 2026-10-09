@@ -35,19 +35,19 @@ so a single CSS implementation covers both.
 | Property | Token | Notes |
 |---|---|---|
 | Wrapper bg | `--cc-actions-menu-primary-bg` | `#d0dbe1` light / `#334155` dark |
-| Wrapper padding (horizontal) | `var(--ai-spacing-4)` | 12px |
-| Wrapper height | `var(--ai-spacing-8)` | 40px |
-| Wrapper radius | `var(--ai-radius-md)` | 8px (Figma bound `--ai-spacing-3` — same value, but semantically `--ai-radius-md` is the correct token) |
-| Inner input width | `var(--ai-size-1)` | 128px |
-| Track height | `var(--ai-spacing-3)` | 8px (no Figma binding — derived) |
-| Track radius | `var(--ai-radius-full)` | rounded |
+| Wrapper padding (horizontal) | `var(--ao-spacing-4)` | 12px |
+| Wrapper height | `var(--ao-spacing-8)` | 40px |
+| Wrapper radius | `var(--ao-radius-md)` | 8px (Figma bound `--ao-spacing-3` — same value, but semantically `--ao-radius-md` is the correct token) |
+| Inner input width | `var(--ao-size-1)` | 128px |
+| Track height | `var(--ao-spacing-3)` | 8px (no Figma binding — derived) |
+| Track radius | `var(--ao-radius-full)` | rounded |
 | Track unfilled bg | `var(--cc-actions-menu-secondary-bg)` | `#e7edf0` light / `#1e293b` dark |
-| Track filled bg (gradient) | `var(--ai-surface-brand)` | `#3391a4` / `#33bfcb` |
-| Thumb size | `var(--ai-icon-size-sm)` | 16px (no Figma binding — derived) |
-| Thumb bg | `var(--ai-surface-brand)` | matches filled portion |
+| Track filled bg (gradient) | `var(--ao-surface-brand)` | `#3391a4` / `#33bfcb` |
+| Thumb size | `var(--ao-icon-size-sm)` | 16px (no Figma binding — derived) |
+| Thumb bg | `var(--ao-surface-brand)` | matches filled portion |
 | Thumb border | `2px solid var(--cc-actions-menu-secondary-bg)` | matches wrapper's secondary token |
 | Thumb shadow | `0 1px 3px rgba(0, 0, 0, 0.1)` | static optical value |
-| Thumb focus halo | `0 0 0 4px var(--ai-surface-brand-soft)` | brand-tinted ring (4px) |
+| Thumb focus halo | `0 0 0 4px var(--ao-surface-brand-soft)` | brand-tinted ring (4px) |
 
 ---
 
@@ -69,9 +69,9 @@ so a single CSS implementation covers both.
 | # | Property | Figma | Resolution |
 |---|---|---|---|
 | 1 | Unfilled track colour | Light raw `#f6f6f7`, Dark raw `#1e293b` (no variable binding) | Approved: use `--cc-actions-menu-secondary-bg` for both. Visually matches the dark Figma exactly; light will paint as `#e7edf0` (CC light value of the token) rather than the raw `#f6f6f7` in Figma. Designer to confirm Figma binding. |
-| 2 | Wrapper radius | Bound to `--ai-spacing-3` (same value 8px) | Use semantic `--ai-radius-md` (also 8px). Approved. |
-| 3 | Track height (8px) | No binding | Use `--ai-spacing-3`. Approved. |
-| 4 | Thumb size (16px) | No binding | Use `--ai-icon-size-sm`. Approved. |
+| 2 | Wrapper radius | Bound to `--ao-spacing-3` (same value 8px) | Use semantic `--ao-radius-md` (also 8px). Approved. |
+| 3 | Track height (8px) | No binding | Use `--ao-spacing-3`. Approved. |
+| 4 | Thumb size (16px) | No binding | Use `--ao-icon-size-sm`. Approved. |
 
 ---
 
@@ -91,7 +91,7 @@ so a single CSS implementation covers both.
   Firefox uses its native `::-moz-range-progress` (styled in CSS) so the
   JS gradient is harmless there.
 - The wrapper is `display: inline-flex` — width is intrinsic from
-  `--ai-size-1` (128px input) + `--ai-spacing-4` × 2 (24px padding) = 152px,
+  `--ao-size-1` (128px input) + `--ao-spacing-4` × 2 (24px padding) = 152px,
   matching the Figma frame exactly.
 
 ---

@@ -3,7 +3,7 @@
 ## Context
 The team wants a workflow where designers share a Figma component URL → Claude reads it via the
 Figma MCP server → generates production code using **only** the project's design system tokens
-(`--ai-*` CSS variables). A bi-directional loop is also needed so built UIs can flow back to Figma.
+(`--ao-*` CSS variables). A bi-directional loop is also needed so built UIs can flow back to Figma.
 
 The project already has:
 - Figma tokens exported as DTCG JSON (`FigmaTokens/`) — but no CSS file generated from them yet
@@ -19,7 +19,7 @@ Professional/Starter, we use the Figma MCP server tools (`get_code_connect_map`,
 ## Scope — 5 Deliverables
 
 ### 1. Token Compilation Pipeline
-**Goal:** Auto-generate `css/tokens.css` (with all `--ai-*` CSS custom properties) from the DTCG JSON files.
+**Goal:** Auto-generate `css/tokens.css` (with all `--ao-*` CSS custom properties) from the DTCG JSON files.
 
 **Approach:** Use **Style Dictionary v4** — it natively supports DTCG format and can resolve
 Figma's alias references (`{surface.brand}` → hex value).
@@ -35,27 +35,27 @@ Figma's alias references (`{surface.brand}` → hex value).
 ```css
 :root {
   /* Surface */
-  --ai-surface-primary: #ffffff;
-  --ai-surface-secondary: #f3f4f6;
-  --ai-surface-brand: #1c64f2;
+  --ao-surface-primary: #ffffff;
+  --ao-surface-secondary: #f3f4f6;
+  --ao-surface-brand: #1c64f2;
 
   /* Text */
-  --ai-text-primary: #1f2a37;
-  --ai-text-secondary: #4b5563;
+  --ao-text-primary: #1f2a37;
+  --ao-text-secondary: #4b5563;
 
   /* Border */
-  --ai-border-secondary: #e5e7eb;
-  --ai-radius-sm: 4px;
-  --ai-radius-md: 8px;
+  --ao-border-secondary: #e5e7eb;
+  --ao-radius-sm: 4px;
+  --ao-radius-md: 8px;
 
   /* Spacing */
-  --ai-spacing-1: 4px;
-  --ai-spacing-5: 16px;
+  --ao-spacing-1: 4px;
+  --ao-spacing-5: 16px;
 
   /* Typography */
-  --ai-font-body: 'Inter', sans-serif;
-  --ai-font-fixed-sm: 16px;
-  --ai-font-semibold: 600;
+  --ao-font-body: 'Inter', sans-serif;
+  --ao-font-fixed-sm: 16px;
+  --ao-font-semibold: 600;
 }
 ```
 
@@ -90,7 +90,7 @@ the primary mechanism for enforcing "use only our design system."
 
 **Sections:**
 1. Project overview — what this codebase is and its purpose
-2. Design System Tokens — every `--ai-*` variable listed by category with purpose and value
+2. Design System Tokens — every `--ao-*` variable listed by category with purpose and value
 3. Typography rules — font families, sizes, weights, line heights with exact variable names
 4. Component Architecture — how components are structured in `src/components/`
 5. Figma → Code workflow — step-by-step instructions Claude must follow when given a Figma URL
@@ -110,7 +110,7 @@ src/
 └── components/
     └── Button/
         ├── Button.html          (standalone demo)
-        ├── Button.css           (uses --ai-* tokens only)
+        ├── Button.css           (uses --ao-* tokens only)
         └── Button.figma-notes.md (documents Figma node URL + property mapping)
 ```
 
@@ -139,10 +139,10 @@ FIGMA (design)
   ▼
 CLAUDE CODE (MCP tools)
   ├── get_design_context → reads layout, spacing, colors
-  ├── get_variable_defs  → extracts which --ai-* tokens are used
+  ├── get_variable_defs  → extracts which --ao-* tokens are used
   └── get_code_connect_map → finds if component exists in codebase already
   │
-  │  Generates HTML/CSS using only --ai-* variables
+  │  Generates HTML/CSS using only --ao-* variables
   │  (CLAUDE.md prevents any hardcoded values)
   ▼
 CODEBASE (src/components/)
@@ -194,9 +194,9 @@ This is why `Button.figma-notes.md` documents the Figma node URLs now — zero r
 
 ## Verification Checklist
 
-1. **Token pipeline:** Run `npm run tokens` → `css/tokens.css` appears with all `--ai-*` variables
+1. **Token pipeline:** Run `npm run tokens` → `css/tokens.css` appears with all `--ao-*` variables
 2. **MCP test:** Open Claude Code in project, share a Figma component URL, ask Claude to build
-   it. Verify the generated CSS uses only `--ai-*` variables, no hex codes.
+   it. Verify the generated CSS uses only `--ao-*` variables, no hex codes.
 3. **CLAUDE.md enforcement:** Ask Claude to build a component without a Figma URL — it should
    still use design tokens and follow the structure in `src/components/`
 4. **Bi-directional test:** Ask Claude to use `generate_figma_design` with a built component's

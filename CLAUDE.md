@@ -51,14 +51,14 @@ internal-only) — the two are deliberately separate and share no tokens. See
 
 ## 2. Design System Tokens
 
-All CSS variables begin with `--ai-`. **Never use raw hex values, arbitrary pixel values, or
-named colors in component CSS.** Every visual value must come from an `--ai-*` token.
+All CSS variables begin with `--ao-`. **Never use raw hex values, arbitrary pixel values, or
+named colors in component CSS.** Every visual value must come from an `--ao-*` token.
 
 **Full token reference (all tables):** [`docs/tokens-reference.md`](docs/tokens-reference.md)
 — surface, text, border, radius, icon, button, spacing, size, chat, skeleton, shadow, gradient, breakpoint, dark mode, minimised mode, computed tokens, typography, transitions.
 
 **Key rules from the token reference:**
-- Icon sizes: use `--ai-icon-size-sm/md/lg/xl` — never `--ai-spacing-*`
+- Icon sizes: use `--ao-icon-size-sm/md/lg/xl` — never `--ao-spacing-*`
 - Breakpoints: mobile-first `min-width`. `@media` must use px values (not vars)
 - Dark mode: `data-theme="dark"` on `<html>`. Generated `css/tokens-dark.css`
 - Minimised mode: `data-layout="minimised"` on container. Only fluid font sizes differ
@@ -72,7 +72,7 @@ named colors in component CSS.** Every visual value must come from an `--ai-*` t
 **Full reference:** [`docs/icon-system.md`](docs/icon-system.md)
 
 **Library:** [Lucide](https://lucide.dev). Icons via `<i data-lucide="name"></i>`, initialized in `js/app.js`.
-Names must exactly match Lucide kebab-case. Color via `--ai-icon-*` tokens. Size via `--ai-icon-size-*` tokens.
+Names must exactly match Lucide kebab-case. Color via `--ao-icon-*` tokens. Size via `--ao-icon-size-*` tokens.
 
 ---
 
@@ -193,7 +193,7 @@ always re-verify the component at its own breakpoints afterwards.
 ## 5. Figma -> Code Workflow
 
 The full workflow lives in `/build-component` (mandatory — see §0). For ad-hoc reads
-without an edit: `get_design_context` → `get_variable_defs` → map to `--ai-*` via
+without an edit: `get_design_context` → `get_variable_defs` → map to `--ao-*` via
 `docs/tokens-reference.md`. Never inline styles; never hardcode values (see §7).
 
 ---
@@ -218,7 +218,7 @@ Publish: `npm run code-connect:publish`. One `.figma.ts` per component. Always c
 
 ### Priority order when mapping a Figma property to CSS
 
-1. **Semantic token exists** -> always use the `--ai-*` CSS variable. No exceptions.
+1. **Semantic token exists** -> always use the `--ao-*` CSS variable. No exceptions.
 2. **Anything else** -> **STOP. Ask the user how to proceed before continuing the build.**
 
 Report what was found: property name, Figma value, and primitive name if identifiable.
@@ -232,7 +232,7 @@ but has no `bg-[...]` class in design context, STOP and ask the user which gradi
 
 - Raw hex/px/named colors, non-Lucide icons, inline icon SVG, `!important` (except a11y utilities)
 - Editing generated CSS (`css/tokens.css`) or `FigmaTokens/*.json` manually
-- Adding CSS frameworks (Tailwind/Bootstrap) or non-`--ai-` prefixed tokens
+- Adding CSS frameworks (Tailwind/Bootstrap) or non-`--ao-` prefixed tokens
 - Importing `css/style.css` from components (use `src/styles/base.css`)
 
 ---
@@ -242,7 +242,7 @@ but has no `bg-[...]` class in design context, STOP and ask the user which gradi
 All components must meet **WCAG 2.1 AA**:
 
 - **Color contrast:** >= 4.5:1 (normal text), >= 3:1 (large text/UI)
-- **Focus indicators:** `outline: 2px solid var(--ai-surface-brand)` for `:focus-visible`
+- **Focus indicators:** `outline: 2px solid var(--ao-surface-brand)` for `:focus-visible`
 - **Semantic HTML:** `<button>` for actions, `<a>` for navigation, `<input>` for inputs
 - **ARIA:** Add `aria-label`, `aria-disabled`, `aria-pressed` as needed
 - **Touch targets:** Minimum 44x44px for interactive elements

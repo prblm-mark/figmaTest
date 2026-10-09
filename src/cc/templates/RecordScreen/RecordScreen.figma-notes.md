@@ -51,18 +51,18 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 | Layout | Wrapper | Value |
 |---|---|---|
 | Standard | page bg | shell `--cc-ui-primary-bg` (screen frame `#E7EDF0`; the body's own white fill is hidden) |
-| Standard | page padding | **= the Listing screen's** (designer, 2026-09-29, for consistency): `.cc-control__page` base — `--ai-spacing-6` desktop, `--ai-spacing-4` <768, same scrollbar-gutter trims. Was `--ai-spacing-5`/5/6 on `.record-screen`. Figma content containers updated: `spacing/6` on the 7 desktop/narrow frames, `spacing/4` on the 2 mobile frames. Tabs → content gap `--ai-spacing-5` (`--ai-spacing-4` below 768, designer amend 2026-09-30) |
-| Standard | columns | gap `--ai-spacing-5`; sidebar `max-width: --ai-size-7` (384) |
-| Standard | main / sidebar | section gap `--ai-spacing-5` / panel gap `--ai-spacing-5` |
-| Full | page | flush (ccWidth), `--ai-surface-primary` |
-| Full | columns | gap 0; main column right border `--ai-border-secondary` |
-| Full | sidebar | padding `--ai-spacing-5`, gap `--ai-spacing-5`, max-width `--ai-size-7` |
+| Standard | page padding | **= the Listing screen's** (designer, 2026-09-29, for consistency): `.cc-control__page` base — `--ao-spacing-6` desktop, `--ao-spacing-4` <768, same scrollbar-gutter trims. Was `--ao-spacing-5`/5/6 on `.record-screen`. Figma content containers updated: `spacing/6` on the 7 desktop/narrow frames, `spacing/4` on the 2 mobile frames. Tabs → content gap `--ao-spacing-5` (`--ao-spacing-4` below 768, designer amend 2026-09-30) |
+| Standard | columns | gap `--ao-spacing-5`; sidebar `max-width: --ao-size-7` (384) |
+| Standard | main / sidebar | section gap `--ao-spacing-5` / panel gap `--ao-spacing-5` |
+| Full | page | flush (ccWidth), `--ao-surface-primary` |
+| Full | columns | gap 0; main column right border `--ao-border-secondary` |
+| Full | sidebar | padding `--ao-spacing-5`, gap `--ao-spacing-5`, max-width `--ao-size-7` |
 
 ## Interactions (designer, 2026-09-28)
 | Element | Behaviour | Owner |
 |---|---|---|
 | Details / Article steps tabs | navigate between screens; menu open/closed and width persist | links + `RecordScreen.js` |
-| Sidebar edge (View / Edit) | drag to resize the sidebar (designer, 2026-09-28 — the Seating Planner model): invisible `role="separator"` strip on the sidebar's leading edge, col-resize cursor; full width tints the main column's border `--ai-surface-contrast` on hover/drag. Min `--ai-size-7` (384, Figma's width — designer), max half the row, ←/→ 16px, Home/End, double-click resets. Width kept per viewer (`localStorage cc-record-sidebar-w`) across View ↔ Edit | `RecordScreen.js` |
+| Sidebar edge (View / Edit) | drag to resize the sidebar (designer, 2026-09-28 — the Seating Planner model): invisible `role="separator"` strip on the sidebar's leading edge, col-resize cursor; full width tints the main column's border `--ao-surface-contrast` on hover/drag. Min `--ao-size-7` (384, Figma's width — designer), max half the row, ←/→ 16px, Home/End, double-click resets. Width kept per viewer (`localStorage cc-record-sidebar-w`) across View ↔ Edit | `RecordScreen.js` |
 | Actions-rail **Minimise** (`fold-vertical` / `unfold-vertical` when on, 2026-10-01) | condensed density, wired client-side (2026-10-09): `data-cc-density="condensed"` via control-width.js, spacing only (ControlScreen.css) | `TODO(backend:ControlScreen) [condensed-preference]` |
 | Actions-rail **Full width** (`unfold-horizontal` / `fold-horizontal`, 2026-10-01) | toggles full width (designer, 2026-09-28): `aria-pressed`, rail active look, choice saved (`localStorage cc-width`) and followed on every record screen; `?template=` still wins when present | `control-width.js` (`data-cc-width-toggle`, opt-in per screen) |
 | Edit / Cancel | View ↔ Edit screens | links |
@@ -146,7 +146,7 @@ Section, Creator and Sort Order (lookup rows) and every MediaPicker **Edit** ope
 
 ## Sidebar chips border (designer, 2026-09-29)
 
-Tertiary chips in the sidebar (FactPanel values, Recent Viewers companies) carry the subtle `--ai-border-secondary` line of the listing account chip. This is a Case B override in RecordScreen.css, scoped to `.record-screen__sidebar` and restated for hover and focus.
+Tertiary chips in the sidebar (FactPanel values, Recent Viewers companies) carry the subtle `--ao-border-secondary` line of the listing account chip. This is a Case B override in RecordScreen.css, scoped to `.record-screen__sidebar` and restated for hover and focus.
 
 ## Figma build 2026-09-30 — ColorPickerInput
 **ColorPickerInput `3929:19338`** (State Empty | Filled), View & Edit kit "Code-first components". Empty reads None.
@@ -158,7 +158,7 @@ its **Dynamic Form unavailable** state `3933:147334` (the modal is composed from
 be laid out from an instance). Still not in Figma: Selector (all types), RichTextEditor, PromptModifier.
 
 **Card border + shadow (designer, 2026-10-02):** RecordTabs, RecordSection and the sidebar FactPanels use
-`--ai-border-card` + `--ai-shadow-2xs` (RecordScreen.css), the same as the listing cards. In standard width
+`--ao-border-card` + `--ao-shadow-2xs` (RecordScreen.css), the same as the listing cards. In standard width
 only for tabs and sections, since full width keeps their flush rules. FactPanels keep `border/card` in full
 width but drop the shadow. Nested cards inside them are unchanged. The Steps table gets it from the listing
 rule (it sits in `.cc-listing`).

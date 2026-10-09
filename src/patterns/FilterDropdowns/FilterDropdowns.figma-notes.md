@@ -64,8 +64,8 @@ single-select fills the field. `Predictive Text` (no options) is dropped since a
 field inherently reveals options. Wired by `wirePredictive` in `FilterDropdowns.js`.
 
 **Phase 2 complete (2026-07-07):** Multi Select Table (composes Datatables + FilterItem +
-Checkbox + Button; 640px = `--ai-size-10`, Figma's 671px snapped to token per direction) and
-Multi Select Modal (composes the Modal pattern + Datatables + FilterItem; 960px = `--ai-size-12`).
+Checkbox + Button; 640px = `--ao-size-10`, Figma's 671px snapped to token per direction) and
+Multi Select Modal (composes the Modal pattern + Datatables + FilterItem; 960px = `--ao-size-12`).
 All 17 Figma types now represented (Select and Predictive Text consolidated per direction).
 
 ## Interaction (confirmed with user, 2026-07-07)
@@ -102,20 +102,20 @@ All 17 Figma types now represented (Select and Predictive Text consolidated per 
 
 | Property | Token |
 |---|---|
-| Card bg / border / radius | `--ai-surface-primary` / `--ai-border-secondary` (1px) / `--ai-radius-md` |
-| Card padding | `--ai-spacing-4` (12px) |
-| Card gap | `--ai-spacing-3` (8px); `--ai-spacing-5` (16px) for `--list` |
-| Card shadow | `--ai-shadow-md` (Figma `light/shadow-md`) |
-| Card width | `--ai-size-6` (320px); `--list` max-height `--ai-size-7` (384px) |
-| Checklist gap / bottom pad | `--ai-spacing-4` / `--ai-spacing-3` |
-| Date corner icon | `--ai-icon-size-md` (20px), `--ai-icon-contrast` |
-| Header title / label | `--ai-font-title` semibold `--ai-font-fixed-xs` (14px) |
+| Card bg / border / radius | `--ao-surface-primary` / `--ao-border-secondary` (1px) / `--ao-radius-md` |
+| Card padding | `--ao-spacing-4` (12px) |
+| Card gap | `--ao-spacing-3` (8px); `--ao-spacing-5` (16px) for `--list` |
+| Card shadow | `--ao-shadow-md` (Figma `light/shadow-md`) |
+| Card width | `--ao-size-6` (320px); `--list` max-height `--ao-size-7` (384px) |
+| Checklist gap / bottom pad | `--ao-spacing-4` / `--ao-spacing-3` |
+| Date corner icon | `--ao-icon-size-md` (20px), `--ao-icon-contrast` |
+| Header title / label | `--ao-font-title` semibold `--ao-font-fixed-xs` (14px) |
 
 ## Token Gaps / Decisions
-- **No token gaps** — every value maps to an existing `--ai-*` token.
-- **Radius binding quirk:** Figma bound the card `border-radius` to `--ai-spacing-3` (8px).
-  Used `--ai-radius-md` (same 8px, correct category) — consistent with FilterDropdownItem(Group).
-- **Shadow:** Figma `light/shadow-md` (`0 3px 10px .1, 0 1px 4px .16`) → `--ai-shadow-md`
+- **No token gaps** — every value maps to an existing `--ao-*` token.
+- **Radius binding quirk:** Figma bound the card `border-radius` to `--ao-spacing-3` (8px).
+  Used `--ao-radius-md` (same 8px, correct category) — consistent with FilterDropdownItem(Group).
+- **Shadow:** Figma `light/shadow-md` (`0 3px 10px .1, 0 1px 4px .16`) → `--ao-shadow-md`
   (`0 2px 10px .1`) — the design-system's named md shadow; optical, within tolerance.
 
 ## Notes
@@ -125,7 +125,7 @@ All 17 Figma types now represented (Select and Predictive Text consolidated per 
 - **Header = Input label:** Figma composes the Input component for the "Filter by X" heading
   (label-only for Multi Select; label + field otherwise). Checkbox type uses a standalone
   `.filter-dropdowns__title` instead of an Input label.
-- **Width:** all bodies are 320px (`--ai-size-6`) except the pending Table (671px) and Modal
+- **Width:** all bodies are 320px (`--ao-size-6`) except the pending Table (671px) and Modal
   (960px) which will not fit this shell — they are separate layouts in phase 2.
 
 
@@ -153,7 +153,7 @@ attribute is the placeholder; the text is the state.
 ## Type=More Filters is the one type that is not a fixed 320
 
 `.filter-dropdowns--more` sizes to its contents between a floor and a ceiling
-(designer, 2026-09-18: min `--ai-size-6`, max `--ai-size-10`). Figma draws it at
+(designer, 2026-09-18: min `--ao-size-6`, max `--ao-size-10`). Figma draws it at
 the shared 320px, which suits the nine facets it shows; a real screen carries
 far more — Orders has 47 — and at 320 they wrap into a tall narrow column that
 is hard to scan.
@@ -161,7 +161,7 @@ is hard to scan.
 `max-content` on a wrapping flex row resolves to the width the chips would take
 on ONE line, so the rule reads as "as wide as it wants, within bounds".
 
-The ceiling is `min(var(--ai-size-10), 100cqi)`, not a flat 640. The base
+The ceiling is `min(var(--ao-size-10), 100cqi)`, not a flat 640. The base
 panel's `max-width: 100%` cannot cap it: the panel is absolutely positioned, so
 its containing block is the chip it hangs off, and 100% of that is a chip's
 width. Measured without the cap, a 640px panel on a 378px page sat at left
@@ -193,7 +193,7 @@ Actionable Intelligence, Case Study and 2020 Roadmap" — took the Name column t
 the right-hand edge behind a scrollbar. Those are the two columns that tell two
 similarly named items apart, which is the whole reason this type is a table.
 
-The two predictable columns carry a preferred width (`--ai-size-1`) and Name
+The two predictable columns carry a preferred width (`--ao-size-1`) and Name
 absorbs the variation. Without that, auto layout gave the long names so much
 room that the codes broke mid-string — "Aff9882376" rendered as "Aff98823 /
 76", which for an operator-typed SKU reads as a different value.
@@ -230,7 +230,7 @@ yet added" idiom and belongs to Add Filters and the More Filters facets; these
 are controls that are already present. Figma 3039:5624 draws them solid, so
 this was a fidelity fix, not a departure (designer, 2026-09-18).
 
-Rows use `--ai-leading-sm`, matching the listing's own table. The shared Table
+Rows use `--ao-leading-sm`, matching the listing's own table. The shared Table
 default is `leading-md`, which leaves a picker you are scanning for one item
 looking airy. Scoped here rather than changed in Table.css.
 
@@ -267,7 +267,7 @@ disambiguator where they are the point.
 
 ## Multi Select Table type matches the Orders datatable
 
-Same tokens, same switch. Wide: `--ai-font-fixed-xxs` headers, `--ai-font-fixed-xs`
+Same tokens, same switch. Wide: `--ao-font-fixed-xxs` headers, `--ao-font-fixed-xs`
 cells — the Table defaults. Cramped: `4xs` and `2xs`, the same two the Orders
 table steps down to.
 
@@ -300,4 +300,4 @@ followed:
 
 ## Scrollbars (2026-09-29)
 
-The checklist (Multi Select ±search) and the Multi Select Table / Modal table region carry the system scrollbar treatment (Modal `.modal__scroll`: transparent track, thin `--ai-surface-secondary` thumb), restated in FilterDropdowns.css because these cards are not always inside a modal. Figma draws no scrollbar, so this is a code convention (designer request).
+The checklist (Multi Select ±search) and the Multi Select Table / Modal table region carry the system scrollbar treatment (Modal `.modal__scroll`: transparent track, thin `--ao-surface-secondary` thumb), restated in FilterDropdowns.css because these cards are not always inside a modal. Figma draws no scrollbar, so this is a code convention (designer request).

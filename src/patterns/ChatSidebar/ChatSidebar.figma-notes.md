@@ -30,23 +30,23 @@ Dark Mode handled by `data-sidebar-theme="light|dark"` via `sidebar-colors.js`, 
 
 | Property | Token | Value |
 |---|---|---|
-| Width | `--ai-size-5` | 280px |
-| Padding | `--ai-spacing-4` | 12px |
-| Gap (top-level) | `--ai-spacing-4` | 12px |
-| Background | `--ai-chat-sidebar-bg` | white / #18222f (computed) |
-| Border right | `1px solid --ai-border-secondary` | |
-| Logo area py | `--ai-spacing-5` | 16px |
-| Sections gap | `--ai-spacing-5` | 16px |
+| Width | `--ao-size-5` | 280px |
+| Padding | `--ao-spacing-4` | 12px |
+| Gap (top-level) | `--ao-spacing-4` | 12px |
+| Background | `--ao-chat-sidebar-bg` | white / #18222f (computed) |
+| Border right | `1px solid --ao-border-secondary` | |
+| Logo area py | `--ao-spacing-5` | 16px |
+| Sections gap | `--ao-spacing-5` | 16px |
 | Section items gap | `1px` | optical separator |
-| Label px | `--ai-spacing-3` | 8px |
-| Label py | `--ai-spacing-2` | 6px |
-| Label font | `body/xxs` — `--ai-font-fixed-xxs` / `--ai-font-regular` / `--ai-leading-xs` | 12px |
-| Label color | `var(--ai-chat-sidebar-text)` + `opacity: 0.6` | Computed muted text |
+| Label px | `--ao-spacing-3` | 8px |
+| Label py | `--ao-spacing-2` | 6px |
+| Label font | `body/xxs` — `--ao-font-fixed-xxs` / `--ao-font-regular` / `--ao-leading-xs` | 12px |
+| Label color | `var(--ao-chat-sidebar-text)` + `opacity: 0.6` | Computed muted text |
 
 ## Token gaps
 
-- **Section label letter-spacing:** Figma shows 0.12px (`body/xxs` letterSpacing: 1). No `--ai-tracking-*` token matches exactly. Skipped — value is < 0.2px and barely perceptible.
-- **Section label color deviation:** Figma uses `--ai-text-secondary` but this doesn't adapt to custom sidebar backgrounds. Implementation uses computed `--ai-chat-sidebar-text` with `opacity: 0.6` instead (per user decision). Figma will be updated to match.
+- **Section label letter-spacing:** Figma shows 0.12px (`body/xxs` letterSpacing: 1). No `--ao-tracking-*` token matches exactly. Skipped — value is < 0.2px and barely perceptible.
+- **Section label color deviation:** Figma uses `--ao-text-secondary` but this doesn't adapt to custom sidebar backgrounds. Implementation uses computed `--ao-chat-sidebar-text` with `opacity: 0.6` instead (per user decision). Figma will be updated to match.
 
 ## Dependencies
 

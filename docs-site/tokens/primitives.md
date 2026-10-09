@@ -1,6 +1,6 @@
 # Primitives
 
-Primitives are the raw colour palette — the building blocks that semantic tokens alias. **Never use primitive values directly in component CSS.** Always use the semantic `--ai-*` tokens.
+Primitives are the raw colour palette — the building blocks that semantic tokens alias. **Never use primitive values directly in component CSS.** Always use the semantic `--ao-*` tokens.
 
 ## Neutral Palette
 

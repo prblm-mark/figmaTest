@@ -15,7 +15,7 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-4) var(--ai-spacing-5);
+  gap: var(--ao-spacing-4) var(--ao-spacing-5);
   /* Anchors the visually-hidden announcer (see Live Dashboard's note on unanchored hidden text). */
   position: relative;
 }
@@ -25,43 +25,43 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ai-spacing-3) var(--ai-spacing-4);
+  gap: var(--ao-spacing-3) var(--ao-spacing-4);
   min-inline-size: 0;
 }
 
 /* Preferred widths as caps, so the controls yield on a phone rather than overflow. */
 .cc-sales__sel--timeframe {
-  flex: 0 1 var(--ai-size-3);
-  max-inline-size: var(--ai-size-3);
+  flex: 0 1 var(--ao-size-3);
+  max-inline-size: var(--ao-size-3);
 }
 
 .cc-sales__sel--currency {
-  flex: 0 1 var(--ai-size-1);
-  max-inline-size: var(--ai-size-1);
+  flex: 0 1 var(--ao-size-1);
+  max-inline-size: var(--ao-size-1);
 }
 
 .cc-sales__range,
 .cc-sales__updated,
 .cc-sales__card-meta {
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-3xs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-3xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
   white-space: nowrap;
-  font-weight: var(--ai-font-medium);
+  font-weight: var(--ao-font-medium);
 }
 
 .cc-sales__range {
   display: inline-flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ao-spacing-2);
 }
 
 .cc-sales__range [data-lucide],
 .cc-sales__range svg {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
-  color: var(--ai-icon-secondary);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+  color: var(--ao-icon-secondary);
 }
 
 /* ── Cards ──────────────────────────────────────────────────
@@ -72,7 +72,7 @@
 }
 
 .cc-sales__table-empty {
-  padding: var(--ai-spacing-5);
+  padding: var(--ao-spacing-5);
 }
 
 /* Tables: column widths and what shows at each width come from DatatablesFit.js (the listings'
@@ -84,12 +84,12 @@
 
 .cc-sales__table--person .cc-live__title-cell .cc-live__link,
 .cc-sales__table--recent .cc-live__title-cell .cc-live__link {
-  font-weight: var(--ai-font-medium);
+  font-weight: var(--ao-font-medium);
 }
 
 /* Legend: the part-month key, dotted in this year's lagoon (the chart dots that segment). */
 .cc-sales__key--partial::before {
-  border-block-start: 2px dotted var(--ai-accent-lagoon-solid);
+  border-block-start: 2px dotted var(--ao-accent-lagoon-solid);
 }
 
 /* A line that arrived with the last refresh: Live Dashboard's changed-value wash, once. */
@@ -157,8 +157,8 @@
     display: grid;
     /* The currency needs three letters, so it takes its usual 128px cap and the time frame the rest
        ("Previous month" truncated at equal halves). */
-    grid-template-columns: minmax(0, 1fr) minmax(0, var(--ai-size-1));
-    gap: var(--ai-spacing-3) var(--ai-spacing-4);
+    grid-template-columns: minmax(0, 1fr) minmax(0, var(--ao-size-1));
+    gap: var(--ao-spacing-3) var(--ao-spacing-4);
   }
 
   .cc-sales__filters {

@@ -28,21 +28,21 @@ MessageBubble is a component-tier element. It is the user's question bubble in t
 
 | Property | Token (mobile) | Token (desktop) |
 |---|---|---|
-| Left offset (push right) | `--ai-spacing-8` (40px) | `--ai-spacing-11` (64px) |
-| Font size | `--ai-font-fixed-xs` (14px) | `--ai-font-fixed-sm` (16px) |
-| Bubble bg | `--ai-chat-msg-bg` | same |
-| Bubble text | `--ai-chat-msg-text` | same |
-| Bubble padding | `--ai-spacing-4` (12px) | same |
-| Bubble radius | `--ai-radius-md` (8px) | same |
-| Font family | `--ai-font-body` | same |
-| Font weight | `--ai-font-medium` (500) | same |
-| Line height | `--ai-leading-md` (24px) | same |
+| Left offset (push right) | `--ao-spacing-8` (40px) | `--ao-spacing-11` (64px) |
+| Font size | `--ao-font-fixed-xs` (14px) | `--ao-font-fixed-sm` (16px) |
+| Bubble bg | `--ao-chat-msg-bg` | same |
+| Bubble text | `--ao-chat-msg-text` | same |
+| Bubble padding | `--ao-spacing-4` (12px) | same |
+| Bubble radius | `--ao-radius-md` (8px) | same |
+| Font family | `--ao-font-body` | same |
+| Font weight | `--ao-font-medium` (500) | same |
+| Line height | `--ao-leading-md` (24px) | same |
 | Text feature | `'case' 1` | same |
-| Action buttons gap | `--ai-spacing-2` (6px) | same |
+| Action buttons gap | `--ao-spacing-2` (6px) | same |
 
 ## Token Gaps
 
-None — all values map to existing `--ai-*` tokens.
+None — all values map to existing `--ao-*` tokens.
 
 ## Icons
 

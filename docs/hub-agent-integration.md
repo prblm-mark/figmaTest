@@ -117,8 +117,8 @@ most OpenAI-side tooling won't use prompts.
 ### Acts
 
 - **`validate_tokens(css)`** — the highest-value tool to build. A Kimi or GPT-4-class agent will not
-  reliably obey "every value must be an `--ai-*` token" from prose alone. A server-side validator
-  that rejects raw hex, arbitrary px, and non-`--ai-` vars turns the governance rules into an
+  reliably obey "every value must be an `--ao-*` token" from prose alone. A server-side validator
+  that rejects raw hex, arbitrary px, and non-`--ao-` vars turns the governance rules into an
   enforced gate for the platforms that can't run the Python hooks. **This is the load-bearing piece
   of the whole design.**
 - `submit_draft(slug, files[])` — queues a hub job for `shaz` rather than writing to git directly

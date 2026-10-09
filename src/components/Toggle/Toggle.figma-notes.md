@@ -48,18 +48,18 @@ SM is the implicit default (no CSS modifier). Other sizes via `.toggle--xs`,
 
 | Property | Token |
 |---|---|
-| Gap | `var(--ai-spacing-3)` (8px) |
+| Gap | `var(--ao-spacing-3)` (8px) |
 | Padding (vertical) | `1px` (raw — sub-token optical) |
 
 ### Track / thumb (all sizes)
 
 | Property | Token |
 |---|---|
-| Track bg (Initial / Disabled) | `var(--ai-border-secondary)` |
-| Track bg (Active) | `var(--ai-surface-brand)` — was `--ai-chat-brand`; switched on 2026-05-27 per the new Dropdown user-menu Figma spec. StyleSettings contextually overrides back to `--ai-chat-brand`. |
-| Track radius | `var(--ai-radius-full)` |
-| Thumb bg | `var(--ai-surface-primary)` |
-| Thumb radius | `var(--ai-radius-full)` |
+| Track bg (Initial / Disabled) | `var(--ao-border-secondary)` |
+| Track bg (Active) | `var(--ao-surface-brand)` — was `--ao-chat-brand`; switched on 2026-05-27 per the new Dropdown user-menu Figma spec. StyleSettings contextually overrides back to `--ao-chat-brand`. |
+| Track radius | `var(--ao-radius-full)` |
+| Thumb bg | `var(--ao-surface-primary)` |
+| Thumb radius | `var(--ao-radius-full)` |
 | Thumb position (Initial) | `top: 2px; left: 2.5px` (raw — sub-token optical) |
 | Thumb position (Active) | `left: calc(100% - thumb-w - 2.5px)` |
 
@@ -67,32 +67,32 @@ SM is the implicit default (no CSS modifier). Other sizes via `.toggle--xs`,
 
 | Size | Track w | Track h | Thumb |
 |---|---|---|---|
-| xs | `var(--ai-spacing-7)` (32px) | `var(--ai-spacing-5)` (16px) | `var(--ai-spacing-4)` (12px) |
-| SM | `var(--ai-spacing-8)` (40px) | `20px` (raw) | `var(--ai-spacing-5)` (16px) |
-| Default | `44px` (raw) | `var(--ai-spacing-6)` (24px) | `20px` (raw) |
-| LG | `var(--ai-spacing-10)` (56px) | `28px` (raw) | `var(--ai-spacing-6)` (24px) |
+| xs | `var(--ao-spacing-7)` (32px) | `var(--ao-spacing-5)` (16px) | `var(--ao-spacing-4)` (12px) |
+| SM | `var(--ao-spacing-8)` (40px) | `20px` (raw) | `var(--ao-spacing-5)` (16px) |
+| Default | `44px` (raw) | `var(--ao-spacing-6)` (24px) | `20px` (raw) |
+| LG | `var(--ao-spacing-10)` (56px) | `28px` (raw) | `var(--ao-spacing-6)` (24px) |
 
 ### Label / helper
 
 | Property | xs / SM | Default / LG |
 |---|---|---|
-| Label font-family | `var(--ai-font-title)` | (same) |
-| Label font-weight | `var(--ai-font-medium)` | `var(--ai-font-regular)` |
-| Label font-size | `var(--ai-font-fixed-xs)` (14px) | `var(--ai-font-fixed-sm)` (16px) |
+| Label font-family | `var(--ao-font-title)` | (same) |
+| Label font-weight | `var(--ao-font-medium)` | `var(--ao-font-regular)` |
+| Label font-size | `var(--ao-font-fixed-xs)` (14px) | `var(--ao-font-fixed-sm)` (16px) |
 | Label line-height | `1.25` | (same) |
-| Label colour | `var(--ai-text-primary)` | (same) |
-| Helper font-weight | `var(--ai-font-regular)` | (same) |
-| Helper font-size | `var(--ai-font-fixed-xxs)` (12px) | `var(--ai-font-fixed-xs)` (14px) |
+| Label colour | `var(--ao-text-primary)` | (same) |
+| Helper font-weight | `var(--ao-font-regular)` | (same) |
+| Helper font-size | `var(--ao-font-fixed-xxs)` (12px) | `var(--ao-font-fixed-xs)` (14px) |
 | Helper line-height | `1.5` | (same) |
-| Helper colour | `var(--ai-text-contrast)` | (same) |
-| Disabled label / helper colour | `var(--ai-icon-contrast)` | (same) |
+| Helper colour | `var(--ao-text-contrast)` | (same) |
+| Disabled label / helper colour | `var(--ao-icon-contrast)` | (same) |
 
 ### Focus
 
 | Property | Token |
 |---|---|
 | Outline | `none` |
-| Box-shadow | `0 0 0 1px var(--ai-surface-primary), 0 0 0 3px var(--ai-surface-brand-soft)` (on track) |
+| Box-shadow | `0 0 0 1px var(--ao-surface-primary), 0 0 0 3px var(--ao-surface-brand-soft)` (on track) |
 
 ---
 
@@ -106,15 +106,15 @@ SM is the implicit default (no CSS modifier). Other sizes via `.toggle--xs`,
 | 28px (LG track height) | LG size | Approved raw — sub-token optical |
 | 2px / 2.5px (thumb offsets) | All sizes | Approved raw — sub-token optical |
 
-These are all visual-detail values that don't fit the `--ai-spacing-*` scale.
+These are all visual-detail values that don't fit the `--ao-spacing-*` scale.
 Same exception class as letter-spacing and border-widths.
 
 ---
 
 ## Cross-context notes
 
-- The Toggle Active track colour switched from `--ai-chat-brand` to
-  `--ai-surface-brand` on 2026-05-27 to align with the new Figma Dropdown
+- The Toggle Active track colour switched from `--ao-chat-brand` to
+  `--ao-surface-brand` on 2026-05-27 to align with the new Figma Dropdown
   User Menu spec. The Chat context (StyleSettings) preserves the original
   chat-brand colour via a contextual override scoped to `.style-settings`.
 
@@ -140,10 +140,10 @@ Same exception class as letter-spacing and border-widths.
 ## History
 
 - 2026-05-07 (approx): Initial Toggle built — Size=SM only, Active track
-  `--ai-chat-brand`.
+  `--ao-chat-brand`.
 - 2026-05-27: Figma expanded to 4 sizes (xs, SM, Default, LG) and switched
-  Active track to `--ai-surface-brand`. CSS updated to match; StyleSettings
-  retains `--ai-chat-brand` via contextual override.
+  Active track to `--ao-surface-brand`. CSS updated to match; StyleSettings
+  retains `--ao-chat-brand` via contextual override.
 
 ## `toggle--xxs` — the fifth size, added 2026-08-25
 
@@ -161,8 +161,8 @@ and the component only had four:
 | Default | `2025:1102` | 44×24 | 20×20 | `.toggle--default` |
 | LG | `2025:1123` | ?×28 | 24×24 | `.toggle--lg` |
 
-Every xxs dimension is a token: 24 = `--ai-spacing-6`, 12 = `--ai-spacing-4`, 8 = `--ai-spacing-3`.
-Colours are the component's existing ones — `--ai-border-secondary` track, `--ai-surface-brand` when
+Every xxs dimension is a token: 24 = `--ao-spacing-6`, 12 = `--ao-spacing-4`, 8 = `--ao-spacing-3`.
+Colours are the component's existing ones — `--ao-border-secondary` track, `--ao-surface-brand` when
 active — which is exactly what Figma binds. Verified 24×12 / 8×8 with the knob at 2.5px → 13.5px.
 
 **xxs has only Initial and Active in Figma — no Disabled**, so no Disabled row was added to the demo.

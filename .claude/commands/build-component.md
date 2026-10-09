@@ -50,9 +50,9 @@ These are absolute. Violating any of them turns a clean component build into rew
    layout" framing is NOT license to write background/padding/gap from intuition or from a
    plan-mode write-up. Every shell CSS property requires the same Figma fetch as any
    component property. Concrete mistake: ControlScreen wrapper bg was set to
-   `--ai-surface-secondary` (intuition: "page bg looks light grey") when Figma binds
-   `cc/ui/primary-bg` → `--cc-ui-primary-bg`; page padding was set to `--ai-spacing-7`
-   (intuition: "32px feels comfortable") when Figma binds `--ai-spacing-6` (24px). All three
+   `--ao-surface-secondary` (intuition: "page bg looks light grey") when Figma binds
+   `cc/ui/primary-bg` → `--cc-ui-primary-bg`; page padding was set to `--ao-spacing-7`
+   (intuition: "32px feels comfortable") when Figma binds `--ao-spacing-6` (24px). All three
    errors share a single root: never called `get_design_context` on the template root frame
    before writing the shell. See `feedback_template_shell_is_figma_too.md`.
 
@@ -64,7 +64,7 @@ variant matrix or token mapping, you MUST have completed:
 - [ ] `get_metadata` on the Figma component set (gives the full variant inventory)
 - [ ] `get_design_context` on at least one variant per Type axis (verifies tokens, sizing,
       structural differences)
-- [ ] `get_variable_defs` on the root or a representative variant (verifies which `--ai-*`
+- [ ] `get_variable_defs` on the root or a representative variant (verifies which `--ao-*`
       tokens are actually bound)
 - [ ] If existing component files were present: confirmed they match Figma, or fixed them
 
@@ -173,7 +173,7 @@ This gives a visual overview before touching any code — use it as the referenc
 Call `get_design_context` on the root/parent node.
 Extract from the output:
 - All child node IDs (look for `data-node-id` attributes)
-- Exact CSS variable names used (pattern: `var(--ai-*,fallback)`)
+- Exact CSS variable names used (pattern: `var(--ao-*,fallback)`)
 - Explicit dimensions (height, width, padding — especially any fixed `h-[...]`)
 - Typography tokens (font-size, line-height, font-weight variables)
 
@@ -220,7 +220,7 @@ fully solid red with white text, completely different from the outlined default 
 Inferring interactive states is the same as hardcoding — always fetch and read the actual nodes.
 
 **Critical — fetch every size variant separately.** Never assume a smaller size uses a smaller
-token (e.g. the sm button uses `--ai-radius-md`, not `--ai-radius-sm`). Call `get_design_context`
+token (e.g. the sm button uses `--ao-radius-md`, not `--ao-radius-sm`). Call `get_design_context`
 on each size node individually and read the exact tokens.
 
 **Critical — check ALL properties on EACH variant independently, not just layout or colour.**
@@ -248,15 +248,15 @@ that don't belong in production. Specifically:
   are workarounds for the prototype-to-Figma flow only — production components don't need them
   and they introduce avoidable complexity / fragility.
 - **Don't lean on a planning doc's token list as exhaustive.** A plan that lists "use
-  `--ai-spacing-5` for padding" is not a complete spec; every property not explicitly listed in
+  `--ao-spacing-5` for padding" is not a complete spec; every property not explicitly listed in
   the plan still needs a Figma fetch (this is already covered by the plan-gap rule below, but
   it's worth restating here because prototypes have the same trap).
 
 Concrete mistakes:
 - RangeSlider Disabled was carried over from the prototype with a brand-coloured fill at 50%
   opacity (because the prototype painted brand fill regardless of disabled state). Figma actually
-  specifies a solid `--ai-surface-secondary` track at 50% opacity with NO brand gradient and a
-  `--ai-surface-contrast` thumb. Took a separate fix session to discover and correct.
+  specifies a solid `--ao-surface-secondary` track at 50% opacity with NO brand gradient and a
+  `--ao-surface-contrast` thumb. Took a separate fix session to discover and correct.
 - RangeSlider's invisible-native-thumb + visible-DOM-thumb overlay was a Figma-capture workaround
   for the prototype phase. It was carried into the production component verbatim, where it added
   complexity and produced a vertical-alignment fragility (the wrap was sized to the input, so the
@@ -315,7 +315,7 @@ Concrete mistake: VersionHistory used a Header with its title set to `fill-conta
 
 Call `get_variable_defs` on the root node to get the complete Figma variable → CSS token map.
 
-**Critical:** scan for any **design value** that does NOT have a corresponding `--ai-*` semantic
+**Critical:** scan for any **design value** that does NOT have a corresponding `--ao-*` semantic
 token — including Figma primitives (e.g. `Red/400`, `Gray/900`) and arbitrary values.
 
 Design values are: colors, spacing/sizing, typography (font-size, weight, line-height), and
@@ -341,7 +341,7 @@ Style Dictionary. These require runtime JS + CSS `color-mix()`. See CLAUDE.md §
 pattern. When a component sits on a client-customisable background:
 - ALL derived colours (text, hover, selected, labels) must adapt to the bg luminance
 - Use `src/utils/sidebar-colors.js` as the reference implementation
-- Never use semantic tokens (e.g. `--ai-text-primary`) for text on a dynamic bg — use fixed RGB
+- Never use semantic tokens (e.g. `--ao-text-primary`) for text on a dynamic bg — use fixed RGB
   values set by `[data-sidebar-theme]` CSS rules
 
 ### 6. Code Connect check
@@ -351,9 +351,9 @@ Call `get_code_connect_map` on the root node to check if this component already 
 - If **mapping exists** (audit/refine mode): read the existing CSS and HTML files, then compare
   against what Figma now shows — list any tokens, variants, or states that are missing, outdated,
   or incorrect before making any changes
-- In either case: cross-reference every `--ai-*` token in the component CSS against the current
+- In either case: cross-reference every `--ao-*` token in the component CSS against the current
   `css/tokens.css` and `css/tokens-dark.css`. Check for newly added tokens that the component
-  should be using but isn't (e.g. a new `--ai-btn-primary-text` that supersedes `--ai-text-invert`
+  should be using but isn't (e.g. a new `--ao-btn-primary-text` that supersedes `--ao-text-invert`
   for primary button text). Run `npm run tokens` first to ensure the generated CSS is current.
 
 ### 7. State × size × variant matrix
@@ -386,24 +386,24 @@ is the workflow step that catches them. See `feedback_template_shell_is_figma_to
 
 **CSS (`<Name>.css`):**
 - BEM naming: `.component`, `.component__element`, `.component--modifier`
-- Only `--ai-*` semantic variables, or primitives explicitly approved by the user in Step 5
+- Only `--ao-*` semantic variables, or primitives explicitly approved by the user in Step 5
 - Approved primitives: use the hex value with a comment citing the primitive name (e.g. `/* Red/400 */`)
 - Never hardcode arbitrary hex values or named colors
-- **Never use arbitrary values when a `--ai-*` token exists — in CSS or JS.** Always use `var(--ai-token)`, never the raw px/rem/numeric equivalent. Even when a plan states "24×24px" alongside a token name, write `var(--ai-icon-size-lg)` — the pixel value is documentation, the token var is the code. This applies to all property types: spacing, sizing, font-size, font-weight, radius, icon dimensions, line-height. **This extends to JavaScript inline styles** — GSAP `.set()`, `.to()`, `.fromTo()`, and `element.style` must use the CSS custom property string (e.g. `{ fontWeight: 'var(--ai-font-medium)' }`) not the raw value (e.g. `{ fontWeight: 500 }`). **Do not mentally convert px→rem and write the rem value** — a matching numeric value is NOT a substitute for the actual token. Always call `get_variable_defs` on the Figma node to find which `--ai-*` token is bound, then use that token. Concrete mistakes: WorkingIntro Stage 3 used `fontWeight: 600` instead of `'var(--ai-font-medium)'`; Skeleton line used `height: 1rem` instead of `height: var(--ai-spacing-5)` despite the token being bound in Figma.
-- **Dimension values (spacing, sizing, font-size, line-height, border-radius) → always use `rem` via `--ai-*` tokens.** Border widths (`1px`, `2px`) and box-shadow pixel offsets stay as `px` — they are optical units, not scaled with font-size.
-- **Hardcoded dimension stop rule (HARD STOP — no exceptions):** If a dimension value in component CSS (or any nested sub-component) is NOT one of the documented exceptions and cannot be expressed as an `--ai-*` token, STOP. Do not write the value. Report the property name, the component, the Figma value, and the nearest existing tokens. Ask the user how to handle it (add a token / approve a `calc()` of existing tokens / approve as a primitive) before continuing. **Do NOT silently inline a value with a `/* one-off optical */` comment — there is no such project convention.** Even if a previous file or a figma-notes entry appears to do this, treat it as the same mistake you are about to repeat. Past mistakes: `gap: 10px` / `padding: 10px` on CRM elements (`.cc-menu--crm`, `.cc-menu__crm-group`, `.cc-menu__crm-btn`, `.cc-menu__recent-item`), `border-radius: 5px` on `md-btn`, `width: 56px` / `52px` on `.cc-sidebar` and `.cc-sidebar--mobile` — every one of those should have been a stop. This rule applies to mask-size (except brand/logo mask-size — see exception 4), width, height, gap, padding, margin, border-radius, font-size, line-height — every dimension property other than the documented exceptions. **Before writing any dimension line, verify the value maps to an `--ai-*` token; if not, stop.** Note: a "looks like a sensible spacing token" intuition is not the same as a verified mapping — check `css/tokens.css` or `get_variable_defs` output explicitly.
+- **Never use arbitrary values when a `--ao-*` token exists — in CSS or JS.** Always use `var(--ao-token)`, never the raw px/rem/numeric equivalent. Even when a plan states "24×24px" alongside a token name, write `var(--ao-icon-size-lg)` — the pixel value is documentation, the token var is the code. This applies to all property types: spacing, sizing, font-size, font-weight, radius, icon dimensions, line-height. **This extends to JavaScript inline styles** — GSAP `.set()`, `.to()`, `.fromTo()`, and `element.style` must use the CSS custom property string (e.g. `{ fontWeight: 'var(--ao-font-medium)' }`) not the raw value (e.g. `{ fontWeight: 500 }`). **Do not mentally convert px→rem and write the rem value** — a matching numeric value is NOT a substitute for the actual token. Always call `get_variable_defs` on the Figma node to find which `--ao-*` token is bound, then use that token. Concrete mistakes: WorkingIntro Stage 3 used `fontWeight: 600` instead of `'var(--ao-font-medium)'`; Skeleton line used `height: 1rem` instead of `height: var(--ao-spacing-5)` despite the token being bound in Figma.
+- **Dimension values (spacing, sizing, font-size, line-height, border-radius) → always use `rem` via `--ao-*` tokens.** Border widths (`1px`, `2px`) and box-shadow pixel offsets stay as `px` — they are optical units, not scaled with font-size.
+- **Hardcoded dimension stop rule (HARD STOP — no exceptions):** If a dimension value in component CSS (or any nested sub-component) is NOT one of the documented exceptions and cannot be expressed as an `--ao-*` token, STOP. Do not write the value. Report the property name, the component, the Figma value, and the nearest existing tokens. Ask the user how to handle it (add a token / approve a `calc()` of existing tokens / approve as a primitive) before continuing. **Do NOT silently inline a value with a `/* one-off optical */` comment — there is no such project convention.** Even if a previous file or a figma-notes entry appears to do this, treat it as the same mistake you are about to repeat. Past mistakes: `gap: 10px` / `padding: 10px` on CRM elements (`.cc-menu--crm`, `.cc-menu__crm-group`, `.cc-menu__crm-btn`, `.cc-menu__recent-item`), `border-radius: 5px` on `md-btn`, `width: 56px` / `52px` on `.cc-sidebar` and `.cc-sidebar--mobile` — every one of those should have been a stop. This rule applies to mask-size (except brand/logo mask-size — see exception 4), width, height, gap, padding, margin, border-radius, font-size, line-height — every dimension property other than the documented exceptions. **Before writing any dimension line, verify the value maps to an `--ao-*` token; if not, stop.** Note: a "looks like a sensible spacing token" intuition is not the same as a verified mapping — check `css/tokens.css` or `get_variable_defs` output explicitly.
 
   **Documented exceptions (raw `px` allowed):**
   1. Border widths (`1px`, `2px`).
   2. Box-shadow pixel offsets.
   3. `letter-spacing`.
   4. **Logo / brand asset dimensions** — `width`, `height`, and `mask-size` for brand cells (`.*__brand`, wordmark/mark crops, etc.) whose values trace to an SVG asset's intrinsic dimensions. These are asset metadata, not design tokens, and don't fit the spacing scale (e.g. `167×38` wordmark, `28px` mark crop). Add a comment that names the exception.
-- **CRITICAL — Never assume spacing/sizing values.** Every `padding`, `gap`, `min-height`, `width`, and `margin` value MUST come from the exact token shown in `get_design_context` or `get_variable_defs` output for that specific node — or from an explicit user instruction. Never pick a "reasonable" spacing token based on visual intuition or component similarity. If the exact value is unknown, STOP and ask the user. This applies to ALL elements including child components, menu items, containers, and wrappers — not just the primary component. Concrete mistake: ChatMenu padding was guessed as `--ai-spacing-2` (6px) when Figma uses `--ai-spacing-3` (8px); menu items were given vertical padding instead of a fixed height (`min-height: --ai-spacing-7`).
+- **CRITICAL — Never assume spacing/sizing values.** Every `padding`, `gap`, `min-height`, `width`, and `margin` value MUST come from the exact token shown in `get_design_context` or `get_variable_defs` output for that specific node — or from an explicit user instruction. Never pick a "reasonable" spacing token based on visual intuition or component similarity. If the exact value is unknown, STOP and ask the user. This applies to ALL elements including child components, menu items, containers, and wrappers — not just the primary component. Concrete mistake: ChatMenu padding was guessed as `--ao-spacing-2` (6px) when Figma uses `--ao-spacing-3` (8px); menu items were given vertical padding instead of a fixed height (`min-height: --ao-spacing-7`).
 - Base state first, then variant modifiers, then size modifiers, then combined (`.variant.size`)
 - Include `:hover`, `:active`, `:focus-visible`, `:disabled` pseudo-classes
 - Add `min-height` (not just padding) when Figma specifies a fixed height
 - **Responsive layout:** use `@media (max-width: 767px)` for device-driven layout changes — NEVER a `.component--mobile` modifier class. Breakpoint: `max-width: 767px` = mobile, 768px+ = desktop.
-- **Fluid typography is free:** components using `--ai-font-fluid-*` tokens automatically get the correct mobile font size via `tokens-mobile.css` — no extra media queries needed for font size.
+- **Fluid typography is free:** components using `--ao-font-fluid-*` tokens automatically get the correct mobile font size via `tokens-mobile.css` — no extra media queries needed for font size.
 - **Mobile child-component sizing:** When a Device=Mobile variant exists, always check whether nested child components (e.g. buttons, icons, inputs) change size at mobile — not just layout. Fetch `get_design_context` on the mobile variant and compare `h-[...]`, `px-[...]`, and `text-[length:...]` values against the desktop variant. If child sizes change, add scoped overrides inside the `@media (max-width: 767px)` block (e.g. `.header__actions .btn { min-height: ...; padding: ...; font-size: ...; }`). Never rely on the HTML having a `--sm` modifier class to handle this — that only works for static layouts, not responsive ones.
 - **Mobile mode safety net:** After building the variant table (Step 1b), if no Device=Mobile (or equivalent) variant was found, scan the design context output and any mode/token references for the word "mobile" (e.g. `Modes / typography:mobile`, `device:mobile`, mode names in `$extensions`). If "mobile" appears anywhere and has NOT already been accounted for as a variant, STOP and ask the user: "I see a mobile mode referenced but no Device=Mobile variant in the component set — should this component have a mobile layout variant?" Do not assume it is covered by fluid tokens alone.
 
@@ -421,7 +421,7 @@ is the workflow step that catches them. See `feedback_template_shell_is_figma_to
 **Accessibility (WCAG 2.1 AA):**
 - `aria-label` on icon-only buttons
 - `role="alert"` on error messages
-- `:focus-visible` outline: `2px solid var(--ai-surface-brand)`
+- `:focus-visible` outline: `2px solid var(--ao-surface-brand)`
 - Touch targets: minimum 44×44px for interactive elements
 
 ### 9. Document (`<Name>.figma-notes.md`)
@@ -461,7 +461,7 @@ File key, page node, component node IDs per variant
 (Figma variable → CSS variable → role)
 
 ## Token Gaps
-(any raw primitives with no --ai-* token; decision taken)
+(any raw primitives with no --ao-* token; decision taken)
 
 ## Notes
 - Any naming mismatches (Figma name vs Lucide name)
@@ -539,19 +539,19 @@ If the user says yes to docs:
 
 | Need | Token prefix |
 |---|---|
-| Backgrounds | `--ai-surface-*` |
-| Text colors | `--ai-text-*` |
-| Icon colors | `--ai-icon-*` |
-| Icon sizes | `--ai-icon-size-sm` (16px) / `--ai-icon-size-md` (20px) / `--ai-icon-size-lg` (24px) — **never `--ai-spacing-*` for icon width/height** |
-| Border colors | `--ai-border-*` |
-| Border radius | `--ai-radius-sm/md/lg/xl/full` |
-| Spacing / size | `--ai-spacing-1` … `--ai-spacing-13` |
-| Font size (fixed) | `--ai-font-fixed-5xs` … `--ai-font-fixed-8xl` — **12px is `--ai-font-fixed-xxs`**, not `2xs` (`2xs` is 13px since the 28 Aug 2026 export, which REVERSED the Aug 2026 swap — these two names have changed meaning twice, so check `docs/tokens-reference.md` rather than trusting a remembered value) |
-| Font size (fluid) | `--ai-font-fluid-xxs` … `--ai-font-fluid-4xl` — **genuinely responsive** via `tokens-mobile.css`; desktop value at ≥768px, smaller mobile value at ≤767px. No component CSS needed for typography responsiveness. |
-| Font weight | `--ai-font-regular/medium/semibold/bold/extrabold` |
-| Line height | `--ai-leading-xs` … `--ai-leading-2xl` |
-| Button-specific | `--ai-btn-primary/secondary/disabled` + hover/focus/pressed |
-| Gradient backgrounds | `--ai-gradient-surface-*` — see CLAUDE.md §2 Gradient |
+| Backgrounds | `--ao-surface-*` |
+| Text colors | `--ao-text-*` |
+| Icon colors | `--ao-icon-*` |
+| Icon sizes | `--ao-icon-size-sm` (16px) / `--ao-icon-size-md` (20px) / `--ao-icon-size-lg` (24px) — **never `--ao-spacing-*` for icon width/height** |
+| Border colors | `--ao-border-*` |
+| Border radius | `--ao-radius-sm/md/lg/xl/full` |
+| Spacing / size | `--ao-spacing-1` … `--ao-spacing-13` |
+| Font size (fixed) | `--ao-font-fixed-5xs` … `--ao-font-fixed-8xl` — **12px is `--ao-font-fixed-xxs`**, not `2xs` (`2xs` is 13px since the 28 Aug 2026 export, which REVERSED the Aug 2026 swap — these two names have changed meaning twice, so check `docs/tokens-reference.md` rather than trusting a remembered value) |
+| Font size (fluid) | `--ao-font-fluid-xxs` … `--ao-font-fluid-4xl` — **genuinely responsive** via `tokens-mobile.css`; desktop value at ≥768px, smaller mobile value at ≤767px. No component CSS needed for typography responsiveness. |
+| Font weight | `--ao-font-regular/medium/semibold/bold/extrabold` |
+| Line height | `--ao-leading-xs` … `--ao-leading-2xl` |
+| Button-specific | `--ao-btn-primary/secondary/disabled` + hover/focus/pressed |
+| Gradient backgrounds | `--ao-gradient-surface-*` — see CLAUDE.md §2 Gradient |
 
 Full token reference: CLAUDE.md Section 2 & 3.
 
@@ -562,32 +562,32 @@ Detection is screenshot-based:
 - ...but the element has no `bg-[...]` class in design context...
 - → STOP and ask: "I see a gradient on [element] in the screenshot — which gradient style
   is this? (e.g. `gradient/surface/secondary`)"
-Once identified, map to `--ai-gradient-surface-*` and use `background: var(--ai-gradient-…)`.
+Once identified, map to `--ao-gradient-surface-*` and use `background: var(--ao-gradient-…)`.
 Never hardcode rgba gradient values in component CSS.
 
 ---
 
 ## Common pitfalls (learned from Button audit)
 
-- `button/base` typography in Figma → `--ai-font-fluid-xs` (14px) + `--ai-leading-xs` (16px), NOT fixed-sm + leading-md
-- `button/sm` → `--ai-font-fluid-xxs` (12px), NOT fixed-xs
+- `button/base` typography in Figma → `--ao-font-fluid-xs` (14px) + `--ao-leading-xs` (16px), NOT fixed-sm + leading-md
+- `button/sm` → `--ao-font-fluid-xxs` (12px), NOT fixed-xs
 - Figma sets fixed heights (40px base, 32px sm) — add `min-height`, not just padding
-- Tertiary = white bg + **no border** (distinct from Secondary which has `--ai-border-secondary`)
-- Alert background (`Red/500`) → `--ai-surface-error` (#ef4444) IS a semantic token ✓. The gaps are hover/pressed: Red/400 (`#f87171`) and Red/600 (`#dc2626`) have no semantic token yet
-- **Alert-outline interactive states are NOT "subtle tint + border shift"** — Figma flips them to fully solid red (Red/400 hover/focus, Red/600 pressed) with white text (`--ai-text-invert`), identical to the alert (solid) variant. The "outline" appearance only exists in the default state.
+- Tertiary = white bg + **no border** (distinct from Secondary which has `--ao-border-secondary`)
+- Alert background (`Red/500`) → `--ao-surface-error` (#ef4444) IS a semantic token ✓. The gaps are hover/pressed: Red/400 (`#f87171`) and Red/600 (`#dc2626`) have no semantic token yet
+- **Alert-outline interactive states are NOT "subtle tint + border shift"** — Figma flips them to fully solid red (Red/400 hover/focus, Red/600 pressed) with white text (`--ao-text-invert`), identical to the alert (solid) variant. The "outline" appearance only exists in the default state.
 - `.btn--lg` does not exist in Figma — never assume a "large" size exists
 - **Button variant identification:** When a Button instance appears in design context, ALWAYS check the Figma component `type` property or variant name (visible in `get_metadata` as `Type=Primary`, `Type=Secondary`, `Type=Tertiary` etc.) in addition to checking for a `border` class in the design context. Secondary and tertiary buttons share the same white bg. Background colour alone is never sufficient to identify the variant.
 - **`btn--icon` is a size modifier, not a type — icon-only buttons still need a type check.** Never default icon-only buttons to `btn--secondary btn--icon`. They can be `btn--secondary btn--icon` (bordered) or `btn--tertiary btn--icon` (no border). Always verify the Figma variant name. Concrete mistake: SystemRole window controls were written as `btn--secondary btn--icon` when Figma specifies `btn--tertiary btn--icon`.
-- **Font family rule:** Map font-style names from design context directly: `title/*` → `--ai-font-title`; `body/*` → `--ai-font-body`. Never assume text content uses `--ai-font-body` — always read the font style name from the design context output.
+- **Font family rule:** Map font-style names from design context directly: `title/*` → `--ao-font-title`; `body/*` → `--ao-font-body`. Never assume text content uses `--ao-font-body` — always read the font style name from the design context output.
 - **Hover scoping:** When a hover state exists only on specific Figma variants (e.g. Default, not Live/Selected), scope BOTH the `transition` and the `:hover` rule to those variants using `:not()`. The `transition` must live on a companion rest-state rule (NOT inside the `:hover` rule) so it animates both entry and exit. Pattern:
   ```css
   /* Rest state — transition both ways */
   .component:not(.component--live):not(.component--selected) {
-    transition: background-color var(--ai-transition-default);
+    transition: background-color var(--ao-transition-default);
   }
   /* Hover — only on variants that have it in Figma */
   .component:not(.component--live):not(.component--selected):hover {
-    background-color: var(--ai-surface-secondary);
+    background-color: var(--ao-surface-secondary);
   }
   ```
   Placing `transition` on the base `.component` selector leaks animation onto all variants including those without a Figma hover state.
@@ -597,20 +597,20 @@ Never hardcode rgba gradient values in component CSS.
   - Chevron rotation: `.component--expanded .component__chevron { transform: rotate(90deg); }`
   - JS: toggle `.component--expanded` on container, update `aria-expanded`, swap button label
   - The expand/collapse trigger counts as an interactive state — ask about transition before implementing
-- **Vertical timeline line pattern:** Absolutely positioned inside a `.component__rows` wrapper (NOT the outer container — so it doesn't overlap the footer). Center behind Size=1 avatars: `left: calc(var(--ai-spacing-5) + var(--ai-spacing-6) / 2)` = 28px. Set `top: 0; bottom: 0; width: 1px; background-color: var(--ai-border-secondary)`. A 1px decorative line is treated as an optical width (like border-width) — keep as `px`.
-- **`Neutral/200` primitive** (`#e5e7eb`) maps to `--ai-border-secondary`. Not a token gap.
-- Icon SVGs use `currentColor` → set color via `color:` property using `--ai-icon-*` tokens
-- **Icon sizes:** always use `--ai-icon-size-sm/md/lg` for icon `width`/`height` — never `--ai-spacing-*`. Sizes: sm=1rem (16px), md=1.25rem (20px), lg=1.5rem (24px)
+- **Vertical timeline line pattern:** Absolutely positioned inside a `.component__rows` wrapper (NOT the outer container — so it doesn't overlap the footer). Center behind Size=1 avatars: `left: calc(var(--ao-spacing-5) + var(--ao-spacing-6) / 2)` = 28px. Set `top: 0; bottom: 0; width: 1px; background-color: var(--ao-border-secondary)`. A 1px decorative line is treated as an optical width (like border-width) — keep as `px`.
+- **`Neutral/200` primitive** (`#e5e7eb`) maps to `--ao-border-secondary`. Not a token gap.
+- Icon SVGs use `currentColor` → set color via `color:` property using `--ao-icon-*` tokens
+- **Icon sizes:** always use `--ao-icon-size-sm/md/lg` for icon `width`/`height` — never `--ao-spacing-*`. Sizes: sm=1rem (16px), md=1.25rem (20px), lg=1.5rem (24px)
 - **Design context reports base component size, not placed size.** An icon named `Icon/24px/History` placed at 20px will show `size-[24px]` in design context (the component's intrinsic size). The actual rendered size comes from the parent's `w-[...]`/`h-[...]` tokens on the placed instance. Always verify with `get_metadata` on the specific placed instance node if unsure.
 - **Design context shows visual/layout structure only — NOT interaction behavior.** Figma prototype interactions are stored separately and never appear in `get_design_context` output. An element that renders as a `<div>` (no `cursor-pointer`) in design context can still be a clickable prototype trigger. NEVER remove or demote an existing interactive element (e.g. `<button>` → `<div>`) based on design context output alone. If an interaction appears to have been removed, confirm with the user before changing anything. Concrete mistake: VersionHistory footer showed as `<div>` in design context — it was downgraded to a non-interactive div in code, breaking the "Show older" toggle. The user confirmed both triggers still exist in the Figma prototype.
-- **No fallback backgrounds without Figma confirmation.** Adding a `background-color` "as a fallback" when Figma defines none is a token gap violation — it must be flagged to the user before implementing, the same as any other design value. Concrete mistake: `background-color: var(--ai-surface-contrast)` was silently added to `.avatar` as a fallback; it bled through at the sub-pixel boundary between `border-radius: full` on `.avatar` and `clip-path: circle(50%)` on `.portrait`, producing a visible grey ring on white backgrounds. If Figma's intent is "no avatar = invisible", that is the correct behaviour — do not invent states.
-- **Contextual overrides (Case B) must be scoped per variant — never applied globally.** When implementing a Case B override, always check EVERY variant of the parent component and confirm which ones carry the override. A property present on the Default variant is NOT automatically present on Live, Selected, or other states — fetch design context for each variant and compare. Scope the CSS using `:not()` to exclude variants where the override is absent. Concrete mistake: a `2px solid --ai-surface-primary` border found on the Default VersionHistoryRow avatar was initially scoped to `.version-history-row .avatar` (all variants), but it only applies to Default. The fix was `.version-history-row:not(.version-history-row--live):not(.version-history-row--selected) .avatar`.
-- Form field filled text = `--ai-text-primary`; placeholder = `--ai-text-contrast` (different tokens!)
+- **No fallback backgrounds without Figma confirmation.** Adding a `background-color` "as a fallback" when Figma defines none is a token gap violation — it must be flagged to the user before implementing, the same as any other design value. Concrete mistake: `background-color: var(--ao-surface-contrast)` was silently added to `.avatar` as a fallback; it bled through at the sub-pixel boundary between `border-radius: full` on `.avatar` and `clip-path: circle(50%)` on `.portrait`, producing a visible grey ring on white backgrounds. If Figma's intent is "no avatar = invisible", that is the correct behaviour — do not invent states.
+- **Contextual overrides (Case B) must be scoped per variant — never applied globally.** When implementing a Case B override, always check EVERY variant of the parent component and confirm which ones carry the override. A property present on the Default variant is NOT automatically present on Live, Selected, or other states — fetch design context for each variant and compare. Scope the CSS using `:not()` to exclude variants where the override is absent. Concrete mistake: a `2px solid --ao-surface-primary` border found on the Default VersionHistoryRow avatar was initially scoped to `.version-history-row .avatar` (all variants), but it only applies to Default. The fix was `.version-history-row:not(.version-history-row--live):not(.version-history-row--selected) .avatar`.
+- Form field filled text = `--ao-text-primary`; placeholder = `--ao-text-contrast` (different tokens!)
 - Clear button visibility: use `visibility: hidden` + `:has(:not(:placeholder-shown))` — no JS needed
-- **Always use the exact token from Figma** — never substitute a different token based on personal judgement (e.g. swapping `--ai-text-invert` for `--ai-text-contrast` because it "looks better"). If a Figma token seems wrong, flag it to the user instead of silently changing it.
+- **Always use the exact token from Figma** — never substitute a different token based on personal judgement (e.g. swapping `--ao-text-invert` for `--ao-text-contrast` because it "looks better"). If a Figma token seems wrong, flag it to the user instead of silently changing it.
 - **Modal scroll regions use `.modal__scroll`.** Any element that scrolls inside a dialog gets
   that class from `Modal.css` — it carries `overflow-y: auto`, `min-block-size: 0` and the system's
-  scrollbar treatment (transparent track, thin `--ai-surface-secondary` thumb). Set the element's
+  scrollbar treatment (transparent track, thin `--ao-surface-secondary` thumb). Set the element's
   own cap and flex rules alongside it; do NOT re-declare the scrollbar, and do not invent a second
   treatment. Established by `.chat-sidebar__sections`, followed by `.system-role__textarea` and
   `.table-detail__list` (designer-confirmed 2026-08-25), and named as the convention 2026-09-10 at
@@ -620,32 +620,32 @@ Never hardcode rgba gradient values in component CSS.
   Note Chrome renders `scrollbar-width: thin` at ~11px and ignores the `::-webkit-scrollbar` width.
 - **Stacked layout scroll rule:** Whenever a `@media`, `@container`, or JS-class rule switches a layout from side-by-side columns to a stacked vertical column, the stacking container MUST get `overflow-y: auto; flex: 1; min-height: 0`. Never use `overflow: visible; flex: none` — visible overflow gets clipped by the nearest ancestor with `overflow: hidden`, making content below the fold unreachable. Concrete mistake: SystemRole CQ block set `overflow: visible; flex: none` on `.system-role__body`; the modal's own `overflow: hidden` clipped the sidebar so PromptTemplates was never reachable at viewports between the CQ threshold and the `@media` threshold.
 - **Never set `overflow: visible` on an element that has `border-radius` and a background-bearing child.** This removes the clip that keeps child backgrounds inside the rounded corners — the child's background bleeds over the border making the corners appear cropped or missing. When overriding `overflow` in a variant or mode, always check if the element has `border-radius`. If it does, keep `overflow: hidden`. Concrete mistake: SystemRole minimised mode set `overflow: visible` on `.system-role__prompt` — the textarea white background bled outside the rounded border, hiding the corners entirely. The fix was restoring `overflow: hidden`, not changing the parent container.
-- **Variant override blocks require their own Figma fetch — never carry values from the base variant.** When writing a `.component--variant` CSS block (e.g. `--minimised`, `--open`, `--expanded`, any mode or state override), every layout/spacing property in that block (gap, padding, flex-direction, width, height, align-items) MUST have been read from `get_design_context` on that variant's specific node — not assumed, not carried from the base, not estimated based on what "feels compact/large/etc". Before writing any CSS line inside a variant override block, confirm its value came from a Figma fetch of that variant. Concrete mistake: `.system-role--minimised .system-role__top { gap: var(--ai-spacing-3) }` was written without fetching the minimised variant node (`169:2467`) — Figma shows `gap: 0`. Required a dedicated fix session.
-- **Multi-row column alignment: gaps must match across rows.** When a layout has stacked flex rows sharing the same column structure (e.g. top bar with header | controls above a body with prompt | sidebar), both rows must use the same `gap` value. Always read `gap` for every row from `get_design_context` — never set one row's gap independently. Concrete mistake: SystemRole top bar gap was `--ai-spacing-3` (8px) while body was `--ai-spacing-7` (32px), misaligning the columns.
+- **Variant override blocks require their own Figma fetch — never carry values from the base variant.** When writing a `.component--variant` CSS block (e.g. `--minimised`, `--open`, `--expanded`, any mode or state override), every layout/spacing property in that block (gap, padding, flex-direction, width, height, align-items) MUST have been read from `get_design_context` on that variant's specific node — not assumed, not carried from the base, not estimated based on what "feels compact/large/etc". Before writing any CSS line inside a variant override block, confirm its value came from a Figma fetch of that variant. Concrete mistake: `.system-role--minimised .system-role__top { gap: var(--ao-spacing-3) }` was written without fetching the minimised variant node (`169:2467`) — Figma shows `gap: 0`. Required a dedicated fix session.
+- **Multi-row column alignment: gaps must match across rows.** When a layout has stacked flex rows sharing the same column structure (e.g. top bar with header | controls above a body with prompt | sidebar), both rows must use the same `gap` value. Always read `gap` for every row from `get_design_context` — never set one row's gap independently. Concrete mistake: SystemRole top bar gap was `--ao-spacing-3` (8px) while body was `--ao-spacing-7` (32px), misaligning the columns.
 - **Layout alignment widths must be fetched from Figma, not assumed.** When a flex-row element sits above a fixed-width sibling panel (e.g. a sidebar), check whether Figma also constrains the element's width to match that panel — creating precise column alignment between the top bar and the panel beneath it. This is easy to miss because the component *functions* without it; the misalignment is only visible on close inspection. Always read `w-[...]` and `max-w-[...]` from `get_design_context` for every flex child in a multi-column layout. Concrete mistake: SystemRole `system-role__controls` was missing `width: 100%; max-width: 400px`, which Figma sets to align the controls column over the 400px sidebar below.
-- **Plan documents are not complete token specs.** When implementing from a plan, any CSS property not explicitly listed with an exact `--ai-*` token is NOT approved to infer. Treat the gap the same as a token gap (Step 5): call `get_design_context` and read the exact token before writing that CSS line. Concrete mistake: SystemRole's plan did not state the textarea `font-size`; `--ai-font-fluid-sm` was assumed instead of the correct `--ai-font-fixed-xs`. Rule: **plan gap = Figma fetch required, always.**
+- **Plan documents are not complete token specs.** When implementing from a plan, any CSS property not explicitly listed with an exact `--ao-*` token is NOT approved to infer. Treat the gap the same as a token gap (Step 5): call `get_design_context` and read the exact token before writing that CSS line. Concrete mistake: SystemRole's plan did not state the textarea `font-size`; `--ao-font-fluid-sm` was assumed instead of the correct `--ao-font-fixed-xs`. Rule: **plan gap = Figma fetch required, always.**
 - **Focus ring pattern:** Figma focus states use a double box-shadow ring, NOT an outline. Write `:hover` and `:focus-within` as **separate rules** — never combine them or focus will never receive its shadow. Suppress the global `:focus-visible` outline (from `base.css` line 56) on child interactive elements inside the component wrap:
   ```css
-  .component__wrap:hover { border-color: var(--ai-border-brand); }
+  .component__wrap:hover { border-color: var(--ao-border-brand); }
   .component__wrap:focus-within {
-    border-color: var(--ai-border-brand);
-    box-shadow: 0 0 0 1px var(--ai-surface-primary),
-                0 0 0 3px var(--ai-surface-brand-contrast);
+    border-color: var(--ao-border-brand);
+    box-shadow: 0 0 0 1px var(--ao-surface-primary),
+                0 0 0 3px var(--ao-surface-brand-contrast);
     outline: none;
   }
   /* Suppress base.css global :focus-visible on child elements */
   .component__control:focus-visible,
   .component__clear:focus-visible { outline: none; }
   ```
-- **Error focus ring pattern:** When a component has an error state, the focus ring color changes from brand-blue to error-red — `--ai-surface-error-contrast` replaces `--ai-surface-brand-contrast`. The error state's `:hover` and `:focus-within` must BOTH be written as separate rules (not combined), and the focus-within rule must explicitly override the box-shadow:
+- **Error focus ring pattern:** When a component has an error state, the focus ring color changes from brand-blue to error-red — `--ao-surface-error-contrast` replaces `--ao-surface-brand-contrast`. The error state's `:hover` and `:focus-within` must BOTH be written as separate rules (not combined), and the focus-within rule must explicitly override the box-shadow:
   ```css
   .component--error .component__wrap:hover {
-    border-color: var(--ai-border-error);
+    border-color: var(--ao-border-error);
   }
   .component--error .component__wrap:focus-within {
-    border-color: var(--ai-border-error);
-    box-shadow: 0 0 0 1px var(--ai-surface-primary),
-                0 0 0 3px var(--ai-surface-error-contrast); /* red ring, not blue */
+    border-color: var(--ao-border-error);
+    box-shadow: 0 0 0 1px var(--ao-surface-primary),
+                0 0 0 3px var(--ao-surface-error-contrast); /* red ring, not blue */
   }
   ```
-  Combining error hover + focus-within into one rule prevents the box-shadow from being set, causing the default blue ring to bleed through. Concrete mistake: Input error focus used `--ai-surface-brand-contrast` (blue) instead of `--ai-surface-error-contrast` (red tint) because the error hover/focus rules were combined.
+  Combining error hover + focus-within into one rule prevents the box-shadow from being set, causing the default blue ring to bleed through. Concrete mistake: Input error focus used `--ao-surface-brand-contrast` (blue) instead of `--ao-surface-error-contrast` (red tint) because the error hover/focus rules were combined.

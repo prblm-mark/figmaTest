@@ -15,9 +15,9 @@
 
 | Variant | CSS approach | Key visual |
 |---|---|---|
-| Default | `.prompt-template-item` | `--ai-border-secondary` 1px border |
-| Hover | `.prompt-template-item:hover` | Whole card border darkens to `--ai-border-primary`; chevron container also gets `--ai-surface-secondary` bg (separate rule) |
-| Selected | `.prompt-template-item--selected` | Border flips to `--ai-border-primary` |
+| Default | `.prompt-template-item` | `--ao-border-secondary` 1px border |
+| Hover | `.prompt-template-item:hover` | Whole card border darkens to `--ao-border-primary`; chevron container also gets `--ao-surface-secondary` bg (separate rule) |
+| Selected | `.prompt-template-item--selected` | Border flips to `--ao-border-primary` |
 | Expanded | `.prompt-template-item--expanded` | Details section revealed; chevron rotates 90° |
 
 Selected and Expanded are independent JS-toggled states and can be combined.
@@ -46,37 +46,37 @@ Selected and Expanded are independent JS-toggled states and can be combined.
 
 | Figma variable | CSS token | Role |
 |---|---|---|
-| `--ai-border-secondary` | `--ai-border-secondary` | Default card border |
-| `--ai-border-primary` | `--ai-border-primary` | Selected card border |
-| `--ai-radius-lg` | `--ai-radius-lg` | Card corner radius |
-| `--ai-spacing-5` | `--ai-spacing-5` | Inner padding (header + details) |
-| `--ai-spacing-6` | `--ai-spacing-6` | Chevron container size (24px) |
-| `--ai-radius-md` | `--ai-radius-md` | Chevron button corner radius |
-| `--ai-icon-size-lg` | `--ai-icon-size-lg` | 24px prompt icon size |
-| `--ai-icon-size-sm` | `--ai-icon-size-sm` | 16px chevron icon size |
-| `--ai-icon-primary` | `--ai-icon-primary` | Prompt icon colour |
-| `--ai-icon-contrast` | `--ai-icon-contrast` | Chevron icon colour (inferred from variable defs — verify if incorrect) |
-| `--ai-font-title` | `--ai-font-title` | Title font family |
-| `--ai-font-semibold` | `--ai-font-semibold` | Title weight |
-| `--ai-font-fixed-xs` | `--ai-font-fixed-xs` | Title + description font size |
-| `--ai-leading-xs` | `--ai-leading-xs` | Title line height |
-| `--ai-text-primary` | `--ai-text-primary` | Title colour |
-| `--ai-border-primary` | `--ai-border-primary` | Whole-item border on hover (node 178:3388) |
-| `--ai-surface-secondary` | `--ai-surface-secondary` | Chevron container bg on hover (node 78:2879) |
-| `--ai-surface-contrast` | `--ai-surface-contrast` | Divider border between header and details |
-| `--ai-font-body` | `--ai-font-body` | Description font family |
-| `--ai-font-regular` | `--ai-font-regular` | Description weight |
-| `--ai-leading-md` | `--ai-leading-md` | Description line height |
-| `--ai-text-secondary` | `--ai-text-secondary` | Description colour |
+| `--ao-border-secondary` | `--ao-border-secondary` | Default card border |
+| `--ao-border-primary` | `--ao-border-primary` | Selected card border |
+| `--ao-radius-lg` | `--ao-radius-lg` | Card corner radius |
+| `--ao-spacing-5` | `--ao-spacing-5` | Inner padding (header + details) |
+| `--ao-spacing-6` | `--ao-spacing-6` | Chevron container size (24px) |
+| `--ao-radius-md` | `--ao-radius-md` | Chevron button corner radius |
+| `--ao-icon-size-lg` | `--ao-icon-size-lg` | 24px prompt icon size |
+| `--ao-icon-size-sm` | `--ao-icon-size-sm` | 16px chevron icon size |
+| `--ao-icon-primary` | `--ao-icon-primary` | Prompt icon colour |
+| `--ao-icon-contrast` | `--ao-icon-contrast` | Chevron icon colour (inferred from variable defs — verify if incorrect) |
+| `--ao-font-title` | `--ao-font-title` | Title font family |
+| `--ao-font-semibold` | `--ao-font-semibold` | Title weight |
+| `--ao-font-fixed-xs` | `--ao-font-fixed-xs` | Title + description font size |
+| `--ao-leading-xs` | `--ao-leading-xs` | Title line height |
+| `--ao-text-primary` | `--ao-text-primary` | Title colour |
+| `--ao-border-primary` | `--ao-border-primary` | Whole-item border on hover (node 178:3388) |
+| `--ao-surface-secondary` | `--ao-surface-secondary` | Chevron container bg on hover (node 78:2879) |
+| `--ao-surface-contrast` | `--ao-surface-contrast` | Divider border between header and details |
+| `--ao-font-body` | `--ao-font-body` | Description font family |
+| `--ao-font-regular` | `--ao-font-regular` | Description weight |
+| `--ao-leading-md` | `--ao-leading-md` | Description line height |
+| `--ao-text-secondary` | `--ao-text-secondary` | Description colour |
 
 ## Transitions (defaults used — confirm with user)
-- Hover chevron bg: `--ai-transition-default` (150ms ease)
-- Selected border: `--ai-transition-default` (150ms ease)
-- Chevron rotation: `--ai-transition-default` (150ms ease)
+- Hover chevron bg: `--ao-transition-default` (150ms ease)
+- Selected border: `--ao-transition-default` (150ms ease)
+- Chevron rotation: `--ao-transition-default` (150ms ease)
 - Description reveal: instant (no animation)
 
 ## Token Gaps
-None — all design values map to `--ai-*` semantic tokens.
+None — all design values map to `--ao-*` semantic tokens.
 
 ## Icon Name Mapping (Figma → Lucide)
 
@@ -96,7 +96,7 @@ Icons render as SVG asset images in Figma (not Lucide components), but are visua
 - None (standalone component)
 
 ## Notes
-- The chevron container width/height uses `--ai-spacing-6` (1.5rem = 24px) — this is the button container, not an icon. Icon sizes still use `--ai-icon-size-*` tokens.
-- `--ai-icon-contrast` for chevron colour is inferred from variable defs inclusion; not explicitly visible in design context output.
+- The chevron container width/height uses `--ao-spacing-6` (1.5rem = 24px) — this is the button container, not an icon. Icon sizes still use `--ao-icon-size-*` tokens.
+- `--ao-icon-contrast` for chevron colour is inferred from variable defs inclusion; not explicitly visible in design context output.
 - Description text for items 2–6 in the demo is placeholder copy — real product copy to be confirmed.
 - Description text for item 1 (Support Assistant) is taken exactly from the Figma Expanded variant.
