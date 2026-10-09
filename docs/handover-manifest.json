@@ -1584,7 +1584,7 @@
      "category": "needs-backend",
      "element": "Workflow confirmation step: View layout read-only, header Edit + Confirm, Alert banner (ArticleConfirm.html, ArticleConfirmFlagged.html)",
      "current": "Static pages; Confirm does nothing; the flagged words are demo.",
-     "needs": "Show the step when the workflow requires confirmation. Banner: always warning — \"Not saved yet\" by default; when flagged, a warning listing the flagged fields when the profanity check flags words (the article then goes to moderation). Confirm submits; Edit returns to the form with values kept."
+     "needs": "Show the step when the workflow requires confirmation. Banner: always warning — \"Not saved yet\", in both profanity modes. The flagged variant (ArticleConfirmFlagged.html, listing flagged words per field) is PARKED: v1 has nothing that produces that list (Mark, 2026-10-09). If it is ever built, show it in Moderate mode only; Replace mode keeps \"Not saved yet\". Confirm submits; Edit returns to the form with values kept."
     },
     {
      "id": "record-sector-choose",
