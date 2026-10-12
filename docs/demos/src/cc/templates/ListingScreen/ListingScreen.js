@@ -629,9 +629,12 @@
   function renderFilters(config) {
     var added = config.added || [];
     var shown = config.shown || [];
+    /* `--shown` exempts a chip from an empty view's hiding: a default the
+       user put back, or any filter they added — added ones were hidden along
+       with the defaults, so adding Archived to a new view showed nothing. */
     var html = (config.defaultFilters || []).map(function (f) {
-      return chip(f, '', shown.indexOf(f.name) !== -1 ? ' filter-bar__chip--shown' : '',
-        config.filterValues[f.name] || []);
+      var on = shown.indexOf(f.name) !== -1 || added.indexOf(f.name) !== -1;
+      return chip(f, '', on ? ' filter-bar__chip--shown' : '', config.filterValues[f.name] || []);
     }).join('');
     /* `--add` marks the WRAPPER so an empty view can hide the other chips:
        a chip with a picker is wrapped, so FilterBar's bare-chip selector
@@ -2517,7 +2520,7 @@
       /* Spliced in rather than re-rendering the row, which would discard the
          selections already made on the other chips. */
       var holder = document.createElement('div');
-      holder.innerHTML = chip(filter, '', '', config.filterValues[name] || []);
+      holder.innerHTML = chip(filter, '', ' filter-bar__chip--shown', config.filterValues[name] || []);
       var added = holder.firstChild;
       anchor.parentNode.insertBefore(added, anchor);
 
@@ -2685,6 +2688,9 @@
         /* The added NAMES, not the filter arrays — `moreFilters` is a fixed
            catalogue now, and `defaultFilters` is derived from these. */
         added: config.added.slice(),
+        /* An empty view hides the defaults; `shown` is the ones put back. */
+        empty: !!bar && bar.classList.contains('filter-bar--view-empty'),
+        shown: config.shown.slice(),
         filterValues: JSON.parse(JSON.stringify(config.filterValues)),
         /* Copied, not referenced: reordering rewrites each column's tier in
            place, so a stored reference would follow the live table. */
@@ -2702,7 +2708,7 @@
        defaults picked back while naming it belong to the new view. */
     function restore(snap, keepShown) {
       config.added = (snap.added || []).slice();
-      if (!keepShown) config.shown = [];
+      if (!keepShown) config.shown = (snap.shown || []).slice();
       rebuildFilters();
       config.filterValues = JSON.parse(JSON.stringify(snap.filterValues));
       if (snap.columns) {
@@ -2779,7 +2785,7 @@
       stored.viewOrder.forEach(function (name) {
         var snap = stored.views[name];
         if (!snap) return;
-        var row = bar.addSavedView(name);
+        var row = bar.addSavedView(name, !!snap.empty);
         if (row) views.set(row, snap);
       });
     }
@@ -2788,8 +2794,13 @@
       var view = e.detail && e.detail.view;
       /* A row with no snapshot is one of the shipped mock views (or a brand-new
          empty one), which stand for the unfiltered listing. */
-      restore(view && views.has(view) ? views.get(view) : baseline,
-        !!bar && bar.classList.contains('filter-bar--new-view'));
+      var creating = !!bar && bar.classList.contains('filter-bar--new-view');
+      restore(view && views.has(view) ? views.get(view) : baseline, creating);
+      /* Create: the defaults picked back while naming are part of the new view,
+         so it gets a snapshot of its own — without one, leaving it and coming
+         back fell through to the baseline and they were gone. In memory only;
+         like any view, it is persisted when it is saved. */
+      if (creating && view) views.set(view, snapshot());
     });
 
     /* Defaults picked back belong to New View / an empty view only. Starting a
