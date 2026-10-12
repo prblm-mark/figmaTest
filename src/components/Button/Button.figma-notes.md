@@ -43,6 +43,7 @@
 | `Type` | Tertiary | `.btn--tertiary` |
 | `Type` | Alert | `.btn--alert` |
 | `Type` | Alert Outline | `.btn--alert-outline` |
+| `Type` | Secondary / Action, Primary / Action | _(no single class — a split is `.btn-group` / `.btn-group--brand` with two buttons; see ButtonGroup notes)_ |
 | `Size` | base | _(none — default)_ |
 | `Size` | sm | `.btn--sm` |
 | `Size` | xs | `.btn--xs` |

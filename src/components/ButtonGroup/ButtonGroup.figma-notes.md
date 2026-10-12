@@ -106,6 +106,22 @@ it as a visual reference and confirmed Figma will be updated to follow the
 product: this is a deliberate expansion beyond the current Figma, not a
 divergence to reconcile.
 
+**`Primary / Action` added 2026-10-12** for the FilterBar Save split
+(`.btn-group--brand`): base `4247:4858`, sm `4247:4864`. Cloned from
+`Secondary / Action` and rebound to `button/primary-bg` / `primary-border` /
+`primary-text` (label and icon vectors). The divider line is bound to
+`surface/brand-dark`, the same token as the code's `.btn-group--brand .btn + .btn`
+border, so Figma and code agree on the divider. Like its Secondary sibling it is
+Default state only, and in code it is still two buttons (`.btn-group--brand`), not
+one. No Code Connect mapping: neither Action type maps to a single `.btn` class.
+
+Two things inherited from the Secondary sm source were corrected on the Primary sm
+only and are still wrong on `Secondary/Action` sm (`3679:99941`):
+- its Type value is spelled `Secondary/Action` (no spaces), so the Type axis has
+  two values for one type;
+- it is fixed-width (124) with a Fill divider line, so an instance does not hug a
+  shorter label. Primary / Action sm now hugs (line set to Fixed).
+
 ## Notes
 
 - The group CSS only handles layout (radius stripping, border collapse, direction, colour override). All button styling (padding, height, font, interactive states) comes from Button.css.
