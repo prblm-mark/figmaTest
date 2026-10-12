@@ -202,7 +202,18 @@
           <div class="filter-item filter-item--rounded" data-filter-name="Keywords"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Keywords</span></button></div>
           <div class="filter-item filter-item--rounded filter-item--empty filter-bar__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
           <!-- Save View CTA — revealed when a filter is added/amended (here: click "Add Filters"). In the chip flow: after Add Filters on mobile, pinned right on desktop. -->
-          <button type="button" class="btn btn--primary btn--sm filter-bar__save" data-filter-action="save-view">Save view</button>
+          <div class="filter-bar__save">
+            <button type="button" class="btn btn--tertiary btn--sm filter-bar__discard" data-filter-action="discard-view">Discard changes</button>
+            <div class="dropdown filter-bar__save-split">
+              <div class="btn-group btn-group--brand">
+                <button type="button" class="btn btn--primary btn--sm filter-bar__save-main" data-filter-action="save-view"><span class="filter-bar__save-label--update">Save</span><span class="filter-bar__save-label--new">Save view</span></button>
+                <button type="button" class="btn btn--primary btn--sm btn--icon filter-bar__save-more" data-filter-action="save-menu" aria-haspopup="menu" aria-expanded="false" aria-label="More save options"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+              </div>
+              <div class="dropdown__panel" role="menu" aria-label="Save options">
+                <ul class="dropdown__list"><li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-action="save-view-as"><i data-lucide="copy-plus" aria-hidden="true"></i><span data-text="Save as new view">Save as new view</span></button></li></ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -260,8 +271,8 @@
 
   <!-- ── Save View ─────────────────────────────────────── -->
   <div class="demo-section">
-    <p class="demo-section__title">Type=Save View (a "Save view" CTA appears once a filter is added/amended)</p>
-    <div class="filter-bar filter-bar--save-view">
+    <p class="demo-section__title">Type=Save View — on a view YOU saved: Discard changes + Save view (updates this view) ▾ Save as new view. On a shipped view the chevron is hidden and Save view names a new one. MOCK for review — not yet in Figma.</p>
+    <div class="filter-bar filter-bar--save-view filter-bar--view-saved">
       <div class="filter-bar__row filter-bar__row--top">
         <div class="filter-bar__lead">
           <div class="dropdown filter-bar__views" data-dropdown>
@@ -303,7 +314,18 @@
           <div class="filter-item filter-item--rounded" data-filter-name="Type"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Type</span></button></div>
           <div class="filter-item filter-item--rounded" data-filter-name="Keywords"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Keywords</span></button></div>
           <div class="filter-item filter-item--rounded filter-item--empty filter-bar__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
-          <button type="button" class="btn btn--primary btn--sm filter-bar__save" data-filter-action="save-view">Save view</button>
+          <div class="filter-bar__save">
+            <button type="button" class="btn btn--tertiary btn--sm filter-bar__discard" data-filter-action="discard-view">Discard changes</button>
+            <div class="dropdown filter-bar__save-split">
+              <div class="btn-group btn-group--brand">
+                <button type="button" class="btn btn--primary btn--sm filter-bar__save-main" data-filter-action="save-view"><span class="filter-bar__save-label--update">Save</span><span class="filter-bar__save-label--new">Save view</span></button>
+                <button type="button" class="btn btn--primary btn--sm btn--icon filter-bar__save-more" data-filter-action="save-menu" aria-haspopup="menu" aria-expanded="false" aria-label="More save options"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+              </div>
+              <div class="dropdown__panel" role="menu" aria-label="Save options">
+                <ul class="dropdown__list"><li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-action="save-view-as"><i data-lucide="copy-plus" aria-hidden="true"></i><span data-text="Save as new view">Save as new view</span></button></li></ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

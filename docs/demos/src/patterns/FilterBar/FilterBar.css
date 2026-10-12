@@ -492,6 +492,47 @@
   display: none;
 }
 
+/* The CTA is a group: Discard changes, then a Save split. MOCK for review
+ * (2026-10-12) — Figma Type=Save View (2977:3799) defines the single button
+ * only. Built from existing parts and no new values: the split is ButtonGroup
+ * --brand (primary halves + its own divider), the menu is Dropdown, the gap is
+ * the bar's own --ao-spacing-3. */
+.filter-bar__save {
+  align-items: center;
+  gap: var(--ao-spacing-3);
+}
+
+/* Right-aligned to the chevron, sized like the Export list. */
+.filter-bar__save-split .dropdown__panel {
+  left: auto;
+  right: 0;
+  min-width: var(--ao-size-2);
+  padding: var(--ao-spacing-3);
+}
+
+/* "Save as new view" is wider than the 160 list, and wrapped under its icon. */
+.filter-bar__save-split .dropdown-item {
+  white-space: nowrap;
+}
+
+/* A shipped view cannot be overwritten, so there is no split: Save view
+ * names a new one. The label half then stands alone and takes the full radius. */
+.filter-bar:not(.filter-bar--view-saved) .filter-bar__save-more {
+  display: none;
+}
+
+.filter-bar:not(.filter-bar--view-saved) .filter-bar__save-main {
+  border-radius: var(--ao-radius-md);
+}
+
+/* The label says which save it is: "Save" updates the view you are in, "Save
+ * view" names a new one. Both are in the markup and CSS picks one, because the
+ * Listing re-renders this control and would reset text set from JS. */
+.filter-bar--view-saved .filter-bar__save-label--new,
+.filter-bar:not(.filter-bar--view-saved) .filter-bar__save-label--update {
+  display: none;
+}
+
 /* ── Focus (a11y) ────────────────────────────────────── */
 .filter-bar__views-trigger:focus-visible,
 .filter-bar__icon-btn:focus-visible,
