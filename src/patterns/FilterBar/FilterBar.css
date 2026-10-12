@@ -493,7 +493,7 @@
 }
 
 /* The CTA is a group: Discard changes, then a Save split. MOCK for review
- * (2026-10-12) — Figma Type=Save View (2977:3799) defines the single button
+ * (2026-10-12) — Figma Type=Save View (2989:6121 / 2989:6242) defines the single button
  * only. Built from existing parts and no new values: the split is ButtonGroup
  * --brand (primary halves + its own divider), the menu is Dropdown, the gap is
  * the bar's own --ao-spacing-3. */

@@ -202,6 +202,7 @@ also the local persistence key (`affino.listing.<key>` in the demo).
     **Save view**, which always creates a new view. Shipped views can't be overwritten.
   - **Discard changes** re-selects the current view, so the screen restores the saved
     snapshot.
+  - Figma review frames: section `4244:21530` (Listings page), not yet a variant.
   - Spec: `src/patterns/FilterBar/FilterBar.figma-notes.md` → "Save into the current view,
     Save as new, Discard".
 - Demo persistence is local; the real CRUD contract is `filter-bar-views` / `listing-default-filters`.
