@@ -485,7 +485,9 @@ this ships.
 **Review frames in Figma:** section `4244:21530` on the Listings page, above the Filter Bar
 frame. It shows four cases: your view changed, ▾ open, shipped view, and mobile. They're built
 from detached Save View instances with library Button / Dropdowns / DropdownItem instances.
-They're review frames, not variants.
+They're review frames, not variants. The split is one Button instance of
+`Type=Primary / Action, Size=sm` (`4247:4864`), Text "Save", right icon ChevronDown —
+the type was added for this on 2026-10-12 (see ButtonGroup notes).
 
 `.filter-bar__save` is now a wrapper holding:
 
