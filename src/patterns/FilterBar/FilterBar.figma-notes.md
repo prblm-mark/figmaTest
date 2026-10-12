@@ -474,13 +474,18 @@ shipped set.
 
 ### Save into the current view, Save as new, Discard — MOCK for review (2026-10-12)
 
-**Not in Figma.** Type=Save View (2977:3799) has the single "Save view" button.
+**Not in Figma.** Type=Save View (2989:6121 / 2989:6242) has the single "Save view" button.
 Mark asked for this layout on 2026-10-12 because every save made a new view, so
 there was no way to add a date range to a saved "Customer X" view and keep it as
 the same view. Built only from existing parts, with no new values: Button
 tertiary sm, ButtonGroup `--brand` (primary halves and their divider), Dropdown
 panel + DropdownItem xs, and gap `--ao-spacing-3`. Figma needs a variant before
 this ships.
+
+**Review frames in Figma:** section `4244:21530` on the Listings page, above the Filter Bar
+frame. It shows four cases: your view changed, ▾ open, shipped view, and mobile. They're built
+from detached Save View instances with library Button / Dropdowns / DropdownItem instances.
+They're review frames, not variants.
 
 `.filter-bar__save` is now a wrapper holding:
 

@@ -66,7 +66,7 @@ function selectView(root, item) {
   root.classList.toggle('filter-bar--view-empty', item.dataset.viewEmpty === '1');
   /* Only a view the USER saved can be updated in place; a shipped view
      ("All Orders") offers Save as new alone. MOCK for review — Figma
-     Type=Save View (2977:3799) has the single CTA only. */
+     Type=Save View (2989:6121 / 2989:6242) has the single CTA only. */
   root.classList.toggle('filter-bar--view-saved', item.dataset.viewSaved === '1');
   /* A view carries a filter set; only the screen knows how to restore it. */
   root.dispatchEvent(new CustomEvent('filter-bar:select-view', {
