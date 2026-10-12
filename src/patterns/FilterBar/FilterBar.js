@@ -614,10 +614,12 @@ function wireChipPanels(root) {
      views it persisted. It does the whole job, icons and row-menu wiring
      included, because those are the bar's internals and a caller that had to
      know about them would be holding half the pattern. */
-  root.addSavedView = (name) => {
+  root.addSavedView = (name, empty) => {
     const row = addView(root, name);
     if (!row) return null;
-    row.dataset.viewEmpty = '0';           // a restored view has filters
+    /* A restored view shows its filters, unless it was saved as an empty view
+       (defaults hidden) — the consumer's snapshot says which. */
+    row.dataset.viewEmpty = empty ? '1' : '0';
     if (typeof window !== 'undefined' && window.lucide) window.lucide.createIcons();
     initDropdowns(root);                   // wire its … menu (idempotent)
     return row;
@@ -697,9 +699,11 @@ function init(root) {
           const row = addView(root, name);
           if (row) {
             /* Saving keeps the chips that are on the bar; New View starts
-               empty. addView() assumes the latter, so undo that here. */
+               empty. addView() assumes the latter, so undo that here — unless
+               the bar is saving an empty view, whose defaults stay hidden
+               (bar some picked back, which the screen's snapshot records). */
             if (saving) {
-              row.dataset.viewEmpty = '0';
+              row.dataset.viewEmpty = root.classList.contains('filter-bar--view-empty') ? '1' : '0';
               /* Snapshot BEFORE selecting — selectView asks the screen to
                  restore this view, and there would be nothing to restore. */
               root.dispatchEvent(new CustomEvent('filter-bar:save-view', {
