@@ -586,6 +586,7 @@
            and removing are the same gesture in the same place. */
         return '<div class="filter-item' + chipShape + ' ' +
           (o.added ? 'filter-item--added' : 'filter-item--empty') +
+          (o.base ? ' filter-bar__facet--base' : '') +
           '" data-filter-name="' + esc(o.name) + '">' +
           '<button type="button" class="filter-item__trigger" aria-expanded="false"' +
             ' aria-pressed="' + (o.added ? 'true' : 'false') + '"' +
@@ -627,8 +628,10 @@
 
   function renderFilters(config) {
     var added = config.added || [];
+    var shown = config.shown || [];
     var html = (config.defaultFilters || []).map(function (f) {
-      return chip(f, '', '', config.filterValues[f.name] || []);
+      return chip(f, '', shown.indexOf(f.name) !== -1 ? ' filter-bar__chip--shown' : '',
+        config.filterValues[f.name] || []);
     }).join('');
     /* `--add` marks the WRAPPER so an empty view can hide the other chips:
        a chip with a picker is wrapped, so FilterBar's bare-chip selector
@@ -647,9 +650,14 @@
            catalogue, and the added set is looked up by name, so sorting a copy
            for display changes nothing but the reading order. Nearly fifty
            facets is a list you scan for a name, not one you read. */
+        /* The screen's own chips are listed too, flagged `base`. FilterBar
+           shows them only in an EMPTY view, which hides those chips — without
+           them here, a new view had no way to get Customer back. */
         options: (config.moreFilters || []).map(function (o) {
           return { name: o.name, added: added.indexOf(o.name) !== -1 };
-        }).sort(function (a, b) { return a.name.localeCompare(b.name); })
+        }).concat((config.baseFilters || []).map(function (o) {
+          return { name: o.name, base: true, added: (config.shown || []).indexOf(o.name) !== -1 };
+        })).sort(function (a, b) { return a.name.localeCompare(b.name); })
       },
       ' filter-item--empty filter-bar__add',
       ' filter-bar__chip--add'
@@ -2218,6 +2226,9 @@
       moreFilters: overflow.concat(config.moreFilters || []),
       /* Names the user has added, in the order they added them. */
       added: [],
+      /* Base filters put back on the bar inside an EMPTY view, which hides
+         them by default. Cleared whenever a view is restored. */
+      shown: [],
       /* Derived: baseFilters + added. Rebuilt by rebuildFilters(). */
       defaultFilters: defaults.slice(),
       query: '',
@@ -2490,6 +2501,7 @@
        the same click that put a filter on the bar takes it off again. */
     document.addEventListener('filter-bar:add-filter', function (e) {
       var name = e.detail && e.detail.name;
+      if (isBase(name)) { toggleShown(name); return; }
       if (config.added.indexOf(name) !== -1) { removeFilter(name); return; }
 
       var filter = config.moreFilters.filter(function (f) { return f.name === name; })[0];
@@ -2585,6 +2597,26 @@
       }
     }
 
+    function isBase(name) {
+      return config.baseFilters.some(function (f) { return f.name === name; });
+    }
+
+    /* A base filter in an empty view: its chip is already rendered, only
+       hidden, so adding it is revealing that chip — and keeps whatever value
+       the view holds for it. Toggles, like every other facet. */
+    function toggleShown(name) {
+      var at = config.shown.indexOf(name);
+      var on = at === -1;
+      if (on) config.shown.push(name); else config.shown.splice(at, 1);
+
+      var host = document.querySelector('[data-listing-filters]');
+      var sel = '.filter-item[data-filter-name="' + name.replace(/"/g, '\\"') + '"]';
+      var item = host && host.querySelector('.filter-bar__chips > .filter-bar__chip > ' + sel);
+      if (item) item.closest('.filter-bar__chip').classList.toggle('filter-bar__chip--shown', on);
+      markFacet(host && host.querySelector('.filter-bar__panel ' + sel), on);
+      announceFilters();
+    }
+
     function removeFilter(name) {
       var at = config.added.indexOf(name);
       if (at === -1) return;                       // a base filter cannot go
@@ -2666,8 +2698,11 @@
        what an unsaved view falls back to. */
     var baseline = snapshot();
 
-    function restore(snap) {
+    /* `keepShown`: Create in New View restores the empty baseline, but the
+       defaults picked back while naming it belong to the new view. */
+    function restore(snap, keepShown) {
       config.added = (snap.added || []).slice();
+      if (!keepShown) config.shown = [];
       rebuildFilters();
       config.filterValues = JSON.parse(JSON.stringify(snap.filterValues));
       if (snap.columns) {
@@ -2753,7 +2788,19 @@
       var view = e.detail && e.detail.view;
       /* A row with no snapshot is one of the shipped mock views (or a brand-new
          empty one), which stand for the unfiltered listing. */
-      restore(view && views.has(view) ? views.get(view) : baseline);
+      restore(view && views.has(view) ? views.get(view) : baseline,
+        !!bar && bar.classList.contains('filter-bar--new-view'));
+    });
+
+    /* Defaults picked back belong to New View / an empty view only. Starting a
+       new view starts clean, and leaving New View for a view that shows every
+       chip anyway (× on the name) drops them, or the stale `--shown` would
+       raise Save view on a bar nobody changed. */
+    document.addEventListener('filter-bar:mode', function (e) {
+      if (!bar || !config.shown.length) return;
+      var mode = e.detail && e.detail.mode;
+      if (mode !== 'new-view' && bar.classList.contains('filter-bar--view-empty')) return;
+      config.shown.slice().forEach(toggleShown);
     });
 
     /* Drag to reorder. The row is only made draggable while the pointer is on

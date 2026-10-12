@@ -18,6 +18,11 @@ import { initAll as initDropdowns } from '../../components/Dropdown/Dropdown.js'
 
 function setMode(root, mode) {
   root.classList.toggle('filter-bar--search', mode === 'search');
+  /* Told after the classes below are set, so a listener reads the new state. */
+  const notify = () => root.dispatchEvent(new CustomEvent('filter-bar:mode', {
+    bubbles: true,
+    detail: { mode },
+  }));
   root.classList.toggle('filter-bar--new-view', mode === 'new-view');
   /* Naming a view to SAVE reuses New View's field + Create, because that is
      the only naming UI Figma defines (2977:3799) — but it must not collapse
@@ -33,6 +38,7 @@ function setMode(root, mode) {
   }
   const create = root.querySelector('.filter-bar__create');
   if (create) create.textContent = mode === 'saving-view' ? 'Save' : 'Create';
+  notify();
 }
 
 function closeDropdowns(root) {
@@ -507,11 +513,13 @@ function wireChipPanels(root) {
     Array.from(root.querySelectorAll('.filter-bar__chips > .filter-bar__chip'))
       /* The chip's OWN FilterItem — not a More Filters facet inside its
          picker, which would make every bar look different from itself. */
-      .map((wrap) => wrap.querySelector(':scope > .filter-item'))
-      .filter(Boolean)
-      .map((chip) => {
+      /* A chip put back in an empty view (`--shown`) changes the view without
+         changing any value, so it is part of the signature too. */
+      .map((wrap) => [wrap.querySelector(':scope > .filter-item'), wrap.classList.contains('filter-bar__chip--shown')])
+      .filter(([chip]) => chip)
+      .map(([chip, shown]) => {
         const name = chip.getAttribute('data-filter-name');
-        return [name, current.get(name) || []];
+        return shown ? [name, current.get(name) || [], 1] : [name, current.get(name) || []];
       })
   ]);
 

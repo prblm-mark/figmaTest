@@ -457,8 +457,15 @@
 /* A chip with a picker is WRAPPED (`.filter-bar__chip` holds chip + panel), so
    the bare-chip selectors above never reach it and the listing's chips stayed
    visible in an empty view. */
-.filter-bar--new-view .filter-bar__chips > .filter-bar__chip:not(.filter-bar__chip--add),
-.filter-bar--view-empty .filter-bar__chips > .filter-bar__chip:not(.filter-bar__chip--add) {
+.filter-bar--new-view .filter-bar__chips > .filter-bar__chip:not(.filter-bar__chip--add):not(.filter-bar__chip--shown),
+.filter-bar--view-empty .filter-bar__chips > .filter-bar__chip:not(.filter-bar__chip--add):not(.filter-bar__chip--shown) {
+  display: none;
+}
+
+/* The screen's own (base) filters are listed in Add Filters as well, but only
+ * New View and an empty view need them there — everywhere else their chips are
+ * already on the bar. Picking one marks its chip `--shown`, above. */
+.filter-bar:not(.filter-bar--view-empty):not(.filter-bar--new-view) .filter-bar__facet--base {
   display: none;
 }
 
