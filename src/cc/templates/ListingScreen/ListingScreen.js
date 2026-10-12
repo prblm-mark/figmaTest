@@ -668,8 +668,29 @@
     /* The Save view CTA is rendered here rather than left in the markup so the
        chips stay DIRECT children of `.filter-bar__chips` — that row is a flex
        container, and a wrapper element around the chips would break its wrap. */
-    html += '<button type="button" class="btn btn--primary btn--sm filter-bar__save"' +
-            ' data-filter-action="save-view">Save view</button>';
+    /* Discard + a Save split (Save into this view / Save as new view). MOCK
+       for review, 2026-10-12 — see FilterBar.figma-notes.md. */
+    html += '<div class="filter-bar__save">' +
+              '<button type="button" class="btn btn--tertiary btn--sm filter-bar__discard"' +
+                ' data-filter-action="discard-view">Discard changes</button>' +
+              '<div class="dropdown filter-bar__save-split">' +
+                '<div class="btn-group btn-group--brand">' +
+                  '<button type="button" class="btn btn--primary btn--sm filter-bar__save-main"' +
+                    ' data-filter-action="save-view"><span class="filter-bar__save-label--update">Save</span>' +
+                    '<span class="filter-bar__save-label--new">Save view</span></button>' +
+                  '<button type="button" class="btn btn--primary btn--sm btn--icon filter-bar__save-more"' +
+                    ' data-filter-action="save-menu" aria-haspopup="menu" aria-expanded="false"' +
+                    ' aria-label="More save options"><i data-lucide="chevron-down" aria-hidden="true"></i></button>' +
+                '</div>' +
+                '<div class="dropdown__panel" role="menu" aria-label="Save options">' +
+                  '<ul class="dropdown__list"><li role="none">' +
+                    '<button type="button" class="dropdown-item dropdown-item--xs" role="menuitem"' +
+                      ' data-filter-action="save-view-as"><i data-lucide="copy-plus" aria-hidden="true"></i>' +
+                      '<span data-text="Save as new view">Save as new view</span></button>' +
+                  '</li></ul>' +
+                '</div>' +
+              '</div>' +
+            '</div>';
     return html;
   }
 

@@ -191,6 +191,19 @@ also the local persistence key (`affino.listing.<key>` in the demo).
   by name) carrying the **source view's filters and columns**, cloned, and stores it like any
   saved view. The bar announces `filter-bar:copy-view` before selecting the copy; the screen
   clones the snapshot. The real CRUD needs a copy endpoint (or a create-from-snapshot).
+- **Saving changes to a view (added 2026-10-12, a MOCK awaiting a Figma variant).** When the bar
+  is dirty it shows **Discard changes** + a split **Save ▾**:
+  - On a view the **user** saved (`data-view-saved="1"` on the row → `.filter-bar--view-saved`
+    on the bar), the button reads **Save** and overwrites that view in place: no naming step,
+    no new row. It dispatches `filter-bar:save-view` `{ name, view, update: true }`, then the bar
+    re-baselines itself. **Backend: this is an UPDATE (PUT) of the existing view, not a create.**
+  - **▾ → Save as new view** opens the naming field and creates a new view, as before.
+  - On a **shipped/default** view ("All Orders") the ▾ is hidden and the button reads
+    **Save view**, which always creates a new view. Shipped views can't be overwritten.
+  - **Discard changes** re-selects the current view, so the screen restores the saved
+    snapshot.
+  - Spec: `src/patterns/FilterBar/FilterBar.figma-notes.md` → "Save into the current view,
+    Save as new, Discard".
 - Demo persistence is local; the real CRUD contract is `filter-bar-views` / `listing-default-filters`.
 
 ### Search

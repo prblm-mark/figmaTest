@@ -92,7 +92,7 @@ disambiguation; the … is on every row incl. the selected one and is always-vis
 | Search field (desktop) | `.input.filter-bar__search-bar` | persistent 192px Input; desktop only — replaced by the icon + takeover on mobile |
 | Chips (row 2) | `.filter-bar__chips` | flex-wrap, gap 6 (`--ao-spacing-2`, all sizes); chips are FilterItem **default (solid)** / `--selected`, **all `--rounded`** (pill `--ao-radius-full`, per user direction) |
 | Add Filters | `.filter-item--empty.filter-item--rounded.filter-bar__add` | dashed pill; **last chip inside `__chips`** (in the flow, after the filter list) |
-| Save view CTA | `.btn.btn--primary.btn--sm.filter-bar__save` | composes Button (primary, sm); hidden until `.filter-bar--save-view`, then pinned right of row 2 |
+| Save view CTA | `.filter-bar__save` wrapper → `.filter-bar__discard` + `.filter-bar__save-split` (ButtonGroup `--brand`: `__save-main` + `__save-more`, Dropdown panel) | hidden until `.filter-bar--save-view`, then pinned right of row 2. Split + Discard are a MOCK (2026-10-12), see "Save into the current view" |
 | Search / New-view / Create / Back | `.filter-bar__{search,new-view,create,back}` | compose Input / Button |
 
 ## Token Mapping
@@ -471,6 +471,40 @@ screen keeps the snapshots, keyed by row element, and restores on select.
 
 TODO(backend:Filters): saved views are in memory — a reload restores the
 shipped set.
+
+### Save into the current view, Save as new, Discard — MOCK for review (2026-10-12)
+
+**Not in Figma.** Type=Save View (2977:3799) has the single "Save view" button.
+Mark asked for this layout on 2026-10-12 because every save made a new view, so
+there was no way to add a date range to a saved "Customer X" view and keep it as
+the same view. Built only from existing parts, with no new values: Button
+tertiary sm, ButtonGroup `--brand` (primary halves and their divider), Dropdown
+panel + DropdownItem xs, and gap `--ao-spacing-3`. Figma needs a variant before
+this ships.
+
+`.filter-bar__save` is now a wrapper holding:
+
+| Part | Class | Action |
+|---|---|---|
+| Discard changes | `.btn--tertiary.btn--sm.filter-bar__discard` | `discard-view` re-selects the current view, so the screen restores its snapshot and re-baselines |
+| Save / Save view | `.filter-bar__save-main` (in `.btn-group--brand`) | `save-view`: on a **user-saved** view it reads **Save** and writes the bar back into that view (no naming step). On a shipped view it reads **Save view** and opens the naming field. Both labels are in the markup (`__save-label--update` / `--new`) and CSS shows one, because the Listing re-renders this control |
+| ▾ | `.btn--icon.filter-bar__save-more` | `save-menu` toggles `.filter-bar__save-split.is-open` |
+| Save as new view | `.dropdown-item--xs` in the split's panel | `save-view-as` opens the naming field, as before |
+
+- **User-saved vs shipped.** A row gets `data-view-saved="1"` when it is created
+  by Create/Save, put back by `addSavedView`, or made by Copy. Shipped markup rows
+  ("All Orders") don't get it. `selectView` mirrors it onto the root as
+  `.filter-bar--view-saved`. Without that class the chevron is hidden, the label
+  half takes the full radius, and Save view falls through to Save as new. Shipped
+  views can't be overwritten.
+- **Update event.** The update dispatches the same `filter-bar:save-view`
+  `{ name, view, update: true }`, so a consumer that stores by name overwrites
+  the view with no extra code (ListingScreen needed none). The bar then calls
+  `resetSaveView()`.
+- **Why the menu isn't Dropdown.js.** The Listing re-renders the chip row (and so
+  this control) after Dropdown.js has auto-initialised, so a `data-dropdown`
+  would come back inert. FilterBar toggles the menu itself. It closes on outside
+  click and Escape, and `closeDropdowns()` also closes it.
 
 
 ## Search

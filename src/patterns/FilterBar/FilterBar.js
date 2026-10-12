@@ -6,7 +6,9 @@
  *
  * Hooks (data-filter-action on a descendant button): "search" / "search-exit",
  * "new-view" / "new-view-exit" / "new-view-create" (Create → add the typed name to
- * the saved-views list + select it), "save-view". Per-row … menu actions
+ * the saved-views list + select it), "save-view" (update the user's view in
+ * place, or name a new one on a shipped view), "save-view-as", "save-menu",
+ * "discard-view". Per-row … menu actions
  * (rename/copy/delete) are handled in wireViews.
  *
  * TODO(backend:Filters): saved-views list, value pickers, search querying,
@@ -44,7 +46,7 @@ function setMode(root, mode) {
 function closeDropdowns(root) {
   root.querySelectorAll('.dropdown.is-open').forEach((d) => {
     d.classList.remove('is-open');
-    const t = d.querySelector('.dropdown__trigger');
+    const t = d.querySelector('.dropdown__trigger, [data-filter-action="save-menu"]');
     if (t) t.setAttribute('aria-expanded', 'false');
   });
 }
@@ -62,6 +64,10 @@ function selectView(root, item) {
   // New (empty) view → show only "Add Filters"; existing views keep their chips.
   // Non-destructive: chips stay in the DOM, hidden by CSS while this class is on.
   root.classList.toggle('filter-bar--view-empty', item.dataset.viewEmpty === '1');
+  /* Only a view the USER saved can be updated in place; a shipped view
+     ("All Orders") offers Save as new alone. MOCK for review — Figma
+     Type=Save View (2977:3799) has the single CTA only. */
+  root.classList.toggle('filter-bar--view-saved', item.dataset.viewSaved === '1');
   /* A view carries a filter set; only the screen knows how to restore it. */
   root.dispatchEvent(new CustomEvent('filter-bar:select-view', {
     bubbles: true,
@@ -78,6 +84,11 @@ function selectView(root, item) {
   views.classList.remove('is-open');
   const trigger = views.querySelector('.dropdown__trigger');
   if (trigger) trigger.setAttribute('aria-expanded', 'false');
+}
+
+/* The saved-view row the bar is currently showing. */
+function currentView(root) {
+  return root.querySelector('.filter-bar__views .dropdown-item[role="menuitemradio"][aria-checked="true"]');
 }
 
 /* Append a new saved-view row (with its … menu) and return its radio button. */
@@ -224,6 +235,7 @@ function wireViews(root) {
         if (copyRow) {
           // Mirror the source's filter state (addView defaults new rows to empty).
           copyRow.dataset.viewEmpty = srcRow.dataset.viewEmpty === '1' ? '1' : '0';
+          copyRow.dataset.viewSaved = '1';
           if (typeof window !== 'undefined' && window.lucide) window.lucide.createIcons();
           initDropdowns(root); // wire the new row's … menu (idempotent)
           /* Said out loud BEFORE the copy is selected, like rename and delete:
@@ -620,6 +632,7 @@ function wireChipPanels(root) {
     /* A restored view shows its filters, unless it was saved as an empty view
        (defaults hidden) — the consumer's snapshot says which. */
     row.dataset.viewEmpty = empty ? '1' : '0';
+    row.dataset.viewSaved = '1';
     if (typeof window !== 'undefined' && window.lucide) window.lucide.createIcons();
     initDropdowns(root);                   // wire its … menu (idempotent)
     return row;
@@ -656,6 +669,19 @@ function init(root) {
   wireChipPanels(root);
 
   wireSearch(root);
+
+  /* The Save split's menu is not Dropdown.js's (see 'save-menu'), so it needs
+     its own outside-click and Escape close. */
+  const closeSaveMenu = (e) => {
+    const split = root.querySelector('.filter-bar__save-split.is-open');
+    if (!split) return;
+    if (e.type === 'keydown' ? e.key !== 'Escape' : split.contains(e.target)) return;
+    split.classList.remove('is-open');
+    const t = split.querySelector('[data-filter-action="save-menu"]');
+    if (t) t.setAttribute('aria-expanded', 'false');
+  };
+  document.addEventListener('click', closeSaveMenu);
+  document.addEventListener('keydown', closeSaveMenu);
 
   // Save View is revealed by wireChipPanels' refreshSaveView, from the real
   // signal — a chip holding values, or a filter added from More Filters. It
@@ -698,6 +724,7 @@ function init(root) {
         if (name) {
           const row = addView(root, name);
           if (row) {
+            row.dataset.viewSaved = '1';   // the user's own view — updatable in place
             /* Saving keeps the chips that are on the bar; New View starts
                empty. addView() assumes the latter, so undo that here — unless
                the bar is saving an empty view, whose defaults stay hidden
@@ -720,9 +747,50 @@ function init(root) {
         setMode(root, null);
         break;
       }
+      case 'save-menu': {
+        /* The chevron half of the Save split. Toggled here rather than by
+           Dropdown.js: the Listing re-renders the chip row (and this control
+           with it) after Dropdown.js has auto-initialised, so a data-dropdown
+           would come back inert. Closed by closeDropdowns / outside click. */
+        const split = trigger.closest('.filter-bar__save-split');
+        if (!split) break;
+        const open = !split.classList.contains('is-open');
+        split.classList.toggle('is-open', open);
+        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        break;
+      }
+      case 'discard-view': {
+        /* Put the bar back the way its view was saved. Re-selecting the view
+           asks the screen to restore its snapshot, which also re-baselines
+           the bar and so drops the CTA. */
+        closeDropdowns(root);
+        const view = currentView(root);
+        if (view) selectView(root, view);
+        break;
+      }
       case 'save-view': {
-        /* Saving needs a name, so the CTA opens the naming field rather than
-           saving on the spot. */
+        /* On a view the user saved, Save writes the bar back into THAT view —
+           no naming step. A shipped view cannot be overwritten, so there it
+           falls through to Save as new. */
+        const view = currentView(root);
+        if (view && root.classList.contains('filter-bar--view-saved')) {
+          closeDropdowns(root);
+          const text = view.querySelector('[data-text]');
+          view.dataset.viewEmpty = root.classList.contains('filter-bar--view-empty') ? '1' : '0';
+          /* Same event as Save as new, so a consumer stores it the same way —
+             keyed by name, it overwrites. `update` says no row was added. */
+          root.dispatchEvent(new CustomEvent('filter-bar:save-view', {
+            bubbles: true,
+            detail: { name: text ? text.textContent.trim() : '', view, update: true },
+          }));
+          if (typeof root.resetSaveView === 'function') root.resetSaveView();
+          break;
+        }
+      }
+      // falls through
+      case 'save-view-as': {
+        /* Saving as new needs a name, so this opens the naming field rather
+           than saving on the spot. */
         closeDropdowns(root);
         const add = root.querySelector('.filter-bar__add');
         if (add) {
