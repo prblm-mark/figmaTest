@@ -380,10 +380,11 @@ def events(c):
     att = [[e(n), e(d), _badge(st, "success" if st == "Attended" else "neutral"), e(t)] for n, d, st, t in ev["attendance"]]
     aw = [[e(n), e(cat), e(d), _badge(r, "success" if r == "Shortlisted" else "neutral")] for n, cat, d, r in ev["awards"]]
     # TODO(backend:RecordScreen) contact-events: attendance + award entries are static → the contact's event attendance (EventAttendee) and award entries
-    return _grid(
+    # One card per row: the live attendance table is 9 columns wide, too wide to pair (Mark, 2026-10-13, Hub TASK-554539).
+    return (
         _rows_card("Event attendance", [("Event", dict(keep=True, weight=2, fluid=True)), ("Date", dict(keep=True)),
-                                        ("Status", dict(drop=2)), ("Ticket", dict(drop=1))], att, "No event attendance.", "contact-events"),
-        _rows_card("Award entries", [("Award", dict(keep=True, weight=2, fluid=True)), ("Category", dict(drop=2)),
+                                        ("Status", dict(drop=2)), ("Ticket", dict(drop=1))], att, "No event attendance.", "contact-events")
+        + _rows_card("Award entries", [("Award", dict(keep=True, weight=2, fluid=True)), ("Category", dict(drop=2)),
                                      ("Entered", dict(keep=True)), ("Result", dict(drop=1))], aw, "No award entries.", "contact-events"))
 
 
