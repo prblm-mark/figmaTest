@@ -3373,65 +3373,76 @@
   <!-- Chart.js initialisation — Page Views (multi-line) + Users (single-line) -->
   <script>
     (function () {
-      const cs = getComputedStyle(document.documentElement);
-      const tok = (n, fb) => (cs.getPropertyValue(n).trim() || fb);
-      const brand = tok('--ao-surface-brand', '#0071d8');
-      const success = tok('--ao-surface-success', '#30cb90');
-      const text = tok('--ao-text-contrast', '#67676c');
-      const grid = tok('--ao-border-secondary', '#e2e2e3');
+      /* Chart.js keeps the colours it was built with, so a light/dark switch would leave the old
+         theme's grid and ticks on the new surface. build() re-reads the tokens; it runs on load and
+         again, without the entrance animation, whenever <html data-theme> changes (2026-10-13). */
+      function build(rebuild) {
+        ['cs-page-views', 'cs-users'].forEach((id) => { const old = Chart.getChart(id); if (old) old.destroy(); });
+        const anim = Chart.defaults.animation;
+        if (rebuild) Chart.defaults.animation = false;
+        const cs = getComputedStyle(document.documentElement);
+        const tok = (n, fb) => (cs.getPropertyValue(n).trim() || fb);
+        const brand = tok('--ao-surface-brand', '#0071d8');
+        const success = tok('--ao-surface-success', '#30cb90');
+        const text = tok('--ao-text-contrast', '#67676c');
+        const grid = tok('--ao-border-secondary', '#e2e2e3');
 
-      Chart.defaults.font.family = 'Inter, sans-serif';
-      Chart.defaults.font.size = 12;
-      Chart.defaults.color = text;
-      Chart.defaults.borderColor = grid;
+        Chart.defaults.font.family = 'Inter, sans-serif';
+        Chart.defaults.font.size = 12;
+        Chart.defaults.color = text;
+        Chart.defaults.borderColor = grid;
 
-      function gradientFill(color) {
-        return (ctx) => {
-          const chart = ctx.chart;
-          const { ctx: c, chartArea } = chart;
-          if (!chartArea) return color;
-          const g = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-          g.addColorStop(0, color + 'aa');
-          g.addColorStop(1, color + '00');
-          return g;
+        function gradientFill(color) {
+          return (ctx) => {
+            const chart = ctx.chart;
+            const { ctx: c, chartArea } = chart;
+            if (!chartArea) return color;
+            const g = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+            g.addColorStop(0, color + 'aa');
+            g.addColorStop(1, color + '00');
+            return g;
+          };
+        }
+
+        const sharedScales = {
+          x: { grid: { display: false }, border: { display: false } },
+          y: { grid: { color: grid, drawBorder: false, borderDash: [4, 4] }, border: { display: false } },
         };
+        const sharedPlugins = {
+          legend: { display: false },
+          tooltip: { backgroundColor: '#212123', titleFont: { weight: '600' }, padding: 10, cornerRadius: 6 },
+        };
+
+        if (document.getElementById('cs-page-views')) new Chart(document.getElementById('cs-page-views'), {
+          type: 'line',
+          data: {
+            labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+            datasets: [
+              { label: 'Page Views', data: [3000, 4200, 3800, 5100, 4900, 6100, 5800],
+                borderColor: brand, backgroundColor: brand, tension: 0.4, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5 },
+              { label: 'Sessions', data: [1800, 2400, 2200, 2900, 2800, 3300, 3100],
+                borderColor: success, backgroundColor: success, tension: 0.4, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5 },
+            ],
+          },
+          options: { responsive: true, maintainAspectRatio: false, plugins: sharedPlugins, scales: sharedScales },
+        });
+
+        if (document.getElementById('cs-users')) new Chart(document.getElementById('cs-users'), {
+          type: 'line',
+          data: {
+            labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'],
+            datasets: [{
+              label: 'Users', data: [6500, 6200, 7400, 8800, 9100, 10200, 11400, 12840],
+              borderColor: brand, backgroundColor: gradientFill(brand),
+              tension: 0.4, borderWidth: 3, fill: true, pointRadius: 0, pointHoverRadius: 5,
+            }],
+          },
+          options: { responsive: true, maintainAspectRatio: false, plugins: sharedPlugins, scales: sharedScales },
+        });
+        Chart.defaults.animation = anim;
       }
-
-      const sharedScales = {
-        x: { grid: { display: false }, border: { display: false } },
-        y: { grid: { color: grid, drawBorder: false, borderDash: [4, 4] }, border: { display: false } },
-      };
-      const sharedPlugins = {
-        legend: { display: false },
-        tooltip: { backgroundColor: '#212123', titleFont: { weight: '600' }, padding: 10, cornerRadius: 6 },
-      };
-
-      new Chart(document.getElementById('cs-page-views'), {
-        type: 'line',
-        data: {
-          labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-          datasets: [
-            { label: 'Page Views', data: [3000, 4200, 3800, 5100, 4900, 6100, 5800],
-              borderColor: brand, backgroundColor: brand, tension: 0.4, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5 },
-            { label: 'Sessions', data: [1800, 2400, 2200, 2900, 2800, 3300, 3100],
-              borderColor: success, backgroundColor: success, tension: 0.4, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5 },
-          ],
-        },
-        options: { responsive: true, maintainAspectRatio: false, plugins: sharedPlugins, scales: sharedScales },
-      });
-
-      new Chart(document.getElementById('cs-users'), {
-        type: 'line',
-        data: {
-          labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'],
-          datasets: [{
-            label: 'Users', data: [6500, 6200, 7400, 8800, 9100, 10200, 11400, 12840],
-            borderColor: brand, backgroundColor: gradientFill(brand),
-            tension: 0.4, borderWidth: 3, fill: true, pointRadius: 0, pointHoverRadius: 5,
-          }],
-        },
-        options: { responsive: true, maintainAspectRatio: false, plugins: sharedPlugins, scales: sharedScales },
-      });
+      build(false);
+      new MutationObserver(() => build(true)).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     })();
   </script>
 

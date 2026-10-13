@@ -238,6 +238,7 @@
 
   /* ── 4. Chart ─────────────────────────────────────────────────── */
   var chart = null;
+  var quiet = false; // a theme-change rebuild draws without the entrance animation
   function thisYearData() {
     var y = new Date().getFullYear(), m = new Date().getMonth();
     return monthly(y).map(function (v, i) { return i <= m ? v : null; });
@@ -296,7 +297,7 @@
         ]
       },
       options: {
-        responsive: true, maintainAspectRatio: false, animation: REDUCED ? false : { duration: 400 },
+        responsive: true, maintainAspectRatio: false, animation: REDUCED || quiet ? false : { duration: 400 },
         layout: { padding: { top: 16, right: 40 } },
         interaction: { mode: 'index', intersect: false },
         plugins: {
@@ -454,6 +455,13 @@
   renderWindow();
   renderYearKpis();
   drawChart();
+  /* Chart.js keeps the colours it was built with, so a light/dark switch would leave the old
+     theme's grid and ticks on the new surface. Rebuild from the tokens when <html data-theme>
+     changes (2026-10-13). */
+  new MutationObserver(function () {
+    if (!chart) return;
+    chart.destroy(); quiet = true; drawChart(); quiet = false;
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   renderChartMeta();
   if (window.lucide) window.lucide.createIcons();
   /* Demo only: ?refresh=now runs one refresh at once, so the refresh can be checked. */

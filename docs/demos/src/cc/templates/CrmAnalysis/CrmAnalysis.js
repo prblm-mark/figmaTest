@@ -141,6 +141,7 @@
     contracts: { rows: function () { return CONTRACTS; }, noun: 'contracts', chart: null },
     opportunities: { rows: function () { return OPPS; }, noun: 'opportunities', chart: null }
   };
+  var quiet = false; // a theme-change rebuild draws without the entrance animation
   function chartDefaults() {
     Chart.defaults.font.family = 'Inter, sans-serif';
     Chart.defaults.font.size = 12;
@@ -205,7 +206,7 @@
         borderColor: solid, borderWidth: data.map(function (_, i) { return i === last ? 1 : 0; }),
         borderRadius: 4, borderSkipped: 'start', maxBarThickness: 28 }] },
       options: {
-        responsive: true, maintainAspectRatio: false, animation: REDUCED ? false : { duration: 400 },
+        responsive: true, maintainAspectRatio: false, animation: REDUCED || quiet ? false : { duration: 400 },
         plugins: { legend: { display: false }, tooltip: tooltip({
           title: function (items) { var i = items[0].dataIndex; return data[i].long + (i === last ? ' (to date)' : ''); },
           label: function (c) { return ' ' + NUM.format(c.parsed.y) + ' ' + (c.parsed.y === 1 ? nouns[0] : nouns[1]); } }) },
@@ -245,12 +246,13 @@
     canvas.setAttribute('aria-label', 'Area chart of ' + a.noun[1] + ' per day for the last 30 days, ' + t + ' in all');
     if (!window.Chart) return;
     var colour = tok('--ao-accent-lagoon-solid');
-    var c = new Chart(canvas, {
+    if (a.chart) { a.chart.destroy(); charts = charts.filter(function (x) { return x !== a.chart; }); }
+    var c = a.chart = new Chart(canvas, {
       type: 'line',
       data: { labels: last.map(function (d) { return d.date.getDate(); }), datasets: [area(last.map(function (d) { return d.count; }), colour, a.noun[1])] },
       plugins: [crosshair],
       options: {
-        responsive: true, maintainAspectRatio: false, animation: REDUCED ? false : { duration: 400 },
+        responsive: true, maintainAspectRatio: false, animation: REDUCED || quiet ? false : { duration: 400 },
         interaction: { mode: 'index', intersect: false },
         layout: { padding: { top: 4 } },
         plugins: { legend: { display: false }, tooltip: tooltip({
@@ -275,4 +277,15 @@
   renderActivity('notes');
   renderActivity('unsubs');
   if (window.lucide) window.lucide.createIcons();
+
+  /* Chart.js keeps the colours it was built with, so a light/dark switch would leave the old
+     theme's grid and ticks on the new surface. Rebuild from the tokens when <html data-theme>
+     changes (2026-10-13). */
+  if (window.Chart) new MutationObserver(function () {
+    quiet = true;
+    chartDefaults();
+    renderPipe('contracts'); renderPipe('opportunities');
+    renderActivity('notes'); renderActivity('unsubs');
+    quiet = false;
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 })();
