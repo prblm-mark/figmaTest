@@ -501,6 +501,9 @@ build — a render from the record payload. Markers: `grep -rn "TODO(backend:Rec
 
 > **v1 handed over 2026-10-01.** Build rules, agreed decisions and known issues:
 > **[`docs/record-screens-handover.md`](docs/record-screens-handover.md)**. Read it with this table.
+>
+> **Contact, Order and Account View + Edit handed over 2026-10-13:**
+> **[`docs/crm-record-screens-handover.md`](docs/crm-record-screens-handover.md)** (the `contact-*`, `order-*`, `account-*` rows).
 
 | id | Element | Now | Backend work needed | Category |
 |---|---|---|---|---|
