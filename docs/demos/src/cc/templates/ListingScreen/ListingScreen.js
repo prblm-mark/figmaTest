@@ -89,6 +89,12 @@
      Running Queries' Grouped view uses it: a group's link is the Individual view filtered to that
      Template:Line, not a record (2026-10-05). */
   var ROW_HREF = null;
+  /* Its pencil's target (config.rowEditHref(row) → URL), in place of ROUTE.edit. Articles uses
+     both to open the demo Article View / Edit screens, so listing → view → edit is one walkable
+     workflow (2026-10-13). */
+  var ROW_EDIT_HREF = null;
+  function viewHref(row) { return ROW_HREF ? ROW_HREF(row) : ROUTE.view(rowId(row), ROW_ID.noun); }
+  function editHref(row) { return ROW_EDIT_HREF ? ROW_EDIT_HREF(row) : ROUTE.edit(rowId(row), ROW_ID.noun); }
 
   function rowId(row) { return row[ROW_ID.key]; }
 
@@ -127,7 +133,7 @@
     order: function (row) {
       /* The anchor IS the row's navigation — the whole-row click below just
          follows it, so there is one destination and one code path. */
-      return '<a class="datatables__order" href="' + esc(ROUTE.view(rowId(row), ROW_ID.noun)) + '"' +
+      return '<a class="datatables__order" href="' + esc(viewHref(row)) + '"' +
         ' data-row-link>' + esc(rowId(row)) + '</a>' +
         (row.externalCode
           ? '<span class="datatables__order-ext">' + esc(row.externalCode) + '</span>'
@@ -212,7 +218,7 @@
      *
      * An anchor, not a button: see ROUTE above. */
     edit: function (row) {
-      return '<a class="datatables__row-edit" href="' + esc(ROUTE.edit(rowId(row), ROW_ID.noun)) + '"' +
+      return '<a class="datatables__row-edit" href="' + esc(editHref(row)) + '"' +
         ' data-backend-todo="listing-row-routes"' +
         ' aria-label="Edit ' + esc(ROW_ID.spoken) + ' ' + esc(rowId(row)) + '">' +
         '<i data-lucide="pencil" aria-hidden="true"></i></a>';
@@ -761,7 +767,7 @@
            Goes INSIDE the truncate span below, so a long title still clips. */
         if (col.link) {
           content = '<a class="datatables__record-link" href="' +
-            esc(ROW_HREF ? ROW_HREF(row) : ROUTE.view(rowId(row), ROW_ID.noun)) + '" data-row-link' +
+            esc(viewHref(row)) + '" data-row-link' +
             ' data-backend-todo="listing-row-routes">' + content + '</a>';
         }
         /* Snug columns truncate rather than set their own width. The cap has
@@ -1144,7 +1150,7 @@
         '<div class="cc-grid__media cc-grid__media--' + esc(row.family) + '">' +
           /* The anchor IS the card's navigation — same route the table row
              uses, so there is one destination and one code path. */
-          '<a class="cc-grid__link" href="' + esc(ROUTE.view(id, ROW_ID.noun)) + '"' +
+          '<a class="cc-grid__link" href="' + esc(viewHref(row)) + '"' +
             ' aria-label="' + esc(row.title) + '">' + media + '</a>' +
           '<label class="checkbox cc-grid__select">' +
             '<input type="checkbox" class="checkbox__input" data-select-row="' + esc(id) + '"' +
@@ -1196,7 +1202,7 @@
         '<i data-lucide="expand" aria-hidden="true"></i></a>';
     }
 
-    out += '<a class="' + btn + '" href="' + esc(ROUTE.edit(rowId(row), ROW_ID.noun)) + '"' +
+    out += '<a class="' + btn + '" href="' + esc(editHref(row)) + '"' +
       ' data-backend-todo="listing-row-routes"' +
       ' aria-label="Edit ' + esc(ROW_ID.spoken) + ' ' + esc(row.title) + '">' +
       '<i data-lucide="pencil" aria-hidden="true"></i></a>';
@@ -2232,6 +2238,7 @@
        5361" puts a hyphen in the middle of a spoken phrase. */
     ROW_DETAIL = typeof config.rowDetail === 'function' ? config.rowDetail : null;
     ROW_HREF = typeof config.rowHref === 'function' ? config.rowHref : null;
+    ROW_EDIT_HREF = typeof config.rowEditHref === 'function' ? config.rowEditHref : null;
     ROW_ID = {
       key: config.rowKey || 'orderNo',
       noun: config.routeNoun || 'order',

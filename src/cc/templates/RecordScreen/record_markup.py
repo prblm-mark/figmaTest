@@ -35,7 +35,7 @@ def chip(label, kind="tertiary", size="xs"):
 
 # ── RecordHeader → CC Header Type=Record ─────────────────────────────
 def record_header(record_type, title, mode, view_href="ArticleView.html", edit_href="ArticleEdit.html",
-                  secondary=("Add", "plus", ""), more=None):
+                  secondary=("Add", "plus", ""), more=None, save_href=None):
     """secondary: the view header's one Secondary button (label, icon, attrs); more: its kebab items.
     Defaults are the Article's; other record types pass their own (Contact, 2026-10-07)."""
     # Every header button has an icon, and its label sits in .cc-header__btn-label, which the
@@ -61,7 +61,10 @@ def record_header(record_type, title, mode, view_href="ArticleView.html", edit_h
         actions = (hbtn("Cancel", "tertiary cc-header__btn--bordered-mobile", "x", tag="a", href=view_href, attrs=' data-keep-width',
                         icon_cls="cc-header__btn-icon--mobile")
                    + hbtn("Delete", "alert", "trash-2", attrs=' aria-haspopup="dialog" data-record-modal-open="modal-delete"')
-                   + hbtn("Save", "primary", "check"))
+                   + hbtn("Save", "primary", "check", attrs=(
+                       # Demo only: Save returns to the View so the workflow can be walked (RecordScreen.js).
+                       # TODO(backend:RecordScreen) record-save: the real Save posts the form, then shows the View.
+                       f' data-demo-href="{save_href}" data-backend-todo="record-save"' if save_href else "")))
     else:
         actions = (hbtn(secondary[0], "secondary", secondary[1], attrs=secondary[2])
                    + hbtn("Edit", "primary", "pencil", tag="a", href=edit_href, attrs=' data-keep-width')

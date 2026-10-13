@@ -64,7 +64,14 @@ def swap(src, old, new, count=1):
     return src.replace(old, new, count)
 
 
-def build(page_title, header, page, scripts, modals="", listing=False, crumbs=("Content", "Articles", "Article")):
+ARTICLES_LIST = "../ListingScreen/Articles.html"
+
+
+def build(page_title, header, page, scripts, modals="", listing=False,
+          crumbs=("Content", ("Articles", ARTICLES_LIST), "Article")):
+    # A middle crumb may be (label, href): the Article pages link "Articles" back to the listing, so
+    # listing → View → Edit → listing is walkable (2026-10-13). A bare label keeps href="#".
+    mid, mid_href = crumbs[1] if isinstance(crumbs[1], tuple) else (crumbs[1], "#")
     s = SHELL
     s = re.sub(r"<title>.*?</title>", f"<title>{page_title} — Affino Control Centre</title>", s, count=1)
     s = swap(s, "</head>", CSS)
@@ -74,7 +81,7 @@ def build(page_title, header, page, scripts, modals="", listing=False, crumbs=("
              # Articles collapses with the current crumb on mobile: the TopNavigation keeps two items
              # there (zone + one level, Figma 4099:3632) — it hides every `--collapse` crumb.
              '              <li class="breadcrumb__separator breadcrumb__separator--collapse" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>\n'
-             f'              <li class="breadcrumb__item breadcrumb__item--collapse"><a class="breadcrumb__link" href="#">{crumbs[1]}</a></li>')
+             f'              <li class="breadcrumb__item breadcrumb__item--collapse"><a class="breadcrumb__link" href="{mid_href}">{mid}</a></li>')
     s = swap(s, 'aria-current="page">Level 2</li>', f'aria-current="page">{crumbs[2]}</li>')
     a = s.index('<div class="cc-header-cq">')
     b = s.index("</header>", a)
@@ -232,7 +239,7 @@ def confirm_main(flagged):
 pages = {
     "ArticleView.html": build("Article · View", m.record_header("Article", rec.TITLE, "view"),
                               page(m.record_tabs("details", sidebar=True) + body(rec.view_sections(), rec.sidebar(analytics=True)), mode="view"), KIT_JS),
-    "ArticleEdit.html": build("Article · Edit", m.record_header("Article", rec.TITLE, "edit"),
+    "ArticleEdit.html": build("Article · Edit", m.record_header("Article", rec.TITLE, "edit", save_href="ArticleView.html"),
                               page(m.record_tabs("details", back="ArticleEdit.html", sidebar=False) + body(rec.edit_sections(), rec.sidebar()), sidebar_on=False, mode="edit"), KIT_JS,
                               modals=rec.modals() + m.delete_confirm_modal("modal-delete", "article", rec.TITLE)
                                      + m.duplicates_modal("modal-duplicates", rec.DUPLICATES) + m.sector_modal("modal-sector", rec.SECTORS)),
