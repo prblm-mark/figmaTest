@@ -643,11 +643,20 @@ def stat(title, value, colour, ico):
 
 PERF = {"impressions": "330", "consumed": "4.68", "bookmarked": "48",
         "accounts": ["Ocean Media Group", "Playbook Media", "Argutus"], "total": "89", "per_day": "4.68"}
+# The Performance chart's series: one value per month, oldest first, matching the panel's "Last 12
+# Months". A record's PERF can carry its own "series"; these default figures sum to the default total.
+PERF_MONTHS = ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"]
+PERF_SERIES = {"impressions": [4, 6, 5, 7, 8, 6, 9, 8, 10, 9, 8, 9], "consumed": [2, 3, 2, 3, 4, 3, 4, 4, 5, 4, 3, 4]}
 
 
 def performance_summary(canvas_id="perf-chart", perf=None):
+    import json
     p = perf or PERF
     chips = "".join(chip(c, "secondary", "xs") for c in p["accounts"])
+    series = p.get("series", PERF_SERIES)
+    chart_data = json.dumps({"labels": PERF_MONTHS, "impressions": series["impressions"], "consumed": series["consumed"]})
+    table_rows = "".join(f'<tr><td>{e(mo)}</td><td class="performance-summary__num">{i}</td><td class="performance-summary__num">{c}</td></tr>'
+                         for mo, i, c in zip(PERF_MONTHS, series["impressions"], series["consumed"]))
     return f'''<div class="performance-summary">
             <div class="performance-summary__stats">
               {stat("Total Impressions", p["impressions"], "violet-radix", "chart-no-axes-combined")}
@@ -661,8 +670,12 @@ def performance_summary(canvas_id="perf-chart", perf=None):
               </div>
             </div>
             <div class="performance-summary__chart">
-              <div class="chart"><div class="chart__canvas"><canvas id="{canvas_id}" aria-label="Impressions, last 7 days" role="img"></canvas></div></div>
+              <div class="chart"><div class="chart__canvas"><canvas id="{canvas_id}" aria-label="Impressions and consumed per month, last 12 months" role="img"
+                data-perf-series='{chart_data}'></canvas></div></div>
             </div>
+            <details class="performance-summary__table"><summary>View as table</summary>
+                <table class="table"><thead><tr><th>Month</th><th class="performance-summary__num">Impressions</th><th class="performance-summary__num">Consumed</th></tr></thead>
+                <tbody>{table_rows}</tbody></table></details>
             <dl class="performance-summary__totals">
               <div class="performance-summary__total"><dt>Total Impressions</dt><dd>{e(p["total"])}</dd></div>
               <div class="performance-summary__total"><dt>Impression Per Day</dt><dd>{e(p["per_day"])}</dd></div>

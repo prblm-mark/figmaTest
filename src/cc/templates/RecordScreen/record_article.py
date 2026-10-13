@@ -189,7 +189,11 @@ FACTS = {
 }
 # Impressions 56 · Consumed 28 · Bookmarked 0 (last 12 months, live). Per day = 56 / 365, derived.
 PERF = {"impressions": "56", "consumed": "28", "bookmarked": "0",
-        "accounts": ["Affino", "Burning Nights CRPS Support"], "total": "56", "per_day": "0.15"}
+        "accounts": ["Affino", "Burning Nights CRPS Support"], "total": "56", "per_day": "0.15",
+        # Monthly split (Nov–Oct) is invented; it sums to the live 56 / 28 and starts in June, when the
+        # article was created.
+        "series": {"impressions": [0, 0, 0, 0, 0, 0, 0, 18, 14, 9, 10, 5],
+                   "consumed": [0, 0, 0, 0, 0, 0, 0, 9, 7, 5, 5, 2]}}
 # Live Recent Viewers (name, job title, viewed, account).
 # Customer Signals on Recent Viewers only (Hub TASK-531782, 2026-10-07): one with 7 (4 + "+3"),
 # one with 2, the rest with none — the panel must read right in all three cases.
