@@ -31,7 +31,7 @@
                       ticks: { precision: 0, maxTicksLimit: 5 } };
     var labelAxis = { grid: { display: false }, border: { display: false }, ticks: { autoSkip: !horizontal, maxRotation: 0 } };
 
-    new Chart(canvas, {
+    var chart = new Chart(canvas, {
       type: 'bar',
       data: { labels: d.labels, datasets: [{
         label: d.unit[1], data: d.values, backgroundColor: fill,
@@ -55,5 +55,20 @@
         scales: horizontal ? { x: valueAxis, y: labelAxis } : { x: labelAxis, y: valueAxis }
       }
     });
+
+    // Repaint when <html data-theme> flips: Chart.js keeps the colours it was given, so the old
+    // theme's grid and text would stay on the new surface (2026-10-13).
+    new MutationObserver(function () {
+      var s2 = tok('--ao-accent-lagoon-solid'), f2 = tok('--ao-accent-lagoon-soft');
+      var ds = chart.data.datasets[0], o = chart.options;
+      ds.backgroundColor = d.values.map(function (_, i) { return d.partialLast && i === last ? f2 : s2; });
+      ds.borderColor = s2;
+      var value = horizontal ? o.scales.x : o.scales.y, label = horizontal ? o.scales.y : o.scales.x;
+      value.grid.color = tok('--ao-border-secondary');
+      value.ticks.color = label.ticks.color = tok('--ao-text-contrast');
+      o.plugins.tooltip.backgroundColor = tok('--ao-surface-invert');
+      o.plugins.tooltip.titleColor = o.plugins.tooltip.bodyColor = tok('--ao-text-invert');
+      chart.update('none');
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   });
 })();
