@@ -194,14 +194,15 @@ PERF = {"impressions": "56", "consumed": "28", "bookmarked": "0",
         # article was created.
         "series": {"impressions": [0, 0, 0, 0, 0, 0, 0, 18, 14, 9, 10, 5],
                    "consumed": [0, 0, 0, 0, 0, 0, 0, 9, 7, 5, 5, 2]}}
-# Live Recent Viewers (name, job title, viewed, account).
+# Live Recent Viewers (name, job title, viewed, account). The one viewer outside Affino has an
+# invented name (2026-10-13), as the page ships in the shared listings preview.
 # Customer Signals on Recent Viewers only (Hub TASK-531782, 2026-10-07): one with 7 (4 + "+3"),
 # one with 2, the rest with none — the panel must read right in all three cases.
 VIEWERS = [("Mark Foster", "Senior Creative", "20 Jul 2026", ["Affino"], "mark-foster", m.SIGNALS),
            ("Chris Bristow", "Technical Manager", "02 Jul 2026", ["Affino"], "chris-bristow", m.SIGNALS[1:3]),
            ("Stefan Karlsson", "CMO Founder", "25 Jun 2026", ["Affino"], "stefan-karlsson"),
            ("Markus Karlsson", "CEO Founder", "24 Jun 2026", ["Affino"], "markus-karlsson"),
-           ("Victoria Abbott-Fleming", "Founder & Chair", "17 Jun 2026", ["Burning Nights CRPS Support"], "victoria-af")]
+           ("Eleanor Prescott", "Founder & Chair", "17 Jun 2026", ["Burning Nights CRPS Support"], "eleanor-p")]
 
 COUNTRIES_SOURCE = [("United Kingdom", "", "Countries", "Affino"), ("Ireland", "", "Countries", "Affino"),
                     ("United States", "", "Countries", "Affino"), ("Canada", "", "Countries", "Affino"),
