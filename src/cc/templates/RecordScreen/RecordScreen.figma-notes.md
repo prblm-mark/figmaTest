@@ -247,10 +247,15 @@ full-width cards; related cards pair up in `.contact-tab-grid` (two ≥512px col
   merged into one **Subscription and download history** trail (timeline layout, newest first, an icon per kind:
   mailing list, content subscription, media download, forum subscription).
 - **Signal icon colours (demo only, 2026-10-07, designer):** the glyph circles standing in for customer-signal badge
-  images take the StatCard soft scheme (`accent-*-soft` background, `accent-*-soft-fg` glyph), one fixed hue per glyph
+  images take the accent **solid** scheme (`accent-*-solid` background, white `accent-*-solid-fg` glyph — Mark,
+  2026-10-13; was the StatCard soft scheme). Only hues whose solid-fg is white in both themes: bright-teal, lime-radix
+  and orange-radix (dark glyph) left the palette for muted-teal, green-radix and dark-blue. One fixed hue per glyph
   (`record_markup.signal_hue`, lagoon first, blue last, no red) so a signal is the same colour everywhere: the sidebar
   AvatarGroup, the Analysis ranked list, the activity and history trails, and Article View's Recent Viewers signals.
   Live builds replace the circles with each signal's Badge On image.
+  The signal row's "+N" counter takes Badge Neutral's colours (Mark, 2026-10-13): `--ao-surface-neutral-soft` fill +
+  `--ao-text-neutral`, matching the panel's count chip; scoped to `.viewer-item__signals` so other AvatarGroups keep
+  Avatar Initials' counter.
 - **Rings follow the surface (2026-10-07):** the AvatarGroup ring and the timeline icon ring read `--ring-surface`,
   set by AvatarGroup.js from the surface they sit on (the timeline list carries `data-ring-surface`).
 
@@ -348,3 +353,38 @@ Bennett's account on Contact View, with invented people.
   Save → View, and the "Articles" breadcrumb → the listing. Every row opens the one demo article.
   Save navigates through `data-demo-href` (a demo stand-in for the submit; it stays a `<button>`, and
   `?state=duplicates` still opens the duplicates check instead).
+
+## Media View + Edit (code-first, 2026-10-13) — no Figma frame
+
+`record_media.py` → `MediaView`, `MediaViewPageAnalysis`, `MediaEdit` (image) and the `…Video` trio (Mark: code
+first, live tabs, every live field). Read from the live screens on affino.com (AffinoComrz): View = `AfcMediaLibrary/CC/
+MediaDetail.cfm?MediaScreen=detail` (inline CProperties — panel names, labels, order verbatim); Edit = the
+same page with `Action=change`, rendered by `MediaLiveEdit.cfm` from `AfcLiveEdit/FormDef/MediaAllElements.cfm`
+(a generated field query, not CProperties: Tab, Field, Required, Type, TextItem, MaxLength, lookup).
+
+How it maps onto the kit:
+- **Live has no tabs** — both screens are one stack of collapsible panels. Details carries them; the live
+  Stats / Recent Viewers / Referring URLs panels are a **Page analysis** tab (Contact View's builder).
+- **Every stored version is viewable (Mark, 2026-10-13, after reading live item 130427).** The live Main
+  panel leads Details as a "Main" section: the preview, Update file / Generate images, then a card per
+  stored version — image: Master file, Main Image (_MPreview), Thumbnail (_MBrowse), Original (the
+  preserved PNG / JPG); video: Video file, Thumbnail, Stills. The preview and every card open the
+  **viewer** (`MediaView.js` + DS Modal `--lg`): the version full size (never upscaled), its file · size
+  line, n of N, Previous / Next and ← →, Download; Esc / × / backdrop close and focus returns (RecordScreen.js
+  owns open / close). Live opens each version in its showImage popup. The live info box (File information)
+  is the sidebar, rows only when set. `.media-main`, `.media-preview*`, `.media-asset*`, `.media-viewer*`
+  in RecordScreen.css.
+- **Two items:** an image (`MediaView` / `MediaEdit`, the common case) and a video (`MediaViewVideo` /
+  `MediaEditVideo`), because Details and Production Details are hidden for images.
+- **No per-field help exists live.** The Media Workflow Profile's per-panel help is the section description
+  (verbatim, typos kept). No Show help switch.
+- **Edit labels** are SiteTextItem keys whose English values were not readable; the View screen's labels for
+  the same fields are used. Required: Presentation Style, Album, Title.
+- Both items are invented. Not drawn: Permission (documents), Streaming (with a streaming source), Embed
+  (embeds). Main Image shows on the image only (not for video types), as live.
+- Header: Edit (primary) + Live view (secondary); Copy, Add, Related items, Meta information, Monetise, Go to
+  list in the kebab. Media Items listing rows open MediaView / MediaEdit (`rowHref` / `rowEditHref`).
+- Field ids: `_generate.py` saves / restores `m._uid` around the Media block so later pages keep their ids.
+
+Handover: `media-record`, `media-sidebar`, `media-preview`, `media-assets`, `media-actions`,
+`media-page-analysis`, `media-edit`.

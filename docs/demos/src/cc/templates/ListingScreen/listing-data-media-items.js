@@ -329,6 +329,10 @@ LISTING_SCREENS['media-items'] = {
      words where the URL slug is hyphenated. */
   rowKey: 'itemId',
   routeNoun: 'media-item',
+  /* Every row opens the one demo media item so listing → View → Edit can be walked end to end
+     (as Articles). TODO(backend:Listing) listing-row-routes: the real routes take the row's item code. */
+  rowHref: function () { return '../RecordScreen/MediaView.html'; },
+  rowEditHref: function () { return '../RecordScreen/MediaEdit.html'; },
   rowNoun: 'media item',
   /* `CMethods = "add,change,delete,list,view,all,comment,move"` — this screen
      really does add, and MediaInbox.cfm renders its own add button above the

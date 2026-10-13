@@ -495,12 +495,13 @@ def fact_list(rows):
 
 # ── Signal icon colours (demo only, 2026-10-07) ──────────────────────
 # Live data draws each customer signal's own badge image; until then the demo's glyph circles take
-# the StatCard soft scheme (accent-*-soft background, accent-*-soft-fg glyph) so the screens read as
-# they will with real badges (designer). Fixed per glyph, so a signal is the same colour everywhere;
+# the accent SOLID scheme (accent-*-solid background, white accent-*-solid-fg glyph; Mark 2026-10-13,
+# was the soft scheme) so the screens read as they will with real badges (designer). Only hues whose
+# solid-fg is white in both themes: bright-teal, lime-radix and orange-radix are out. Fixed per glyph, so a signal is the same colour everywhere;
 # assigned in this order so neighbouring signals differ. Lagoon first, blue last; red is left out
 # because it reads as an error.
 SIGNAL_HUES = ["lagoon", "jade", "violet-radix", "orange", "pink", "purple", "emerald", "indigo",
-               "bright-teal", "lime-radix", "orange-radix", "teal-radix", "mid-blue", "blue"]
+               "muted-teal", "green-radix", "dark-blue", "teal-radix", "mid-blue", "blue"]
 _GLYPH_ORDER = ["briefcase", "repeat", "mail-open", "send", "notebook-pen", "file-text", "log-in", "eye",
                 "search", "trophy", "calendar-check", "newspaper", "user-check", "map", "presentation",
                 "badge-pound-sterling", "file-down", "messages-square", "flask-conical", "mail", "book-open", "download"]
