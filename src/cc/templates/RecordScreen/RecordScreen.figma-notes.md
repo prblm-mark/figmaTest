@@ -343,3 +343,8 @@ Bennett's account on Contact View, with invented people.
   panel on Contact View and Account View. This is the live view header's insight row: X and LinkedIn
   when set, Google / ChatGPT / Perplexity searches, and (accounts) Google Maps. The brand marks are
   the live SVGs in `img/quick-links/`, an approved exception to Lucide-only (Mark).
+- **Walkable Articles workflow** (2026-10-13). Articles listing row → `ArticleView.html`, row pencil →
+  `ArticleEdit.html` (the listing's new `rowHref` / `rowEditHref` config), View Edit → Edit, Cancel and
+  Save → View, and the "Articles" breadcrumb → the listing. Every row opens the one demo article.
+  Save navigates through `data-demo-href` (a demo stand-in for the submit; it stays a `<button>`, and
+  `?state=duplicates` still opens the duplicates check instead).

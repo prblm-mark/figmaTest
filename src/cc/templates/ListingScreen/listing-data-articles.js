@@ -386,6 +386,11 @@ LISTING_SCREENS.articles = {
      Archive, which needed the same knob. */
   rowKey: 'articleId',
   routeNoun: 'article',
+  /* Every row opens the one demo article (Article 626312) so the listing → View → Edit workflow
+     can be walked end to end. TODO(backend:Listing) listing-row-routes: the real routes take the
+     row's article ID. */
+  rowHref: function () { return '../RecordScreen/ArticleView.html'; },
+  rowEditHref: function () { return '../RecordScreen/ArticleEdit.html'; },
   /* Only the TITLE is guaranteed. Orders keeps two identity columns because
      its pair is an order number and a name; Articles' pair would be two long
      text columns, which does not fit a phone — see fitColumns. */

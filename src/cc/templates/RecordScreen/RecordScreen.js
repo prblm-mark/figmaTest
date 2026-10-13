@@ -28,7 +28,19 @@
     document.querySelectorAll('a[data-keep-width]').forEach(function (a) {
       a.setAttribute('href', a.getAttribute('href').split('?')[0] + q);
     });
+    document.querySelectorAll('[data-demo-href]').forEach(function (b) {
+      b.setAttribute('data-demo-href', b.getAttribute('data-demo-href').split('?')[0] + q);
+    });
   }
+
+  // Demo navigation for a button that stands in for a submit (Article Edit → Save returns to the
+  // View), so listing → View → Edit → View is walkable (2026-10-13). Not an anchor on purpose:
+  // the real control posts the form. TODO(backend:RecordScreen) record-save: replace with the submit.
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-demo-href]');
+    // ?state=duplicates owns Save on that demo: it opens the duplicates check instead (below).
+    if (b && !/[?&]state=duplicates\b/.test(location.search)) location.href = b.getAttribute('data-demo-href');
+  });
 
   document.addEventListener('cc:width', function (e) { mirror(e.detail.mode); });
   if (window.ccWidth) window.ccWidth.apply(window.ccWidth.resolve());
