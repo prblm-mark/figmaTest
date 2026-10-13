@@ -324,30 +324,33 @@ pages[account.EDIT] = build(
 
 # ── Media View + Edit (code-first, 2026-10-13): the live media item screens (MediaDetail.cfm +
 # MediaAllElements.cfm) on the kit. Live has no tabs: Details carries its panels, Page analysis its
-# Stats / Recent Viewers / Referring URLs; the live Main panel (preview, file info, assets) is the sidebar.
+# Stats / Recent Viewers / Referring URLs. The live Main panel leads Details (preview + every stored
+# version, each viewable full size); its file-information box is the sidebar.
 # Field ids come from one global counter; Media saves and restores it so the pages generated after it
 # keep their ids (no churn in unrelated files).
 _uid_before_media = m._uid[0]
-D = media.MEDIA
 MEDIA_CRUMBS = ("Media", ("Media Items", media.LISTING), "Media item")
-media_header = lambda: m.record_header("Media item", D["title"], "view", view_href=media.VIEW, edit_href=media.EDIT,
-                                       secondary=media.SECONDARY, more=media.KEBAB)
-pages[media.VIEW] = build(
-    "Media item · View", media_header(),
-    page(m.record_tabs("details", sidebar=True, tabs=media.tabs()) + body(media.view_sections(D), media.sidebar(D)),
-         mode="view", record_type="media"),
-    KIT_JS + TAB_JS, crumbs=MEDIA_CRUMBS)
-pages[media.PA] = build(
-    "Media item · Page analysis", media_header(),
-    page(m.record_tabs("page-analysis", tabs=media.tabs()) + f'<div class="contact-tab-page">{media.TAB_PAGES["page-analysis"](D)}</div>',
-         mode="view", record_type="media"),
-    KIT_JS + TAB_JS, crumbs=MEDIA_CRUMBS)
-pages[media.EDIT] = build(
-    "Media item · Edit", m.record_header("Media item", D["title"], "edit", view_href=media.VIEW),
-    page(m.record_tabs("details", tabs=media.tabs())
-         + '<div class="record-screen__body"><div class="record-screen__main">' + media.edit_sections(D) + '</div></div>',
-         sidebar_on=False, mode="edit", record_type="media"),
-    KIT_JS, modals=media.edit_modals(D), crumbs=MEDIA_CRUMBS)
+# Two items: an image (the common case; Main lists master, Main Image, Thumbnail, Original) and a video
+# (Details + Production Details, hidden for images, and its stills). MediaView.js runs the image viewer.
+for D in media.ITEMS:
+    media_header = lambda D=D: m.record_header("Media item", D["title"], "view", view_href=D["view"], edit_href=D["edit"],
+                                               secondary=media.SECONDARY, more=media.KEBAB)
+    pages[D["view"]] = build(
+        "Media item · View", media_header(),
+        page(m.record_tabs("details", sidebar=True, tabs=media.tabs(D)) + body(media.view_sections(D), media.sidebar(D)),
+             mode="view", record_type="media"),
+        KIT_JS + TAB_JS + '\n  <script src="MediaView.js"></script>', modals=media.viewer_modal(D), crumbs=MEDIA_CRUMBS)
+    pages[D["pa"]] = build(
+        "Media item · Page analysis", media_header(),
+        page(m.record_tabs("page-analysis", tabs=media.tabs(D))
+             + f'<div class="contact-tab-page">{media.TAB_PAGES["page-analysis"](D)}</div>', mode="view", record_type="media"),
+        KIT_JS + TAB_JS, crumbs=MEDIA_CRUMBS)
+    pages[D["edit"]] = build(
+        "Media item · Edit", m.record_header("Media item", D["title"], "edit", view_href=D["view"]),
+        page(m.record_tabs("details", tabs=media.tabs(D))
+             + '<div class="record-screen__body"><div class="record-screen__main">' + media.edit_sections(D) + '</div></div>',
+             sidebar_on=False, mode="edit", record_type="media"),
+        KIT_JS, modals=media.edit_modals(D), crumbs=MEDIA_CRUMBS)
 m._uid[0] = _uid_before_media
 
 # ── Order View (code-first "build first", 2026-10-07): the live order-processing screen on the kit —

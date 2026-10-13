@@ -888,20 +888,33 @@
   height: var(--ao-icon-size-lg);
 }
 
-/* ── Media View: the preview in the sidebar's Preview panel (code-first, 2026-10-13) ──
-   The live Main panel's player / image, as a poster with Play over it; the moderator's asset actions
-   sit under it (the panel's own gap spaces them). No Figma frame yet. */
+/* ── Media View: Main — preview, asset actions, every stored version (code-first, 2026-10-13) ──
+   The live Main panel: the preview, the moderator's asset actions, then a card per stored version
+   (master, Main Image, Thumbnail, Original, an MP4's stills). The preview and each card open the
+   viewer on that version (MediaView.js). No Figma frame yet. */
+.media-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-4);
+}
+
 .media-preview {
   position: relative;
+  display: block;
+  inline-size: 100%;
+  padding: 0;
   overflow: hidden;
+  border: 1px solid var(--ao-border-secondary);
   border-radius: var(--ao-radius-md);
+  background: none;
+  cursor: zoom-in;
 }
 
 .media-preview__poster {
   display: block;
   inline-size: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+  max-block-size: var(--ao-size-9);
+  object-fit: contain;
 }
 
 .media-preview__play {
@@ -909,10 +922,115 @@
   inset-block-start: 50%;
   inset-inline-start: 50%;
   transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
 .media-preview__actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--ao-spacing-3);
+}
+
+.media-assets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--ao-size-3), 1fr));
+  gap: var(--ao-spacing-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.media-asset {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-3);
+  min-inline-size: 0;
+  padding: var(--ao-spacing-3);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+}
+
+.media-asset__thumb {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  border: none;
+  border-radius: var(--ao-radius-sm);
+  background: none;
+  cursor: zoom-in;
+}
+
+.media-asset__thumb img {
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  transition: opacity var(--ao-transition-default);
+}
+
+.media-asset__thumb:hover img {
+  opacity: 0.8;
+}
+
+.media-preview:focus-visible,
+.media-asset__thumb:focus-visible {
+  outline: 2px solid var(--ao-surface-brand);
+  outline-offset: 2px;
+}
+
+.media-asset__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-0-5);
+  min-inline-size: 0;
+}
+
+.media-asset__label,
+.media-asset__name,
+.media-asset__meta {
+  margin: 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+}
+
+.media-asset__label {
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
+}
+
+.media-asset__name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--ao-text-secondary);
+}
+
+.media-asset__meta {
+  color: var(--ao-text-contrast);
+}
+
+.media-asset__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ao-spacing-2);
+  margin-block-start: auto;
+}
+
+/* The viewer: the image fitted inside the dialog; the count sits left of the step buttons. */
+.media-viewer__body {
+  align-items: center;
+}
+
+.media-viewer__img {
+  display: block;
+  max-inline-size: 100%;
+  max-block-size: var(--ao-size-9);
+  object-fit: contain;
+}
+
+.media-viewer__count {
+  margin-inline-end: auto;
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-secondary);
 }

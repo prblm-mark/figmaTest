@@ -1534,29 +1534,29 @@
      "id": "media-record",
      "category": "needs-backend",
      "element": "Media View → Details: Presentation Style, Navigation, Introduction, Main Body, Comments and Ratings, Keywords, SEO, Geo-blocking, Details, Production Details, Search, eCommerce, Security, Publication",
-     "current": "Static invented video item (record_media.py), panels and labels verbatim from the live MediaDetail.cfm view CProperties. Live has no tabs; its panels sit under Details. Permission (documents), Streaming (with a streaming source) and Embed (embeds) panels are not drawn for this video.",
+     "current": "Static invented items (record_media.py): an image (MediaView) and a video (MediaViewVideo); panels and labels verbatim from the live MediaDetail.cfm view CProperties. Live has no tabs; its panels sit under Details. Details and Production Details show on the video only (hidden for images, as live). Permission (documents), Streaming (with a streaming source) and Embed (embeds) panels are not drawn.",
      "needs": "The media item and its lookups (section, multi display, sponsor account, genre / moods, format, security right, creator, account). Keep the live conditions: Details and Production Details hidden for images; Permission for document types only; Streaming only with a streaming source; rows show only when set."
     },
     {
      "id": "media-sidebar",
      "category": "needs-backend",
      "element": "Media View sidebar → File information (the live Main panel's right-hand info box)",
-     "current": "Static.",
+     "current": "Static; rows only when set.",
      "needs": "The item's production and file facts (creator, artists, keywords, language, video type, genre, release date, version, run time, format, file size, dimensions, production facts, date added, updated, updated by, total downloads, your roles). Rows only when set; hidden by the Media Library Profile's HideFileInfoYN."
     },
     {
      "id": "media-preview",
      "category": "needs-backend",
-     "element": "Media View sidebar → Preview (poster + Play)",
-     "current": "Static poster image; Play does nothing.",
-     "needs": "The player by media type as live: MultimediaPlayer for audio / video, DocumentPlayerModule for documents, the main image in a lightbox for images (not for SlideShare / Twitter embeds); player width from the Media Library Profile."
+     "element": "Media View → Main: the preview (opens the viewer on the master)",
+     "current": "Static picture; the video's Play is decoration.",
+     "needs": "The player by media type as live: MultimediaPlayer for audio / video, DocumentPlayerModule for documents, the main image (linked to the master file) for images; player width from the Media Library Profile."
     },
     {
      "id": "media-assets",
      "category": "needs-backend",
-     "element": "Media View sidebar → Update file, Generate images, Thumbnail (delete), Additional assets (Set as thumbnail)",
-     "current": "Visual only.",
-     "needs": "Moderator-only asset actions: replace the master file (not for embeds), generate images (PDF, video files, images), re-download thumbnail (YouTube), upload / delete thumbnail and main image (main image not for video types), set an MP4 still as the thumbnail; the preserved Original block when the upload profile kept one. Show the live AssetSuccess messages."
+     "element": "Media View → Main: Update file, Generate images, the version cards (Master file / Main Image / Thumbnail / Original; a video's Thumbnail and stills) and their Update / Delete / Set as thumbnail; the viewer's Download",
+     "current": "Cards and the viewer work in memory (MediaView.js): every version opens full size, Previous / Next / arrow keys step through them. The actions are visual; Download links the placeholder image.",
+     "needs": "The item's stored versions with name, dimensions and size (master, _MPreview Main Image, _MBrowse Thumbnail, preserved Original, MP4 additional assets) and their URLs; the moderator's asset actions: replace master (not for embeds), generate images (PDF, video files, images), re-download thumbnail (YouTube), upload / delete thumbnail and main image (main image not for video types), set an MP4 still as the thumbnail. Show the live AssetSuccess messages."
     },
     {
      "id": "media-actions",

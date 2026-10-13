@@ -351,8 +351,8 @@ Bennett's account on Contact View, with invented people.
 
 ## Media View + Edit (code-first, 2026-10-13) — no Figma frame
 
-`record_media.py` → `MediaView.html`, `MediaViewPageAnalysis.html`, `MediaEdit.html` (Mark: code first, live
-tabs, every live field). Read from the live screens on affino.com (AffinoComrz): View = `AfcMediaLibrary/CC/
+`record_media.py` → `MediaView`, `MediaViewPageAnalysis`, `MediaEdit` (image) and the `…Video` trio (Mark: code
+first, live tabs, every live field). Read from the live screens on affino.com (AffinoComrz): View = `AfcMediaLibrary/CC/
 MediaDetail.cfm?MediaScreen=detail` (inline CProperties — panel names, labels, order verbatim); Edit = the
 same page with `Action=change`, rendered by `MediaLiveEdit.cfm` from `AfcLiveEdit/FormDef/MediaAllElements.cfm`
 (a generated field query, not CProperties: Tab, Field, Required, Type, TextItem, MaxLength, lookup).
@@ -360,15 +360,23 @@ same page with `Action=change`, rendered by `MediaLiveEdit.cfm` from `AfcLiveEdi
 How it maps onto the kit:
 - **Live has no tabs** — both screens are one stack of collapsible panels. Details carries them; the live
   Stats / Recent Viewers / Referring URLs panels are a **Page analysis** tab (Contact View's builder).
-- **The live Main panel is the sidebar:** Preview (poster + Play, Update file, Generate images), File
-  information (the 29-row info box), Thumbnail, Additional assets (MP4 stills, Set as thumbnail).
-  `.media-preview*` in RecordScreen.css is the only new CSS.
+- **Every stored version is viewable (Mark, 2026-10-13, after reading live item 130427).** The live Main
+  panel leads Details as a "Main" section: the preview, Update file / Generate images, then a card per
+  stored version — image: Master file, Main Image (_MPreview), Thumbnail (_MBrowse), Original (the
+  preserved PNG / JPG); video: Video file, Thumbnail, Stills. The preview and every card open the
+  **viewer** (`MediaView.js` + DS Modal `--lg`): the version full size (never upscaled), its file · size
+  line, n of N, Previous / Next and ← →, Download; Esc / × / backdrop close and focus returns (RecordScreen.js
+  owns open / close). Live opens each version in its showImage popup. The live info box (File information)
+  is the sidebar, rows only when set. `.media-main`, `.media-preview*`, `.media-asset*`, `.media-viewer*`
+  in RecordScreen.css.
+- **Two items:** an image (`MediaView` / `MediaEdit`, the common case) and a video (`MediaViewVideo` /
+  `MediaEditVideo`), because Details and Production Details are hidden for images.
 - **No per-field help exists live.** The Media Workflow Profile's per-panel help is the section description
   (verbatim, typos kept). No Show help switch.
 - **Edit labels** are SiteTextItem keys whose English values were not readable; the View screen's labels for
   the same fields are used. Required: Presentation Style, Album, Title.
-- The item is an invented MP4 video, so Details and Production Details (hidden for images) show. Not drawn:
-  Permission (documents), Streaming (with a streaming source), Embed (embeds), Main Image (not for video).
+- Both items are invented. Not drawn: Permission (documents), Streaming (with a streaming source), Embed
+  (embeds). Main Image shows on the image only (not for video types), as live.
 - Header: Edit (primary) + Live view (secondary); Copy, Add, Related items, Meta information, Monetise, Go to
   list in the kebab. Media Items listing rows open MediaView / MediaEdit (`rowHref` / `rowEditHref`).
 - Field ids: `_generate.py` saves / restores `m._uid` around the Media block so later pages keep their ids.
