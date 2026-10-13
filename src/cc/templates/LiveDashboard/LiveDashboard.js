@@ -86,6 +86,7 @@
 
   /* ── 3. Chart ─────────────────────────────────────────────────── */
   var chart = null;
+  var quiet = false; // a theme-change rebuild draws without the entrance animation
   var HOURS = []; for (var i = 0; i < 24; i++) HOURS.push((i < 10 ? '0' : '') + i + ':00');
 
   /* Plugins: the "Now" marker, the hover crosshair, and a direct label at each line's last point. */
@@ -157,7 +158,7 @@
         ]
       },
       options: {
-        responsive: true, maintainAspectRatio: false, animation: REDUCED ? false : { duration: 400 },
+        responsive: true, maintainAspectRatio: false, animation: REDUCED || quiet ? false : { duration: 400 },
         layout: { padding: { top: 16, right: 56 } },
         interaction: { mode: 'index', intersect: false },
         plugins: {
@@ -326,6 +327,13 @@
 
   renderAll();
   drawChart();
+  /* Chart.js keeps the colours it was built with, so a light/dark switch would leave the old
+     theme's grid and ticks on the new surface. Rebuild from the tokens when <html data-theme>
+     changes (2026-10-13). */
+  new MutationObserver(function () {
+    if (!chart) return;
+    chart.destroy(); quiet = true; drawChart(); quiet = false;
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   start();
   setInterval(tick, 1000);
   /* Demo only: ?refresh=now runs one refresh at once, so the live behaviour can be checked. */
