@@ -504,6 +504,7 @@ build — a render from the record payload. Markers: `grep -rn "TODO(backend:Rec
 >
 > **Contact, Order and Account View + Edit handed over 2026-10-13:**
 > **[`docs/crm-record-screens-handover.md`](docs/crm-record-screens-handover.md)** (the `contact-*`, `order-*`, `account-*` rows).
+> Media Item View + Edit: **[`docs/media-record-screens-handover.md`](docs/media-record-screens-handover.md)** (the `media-*` rows).
 
 | id | Element | Now | Backend work needed | Category |
 |---|---|---|---|---|
