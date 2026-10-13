@@ -253,6 +253,8 @@ full-width cards; related cards pair up in `.contact-tab-grid` (two ≥512px col
   (`record_markup.signal_hue`, lagoon first, blue last, no red) so a signal is the same colour everywhere: the sidebar
   AvatarGroup, the Analysis ranked list, the activity and history trails, and Article View's Recent Viewers signals.
   Live builds replace the circles with each signal's Badge On image.
+  The signal row's "+N" counter is solid too (Mark, 2026-10-13): `--ao-surface-neutral` fill + `--ao-text-invert`,
+  scoped to `.viewer-item__signals` so other AvatarGroups keep Avatar Initials' soft counter.
 - **Rings follow the surface (2026-10-07):** the AvatarGroup ring and the timeline icon ring read `--ring-surface`,
   set by AvatarGroup.js from the surface they sit on (the timeline list carries `data-ring-surface`).
 

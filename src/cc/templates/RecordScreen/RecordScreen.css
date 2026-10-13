@@ -696,6 +696,18 @@
 .record-screen .avatar.signal-icon--mid-blue { background-color: var(--ao-accent-mid-blue-solid); color: var(--ao-accent-mid-blue-solid-fg); }
 .record-screen .avatar.signal-icon--blue { background-color: var(--ao-accent-blue-solid); color: var(--ao-accent-blue-solid-fg); }
 
+/* The signal row's "+N" counter matches the solid circles (Mark, 2026-10-13): solid neutral fill, invert
+   text, in place of Avatar Initials' soft fill. Hover keeps AvatarGroup's info fill. Signal groups only —
+   other AvatarGroups keep their counter. */
+.record-screen .viewer-item__signals > .avatar-group__more {
+  background-color: var(--ao-surface-neutral);
+  color: var(--ao-text-invert);
+}
+
+.record-screen .viewer-item__signals > button.avatar-group__more:hover {
+  background-color: var(--ao-surface-info);
+}
+
 /* ── Order View (code-first, 2026-10-07) ──────────────────────────────
    The order's line items and payment rows are Datatables cards in the main column, between its
    RecordSections. The attendee block and the totals sit inside the Line items card. */
