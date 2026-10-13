@@ -887,3 +887,32 @@
   width: var(--ao-icon-size-lg);
   height: var(--ao-icon-size-lg);
 }
+
+/* ── Media View: the preview in the sidebar's Preview panel (code-first, 2026-10-13) ──
+   The live Main panel's player / image, as a poster with Play over it; the moderator's asset actions
+   sit under it (the panel's own gap spaces them). No Figma frame yet. */
+.media-preview {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--ao-radius-md);
+}
+
+.media-preview__poster {
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.media-preview__play {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.media-preview__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ao-spacing-3);
+}

@@ -348,3 +348,30 @@ Bennett's account on Contact View, with invented people.
   Save → View, and the "Articles" breadcrumb → the listing. Every row opens the one demo article.
   Save navigates through `data-demo-href` (a demo stand-in for the submit; it stays a `<button>`, and
   `?state=duplicates` still opens the duplicates check instead).
+
+## Media View + Edit (code-first, 2026-10-13) — no Figma frame
+
+`record_media.py` → `MediaView.html`, `MediaViewPageAnalysis.html`, `MediaEdit.html` (Mark: code first, live
+tabs, every live field). Read from the live screens on affino.com (AffinoComrz): View = `AfcMediaLibrary/CC/
+MediaDetail.cfm?MediaScreen=detail` (inline CProperties — panel names, labels, order verbatim); Edit = the
+same page with `Action=change`, rendered by `MediaLiveEdit.cfm` from `AfcLiveEdit/FormDef/MediaAllElements.cfm`
+(a generated field query, not CProperties: Tab, Field, Required, Type, TextItem, MaxLength, lookup).
+
+How it maps onto the kit:
+- **Live has no tabs** — both screens are one stack of collapsible panels. Details carries them; the live
+  Stats / Recent Viewers / Referring URLs panels are a **Page analysis** tab (Contact View's builder).
+- **The live Main panel is the sidebar:** Preview (poster + Play, Update file, Generate images), File
+  information (the 29-row info box), Thumbnail, Additional assets (MP4 stills, Set as thumbnail).
+  `.media-preview*` in RecordScreen.css is the only new CSS.
+- **No per-field help exists live.** The Media Workflow Profile's per-panel help is the section description
+  (verbatim, typos kept). No Show help switch.
+- **Edit labels** are SiteTextItem keys whose English values were not readable; the View screen's labels for
+  the same fields are used. Required: Presentation Style, Album, Title.
+- The item is an invented MP4 video, so Details and Production Details (hidden for images) show. Not drawn:
+  Permission (documents), Streaming (with a streaming source), Embed (embeds), Main Image (not for video).
+- Header: Edit (primary) + Live view (secondary); Copy, Add, Related items, Meta information, Monetise, Go to
+  list in the kebab. Media Items listing rows open MediaView / MediaEdit (`rowHref` / `rowEditHref`).
+- Field ids: `_generate.py` saves / restores `m._uid` around the Media block so later pages keep their ids.
+
+Handover: `media-record`, `media-sidebar`, `media-preview`, `media-assets`, `media-actions`,
+`media-page-analysis`, `media-edit`.

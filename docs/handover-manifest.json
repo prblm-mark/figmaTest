@@ -1531,6 +1531,55 @@
      "needs": "Values + option sources and lookups (contact lookups exclude contact types 1 and 8; Primary Contacts filtered to Account Contacts; Director / Manager / Team filtered to the CRM profile's own account; Parent / Child / Associated exclude the account itself on change). Save with the live validation: unique Screen Name, email domains cleaned and unused by another account, Auto Approve Users needs Email Domains, IP list checked; removed contacts can be marked as left. Keep the profile switches (AccountShowPublicPanelYN, AccountShowSubsPanelsYN, AccountShowEventPanelYN, AccountDesignScriptCode) and right 246 for add / change / delete."
     },
     {
+     "id": "media-record",
+     "category": "needs-backend",
+     "element": "Media View → Details: Presentation Style, Navigation, Introduction, Main Body, Comments and Ratings, Keywords, SEO, Geo-blocking, Details, Production Details, Search, eCommerce, Security, Publication",
+     "current": "Static invented video item (record_media.py), panels and labels verbatim from the live MediaDetail.cfm view CProperties. Live has no tabs; its panels sit under Details. Permission (documents), Streaming (with a streaming source) and Embed (embeds) panels are not drawn for this video.",
+     "needs": "The media item and its lookups (section, multi display, sponsor account, genre / moods, format, security right, creator, account). Keep the live conditions: Details and Production Details hidden for images; Permission for document types only; Streaming only with a streaming source; rows show only when set."
+    },
+    {
+     "id": "media-sidebar",
+     "category": "needs-backend",
+     "element": "Media View sidebar → File information (the live Main panel's right-hand info box)",
+     "current": "Static.",
+     "needs": "The item's production and file facts (creator, artists, keywords, language, video type, genre, release date, version, run time, format, file size, dimensions, production facts, date added, updated, updated by, total downloads, your roles). Rows only when set; hidden by the Media Library Profile's HideFileInfoYN."
+    },
+    {
+     "id": "media-preview",
+     "category": "needs-backend",
+     "element": "Media View sidebar → Preview (poster + Play)",
+     "current": "Static poster image; Play does nothing.",
+     "needs": "The player by media type as live: MultimediaPlayer for audio / video, DocumentPlayerModule for documents, the main image in a lightbox for images (not for SlideShare / Twitter embeds); player width from the Media Library Profile."
+    },
+    {
+     "id": "media-assets",
+     "category": "needs-backend",
+     "element": "Media View sidebar → Update file, Generate images, Thumbnail (delete), Additional assets (Set as thumbnail)",
+     "current": "Visual only.",
+     "needs": "Moderator-only asset actions: replace the master file (not for embeds), generate images (PDF, video files, images), re-download thumbnail (YouTube), upload / delete thumbnail and main image (main image not for video types), set an MP4 still as the thumbnail; the preserved Original block when the upload profile kept one. Show the live AssetSuccess messages."
+    },
+    {
+     "id": "media-actions",
+     "category": "needs-backend",
+     "element": "Media View header → Live view (secondary) + kebab: Copy media item, Add media item, Related items, Meta information, Monetise",
+     "current": "Visual only.",
+     "needs": "Each live toolbar action: Live View (display page), Copy (Action=add&copyFlag=copy), Add (the add wizard), Related Items, Meta Information, eCommerce (CatalogueItemEdit for the item). Exact set from ViewForm's CMethods and the user's rights; contributors under a workflow get Add / Edit only."
+    },
+    {
+     "id": "media-page-analysis",
+     "category": "needs-backend",
+     "element": "Media View → Page analysis tab: page stats, Recent viewers, Referring URLs (Contact View's builder)",
+     "current": "Static.",
+     "needs": "The live Stats, Recent Viewers and Referring URLs panels (ViewsStatsInclude / RecentViewersInclude / ReferralURLsInclude) for the item's public page."
+    },
+    {
+     "id": "media-edit",
+     "category": "needs-backend",
+     "element": "Media Edit (MediaEdit.html) → Presentation Style, Navigation, Introduction, Main Body, Comments and Ratings, Keywords, SEO, Geo-blocking, Details, Production Details, Search, eCommerce, Security, Publication",
+     "current": "Static. Panels, field order, controls and required marks (Presentation Style, Album, Title) from AfcLiveEdit/FormDef/MediaAllElements.cfm. Labels are the View screen's (the edit labels are SiteTextItem keys, not read). No per-field help exists live; each panel's Media Workflow Profile help is the section description. Option lists for Sponsor Open Link, Geo-blocking Type, Access Type, Media Location, Format, Language, Content Security Right are stand-ins. Presentation Style is a select (live: a thumbnail StyleSelector); Run Time one input (live: value + unit select). Copyright read-only (live: disabled on change).",
+     "needs": "Values, the SiteTextItem labels and option sources, lookups. Save (live 'Submit') with the live validation (required fields, unique Screen Name auto-slugged from the title, Teaser required / limit from the workflow profile) and the workflow profile's lockdowns for contributors (removed panels / fields, confirmation step). Delete guarded by MediaItem.CanBeDeleted. Keep the live conditions: Embed panel for embeds, Permission for documents, Streaming with a source, Details / Production Details not for images, FormattedTitle when the site's TitleFormattingYN is on."
+    },
+    {
      "id": "record-edit-grid",
      "category": "needs-backend",
      "element": "Editable grids on edit screens (record_markup.edit_grid): Order Payment / Refund Details, Account Assign Paid / Free Subscriptions, Event Credits",

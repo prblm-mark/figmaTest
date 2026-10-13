@@ -21,6 +21,7 @@ import record_step as step  # noqa: E402
 import record_contact as contact  # noqa: E402
 import record_order as order  # noqa: E402
 import record_account as account  # noqa: E402
+import record_media as media  # noqa: E402
 
 # Step content (titles + bodies) read from the Hub for Article 626347 — a copy of the ArticleSteps
 # prototype's data, kept here so the template does not depend on an uncommitted prototype.
@@ -320,6 +321,34 @@ pages[account.EDIT] = build(
          sidebar_on=False, mode="edit", record_type="account", help_mode="switch"),
     KIT_JS, modals=account.edit_modals(A) + m.media_select_modal("modal-media", "Select Media", rec.MEDIA_SOURCE[:24], len(rec.MEDIA_SOURCE)),
     crumbs=("CRM", "Accounts", "Account"))
+
+# ── Media View + Edit (code-first, 2026-10-13): the live media item screens (MediaDetail.cfm +
+# MediaAllElements.cfm) on the kit. Live has no tabs: Details carries its panels, Page analysis its
+# Stats / Recent Viewers / Referring URLs; the live Main panel (preview, file info, assets) is the sidebar.
+# Field ids come from one global counter; Media saves and restores it so the pages generated after it
+# keep their ids (no churn in unrelated files).
+_uid_before_media = m._uid[0]
+D = media.MEDIA
+MEDIA_CRUMBS = ("Media", ("Media Items", media.LISTING), "Media item")
+media_header = lambda: m.record_header("Media item", D["title"], "view", view_href=media.VIEW, edit_href=media.EDIT,
+                                       secondary=media.SECONDARY, more=media.KEBAB)
+pages[media.VIEW] = build(
+    "Media item · View", media_header(),
+    page(m.record_tabs("details", sidebar=True, tabs=media.tabs()) + body(media.view_sections(D), media.sidebar(D)),
+         mode="view", record_type="media"),
+    KIT_JS + TAB_JS, crumbs=MEDIA_CRUMBS)
+pages[media.PA] = build(
+    "Media item · Page analysis", media_header(),
+    page(m.record_tabs("page-analysis", tabs=media.tabs()) + f'<div class="contact-tab-page">{media.TAB_PAGES["page-analysis"](D)}</div>',
+         mode="view", record_type="media"),
+    KIT_JS + TAB_JS, crumbs=MEDIA_CRUMBS)
+pages[media.EDIT] = build(
+    "Media item · Edit", m.record_header("Media item", D["title"], "edit", view_href=media.VIEW),
+    page(m.record_tabs("details", tabs=media.tabs())
+         + '<div class="record-screen__body"><div class="record-screen__main">' + media.edit_sections(D) + '</div></div>',
+         sidebar_on=False, mode="edit", record_type="media"),
+    KIT_JS, modals=media.edit_modals(D), crumbs=MEDIA_CRUMBS)
+m._uid[0] = _uid_before_media
 
 # ── Order View (code-first "build first", 2026-10-07): the live order-processing screen on the kit —
 # view + the processing actions as working demo modals (OrderView.js). Invented customer.
