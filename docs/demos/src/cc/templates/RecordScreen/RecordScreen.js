@@ -161,40 +161,56 @@
    * series sit on the canvas (data-perf-series) and match the panel's "Last 12 Months" and its totals.
    * Recessive frame: the --ao-border-secondary grid on the value axis only, at most four ticks from
    * zero, whole numbers. Tokens are read from the canvas, so a scoped theme applies (2026-10-13). */
+  // Charts read their colours from the tokens, which change with <html data-theme>. Chart.js keeps
+  // the values it was given, so each chart repaints when the theme flips — otherwise the light
+  // theme's grid stays on the dark surface (and vice versa) and reads as heavy lines (2026-10-13).
+  var onTheme = function (fn) {
+    new MutationObserver(fn).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  };
+
   var canvas = document.getElementById('perf-chart');
   if (canvas && window.Chart && canvas.hasAttribute('data-perf-series')) {
-    var cs = getComputedStyle(canvas);
-    var tok = function (n) { return cs.getPropertyValue(n).trim(); };
+    var tok = function (n) { return getComputedStyle(canvas).getPropertyValue(n).trim(); };
     var pd = JSON.parse(canvas.getAttribute('data-perf-series'));
-    var line = function (label, data, colour) {
-      return { label: label, data: data, borderColor: colour, backgroundColor: colour, borderWidth: 2,
-               cubicInterpolationMode: 'monotone', pointRadius: 0, pointHoverRadius: 4,
-               pointHoverBorderWidth: 2, pointHoverBorderColor: tok('--ao-surface-primary') };
+    var line = function (label, data) {
+      return { label: label, data: data, borderWidth: 2, cubicInterpolationMode: 'monotone',
+               pointRadius: 0, pointHoverRadius: 4, pointHoverBorderWidth: 2 };
     };
     window.Chart.defaults.font.family = 'Inter, sans-serif';
     window.Chart.defaults.font.size = 12;
-    window.Chart.defaults.color = tok('--ao-text-contrast');
-    new window.Chart(canvas, {
+    var perfChart = new window.Chart(canvas, {
       type: 'line',
-      data: { labels: pd.labels, datasets: [line('Impressions', pd.impressions, tok('--ao-accent-lagoon-solid')),
-                                            line('Consumed', pd.consumed, tok('--ao-accent-purple-solid'))] },
+      data: { labels: pd.labels, datasets: [line('Impressions', pd.impressions), line('Consumed', pd.consumed)] },
       options: {
         responsive: true, maintainAspectRatio: false,
         interaction: { mode: 'index', intersect: false },
         animation: window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? false : { duration: 400 },
         plugins: {
-          legend: { position: 'bottom', align: 'start',
-                    labels: { usePointStyle: true, pointStyle: 'line', boxWidth: 16, color: tok('--ao-text-secondary') } },
-          tooltip: { backgroundColor: tok('--ao-surface-invert'), titleColor: tok('--ao-text-invert'), bodyColor: tok('--ao-text-invert'),
-                     padding: 10, cornerRadius: 6, boxPadding: 4, usePointStyle: true }
+          legend: { position: 'bottom', align: 'start', labels: { usePointStyle: true, pointStyle: 'line', boxWidth: 16 } },
+          tooltip: { padding: 10, cornerRadius: 6, boxPadding: 4, usePointStyle: true }
         },
         scales: {
           x: { grid: { display: false }, border: { display: false }, ticks: { maxRotation: 0, autoSkipPadding: 8 } },
-          y: { beginAtZero: true, grid: { color: tok('--ao-border-secondary') }, border: { display: false },
-               ticks: { precision: 0, maxTicksLimit: 4 } }
+          y: { beginAtZero: true, border: { display: false }, ticks: { precision: 0, maxTicksLimit: 4 } }
         }
       }
     });
+    var paintPerf = function () {
+      var o = perfChart.options, sets = perfChart.data.datasets;
+      [['--ao-accent-lagoon-solid', 0], ['--ao-accent-purple-solid', 1]].forEach(function (c) {
+        var col = tok(c[0]);
+        sets[c[1]].borderColor = col; sets[c[1]].backgroundColor = col;
+        sets[c[1]].pointHoverBorderColor = tok('--ao-surface-primary');
+      });
+      o.scales.x.ticks.color = o.scales.y.ticks.color = tok('--ao-text-contrast');
+      o.scales.y.grid.color = tok('--ao-border-secondary');
+      o.plugins.legend.labels.color = tok('--ao-text-secondary');
+      o.plugins.tooltip.backgroundColor = tok('--ao-surface-invert');
+      o.plugins.tooltip.titleColor = o.plugins.tooltip.bodyColor = tok('--ao-text-invert');
+      perfChart.update('none');
+    };
+    paintPerf();
+    onTheme(paintPerf);
   }
 
   /* ── Sidebar panel order (designer, 2026-10-05; code-first) ──
@@ -317,6 +333,15 @@
                        grid: { color: ccs.getPropertyValue('--ao-border-secondary').trim() } } },
       },
     });
+    var paintConv = function () {
+      var st = getComputedStyle(convCanvas), co = convChart.options;
+      convChart.data.datasets[0].backgroundColor = st.getPropertyValue('--ao-surface-brand').trim();
+      co.scales.y.grid.color = st.getPropertyValue('--ao-border-secondary').trim();
+      co.scales.x.ticks.color = co.scales.y.ticks.color = st.getPropertyValue('--ao-text-contrast').trim();
+      convChart.update('none');
+    };
+    paintConv();
+    onTheme(paintConv);
     document.addEventListener('seg-control:change', function (e) {
       if (!e.target.closest('[data-conv-switch]')) return;
       var c = CONV[e.detail.value];
