@@ -696,12 +696,12 @@
 .record-screen .avatar.signal-icon--mid-blue { background-color: var(--ao-accent-mid-blue-solid); color: var(--ao-accent-mid-blue-solid-fg); }
 .record-screen .avatar.signal-icon--blue { background-color: var(--ao-accent-blue-solid); color: var(--ao-accent-blue-solid-fg); }
 
-/* The signal row's "+N" counter matches the solid circles (Mark, 2026-10-13): solid neutral fill, invert
-   text, in place of Avatar Initials' soft fill. Hover keeps AvatarGroup's info fill. Signal groups only —
-   other AvatarGroups keep their counter. */
+/* The signal row's "+N" counter takes Badge Neutral's colours (Mark, 2026-10-13), so it reads as the
+   same kind of count as the "71" chip beside the panel title. Hover keeps AvatarGroup's info fill.
+   Signal groups only — other AvatarGroups keep their counter. */
 .record-screen .viewer-item__signals > .avatar-group__more {
-  background-color: var(--ao-surface-neutral);
-  color: var(--ao-text-invert);
+  background-color: var(--ao-surface-neutral-soft);
+  color: var(--ao-text-neutral);
 }
 
 .record-screen .viewer-item__signals > button.avatar-group__more:hover {
