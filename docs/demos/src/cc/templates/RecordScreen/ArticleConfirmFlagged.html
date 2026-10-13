@@ -837,8 +837,12 @@
               </div>
             </div>
             <div class="performance-summary__chart">
-              <div class="chart"><div class="chart__canvas"><canvas id="perf-chart" aria-label="Impressions, last 7 days" role="img"></canvas></div></div>
+              <div class="chart"><div class="chart__canvas"><canvas id="perf-chart" aria-label="Impressions and consumed per month, last 12 months" role="img"
+                data-perf-series='{"labels": ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"], "impressions": [0, 0, 0, 0, 0, 0, 0, 18, 14, 9, 10, 5], "consumed": [0, 0, 0, 0, 0, 0, 0, 9, 7, 5, 5, 2]}'></canvas></div></div>
             </div>
+            <details class="performance-summary__table"><summary>View as table</summary>
+                <table class="table"><thead><tr><th>Month</th><th class="performance-summary__num">Impressions</th><th class="performance-summary__num">Consumed</th></tr></thead>
+                <tbody><tr><td>Nov</td><td class="performance-summary__num">0</td><td class="performance-summary__num">0</td></tr><tr><td>Dec</td><td class="performance-summary__num">0</td><td class="performance-summary__num">0</td></tr><tr><td>Jan</td><td class="performance-summary__num">0</td><td class="performance-summary__num">0</td></tr><tr><td>Feb</td><td class="performance-summary__num">0</td><td class="performance-summary__num">0</td></tr><tr><td>Mar</td><td class="performance-summary__num">0</td><td class="performance-summary__num">0</td></tr><tr><td>Apr</td><td class="performance-summary__num">0</td><td class="performance-summary__num">0</td></tr><tr><td>May</td><td class="performance-summary__num">0</td><td class="performance-summary__num">0</td></tr><tr><td>Jun</td><td class="performance-summary__num">18</td><td class="performance-summary__num">9</td></tr><tr><td>Jul</td><td class="performance-summary__num">14</td><td class="performance-summary__num">7</td></tr><tr><td>Aug</td><td class="performance-summary__num">9</td><td class="performance-summary__num">5</td></tr><tr><td>Sep</td><td class="performance-summary__num">10</td><td class="performance-summary__num">5</td></tr><tr><td>Oct</td><td class="performance-summary__num">5</td><td class="performance-summary__num">2</td></tr></tbody></table></details>
             <dl class="performance-summary__totals">
               <div class="performance-summary__total"><dt>Total Impressions</dt><dd>56</dd></div>
               <div class="performance-summary__total"><dt>Impression Per Day</dt><dd>0.15</dd></div>

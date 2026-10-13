@@ -44,3 +44,16 @@ Draft panel padding was raw 20px → FactPanel `--ao-spacing-5`. Chart height is
   generated from the same function, so they cannot drift.
 
 **Border rule (designer, 2026-10-02):** top-level panels use `border/card`, and cards INSIDE a panel keep the more prominent `border/secondary`. The accounts box, the Chart and the StatCards are all in-panel, so all stay on `border/secondary`.
+
+## Chart (reworked 2026-10-13, code-first, after Mark's screenshot review)
+- **Data matches the panel.** 12 monthly points (Nov–Oct) to fit the "Last 12 Months" subtitle, not
+  Mon–Sun; the series sum to the panel's totals (Article: 56 impressions / 28 consumed, zero before
+  the article's June creation). Series come from `perf["series"]` in `record_markup.performance_summary`
+  and ride on the canvas as `data-perf-series`.
+- **Two series, one axis:** Impressions `--ao-accent-lagoon-solid`, Consumed `--ao-accent-purple-solid`
+  (dataviz validator: passes light + dark CVD; purple is 2.72:1 on the dark surface, so the legend and
+  the table carry identity). Legend below, line swatches, text in `--ao-text-secondary`.
+- **Recessive frame:** grid on the value axis only, `--ao-border-secondary` set explicitly (the old
+  `Chart.defaults.borderColor` did not reach the grid, which drew dark); from zero, at most 4 whole-
+  number ticks; 2px monotone lines, no points until hover; index tooltip on `--ao-surface-invert`.
+- **"View as table"** (`.performance-summary__table`) below the chart, closed by default.

@@ -110,3 +110,28 @@
   outline: 2px solid var(--ao-surface-brand);
   outline-offset: 2px;
 }
+
+/* "View as table": the chart's values for screen readers and anyone who wants the numbers (Live
+   Dashboard / Contact View treatment). It carries identity for Consumed, whose purple line is under
+   3:1 on the dark surface (dataviz validator, 2026-10-13). Spaced by the panel's own gap. */
+.performance-summary__table summary {
+  inline-size: fit-content;
+  cursor: pointer;
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-secondary);
+}
+
+.performance-summary__table summary:hover {
+  color: var(--ao-text-primary);
+}
+
+.performance-summary__table .table {
+  margin-block-start: var(--ao-spacing-3);
+}
+
+.performance-summary__table .performance-summary__num {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}

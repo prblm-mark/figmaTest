@@ -155,30 +155,45 @@
 
   // TODO(backend:RecordScreen): Performance figures + chart series are static → record analytics endpoint
   //   { impressions, consumed, bookmarked, topAccounts[], series: { labels[], impressions[], unique[] } }
+  /* Two series, one axis, one unit (counts per month), so one chart: Impressions in lagoon, Consumed
+   * in purple — the pair that passes deutan (validated light + dark; purple is under 3:1 on the dark
+   * surface, so the legend and the "View as table" carry identity, never colour alone). The
+   * series sit on the canvas (data-perf-series) and match the panel's "Last 12 Months" and its totals.
+   * Recessive frame: the --ao-border-secondary grid on the value axis only, at most four ticks from
+   * zero, whole numbers. Tokens are read from the canvas, so a scoped theme applies (2026-10-13). */
   var canvas = document.getElementById('perf-chart');
-  if (canvas && window.Chart) {
-    var cs = getComputedStyle(document.documentElement);
-    var tok = function (n, fb) { return cs.getPropertyValue(n).trim() || fb; };
-    var brand = tok('--ao-surface-brand', '#0071d8');
-    var success = tok('--ao-surface-success', '#30cb90');
+  if (canvas && window.Chart && canvas.hasAttribute('data-perf-series')) {
+    var cs = getComputedStyle(canvas);
+    var tok = function (n) { return cs.getPropertyValue(n).trim(); };
+    var pd = JSON.parse(canvas.getAttribute('data-perf-series'));
+    var line = function (label, data, colour) {
+      return { label: label, data: data, borderColor: colour, backgroundColor: colour, borderWidth: 2,
+               cubicInterpolationMode: 'monotone', pointRadius: 0, pointHoverRadius: 4,
+               pointHoverBorderWidth: 2, pointHoverBorderColor: tok('--ao-surface-primary') };
+    };
     window.Chart.defaults.font.family = 'Inter, sans-serif';
-    window.Chart.defaults.font.size = 10;
-    window.Chart.defaults.color = tok('--ao-text-contrast', '#67676c');
-    window.Chart.defaults.borderColor = tok('--ao-border-secondary', '#e2e2e3');
+    window.Chart.defaults.font.size = 12;
+    window.Chart.defaults.color = tok('--ao-text-contrast');
     new window.Chart(canvas, {
       type: 'line',
-      data: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        datasets: [
-          { label: 'Impressions', data: [3000, 4200, 3800, 5100, 4900, 6100, 5800], borderColor: brand, tension: 0.4, borderWidth: 2, pointRadius: 0 },
-          { label: 'Unique', data: [1800, 2400, 2200, 2900, 2800, 3300, 3100], borderColor: success, tension: 0.4, borderWidth: 2, pointRadius: 0 },
-        ],
-      },
+      data: { labels: pd.labels, datasets: [line('Impressions', pd.impressions, tok('--ao-accent-lagoon-solid')),
+                                            line('Consumed', pd.consumed, tok('--ao-accent-purple-solid'))] },
       options: {
         responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: { x: { grid: { display: false }, border: { display: false } }, y: { border: { display: false } } },
-      },
+        interaction: { mode: 'index', intersect: false },
+        animation: window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? false : { duration: 400 },
+        plugins: {
+          legend: { position: 'bottom', align: 'start',
+                    labels: { usePointStyle: true, pointStyle: 'line', boxWidth: 16, color: tok('--ao-text-secondary') } },
+          tooltip: { backgroundColor: tok('--ao-surface-invert'), titleColor: tok('--ao-text-invert'), bodyColor: tok('--ao-text-invert'),
+                     padding: 10, cornerRadius: 6, boxPadding: 4, usePointStyle: true }
+        },
+        scales: {
+          x: { grid: { display: false }, border: { display: false }, ticks: { maxRotation: 0, autoSkipPadding: 8 } },
+          y: { beginAtZero: true, grid: { color: tok('--ao-border-secondary') }, border: { display: false },
+               ticks: { precision: 0, maxTicksLimit: 4 } }
+        }
+      }
     });
   }
 
@@ -298,7 +313,8 @@
         responsive: true, maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: { x: { grid: { display: false }, border: { display: false } },
-                  y: { beginAtZero: true, ticks: { precision: 0 }, border: { display: false } } },
+                  y: { beginAtZero: true, ticks: { precision: 0, maxTicksLimit: 4 }, border: { display: false },
+                       grid: { color: ccs.getPropertyValue('--ao-border-secondary').trim() } } },
       },
     });
     document.addEventListener('seg-control:change', function (e) {
