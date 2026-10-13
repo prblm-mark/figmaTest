@@ -229,10 +229,11 @@ def commerce_tab(a):
                  for n, s, st, en in [("Affino platform licence 2026", "Active", "01 Jan 2026", "31 Dec 2026"),
                                       ("Affino platform licence 2025", "Expired", "01 Jan 2025", "31 Dec 2025")]]
     # TODO(backend:RecordScreen) account-commerce: orders and contracts (and pro formas, line items, service credits and bills, not built) are static
+    # One card per row: the live Orders table is 20 columns wide, too wide to pair (Mark, 2026-10-13, Hub TASK-554539).
     return (_retag(ct.commerce(a))
-            + ct._grid(ct._rows_card("Orders", [("Order", dict(keep=True)), ("Status", dict(keep=True)), ("Total", dict(drop=1, num=True)),
-                                                ("Date", dict(drop=2))], orders, "No orders.", "account-commerce"),
-                       ct._rows_card("Contracts", [("Contract", dict(keep=True, weight=2, fluid=True)), ("Status", dict(keep=True)),
+            + (ct._rows_card("Orders", [("Order", dict(keep=True)), ("Status", dict(keep=True)), ("Total", dict(drop=1, num=True)),
+                                                ("Date", dict(drop=2))], orders, "No orders.", "account-commerce")
+               + ct._rows_card("Contracts", [("Contract", dict(keep=True, weight=2, fluid=True)), ("Status", dict(keep=True)),
                                                    ("Start", dict(drop=2)), ("End", dict(drop=1))], contracts, "No contracts.",
                                      "account-commerce", add="Add contract")))
 

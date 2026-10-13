@@ -66,6 +66,9 @@ order, options, required marks and help text are taken **verbatim** from the liv
 - **Read-only rows on Edit** use the `static` edit kind: plain text, not a disabled input.
 - **Editable grids** (`m.edit_grid()`): Order Payment / Refund Details, Account Assign Paid / Free
   Subscriptions, Event Credits. Add row / Delete selected run in memory (`record-edit-grid`).
+- **Tab cards pair side by side only when the list is short** (about 4–5 columns). A list whose live
+  table is wider (Orders 20 columns, line items 14, Event attendance 9) gets its own full-width row.
+  Commerce and Events now stack one card per row (2026-10-13, agreed with Cat on TASK-554539).
 - **Long values** collapse after 6 lines (Paragraph) or 12 (Rich text), with Show more / less
   (FieldRow.js).
 
