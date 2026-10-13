@@ -76,13 +76,15 @@ def build(page_title, header, page, scripts, modals="", listing=False,
     s = re.sub(r"<title>.*?</title>", f"<title>{page_title} — Affino Control Centre</title>", s, count=1)
     s = swap(s, "</head>", CSS)
     s = swap(s, 'href="ListingScreen.css"', 'href="../ListingScreen/ListingScreen.css"')
-    s = swap(s, '<li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Level 1</a></li>',
+    # The shell is the Orders listing, so its own crumbs (Commerce › Orders, 2026-10-13; they were
+    # the "Level 1 › Level 2" placeholder before) are the anchors swapped for the record's trail.
+    s = swap(s, '<li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Commerce</a></li>',
              f'<li class="breadcrumb__item"><a class="breadcrumb__link" href="#">{crumbs[0]}</a></li>\n'
              # Articles collapses with the current crumb on mobile: the TopNavigation keeps two items
              # there (zone + one level, Figma 4099:3632) — it hides every `--collapse` crumb.
              '              <li class="breadcrumb__separator breadcrumb__separator--collapse" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>\n'
              f'              <li class="breadcrumb__item breadcrumb__item--collapse"><a class="breadcrumb__link" href="{mid_href}">{mid}</a></li>')
-    s = swap(s, 'aria-current="page">Level 2</li>', f'aria-current="page">{crumbs[2]}</li>')
+    s = swap(s, 'aria-current="page">Orders</li>', f'aria-current="page">{crumbs[2]}</li>')
     a = s.index('<div class="cc-header-cq">')
     b = s.index("</header>", a)
     c = s.index("</div>", b) + len("</div>")
