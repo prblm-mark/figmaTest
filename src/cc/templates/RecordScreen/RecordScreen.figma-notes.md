@@ -247,7 +247,9 @@ full-width cards; related cards pair up in `.contact-tab-grid` (two ≥512px col
   merged into one **Subscription and download history** trail (timeline layout, newest first, an icon per kind:
   mailing list, content subscription, media download, forum subscription).
 - **Signal icon colours (demo only, 2026-10-07, designer):** the glyph circles standing in for customer-signal badge
-  images take the StatCard soft scheme (`accent-*-soft` background, `accent-*-soft-fg` glyph), one fixed hue per glyph
+  images take the accent **solid** scheme (`accent-*-solid` background, white `accent-*-solid-fg` glyph — Mark,
+  2026-10-13; was the StatCard soft scheme). Only hues whose solid-fg is white in both themes: bright-teal, lime-radix
+  and orange-radix (dark glyph) left the palette for muted-teal, green-radix and dark-blue. One fixed hue per glyph
   (`record_markup.signal_hue`, lagoon first, blue last, no red) so a signal is the same colour everywhere: the sidebar
   AvatarGroup, the Analysis ranked list, the activity and history trails, and Article View's Recent Viewers signals.
   Live builds replace the circles with each signal's Badge On image.
