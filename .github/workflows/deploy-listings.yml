@@ -1,0 +1,106 @@
+# Listings preview — a SEPARATE Pages site containing only the Control Centre listings: Articles
+# (with its View / Edit workflow), Orders and Media items (2026-10-13). A sibling of
+# deploy-client.yml (the Seating Planner preview), built by the same script with the `listings` preset.
+#
+# The main deploy (deploy.yml) publishes the whole library, internal hub included, which is right
+# for the team and wrong for a link sent to a client. This publishes `dist-listings/` — the preview
+# page plus the listings' dependency closure, ~145 files, no other demo — to a third repository,
+# so the internal pages are not merely unlinked but absent.
+#
+# ── ONE-OFF SETUP (needs a GitHub account, so it is not done here) ────────────────────────────
+# 1. Create the target repo. This one publishes to `prblm-mark/affino-listings`.
+# 2. Generate a key pair locally:
+#        ssh-keygen -t ed25519 -C "listings-pages" -f listings-pages -N ""
+# 3. TARGET repo -> Settings -> Deploy keys -> Add:
+#        paste `listings-pages.pub`, tick "Allow write access"
+# 4. THIS repo -> Settings -> Secrets and variables -> Actions -> New repository secret:
+#        name  LISTINGS_PAGES_DEPLOY_KEY
+#        value the contents of `listings-pages` (the PRIVATE half)
+# 5. TARGET repo -> Settings -> Pages -> Source: "Deploy from a branch", branch `gh-pages`, `/`.
+# 6. Delete both local key files.
+#
+# Until step 4 exists the deploy step is skipped rather than failing, so adding this workflow
+# cannot break the build before the secret is in place. Set `TARGET_REPO` below to the repo from
+# step 1.
+name: Deploy listings preview
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  TARGET_REPO: prblm-mark/affino-listings
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    # JOB level, not step level. A step's own `env:` is NOT in scope for that step's `if:` — the
+    # condition is evaluated before the step's environment is built — so `if: env.DEPLOY_KEY != ''`
+    # alongside a step-level `env:` reads empty every time and the deploy is skipped even when the
+    # secret is set. That is exactly what happened on run 34890775518. Job-level env IS in scope.
+    env:
+      DEPLOY_KEY: ${{ secrets.LISTINGS_PAGES_DEPLOY_KEY }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # The pages read css/tokens*.css, which are generated rather than committed — the client
+      # build would copy stale or missing files without this.
+      - name: Generate token CSS
+        run: npm run tokens
+
+      - name: Build the listings preview
+        run: npm run build:listings
+
+      # Fails the run if an internal page ever reaches the client tree — cheaper than noticing it
+      # in a client's browser.
+      #
+      # An EXACT SET, not a count. A count catches an extra page but not a SUBSTITUTION: the
+      # internal hub arriving while a component demo drops out leaves the total unchanged and the
+      # guard green. Comparing the sorted path list catches both, and it fails loudly the next
+      # time a card is added to demo/index.html without being added here.
+      - name: Check no internal pages leaked
+        run: |
+          find dist-listings -name '*.html' | sort > /tmp/actual.txt
+          cat > /tmp/expected.txt <<'EOF'
+          dist-listings/index.html
+          dist-listings/src/cc/templates/ListingScreen/Articles.html
+          dist-listings/src/cc/templates/ListingScreen/ListingScreen.html
+          dist-listings/src/cc/templates/ListingScreen/MediaItems.html
+          dist-listings/src/cc/templates/RecordScreen/ArticleEdit.html
+          dist-listings/src/cc/templates/RecordScreen/ArticleStepContent.html
+          dist-listings/src/cc/templates/RecordScreen/ArticleStepForm.html
+          dist-listings/src/cc/templates/RecordScreen/ArticleStepImport.html
+          dist-listings/src/cc/templates/RecordScreen/ArticleSteps.html
+          dist-listings/src/cc/templates/RecordScreen/ArticleView.html
+          EOF
+          sed -i 's/^ *//' /tmp/expected.txt
+          echo "HTML files in dist-listings:"
+          cat /tmp/actual.txt
+          if ! diff -u /tmp/expected.txt /tmp/actual.txt; then
+            echo "::error::dist-listings HTML does not match the expected set (see the diff above)"
+            exit 1
+          fi
+
+      - name: Deploy to the client repository
+        if: env.DEPLOY_KEY != ''
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          deploy_key: ${{ secrets.LISTINGS_PAGES_DEPLOY_KEY }}
+          external_repository: ${{ env.TARGET_REPO }}
+          publish_branch: gh-pages
+          publish_dir: ./dist-listings
+          commit_message: 'Control Centre listings preview'
+
+      - name: Note when the secret is missing
+        if: env.DEPLOY_KEY == ''
+        run: |
+          echo "::notice::Built dist-listings but did not publish — LISTINGS_PAGES_DEPLOY_KEY is not set. See the setup steps at the top of this workflow."

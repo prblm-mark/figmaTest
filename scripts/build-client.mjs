@@ -23,7 +23,12 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 
 const ROOT = process.cwd();
-const OUT = path.join(ROOT, 'dist-client');
+
+/* TWO PREVIEWS, one mechanism. `npm run build:client` builds the Seating Planner preview (the
+ * default, unchanged); `npm run build:listings` builds the Control Centre listings preview (Articles
+ * with its View / Edit workflow, Orders, Media items — 2026-10-13). Each names its landing page, the
+ * pages reached from it by navigation, and its output folder; everything else is shared. */
+const TARGET = process.argv[2] || 'seating';
 
 /* Entry points. The preview page is the site root; everything else is something it links to.
  *
@@ -35,24 +40,52 @@ const OUT = path.join(ROOT, 'dist-client');
  *
  * If a card is added to demo/index.html, add its page here too — otherwise the card ships as a
  * 404. The workflow's file-count assertion is the backstop. */
-const ENTRIES = [
-  'demo/index.html',
-  'src/cc/templates/SeatingPlanner/SeatingPlanner.html',
+const PREVIEWS = {
+  seating: {
+    out: 'dist-client',
+    landing: 'demo/index.html',
+    entries: [
+      'demo/index.html',
+      'src/cc/templates/SeatingPlanner/SeatingPlanner.html',
 
-  /* Components */
-  'src/components/TableCard/TableCard.html',
-  'src/components/TableType/TableType.html',
-  'src/components/AttendeeCard/AttendeeCard.html',
-  'src/components/RoomCard/RoomCard.html',
-  'src/components/FullBadge/FullBadge.html',
-  'src/components/SeatingToast/SeatingToast.html',
+      /* Components */
+      'src/components/TableCard/TableCard.html',
+      'src/components/TableType/TableType.html',
+      'src/components/AttendeeCard/AttendeeCard.html',
+      'src/components/RoomCard/RoomCard.html',
+      'src/components/FullBadge/FullBadge.html',
+      'src/components/SeatingToast/SeatingToast.html',
 
-  /* Patterns */
-  'src/patterns/SeatingHeader/SeatingHeader.html',
-  'src/patterns/TableListing/TableListing.html',
-  'src/patterns/TableDetail/TableDetail.html',
-  'src/patterns/Unassigned/Unassigned.html',
-];
+      /* Patterns */
+      'src/patterns/SeatingHeader/SeatingHeader.html',
+      'src/patterns/TableListing/TableListing.html',
+      'src/patterns/TableDetail/TableDetail.html',
+      'src/patterns/Unassigned/Unassigned.html',
+    ],
+  },
+  listings: {
+    out: 'dist-listings',
+    landing: 'demo/listings.html',
+    /* Articles is the walkable workflow: listing → View → Edit, and the View / Edit pages' Article
+       steps tab with its Import / Add pages, so no tab or button in the flow lands on a 404. */
+    entries: [
+      'demo/listings.html',
+      'src/cc/templates/ListingScreen/Articles.html',
+      'src/cc/templates/RecordScreen/ArticleView.html',
+      'src/cc/templates/RecordScreen/ArticleEdit.html',
+      'src/cc/templates/RecordScreen/ArticleSteps.html',
+      'src/cc/templates/RecordScreen/ArticleStepImport.html',
+      'src/cc/templates/RecordScreen/ArticleStepContent.html',
+      'src/cc/templates/RecordScreen/ArticleStepForm.html',
+      'src/cc/templates/ListingScreen/ListingScreen.html',
+      'src/cc/templates/ListingScreen/MediaItems.html',
+    ],
+  },
+};
+const CFG = PREVIEWS[TARGET];
+if (!CFG) throw new Error(`unknown preview "${TARGET}" — expected one of: ${Object.keys(PREVIEWS).join(', ')}`);
+const OUT = path.join(ROOT, CFG.out);
+const ENTRIES = CFG.entries;
 
 const seen = new Set();
 const queue = [];
@@ -165,7 +198,7 @@ function stripInternal(html, rel) {
  * them with broken `../` paths. */
 let stripped = 0;
 for (const rel of seen) {
-  if (rel === path.normalize('demo/index.html')) continue;
+  if (rel === path.normalize(CFG.landing)) continue;
   const dest = path.join(OUT, rel);
   await mkdir(path.dirname(dest), { recursive: true });
 
@@ -183,8 +216,8 @@ for (const rel of seen) {
    transformation rather than a per-path rewrite — verified below that every `../` in the file is
    an asset reference, so there is nothing else for it to catch. */
 const demo = stampClient(
-  stripInternal(await readFile(path.join(ROOT, 'demo/index.html'), 'utf8'), 'demo/index.html'),
-  'demo/index.html',
+  stripInternal(await readFile(path.join(ROOT, CFG.landing), 'utf8'), CFG.landing),
+  CFG.landing,
 );
 const rootIndex = demo.replace(/(href|src)=(["'])\.\.\//g, '$1=$2');
 await writeFile(path.join(OUT, 'index.html'), rootIndex, 'utf8');
@@ -193,7 +226,7 @@ await writeFile(path.join(OUT, 'index.html'), rootIndex, 'utf8');
 await writeFile(path.join(OUT, 'robots.txt'), 'User-agent: *\nDisallow: /\n', 'utf8');
 
 const kb = (n) => Math.round(n / 1024);
-console.log(`\nclient build: ${seen.size} files -> dist-client/ (${stripped} page(s) had internal sections removed)`);
-console.log('  entry: dist-client/index.html (the preview page, at the site root)');
+console.log(`\n${TARGET} preview build: ${seen.size} files -> ${CFG.out}/ (${stripped} page(s) had internal sections removed)`);
+console.log(`  entry: ${CFG.out}/index.html (the preview page, at the site root)`);
 const leaked = [...seen].filter((f) => f === 'index.html' || f.startsWith('docs'));
 console.log(leaked.length ? `  !! internal pages leaked: ${leaked}` : '  no internal pages included');
