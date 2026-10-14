@@ -600,9 +600,11 @@
 
 /* B: the figures are DS StatCards. Their own card (border, padding, height) replaces the plain tile; the
  * grid and the row stretch stay ours, so the cards still meet the logo's top and bottom. */
+/* Fill as C's tiles, no stroke (Mark, 2026-10-14). */
 .record-summary__stats--cards .stat-card {
   padding: var(--ao-spacing-4);
-  background-color: var(--ao-surface-primary);
+  background-color: var(--ao-surface-minimal);
+  border: 0;
   border-radius: var(--ao-radius-md);
   min-width: 0;
 }
