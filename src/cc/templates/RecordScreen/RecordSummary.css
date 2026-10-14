@@ -390,8 +390,14 @@
 
 /* ── Pinning (RecordPins.js, code-first 2026-10-14) ── */
 
-/* Kebab rows: the action link fills the row, the pin toggle sits at its end. The toggle is quiet until
- * the row is hovered or focused (always shown where there is no hover); a pinned row keeps it, filled. */
+/* Kebab rows: the action link fills the row, the pin toggle sits at its end.
+ *
+ * The pin follows the main sidebar menu's pin (patterns/Menu/Menu.css .cc-menu__submenu-item__action,
+ * Mark 2026-10-14 "same pinned state colour"): neutral, never brand; hidden until the row is hovered
+ * (0.7), full on its own hover; a pinned pin stays visible and FILLS. The sidebar is a dark surface so it
+ * uses --ao-icon-invert-secondary → --cc-mainmenu-icon; the kebab is a light surface (white in light mode,
+ * where invert-secondary measures ~2:1), so the same roles take the non-invert pair:
+ * --ao-icon-secondary at rest → --ao-icon-primary on hover. */
 .record-pins__row {
   display: flex;
   align-items: center;
@@ -417,7 +423,7 @@
   border-radius: var(--ao-radius-md);
   cursor: pointer;
   opacity: 0;
-  transition: opacity var(--ao-transition-default), background-color var(--ao-transition-default);
+  transition: opacity var(--ao-transition-default), color var(--ao-transition-default);
 }
 
 .record-pins__toggle svg {
@@ -426,9 +432,18 @@
 }
 
 .record-pins__row:hover .record-pins__toggle,
-.record-pins__row:focus-within .record-pins__toggle,
+.record-pins__row:focus-within .record-pins__toggle {
+  opacity: 0.7;
+}
+
+.record-pins__toggle:hover,
+.record-pins__toggle:focus-visible,
 .record-pins__toggle[aria-pressed="true"] {
   opacity: 1;
+}
+
+.record-pins__toggle:hover {
+  color: var(--ao-icon-primary);
 }
 
 @media (hover: none) {
@@ -437,19 +452,12 @@
   }
 }
 
-.record-pins__toggle:hover {
-  background-color: var(--ao-surface-minimal);
-}
-
 .record-pins__toggle:focus-visible {
   outline: 2px solid var(--ao-surface-brand);
   outline-offset: -2px;
 }
 
-.record-pins__toggle[aria-pressed="true"] {
-  color: var(--ao-icon-brand);
-}
-
+/* Lucide draws the pin with fill="none"; CSS fill overrides it, so a pinned pin reads solid (as the sidebar). */
 .record-pins__toggle[aria-pressed="true"] svg {
   fill: currentColor;
 }
