@@ -619,3 +619,10 @@
   white-space: nowrap;
   line-height: var(--ao-leading-sm);
 }
+
+/* C · Contact: the round photo (80) and its search links are narrower than the 192 column — centre both
+ * over the full-width quick actions (Mark, 2026-10-14). Expanded only: collapsed keeps its one-line row. */
+.record-summary--collapsible.record-summary--contact:not([data-collapsed]) .record-summary__avatar,
+.record-summary--collapsible.record-summary--contact:not([data-collapsed]) .record-summary__identity .quick-links {
+  align-self: center;
+}
