@@ -166,6 +166,18 @@
   max-inline-size: var(--ao-size-1);
 }
 
+/* The column is the logo's width (128) whatever is pinned: pinned icons wrap in rows of three under it
+ * (3 × 36 + 2 gaps = 120), so up to the 6-pin max is two rows and the logo never moves or rescales. */
+.record-summary--compact .record-summary__identity {
+  inline-size: var(--ao-size-1);
+}
+
+.record-summary__actions--icon {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  justify-content: space-between;   /* edges line up with the logo's */
+}
+
 .record-summary--compact .record-summary__body {
   display: flex;
   flex-direction: column;
@@ -176,7 +188,7 @@
 .record-summary__next {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   gap: var(--ao-spacing-2) var(--ao-spacing-4);
   padding: var(--ao-spacing-3) var(--ao-spacing-5);
   border: 1px solid var(--ao-border-secondary);
@@ -201,8 +213,15 @@
 .record-summary__next .record-summary__task {
   flex-direction: row;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   gap: var(--ao-spacing-2);
+}
+
+/* Label, task link and due line share one size and line height, so they sit on one centre line. */
+.record-summary__next,
+.record-summary__next .record-summary__meta {
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
 }
 
 @container record-summary (min-width: 600px) {
