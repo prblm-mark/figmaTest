@@ -133,13 +133,13 @@ def _facts(s, cls=""):
     return f'<dl class="record-summary__facts{cls}">{rows}</dl>'
 
 
-# B's figures are the DS StatCard (patterns/StatCard), Number First, soft fill; accents lagoon-first
+# B's figures are the DS StatCard (patterns/StatCard), Number First, SOLID icon squares (Mark 2026-10-14, was soft); accents lagoon-first
 # (feedback: CC cards lead with lagoon, blue last).
 STAT_HUES = ["lagoon", "jade", "violet-radix", "purple"]
 
 
 def _stat_cards(s):
-    cards = "".join(f'<li class="stat-card stat-card--number-first stat-card--soft stat-card--{STAT_HUES[i]}">'
+    cards = "".join(f'<li class="stat-card stat-card--number-first stat-card--{STAT_HUES[i]}">'
                     f'<div class="stat-card__icon-wrap">{m.icon(ic)}</div>'
                     f'<div class="stat-card__text"><p class="stat-card__title">{e(label)}</p><p class="stat-card__value">{e(v)}</p></div></li>'
                     for i, (v, label, ic) in enumerate(s["stats"]))
