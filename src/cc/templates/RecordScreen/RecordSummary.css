@@ -158,8 +158,7 @@
 /* ── B · Compact ──────────────────────────────────── */
 
 .record-summary--compact .record-summary__grid {
-  grid-template-columns: minmax(0, 1fr);
-  padding: var(--ao-spacing-5) var(--ao-spacing-6);
+  grid-template-columns: minmax(0, 1fr);   /* padding: the shared 24 on every side (symmetrical, Mark 2026-10-14) */
 }
 
 .record-summary--compact .record-summary__logo {
@@ -289,7 +288,8 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--ao-spacing-4);
-  padding: var(--ao-spacing-4) var(--ao-spacing-5) var(--ao-spacing-4) var(--ao-spacing-6);
+  /* Same inset left and right as the body (24), equal top and bottom */
+  padding: var(--ao-spacing-4) var(--ao-spacing-6);
   border-bottom: 1px solid var(--ao-border-secondary);
 }
 
@@ -367,7 +367,6 @@
 /* Collapsed: one line — small logo, the name, the quick actions inline */
 .record-summary[data-collapsed] .record-summary__grid {
   grid-template-columns: minmax(0, 1fr);
-  padding-block: var(--ao-spacing-4);
 }
 
 .record-summary[data-collapsed] .record-summary__identity {
@@ -404,7 +403,7 @@
 
 .record-summary[data-collapsed] .record-summary__header {
   border-bottom-width: 0;
-  padding-block-end: 0;
+  padding-block: var(--ao-spacing-6) 0;   /* 24 above the title = the 24 below the row: symmetrical */
 }
 
 .record-summary__facts--grid dd {
