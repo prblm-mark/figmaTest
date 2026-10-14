@@ -47,7 +47,17 @@ def main() -> int:
         return 0
 
     file_path = (data.get("tool_input") or {}).get("file_path") or ""
-    if not re.search(r"/src/(components|patterns|templates)/", file_path):
+    # Guard THIS repo only. A sibling repo with its own src/components/ (e.g. affino-web)
+    # is a different design system and is not governed by /build-component.
+    project_root = os.path.realpath(
+        os.environ.get("CLAUDE_PROJECT_DIR")
+        or os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    )
+    abs_path = os.path.realpath(os.path.join(data.get("cwd") or project_root, file_path))
+    rel = os.path.relpath(abs_path, project_root)
+    if rel.startswith(".."):
+        return 0
+    if not re.match(r"src/(components|patterns|templates)/", rel):
         return 0
 
     if skill_invoked(data.get("transcript_path") or ""):
