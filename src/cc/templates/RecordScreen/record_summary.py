@@ -44,7 +44,8 @@ def account_summary(a, contacts, kebab):
                   ("Topics", "".join(_chip(t) for t in a["topics"]))],
         "links": m.quick_links(a["name"], x="@northbridgemedia",
                                linkedin="https://www.linkedin.com/company/northbridge-media-example", address=addr),
-        "stats": [(str(len(contacts)), "Contacts"), ("5", "Active contacts"), ("1,240", "Points"), ("£98,148", "Won value")],
+        "stats": [(str(len(contacts)), "Contacts", "users"), ("5", "Active contacts", "user-check"), ("1,240", "Points", "award"),
+                  ("£98,148", "Won value", "badge-pound-sterling")],
         "dates": [("Updated", "06 Oct 2026", "by Luis Montiel"), ("Created", "08 Jan 2016", None),
                   ("First touch", "08 Jan 2016", "Account created"), ("Last touch", "06 Oct 2026", "Login")],
         "next": task[:3] if task else None,
@@ -70,8 +71,8 @@ def contact_summary(c, kebab):
         "facts": facts,
         "links": m.quick_links(" ".join(x for x in (c["name"], (accounts or [""])[0]) if x),
                                x=c.get("x"), linkedin=c.get("linkedin")),
-        "stats": [(c["points"], "Points"), (c["level"], "Engagement level"), (c["signal_total"], "Customer signals"),
-                  (c["login"], "Last login")],
+        "stats": [(c["points"], "Points", "award"), (c["level"], "Engagement level", "gauge"),
+                  (c["signal_total"], "Customer signals", "activity"), (c["login"], "Last login", "log-in")],
         "dates": [("Updated", "06 Oct 2026", "by Markus Karlsson"), ("Created", first[0], None),
                   ("First touch", first[0], first[1]), ("Last touch", last[0], last[1])],
         "next": (task[0],) + tuple(task[1].replace("Due ", "").split(" · ")) if task else None,
@@ -132,9 +133,22 @@ def _facts(s, cls=""):
     return f'<dl class="record-summary__facts{cls}">{rows}</dl>'
 
 
+# B's figures are the DS StatCard (patterns/StatCard), Number First, soft fill; accents lagoon-first
+# (feedback: CC cards lead with lagoon, blue last).
+STAT_HUES = ["lagoon", "jade", "violet-radix", "purple"]
+
+
+def _stat_cards(s):
+    cards = "".join(f'<li class="stat-card stat-card--number-first stat-card--soft stat-card--{STAT_HUES[i]}">'
+                    f'<div class="stat-card__icon-wrap">{m.icon(ic)}</div>'
+                    f'<div class="stat-card__text"><p class="stat-card__title">{e(label)}</p><p class="stat-card__value">{e(v)}</p></div></li>'
+                    for i, (v, label, ic) in enumerate(s["stats"]))
+    return f'<ul class="record-summary__stats record-summary__stats--tiles record-summary__stats--cards" aria-label="Key figures">{cards}</ul>'
+
+
 def _stats(s, cls=""):
     tiles = "".join(f'<li class="record-summary__stat"><span class="record-summary__stat-value">{e(v)}</span>'
-                    f'<span class="record-summary__stat-label">{e(label)}</span></li>' for v, label in s["stats"])
+                    f'<span class="record-summary__stat-label">{e(label)}</span></li>' for v, label, _ in s["stats"])
     return f'<ul class="record-summary__stats{cls}" aria-label="Key figures">{tiles}</ul>'
 
 
@@ -150,7 +164,7 @@ def panel(variant, s):
         return f'''<section class="record-summary record-summary--compact record-summary--{s["kind"]}" aria-label="{label}">
           <div class="record-summary__grid">
             <div class="record-summary__identity">{s["media"]}{_actions(s, "icon")}</div>
-            <div class="record-summary__body">{_stats(s, " record-summary__stats--tiles")}{task}</div>
+            <div class="record-summary__body">{_stat_cards(s)}{task}</div>
           </div>
         </section>'''
     # C carries the touch dates in its fact grid (Engagement leaves the account sidebar here too).

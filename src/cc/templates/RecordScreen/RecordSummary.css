@@ -588,3 +588,22 @@
     font-size: var(--ao-font-fixed-xs);
   }
 }
+
+/* B: the figures are DS StatCards. Their own card (border, padding, height) replaces the plain tile; the
+ * grid and the row stretch stay ours, so the cards still meet the logo's top and bottom. */
+.record-summary__stats--cards .stat-card {
+  padding: var(--ao-spacing-4);
+  background-color: var(--ao-surface-primary);
+  border-radius: var(--ao-radius-md);
+  min-width: 0;
+}
+
+.record-summary__stats--cards .stat-card__text {
+  min-width: 0;
+}
+
+.record-summary__stats--cards .stat-card__value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
