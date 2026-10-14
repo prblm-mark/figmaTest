@@ -78,7 +78,7 @@ def _badge(label, tone):
     return f'<span class="badge badge--{tone}">{e(label)}</span>'
 
 
-def sidebar(c):
+def sidebar(c, skip=()):
     facts = [("User code", c["code"]), ("Account type", c["type"]), ("Engagement level", c["level"]),
              ("Points", c["points"])]
     for label in ("On-site contacts", "Followers"):
@@ -111,7 +111,8 @@ def sidebar(c):
     # Perplexity on the contact's name and company.
     links = m.quick_links(" ".join(x for x in (c["name"], (c.get("accounts") or [""])[0]) if x),
                           x=c.get("x"), linkedin=c.get("linkedin"))
-    return "".join([
+    # skip: panel titles to leave out (the summary-panel variants move Record / Engagement above the tabs).
+    return "".join(p for p in [
         m.fact_panel("Record", links + m.fact_list(facts)),
         m.fact_panel("Customer signals", signals, count=(c["signal_total"], f'{c["signal_total"]} signals'),
                      action='<button type="button" class="btn btn--tertiary btn--xs" aria-label="Assign a customer signal" '
@@ -123,7 +124,7 @@ def sidebar(c):
         m.fact_panel("Opportunities", opp_summary + opp_rows, action=more_link("opportunities", "commerce")),
         m.fact_panel("Events", m.fact_list(c["events"])),
         m.fact_panel("Engagement", m.fact_list(c["engagement"]), subtitle="All time unless stated"),
-    ])
+    ] if not any(f'>{t}</h2>' in p or f'>{t} <' in p for t in skip))
 
 
 SIG = {  # signal → Lucide glyph (stand-ins for each signal's badge image, as Recent Viewers)

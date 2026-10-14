@@ -1,0 +1,413 @@
+/* RecordSummary — the panel above the tabs on Account / Contact View (code-first, 2026-10-14).
+ * Three variants for the CEO to choose from (record_summary.py): --classic (A), --compact (B),
+ * --collapsible (C). Variant pages only; not on the base View pages yet.
+ *
+ * The panel spans the page column, so it is its own container (§4a): its children query
+ * `record-summary`; its own border/radius key on the full-width switch, not on a query.
+ */
+
+.record-summary {
+  container-type: inline-size;
+  container-name: record-summary;
+  min-width: 0;
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+}
+
+[data-cc-width="full"] .record-summary {
+  border-width: 0 0 1px;
+  border-radius: var(--ao-radius-none);
+}
+
+.record-summary__grid {
+  display: grid;
+  gap: var(--ao-spacing-6);
+  padding: var(--ao-spacing-6);
+}
+
+/* ── Shared parts ─────────────────────────────────── */
+
+.record-summary__identity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ao-spacing-4);
+  min-width: 0;
+}
+
+.record-summary__logo {
+  display: block;
+  inline-size: 100%;
+  max-inline-size: var(--ao-size-2);
+  block-size: auto;
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-sm);
+}
+
+.record-summary__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ao-spacing-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.record-summary__facts,
+.record-summary__dates {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-4);
+  min-width: 0;
+  margin: 0;
+}
+
+.record-summary__fact,
+.record-summary__date {
+  display: grid;
+  grid-template-columns: var(--ao-size-1) minmax(0, 1fr);
+  gap: var(--ao-spacing-4);
+  align-items: baseline;
+}
+
+.record-summary dt {
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
+}
+
+.record-summary dd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ao-spacing-1);
+  min-width: 0;
+  margin: 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
+  overflow-wrap: anywhere;
+}
+
+.record-summary__dates dd {
+  flex-direction: column;
+  gap: 0;
+}
+
+.record-summary__link {
+  color: var(--ao-text-brand);
+  text-decoration: none;
+}
+
+.record-summary__link:hover {
+  text-decoration: underline;
+}
+
+.record-summary__task {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.record-summary__meta {
+  font-size: var(--ao-font-fixed-2xs);
+  color: var(--ao-text-contrast);
+}
+
+.record-summary__stats {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.record-summary__stat {
+  display: flex;
+  min-width: 0;
+}
+
+.record-summary__stat-value {
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
+}
+
+.record-summary__stat-label {
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-contrast);
+}
+
+/* Stats as a list (A): "24 Contacts", as the live panel */
+.record-summary__stats--list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-1);
+}
+
+.record-summary__stats--list .record-summary__stat {
+  align-items: baseline;
+  gap: var(--ao-spacing-2);
+}
+
+.record-summary__stats--list .record-summary__stat-value {
+  font-size: var(--ao-font-fixed-md);
+}
+
+/* Stats as tiles (B, C) */
+.record-summary__stats--tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--ao-size-1), 1fr));
+  gap: var(--ao-spacing-3);
+}
+
+.record-summary__stats--tiles .record-summary__stat {
+  flex-direction: column;
+  gap: var(--ao-spacing-1);
+  padding: var(--ao-spacing-4) var(--ao-spacing-5);
+  background-color: var(--ao-surface-minimal);
+  border-radius: var(--ao-radius-md);
+}
+
+.record-summary__stats--tiles .record-summary__stat-value {
+  font-size: var(--ao-font-fixed-xl);
+  line-height: var(--ao-leading-sm);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── A · Classic ──────────────────────────────────── */
+
+.record-summary--classic .record-summary__grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.record-summary__actions--stack {
+  flex-direction: row;
+}
+
+.record-summary__activity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-5);
+  min-width: 0;
+}
+
+@container record-summary (min-width: 600px) {
+  .record-summary--classic .record-summary__grid {
+    grid-template-columns: var(--ao-size-2) minmax(0, 1fr);
+  }
+
+  .record-summary--classic .record-summary__activity {
+    grid-column: 1 / -1;
+  }
+
+  .record-summary__actions--stack {
+    flex-direction: column;
+    align-self: stretch;
+  }
+
+  .record-summary__actions--stack .btn {
+    inline-size: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@container record-summary (min-width: 960px) {
+  .record-summary--classic .record-summary__grid {
+    grid-template-columns: var(--ao-size-2) minmax(0, 1fr) var(--ao-size-5);
+  }
+
+  .record-summary--classic .record-summary__activity {
+    grid-column: auto;
+    padding-inline-start: var(--ao-spacing-6);
+    border-inline-start: 1px solid var(--ao-border-secondary);
+  }
+}
+
+/* ── B · Compact ──────────────────────────────────── */
+
+.record-summary--compact .record-summary__grid {
+  grid-template-columns: minmax(0, 1fr);
+  padding: var(--ao-spacing-5) var(--ao-spacing-6);
+}
+
+.record-summary--compact .record-summary__logo {
+  max-inline-size: var(--ao-size-1);
+}
+
+.record-summary--compact .record-summary__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-4);
+  min-width: 0;
+}
+
+.record-summary__next {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ao-spacing-2) var(--ao-spacing-4);
+  padding: var(--ao-spacing-3) var(--ao-spacing-5);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  font-size: var(--ao-font-fixed-xs);
+}
+
+.record-summary__next-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ao-spacing-2);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-primary);
+}
+
+.record-summary__next-label svg {
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+  color: var(--ao-icon-secondary);
+}
+
+.record-summary__next .record-summary__task {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ao-spacing-2);
+}
+
+@container record-summary (min-width: 600px) {
+  .record-summary--compact .record-summary__grid {
+    grid-template-columns: max-content minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+/* ── C · Collapsible ──────────────────────────────── */
+
+.record-summary__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ao-spacing-4);
+  padding: var(--ao-spacing-4) var(--ao-spacing-5) var(--ao-spacing-4) var(--ao-spacing-6);
+  border-bottom: 1px solid var(--ao-border-secondary);
+}
+
+.record-summary__title {
+  margin: 0;
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fixed-md);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
+}
+
+.record-summary__toggle {
+  margin-inline-start: auto;
+}
+
+.record-summary--collapsible .record-summary__grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.record-summary--collapsible .record-summary__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-6);
+  min-width: 0;
+}
+
+.record-summary__facts--grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--ao-size-5), 1fr));
+  gap: var(--ao-spacing-5) var(--ao-spacing-6);
+}
+
+.record-summary__facts--grid .record-summary__fact {
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ao-spacing-1);
+}
+
+.record-summary__facts--grid dt {
+  color: var(--ao-text-contrast);
+}
+
+.record-summary__name {
+  display: none;
+  margin: 0;
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fixed-sm);
+  color: var(--ao-text-primary);
+}
+
+.record-summary__actions--list {
+  flex-direction: column;
+  align-self: stretch;
+  gap: 0;
+}
+
+.record-summary__actions--list .btn {
+  inline-size: 100%;
+  justify-content: flex-start;
+}
+
+@container record-summary (min-width: 600px) {
+  .record-summary--collapsible .record-summary__grid {
+    grid-template-columns: var(--ao-size-2) minmax(0, 1fr);
+  }
+}
+
+/* Collapsed: one line — small logo, the name, the quick actions inline */
+.record-summary[data-collapsed] .record-summary__grid {
+  grid-template-columns: minmax(0, 1fr);
+  padding-block: var(--ao-spacing-4);
+}
+
+.record-summary[data-collapsed] .record-summary__identity {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.record-summary[data-collapsed] .record-summary__logo {
+  inline-size: auto;
+  block-size: var(--ao-spacing-9);
+}
+
+.record-summary[data-collapsed] .record-summary__avatar {
+  inline-size: var(--ao-spacing-9);
+  block-size: var(--ao-spacing-9);
+}
+
+.record-summary[data-collapsed] .record-summary__name {
+  display: block;
+  margin-inline-end: auto;
+}
+
+.record-summary[data-collapsed] .record-summary__actions--list {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-self: auto;
+  gap: var(--ao-spacing-2);
+}
+
+.record-summary[data-collapsed] .record-summary__actions--list .btn {
+  inline-size: auto;
+}
+
+.record-summary[data-collapsed] .record-summary__header {
+  border-bottom-width: 0;
+  padding-block-end: 0;
+}
+
+.record-summary__facts--grid dd {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.record-summary__facts--grid dd:has(.badge) {
+  flex-direction: row;
+}

@@ -21,6 +21,7 @@ import record_step as step  # noqa: E402
 import record_contact as contact  # noqa: E402
 import record_order as order  # noqa: E402
 import record_account as account  # noqa: E402
+import record_summary as summary  # noqa: E402
 import record_media as media  # noqa: E402
 
 # Step content (titles + bodies) read from the Hub for Article 626347 — a copy of the ArticleSteps
@@ -321,6 +322,28 @@ pages[account.EDIT] = build(
          sidebar_on=False, mode="edit", record_type="account", help_mode="switch"),
     KIT_JS, modals=account.edit_modals(A) + m.media_select_modal("modal-media", "Select Media", rec.MEDIA_SOURCE[:24], len(rec.MEDIA_SOURCE)),
     crumbs=("CRM", "Accounts", "Account"))
+
+# ── Summary panel variants (code-first, 2026-10-14): the CEO wants the live header's panel back, above
+# the tabs, logo/avatar with the quick actions beneath it. Three options per record type; the base View
+# pages are untouched until one is chosen (record_summary.py).
+SUMMARY_CSS = '  <link rel="stylesheet" href="RecordSummary.css">\n</head>'
+SUMMARY_JS = '\n  <script src="RecordSummary.js"></script>'
+C0 = contact.CONTACTS[0]
+for v, vname in summary.VARIANTS.items():
+    skip_a = () if v == "B" else ("Record", "Engagement")
+    skip_c = () if v == "B" else ("Record",)
+    pages[f"AccountViewPanel{v}.html"] = swap(build(
+        f"Account · View · Panel {v} ({vname})", account_header(),
+        page(summary.panel(v, summary.account_summary(A, account.CONTACTS)) + m.record_tabs("details", sidebar=True, tabs=account.tabs())
+             + body(account.view_sections(A), account.sidebar(A, skip=skip_a)), mode="view", record_type="account"),
+        KIT_JS + TAB_JS + SUMMARY_JS, crumbs=("CRM", "Accounts", "Account")), "</head>", SUMMARY_CSS)
+    pages[f"ContactViewPanel{v}.html"] = swap(build(
+        f"Contact · View · Panel {v} ({vname})",
+        m.record_header("Contact", C0["name"], "view", view_href=C0["file"], edit_href=C0.get("edit", "#"),
+                        secondary=contact.SECONDARY, more=contact.KEBAB),
+        page(summary.panel(v, summary.contact_summary(C0)) + m.record_tabs("details", sidebar=True, tabs=contact.tabs(C0))
+             + body(contact.view_sections(C0), contact.sidebar(C0, skip=skip_c)), mode="view", record_type="contact"),
+        KIT_JS + SUMMARY_JS, crumbs=("CRM", "Contacts", "Contact")), "</head>", SUMMARY_CSS)
 
 # ── Media View + Edit (code-first, 2026-10-13): the live media item screens (MediaDetail.cfm +
 # MediaAllElements.cfm) on the kit. Live has no tabs: Details carries its panels, Page analysis its
