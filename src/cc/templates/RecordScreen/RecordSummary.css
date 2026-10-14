@@ -175,6 +175,7 @@
 .record-summary__actions--icon {
   display: grid;
   grid-template-columns: repeat(3, max-content);
+  align-self: stretch;              /* the identity column is align-items: flex-start */
   justify-content: space-between;   /* edges line up with the logo's */
 }
 
@@ -526,5 +527,23 @@
 
   .record-summary__actions--bar .record-summary__tip {
     display: block;
+  }
+}
+
+/* Mobile density — the same as RecordSection's (designer amends, 2026-09-29), so the panel's padding
+ * matches every card under it (Mark, 2026-10-14). Same 559px breakpoint. */
+@container record-summary (max-width: 559px) {
+  .record-summary__grid,
+  .record-summary--compact .record-summary__grid,
+  .record-summary[data-collapsed] .record-summary__grid {
+    padding: var(--ao-spacing-4);
+  }
+
+  .record-summary__header {
+    padding: var(--ao-spacing-4);
+  }
+
+  .record-summary__title {
+    font-size: var(--ao-font-fixed-xs);
   }
 }
