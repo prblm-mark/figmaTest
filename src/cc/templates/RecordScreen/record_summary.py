@@ -151,12 +151,11 @@ def panel(variant, s):
     return f'''<section class="record-summary record-summary--collapsible record-summary--{s["kind"]}" aria-label="{label}" data-record-summary>
           <header class="record-summary__header">
             <h2 class="record-summary__title">{label}</h2>
-            {s["links"]}
             <button type="button" class="btn btn--tertiary btn--xs record-summary__toggle" aria-expanded="true"
                     aria-controls="record-summary-body" data-record-summary-toggle>{m.icon("chevron-up")}<span>Collapse</span></button>
           </header>
           <div class="record-summary__grid">
-            <div class="record-summary__identity">{s["media"]}<p class="record-summary__name">{e(s["name"])}</p>{_actions(s, "list")}</div>
+            <div class="record-summary__identity">{s["media"]}<p class="record-summary__name">{e(s["name"])}</p>{s["links"]}{_actions(s, "list")}</div>
             <div class="record-summary__body" id="record-summary-body">{_facts(s, " record-summary__facts--grid")}{_stats(s, " record-summary__stats--tiles")}</div>
           </div>
         </section>'''
