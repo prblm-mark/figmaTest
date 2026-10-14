@@ -326,7 +326,8 @@ pages[account.EDIT] = build(
 # ── Summary panel variants (code-first, 2026-10-14): the CEO wants the live header's panel back, above
 # the tabs, logo/avatar with the quick actions beneath it. Three options per record type; the base View
 # pages are untouched until one is chosen (record_summary.py).
-SUMMARY_CSS = '  <link rel="stylesheet" href="RecordSummary.css">\n</head>'
+SUMMARY_CSS = ('  <link rel="stylesheet" href="../../../components/Tooltip/Tooltip.css">\n'
+               '  <link rel="stylesheet" href="RecordSummary.css">\n</head>')
 SUMMARY_JS = '\n  <script src="RecordSummary.js"></script>'
 C0 = contact.CONTACTS[0]
 for v, vname in summary.VARIANTS.items():

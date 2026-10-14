@@ -92,8 +92,12 @@ def _next_task(title, due, who):
 def _actions(s, style):
     todo = f' data-backend-todo="{s["todo"]}"'
     if style == "icon":  # B: icon-only, the label in aria-label + title
-        items = "".join(f'<li><button type="button" class="btn btn--secondary btn--icon btn--sm" aria-label="{e(label)}" '
-                        f'title="{e(label)}"{todo}>{m.icon(ic)}</button></li>' for label, ic in s["actions"])
+        # The DS Tooltip (components/Tooltip) on hover + keyboard focus; the button's own name is its aria-label,
+        # so the tooltip is aria-hidden rather than read twice.
+        items = "".join(f'<li class="record-summary__tip-anchor"><button type="button" class="btn btn--secondary btn--icon btn--sm" '
+                        f'aria-label="{e(label)}"{todo}>{m.icon(ic)}</button>'
+                        f'<span class="tooltip record-summary__tip" aria-hidden="true"><span class="tooltip__text">{e(label)}</span></span></li>'
+                        for label, ic in s["actions"])
     else:  # A: stacked secondary xs · C: labelled list rows
         kind = "btn--secondary btn--xs" if style == "stack" else "btn--tertiary btn--sm"
         items = "".join(f'<li><button type="button" class="btn {kind}"{todo}>{m.icon(ic)}<span>{e(label)}</span></button></li>'

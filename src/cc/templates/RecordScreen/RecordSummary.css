@@ -411,3 +411,31 @@
 .record-summary__facts--grid dd:has(.badge) {
   flex-direction: row;
 }
+
+/* B's icon-only quick actions: the DS Tooltip under the button on hover / keyboard focus. Sized to its
+ * label here (the component's own width is for long help text). */
+.record-summary__tip-anchor {
+  position: relative;
+}
+
+.record-summary__tip {
+  position: absolute;
+  inset-block-start: calc(100% + var(--ao-spacing-2));
+  inset-inline-start: 50%;
+  z-index: 2;
+  inline-size: max-content;
+  padding: var(--ao-spacing-2) var(--ao-spacing-3);
+  border-radius: var(--ao-radius-sm);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%);
+  transition: opacity var(--ao-transition-default), visibility var(--ao-transition-default);
+}
+
+.record-summary__tip-anchor:hover .record-summary__tip,
+.record-summary__tip-anchor:has(:focus-visible) .record-summary__tip {
+  opacity: 1;
+  visibility: visible;
+}
