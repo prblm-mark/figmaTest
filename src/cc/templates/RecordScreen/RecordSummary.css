@@ -133,10 +133,25 @@
 }
 
 /* Stats as tiles (B, C) */
+/* Four figures go 4 across, 2 × 2, or 1 per row — never 3 + an orphan (Mark, 2026-10-14; auto-fit wrapped
+ * 3 + 1 at mid widths). Keyed on the PANEL's width (record-summary); 1000px is where four StatCards keep
+ * "Active contacts" and "£98,148" on one line beside the logo column. */
 .record-summary__stats--tiles {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(var(--ao-size-1), 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--ao-spacing-3);
+}
+
+@container record-summary (min-width: 1000px) {
+  .record-summary__stats--tiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@container record-summary (max-width: 399px) {
+  .record-summary__stats--tiles {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .record-summary__stats--tiles .record-summary__stat {
