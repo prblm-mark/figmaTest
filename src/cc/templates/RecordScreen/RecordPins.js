@@ -64,13 +64,22 @@ document.addEventListener('DOMContentLoaded', function () {
     return i;
   }
 
+  // The pinned button reuses the menu item's own (already drawn) icon. Re-running lucide.createIcons()
+  // after a pin click must be avoided: it redraws icons page-wide, so the svg the user just clicked is
+  // replaced, the click target is detached, and Dropdown.js reads it as an outside click and closes the
+  // menu (Mark: "annoying when it closes" — 2026-10-14).
+  function actionIcon(act) {
+    var svg = act.link.querySelector('svg');
+    return svg ? svg.cloneNode(true) : icon(act.icon);
+  }
+
   function pinnedLink(act, cls, withLabel, labelCls) {
     var a = document.createElement('a');
     Array.prototype.forEach.call(act.link.attributes, function (at) {
       if (at.name !== 'class' && at.name !== 'role') a.setAttribute(at.name, at.value);
     });
     a.className = 'btn ' + cls;
-    a.appendChild(icon(act.icon));
+    a.appendChild(actionIcon(act));
     if (withLabel) {
       var s = document.createElement('span');
       if (labelCls) s.className = labelCls;
@@ -142,7 +151,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     note.textContent = full ? MAX + ' of ' + MAX + ' pinned · unpin one to add another'
                             : pins.length + ' of ' + MAX + ' pinned to the page';
-    if (window.lucide) window.lucide.createIcons();
   }
 
   // ── Pin / unpin ── (inside the panel, but not a .dropdown-item, so the menu stays open)
@@ -160,4 +168,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   render();
+  // Draw the pin toggles' icons once, before any click (and any icon a menu item had not drawn yet).
+  if (window.lucide) window.lucide.createIcons();
 });
