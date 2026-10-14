@@ -172,11 +172,19 @@
   inline-size: var(--ao-size-1);
 }
 
+/* Three equal square buttons per row with the SAME gap across and down (Mark, 2026-10-14: no asymmetric
+ * spacing), filling the logo's width so both edges line up with it. */
 .record-summary__actions--icon {
   display: grid;
-  grid-template-columns: repeat(3, max-content);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ao-spacing-3);
   align-self: stretch;              /* the identity column is align-items: flex-start */
-  justify-content: space-between;   /* edges line up with the logo's */
+}
+
+.record-summary__actions--icon .btn {
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 1;
 }
 
 .record-summary--compact .record-summary__body {
