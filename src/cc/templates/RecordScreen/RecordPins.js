@@ -1,8 +1,8 @@
 /* RecordPins — pin kebab actions to the page (code-first, 2026-10-14; Markus via Mark).
  *
  * Any action in a pinnable kebab ([data-record-pins="<type>"]) gets a pin button. Pinned actions render
- * into every [data-pinned-actions] host on the page: the summary panel's quick actions (styles stack /
- * icon / list) or, on screens without a panel, the slim row under the header (style bar, hidden while
+ * into every [data-pinned-actions] host on the page: the summary panel's quick actions (styles icon /
+ * list) or, on screens without a panel, the slim row under the header (style bar, hidden while
  * nothing is pinned). Saved per user per record type, 6 at most; the host's data-default-pins is where
  * a user starts. Pinned buttons copy the kebab link's own attributes, so they do exactly what the menu
  * item does (modals open through the same delegated handlers).
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
         li.appendChild(a);
         li.appendChild(tip(act.label));
       } else {
-        li.appendChild(pinnedLink(act, style === 'stack' ? 'btn--secondary btn--xs' : 'btn--tertiary btn--sm', true));
+        li.appendChild(pinnedLink(act, 'btn--tertiary btn--sm', true));
       }
       host.appendChild(li);
     });

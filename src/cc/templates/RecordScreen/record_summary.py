@@ -6,8 +6,6 @@ header, the kebab and the sidebar's Record / Engagement panels. These variants b
 ABOVE the tabs (Mark's suggestion), with the logo (account) or avatar (contact) and the quick actions
 kept beneath it (CEO).
 
-  A · Classic: the live panel, modernised. Three columns: identity + stacked quick actions ·
-               key facts · activity (quick links, counts, touch dates). Record + Engagement leave the sidebar.
   B · Compact: a slim band. Logo with icon-only quick actions beneath it, KPI tiles and the next task
                beside it. Facts stay in the sidebar, which is unchanged.
   C · Collapsible: a titled card. Identity + labelled quick actions, facts in a responsive grid,
@@ -19,7 +17,8 @@ are untouched until a variant is chosen.
 import record_markup as m
 
 e = m.e
-VARIANTS = {"A": "Classic", "B": "Compact", "C": "Collapsible"}
+# A (Classic, the live three-column panel) was built and REMOVED 2026-10-14 (Mark: "classic is not good").
+VARIANTS = {"B": "Compact", "C": "Collapsible"}
 
 # Pinning (Markus, 2026-10-14): any kebab action can be pinned to the page — per user, per record type,
 # 6 at most. These are the defaults a user starts with (ids = m.action_id(label)).
@@ -95,7 +94,7 @@ def _next_task(title, due, who):
 
 def pinned_actions(kebab, defaults, style):
     """The pinned actions, rendered as RecordPins.js renders them (it re-renders from the user's saved
-    pins; this is the no-JS / first-paint default). style: stack (A) · icon (B) · list (C) · bar (no panel)."""
+    pins; this is the no-JS / first-paint default). style: icon (B) · list (C) · bar (no panel)."""
     by_id = {m.action_id(label): (label, ic, attrs) for label, ic, attrs in kebab}
     items = []
     for pid in defaults:
@@ -108,8 +107,7 @@ def pinned_actions(kebab, defaults, style):
             items.append(f'<li class="record-summary__tip-anchor"><a class="btn btn--secondary btn--xs" aria-label="{e(label)}"{attrs}>'
                          f'{m.icon(ic)}<span class="record-pins__label">{e(label)}</span></a>{tip}</li>')
         else:
-            kind = "btn--secondary btn--xs" if style == "stack" else "btn--tertiary btn--sm"
-            items.append(f'<li><a class="btn {kind}"{attrs}>{m.icon(ic)}<span>{e(label)}</span></a></li>')
+            items.append(f'<li><a class="btn btn--tertiary btn--sm"{attrs}>{m.icon(ic)}<span>{e(label)}</span></a></li>')
     if not items and style != "bar":
         items.append('<li class="record-summary__pins-empty">Pin actions from the ⋮ menu</li>')
     # TODO(backend:RecordScreen) record-pinned-actions: pins are saved in localStorage per record type → the user's preferences (GET/PUT the pinned action ids for a record type, max 6)
@@ -140,25 +138,11 @@ def _stats(s, cls=""):
     return f'<ul class="record-summary__stats{cls}" aria-label="Key figures">{tiles}</ul>'
 
 
-def _dates(s):
-    rows = "".join(f'<div class="record-summary__date"><dt>{e(label)}</dt><dd><span>{e(v)}</span>'
-                   + (f'<span class="record-summary__meta">{e(sub)}</span>' if sub else "") + '</dd></div>'
-                   for label, v, sub in s["dates"])
-    return f'<dl class="record-summary__dates">{rows}</dl>'
-
 
 # ── The three variants ───────────────────────────────────────────────────────────────────────────
 def panel(variant, s):
     label = f'{s["kind"].title()} summary'
     # TODO(backend:RecordScreen) record-summary: the panel's facts, counts and touch dates are static → the record's CRM data (same source as the sidebar's Record + Engagement panels)
-    if variant == "A":
-        return f'''<section class="record-summary record-summary--classic record-summary--{s["kind"]}" aria-label="{label}">
-          <div class="record-summary__grid">
-            <div class="record-summary__identity">{s["media"]}{_actions(s, "stack")}</div>
-            {_facts(s)}
-            <div class="record-summary__activity">{s["links"]}{_stats(s, " record-summary__stats--list")}{_dates(s)}</div>
-          </div>
-        </section>'''
     if variant == "B":
         nxt = s["next"]
         task = (f'<div class="record-summary__next"><span class="record-summary__next-label">{m.icon("list-todo")}Next task</span>'

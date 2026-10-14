@@ -1,5 +1,5 @@
 /* RecordSummary — the panel above the tabs on Account / Contact View (code-first, 2026-10-14).
- * Three variants for the CEO to choose from (record_summary.py): --classic (A), --compact (B),
+ * Two variants for the CEO to choose from (record_summary.py; A Classic was removed 2026-10-14): --compact (B),
  * --collapsible (C). Variant pages only; not on the base View pages yet.
  *
  * The panel spans the page column, so it is its own container (§4a): its children query
@@ -54,8 +54,7 @@
   list-style: none;
 }
 
-.record-summary__facts,
-.record-summary__dates {
+.record-summary__facts {
   display: flex;
   flex-direction: column;
   gap: var(--ao-spacing-4);
@@ -63,8 +62,7 @@
   margin: 0;
 }
 
-.record-summary__fact,
-.record-summary__date {
+.record-summary__fact {
   display: grid;
   grid-template-columns: var(--ao-size-1) minmax(0, 1fr);
   gap: var(--ao-spacing-4);
@@ -90,11 +88,6 @@
   line-height: var(--ao-leading-sm);
   color: var(--ao-text-primary);
   overflow-wrap: anywhere;
-}
-
-.record-summary__dates dd {
-  flex-direction: column;
-  gap: 0;
 }
 
 .record-summary__link {
@@ -139,22 +132,6 @@
   color: var(--ao-text-contrast);
 }
 
-/* Stats as a list (A): "24 Contacts", as the live panel */
-.record-summary__stats--list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ao-spacing-1);
-}
-
-.record-summary__stats--list .record-summary__stat {
-  align-items: baseline;
-  gap: var(--ao-spacing-2);
-}
-
-.record-summary__stats--list .record-summary__stat-value {
-  font-size: var(--ao-font-fixed-md);
-}
-
 /* Stats as tiles (B, C) */
 .record-summary__stats--tiles {
   display: grid;
@@ -176,55 +153,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-/* ── A · Classic ──────────────────────────────────── */
-
-.record-summary--classic .record-summary__grid {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-.record-summary__actions--stack {
-  flex-direction: row;
-}
-
-.record-summary__activity {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ao-spacing-5);
-  min-width: 0;
-}
-
-@container record-summary (min-width: 600px) {
-  .record-summary--classic .record-summary__grid {
-    grid-template-columns: var(--ao-size-2) minmax(0, 1fr);
-  }
-
-  .record-summary--classic .record-summary__activity {
-    grid-column: 1 / -1;
-  }
-
-  .record-summary__actions--stack {
-    flex-direction: column;
-    align-self: stretch;
-  }
-
-  .record-summary__actions--stack .btn {
-    inline-size: 100%;
-    justify-content: flex-start;
-  }
-}
-
-@container record-summary (min-width: 960px) {
-  .record-summary--classic .record-summary__grid {
-    grid-template-columns: var(--ao-size-2) minmax(0, 1fr) var(--ao-size-5);
-  }
-
-  .record-summary--classic .record-summary__activity {
-    grid-column: auto;
-    padding-inline-start: var(--ao-spacing-6);
-    border-inline-start: 1px solid var(--ao-border-secondary);
-  }
 }
 
 /* ── B · Compact ──────────────────────────────────── */
