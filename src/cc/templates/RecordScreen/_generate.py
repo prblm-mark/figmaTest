@@ -21,6 +21,7 @@ import record_step as step  # noqa: E402
 import record_contact as contact  # noqa: E402
 import record_order as order  # noqa: E402
 import record_account as account  # noqa: E402
+import record_summary as summary  # noqa: E402
 import record_media as media  # noqa: E402
 
 # Step content (titles + bodies) read from the Hub for Article 626347 — a copy of the ArticleSteps
@@ -322,6 +323,36 @@ pages[account.EDIT] = build(
     KIT_JS, modals=account.edit_modals(A) + m.media_select_modal("modal-media", "Select Media", rec.MEDIA_SOURCE[:24], len(rec.MEDIA_SOURCE)),
     crumbs=("CRM", "Accounts", "Account"))
 
+# ── Summary panel variants (code-first, 2026-10-14): the CEO wants the live header's panel back, above
+# the tabs, logo/avatar with the quick actions beneath it. Three options per record type; the base View
+# pages are untouched until one is chosen (record_summary.py).
+SUMMARY_CSS = ('  <link rel="stylesheet" href="../../../components/Tooltip/Tooltip.css">\n'
+               '  <link rel="stylesheet" href="../../../patterns/StatCard/StatCard.css">\n'
+               '  <link rel="stylesheet" href="RecordSummary.css">\n</head>')
+SUMMARY_JS = '\n  <script src="RecordSummary.js"></script>\n  <script src="RecordPins.js"></script>'
+C0 = contact.CONTACTS[0]
+# Pinnable kebabs: every record action, so any can be pinned. The account's header secondary (Add contact)
+# joins its kebab — it is one of the account's default pins.
+ACCOUNT_PIN_KEBAB = [("Add contact", "user-plus", ' href="#" data-backend-todo="account-actions"')] + account.KEBAB
+for v, vname in summary.VARIANTS.items():
+    skip_a = () if v == "B" else ("Record", "Engagement")
+    skip_c = () if v == "B" else ("Record",)
+    pages[f"AccountViewPanel{v}.html"] = swap(build(
+        f"Account · View · Panel {v} ({vname})",
+        m.record_header("Account", A["name"], "view", view_href=account.VIEW, edit_href=account.EDIT,
+                        secondary=account.SECONDARY, more=ACCOUNT_PIN_KEBAB, pins="account"),
+        page(summary.panel(v, summary.account_summary(A, account.CONTACTS, ACCOUNT_PIN_KEBAB))
+             + m.record_tabs("details", sidebar=True, tabs=account.tabs())
+             + body(account.view_sections(A), account.sidebar(A, skip=skip_a)), mode="view", record_type="account"),
+        KIT_JS + TAB_JS + SUMMARY_JS, crumbs=("CRM", "Accounts", "Account")), "</head>", SUMMARY_CSS)
+    pages[f"ContactViewPanel{v}.html"] = swap(build(
+        f"Contact · View · Panel {v} ({vname})",
+        m.record_header("Contact", C0["name"], "view", view_href=C0["file"], edit_href=C0.get("edit", "#"),
+                        secondary=contact.SECONDARY, more=contact.KEBAB, pins="contact"),
+        page(summary.panel(v, summary.contact_summary(C0, contact.KEBAB)) + m.record_tabs("details", sidebar=True, tabs=contact.tabs(C0))
+             + body(contact.view_sections(C0, photo=False), contact.sidebar(C0, skip=skip_c)), mode="view", record_type="contact"),
+        KIT_JS + SUMMARY_JS, crumbs=("CRM", "Contacts", "Contact")), "</head>", SUMMARY_CSS)
+
 # ── Media View + Edit (code-first, 2026-10-13): the live media item screens (MediaDetail.cfm +
 # MediaAllElements.cfm) on the kit. Live has no tabs: Details carries its panels, Page analysis its
 # Stats / Recent Viewers / Referring URLs. The live Main panel leads Details (preview + every stored
@@ -364,6 +395,18 @@ pages[order.FILE] = build(
     KIT_JS + '\n  <script src="../../../components/Datatables/DatatablesFit.js"></script>'
            + '\n  <script src="OrderView.js"></script>',
     modals=order.modals(order.ORDER, order.CUSTOMER), crumbs=("Commerce", "Orders", "Order"))
+
+# Order View with pinning (code-first, 2026-10-14): no summary panel, so pinned kebab actions show as a
+# slim row under the header — hidden until the user pins one (record_summary.pins_bar).
+pages["OrderViewPins.html"] = swap(build(
+    "Order · View · Pinned actions",
+    m.record_header("Order", "Order " + order.ORDER["code"], "view", view_href=order.FILE, edit_href="OrderEdit.html",
+                    secondary=order.SECONDARY, more=order.KEBAB, pins="order"),
+    page(summary.pins_bar(order.KEBAB) + body(order.view_sections(order.ORDER, order.CUSTOMER), order.sidebar(order.ORDER, order.CUSTOMER)),
+         mode="view", record_type="order"),
+    KIT_JS + '\n  <script src="../../../components/Datatables/DatatablesFit.js"></script>'
+           + '\n  <script src="OrderView.js"></script>' + SUMMARY_JS,
+    modals=order.modals(order.ORDER, order.CUSTOMER), crumbs=("Commerce", "Orders", "Order")), "</head>", SUMMARY_CSS)
 
 # ── Order Edit (code-first, 2026-10-09): the live OrderProcessingEdit form on the kit. No sidebar; one
 # Details tab to carry the Show help switch (every field has help).

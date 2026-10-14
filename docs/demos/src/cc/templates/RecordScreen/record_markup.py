@@ -8,6 +8,7 @@ Figma: Lus07xi8pPXLN87sQIyrEt · View & Edit page (3842:146669) · kit section 3
 Content is what the Figma screens show; step titles/openings are the Hub rows in
 steps_data.py (copied from the ArticleSteps prototype; content only — no styling is taken from it).
 """
+import re
 from html import escape as e
 
 IMG = "../../../../img/record/article-thumb.jpg"  # relative to src/cc/templates/RecordScreen/
@@ -35,7 +36,7 @@ def chip(label, kind="tertiary", size="xs"):
 
 # ── RecordHeader → CC Header Type=Record ─────────────────────────────
 def record_header(record_type, title, mode, view_href="ArticleView.html", edit_href="ArticleEdit.html",
-                  secondary=("Add", "plus", ""), more=None, save_href=None):
+                  secondary=("Add", "plus", ""), more=None, save_href=None, pins=None):
     """secondary: the view header's one Secondary button (label, icon, attrs); more: its kebab items.
     Defaults are the Article's; other record types pass their own (Contact, 2026-10-07)."""
     # Every header button has an icon, and its label sits in .cc-header__btn-label, which the
@@ -68,7 +69,7 @@ def record_header(record_type, title, mode, view_href="ArticleView.html", edit_h
     else:
         actions = (hbtn(secondary[0], "secondary", secondary[1], attrs=secondary[2])
                    + hbtn("Edit", "primary", "pencil", tag="a", href=edit_href, attrs=' data-keep-width')
-                   + record_kebab(more or RECORD_MORE))
+                   + record_kebab(more or RECORD_MORE, pins=pins))
     return f'''<div class="cc-header-cq">
         <header class="cc-header cc-header--record">
           <div class="cc-header__title-block">
@@ -93,10 +94,22 @@ RECORD_MORE = [
 ]
 
 
-def record_kebab(items=RECORD_MORE):
-    rows = "".join(f'<li role="none"><a class="dropdown-item dropdown-item--sm" role="menuitem"{attrs}>{icon(ic)}<span data-text="{e(label)}">{e(label)}</span></a></li>'
-                   for label, ic, attrs in items)
-    return f'''<div class="dropdown">
+def action_id(label):
+    """A pinnable action's stable id (RecordPins.js saves these, not labels)."""
+    return re.sub(r"[^a-z0-9]+", "-", label.lower()).strip("-")
+
+
+def record_kebab(items=RECORD_MORE, pins=None):
+    """pins: a record type turns on pinning (RecordPins.js, code-first 2026-10-14) — each row gains a pin
+    button and the pinned actions show on the page, saved per user per record type."""
+    if pins:
+        rows = "".join(f'<li role="none" data-action-id="{action_id(label)}" data-action-icon="{ic}"><a class="dropdown-item dropdown-item--sm" role="menuitem"{attrs}>'
+                       f'{icon(ic)}<span data-text="{e(label)}">{e(label)}</span></a></li>' for label, ic, attrs in items)
+    else:
+        rows = "".join(f'<li role="none"><a class="dropdown-item dropdown-item--sm" role="menuitem"{attrs}>{icon(ic)}<span data-text="{e(label)}">{e(label)}</span></a></li>'
+                       for label, ic, attrs in items)
+    root = f' data-record-pins="{pins}"' if pins else ""
+    return f'''<div class="dropdown"{root}>
             <button class="cc-header__kebab dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">{icon("ellipsis-vertical")}</button>
             <div class="dropdown__panel" role="menu" aria-label="More actions">
               <ul class="dropdown__list">{rows}</ul>

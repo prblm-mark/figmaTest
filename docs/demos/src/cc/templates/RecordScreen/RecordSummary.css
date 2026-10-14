@@ -1,0 +1,629 @@
+/* RecordSummary — the panel above the tabs on Account / Contact View (code-first, 2026-10-14).
+ * Two variants for the CEO to choose from (record_summary.py; A Classic was removed 2026-10-14): --compact (B),
+ * --collapsible (C). Variant pages only; not on the base View pages yet.
+ *
+ * The panel spans the page column, so it is its own container (§4a): its children query
+ * `record-summary`; its own border/radius key on the full-width switch, not on a query.
+ */
+
+.record-summary {
+  container-type: inline-size;
+  container-name: record-summary;
+  min-width: 0;
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+}
+
+[data-cc-width="full"] .record-summary {
+  border-width: 0 0 1px;
+  border-radius: var(--ao-radius-none);
+}
+
+.record-summary__grid {
+  display: grid;
+  gap: var(--ao-spacing-6);
+  padding: var(--ao-spacing-6);
+}
+
+/* ── Shared parts ─────────────────────────────────── */
+
+.record-summary__identity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ao-spacing-4);
+  min-width: 0;
+}
+
+.record-summary__logo {
+  display: block;
+  inline-size: 100%;
+  max-inline-size: var(--ao-size-2);
+  block-size: auto;
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-sm);
+}
+
+.record-summary__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ao-spacing-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.record-summary__facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-4);
+  min-width: 0;
+  margin: 0;
+}
+
+.record-summary__fact {
+  display: grid;
+  grid-template-columns: var(--ao-size-1) minmax(0, 1fr);
+  gap: var(--ao-spacing-4);
+  align-items: baseline;
+}
+
+.record-summary dt {
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
+}
+
+.record-summary dd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ao-spacing-1);
+  min-width: 0;
+  margin: 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
+  overflow-wrap: anywhere;
+}
+
+.record-summary__link {
+  color: var(--ao-text-brand);
+  text-decoration: none;
+}
+
+.record-summary__link:hover {
+  text-decoration: underline;
+}
+
+.record-summary__task {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.record-summary__meta {
+  font-size: var(--ao-font-fixed-2xs);
+  color: var(--ao-text-contrast);
+}
+
+.record-summary__stats {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.record-summary__stat {
+  display: flex;
+  min-width: 0;
+}
+
+.record-summary__stat-value {
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
+}
+
+.record-summary__stat-label {
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-contrast);
+}
+
+/* Stats as tiles (B, C) */
+.record-summary__stats--tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--ao-size-1), 1fr));
+  gap: var(--ao-spacing-3);
+}
+
+.record-summary__stats--tiles .record-summary__stat {
+  flex-direction: column;
+  gap: var(--ao-spacing-1);
+  padding: var(--ao-spacing-4) var(--ao-spacing-5);
+  background-color: var(--ao-surface-minimal);
+  border-radius: var(--ao-radius-md);
+}
+
+.record-summary__stats--tiles .record-summary__stat-value {
+  font-size: var(--ao-font-fixed-xl);
+  line-height: var(--ao-leading-sm);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── B · Compact ──────────────────────────────────── */
+
+.record-summary--compact .record-summary__grid {
+  grid-template-columns: minmax(0, 1fr);   /* padding: the shared 24 on every side (symmetrical, Mark 2026-10-14) */
+}
+
+.record-summary--compact .record-summary__logo {
+  max-inline-size: var(--ao-size-1);
+}
+
+/* The column is the logo's width (128) whatever is pinned: pinned icons wrap in rows of three under it
+ * (3 × 36 + 2 gaps = 120), so up to the 6-pin max is two rows and the logo never moves or rescales. */
+.record-summary--compact .record-summary__identity {
+  inline-size: var(--ao-size-1);
+}
+
+/* The round contact photo (80) is narrower than the icon block (128): centre it over the buttons. */
+.record-summary--compact .record-summary__avatar {
+  align-self: center;
+}
+
+/* Three equal square buttons per row with the SAME gap across and down (Mark, 2026-10-14: no asymmetric
+ * spacing), filling the logo's width so both edges line up with it. */
+.record-summary__actions--icon {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ao-spacing-3);
+  align-self: stretch;              /* the identity column is align-items: flex-start */
+}
+
+.record-summary__actions--icon .btn {
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 1;
+}
+
+.record-summary--compact .record-summary__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-4);
+  min-width: 0;
+}
+
+.record-summary__next {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ao-spacing-2) var(--ao-spacing-4);
+  padding: var(--ao-spacing-3) var(--ao-spacing-5);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  font-size: var(--ao-font-fixed-xs);
+}
+
+.record-summary__next-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ao-spacing-2);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-primary);
+}
+
+.record-summary__next-label svg {
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+  color: var(--ao-icon-secondary);
+}
+
+.record-summary__next .record-summary__task {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ao-spacing-2);
+}
+
+/* Label, task link and due line share one size and line height, so they sit on one centre line. */
+.record-summary__next,
+.record-summary__next .record-summary__meta {
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+}
+
+/* From 600px: one 2 × 2 grid so the two sides share rows (Mark, 2026-10-14) — logo | stat cards, then
+ * pinned icons | next task. Each row is as tall as its taller side and the other stretches to it, so the
+ * stat cards' top and bottom meet the logo's and the next-task box meets the icon block's, however many
+ * actions are pinned. The two wrappers step aside (display: contents) so their children join the grid. */
+@container record-summary (min-width: 600px) {
+  .record-summary--compact .record-summary__grid {
+    grid-template-columns: var(--ao-size-1) minmax(0, 1fr);
+    grid-template-areas:
+      "media stats"
+      "actions next";
+    gap: var(--ao-spacing-4) var(--ao-spacing-6);
+  }
+
+  .record-summary--compact .record-summary__identity,
+  .record-summary--compact .record-summary__body {
+    display: contents;
+  }
+
+  .record-summary--compact .record-summary__logo,
+  .record-summary--compact .record-summary__avatar {
+    grid-area: media;
+    align-self: start;
+  }
+
+  .record-summary--compact .record-summary__avatar {
+    justify-self: center;
+  }
+
+  .record-summary--compact .record-summary__actions--icon {
+    grid-area: actions;
+    align-self: start;
+  }
+
+  .record-summary--compact .record-summary__stats--tiles {
+    grid-area: stats;
+    align-self: stretch;
+  }
+
+  .record-summary--compact .record-summary__next {
+    grid-area: next;
+    align-self: stretch;
+  }
+}
+
+/* ── C · Collapsible ──────────────────────────────── */
+
+.record-summary__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ao-spacing-4);
+  /* Same inset left and right as the body (24), equal top and bottom */
+  padding: var(--ao-spacing-4) var(--ao-spacing-6);
+  border-bottom: 1px solid var(--ao-border-secondary);
+}
+
+.record-summary__title {
+  margin: 0;
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fixed-md);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
+}
+
+.record-summary__toggle {
+  margin-inline-start: auto;
+}
+
+.record-summary--collapsible .record-summary__grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.record-summary--collapsible .record-summary__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-6);
+  min-width: 0;
+}
+
+.record-summary__facts--grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--ao-size-5), 1fr));
+  gap: var(--ao-spacing-5) var(--ao-spacing-6);
+}
+
+.record-summary__facts--grid .record-summary__fact {
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;   /* a taller neighbour in the row must not push the value away from its label */
+  gap: var(--ao-spacing-1);
+}
+
+.record-summary__facts--grid dt {
+  color: var(--ao-text-contrast);
+}
+
+.record-summary__name {
+  display: none;
+  margin: 0;
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-semibold);
+  font-size: var(--ao-font-fixed-sm);
+  color: var(--ao-text-primary);
+}
+
+.record-summary__actions--list {
+  flex-direction: column;
+  align-self: stretch;
+  gap: var(--ao-spacing-2);
+}
+
+.record-summary__actions--list .btn {
+  inline-size: 100%;
+  justify-content: flex-start;
+}
+
+@container record-summary (min-width: 600px) {
+  /* 192, not A's 160: up to six 24px links on one row under the logo */
+  .record-summary--collapsible .record-summary__grid {
+    grid-template-columns: var(--ao-size-3) minmax(0, 1fr);
+  }
+}
+
+.record-summary--collapsible .record-summary__logo {
+  max-inline-size: 100%;
+}
+
+/* Collapsed: one line — small logo, the name, the quick actions inline */
+.record-summary[data-collapsed] .record-summary__grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.record-summary[data-collapsed] .record-summary__identity {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.record-summary[data-collapsed] .record-summary__logo {
+  inline-size: auto;
+  block-size: var(--ao-spacing-9);
+}
+
+.record-summary[data-collapsed] .record-summary__avatar {
+  inline-size: var(--ao-spacing-9);
+  block-size: var(--ao-spacing-9);
+}
+
+.record-summary[data-collapsed] .record-summary__name {
+  display: block;
+  margin-inline-end: auto;
+}
+
+.record-summary[data-collapsed] .record-summary__actions--list {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-self: auto;
+  gap: var(--ao-spacing-2);
+}
+
+.record-summary[data-collapsed] .record-summary__actions--list .btn {
+  inline-size: auto;
+}
+
+.record-summary[data-collapsed] .record-summary__header {
+  border-bottom-width: 0;
+  padding-block: var(--ao-spacing-6) 0;   /* 24 above the title = the 24 below the row: symmetrical */
+}
+
+.record-summary__facts--grid dd {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.record-summary__facts--grid dd:has(.badge) {
+  flex-direction: row;
+}
+
+/* B's icon-only quick actions: the DS Tooltip under the button on hover / keyboard focus. Sized to its
+ * label here (the component's own width is for long help text). */
+.record-summary__tip-anchor {
+  position: relative;
+}
+
+.record-summary__tip {
+  position: absolute;
+  inset-block-start: calc(100% + var(--ao-spacing-2));
+  inset-inline-start: 50%;
+  z-index: 2;
+  inline-size: max-content;
+  padding: var(--ao-spacing-2) var(--ao-spacing-3);
+  border-radius: var(--ao-radius-sm);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%);
+  transition: opacity var(--ao-transition-default), visibility var(--ao-transition-default);
+}
+
+.record-summary__tip-anchor:hover .record-summary__tip,
+.record-summary__tip-anchor:has(:focus-visible) .record-summary__tip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* C: the search / map links sit under the logo (Mark, 2026-10-14 — not in the panel header). Collapsed,
+ * they follow the name on the one line. */
+.record-summary--collapsible .record-summary__identity .quick-links {
+  gap: var(--ao-spacing-2);
+}
+
+.record-summary[data-collapsed] .record-summary__name {
+  margin-inline-end: 0;
+}
+
+.record-summary[data-collapsed] .record-summary__identity .quick-links {
+  margin-inline-end: auto;
+}
+
+/* ── Pinning (RecordPins.js, code-first 2026-10-14) ── */
+
+/* Kebab rows: the action link fills the row, the pin toggle sits at its end.
+ *
+ * The pin follows the main sidebar menu's pin (patterns/Menu/Menu.css .cc-menu__submenu-item__action,
+ * Mark 2026-10-14 "same pinned state colour"): neutral, never brand; hidden until the row is hovered
+ * (0.7), full on its own hover; a pinned pin stays visible and FILLS. The sidebar is a dark surface so it
+ * uses --ao-icon-invert-secondary → --cc-mainmenu-icon; the kebab is a light surface (white in light mode,
+ * where invert-secondary measures ~2:1), so the same roles take the non-invert pair:
+ * --ao-icon-secondary at rest → --ao-icon-primary on hover. */
+.record-pins__row {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-spacing-1);
+}
+
+.record-pins__row .dropdown-item {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.record-pins__toggle {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ao-spacing-7);
+  block-size: var(--ao-spacing-7);
+  padding: 0;
+  color: var(--ao-icon-secondary);
+  background: none;
+  border: 0;
+  border-radius: var(--ao-radius-md);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--ao-transition-default), color var(--ao-transition-default);
+}
+
+.record-pins__toggle svg {
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+}
+
+.record-pins__row:hover .record-pins__toggle,
+.record-pins__row:focus-within .record-pins__toggle {
+  opacity: 0.7;
+}
+
+.record-pins__toggle:hover,
+.record-pins__toggle:focus-visible,
+.record-pins__toggle[aria-pressed="true"] {
+  opacity: 1;
+}
+
+.record-pins__toggle:hover {
+  color: var(--ao-icon-primary);
+}
+
+@media (hover: none) {
+  .record-pins__toggle {
+    opacity: 1;
+  }
+}
+
+.record-pins__toggle:focus-visible {
+  outline: 2px solid var(--ao-surface-brand);
+  outline-offset: -2px;
+}
+
+/* Lucide draws the pin with fill="none"; CSS fill overrides it, so a pinned pin reads solid (as the sidebar). */
+.record-pins__toggle[aria-pressed="true"] svg {
+  fill: currentColor;
+}
+
+.record-pins__toggle[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+.record-pins__toggle[aria-disabled="true"] svg {
+  opacity: 0.4;
+}
+
+.record-pins__note {
+  margin-block-start: var(--ao-spacing-1);
+  padding: var(--ao-spacing-3) var(--ao-spacing-4) var(--ao-spacing-1);
+  border-top: 1px solid var(--ao-border-secondary);
+  font-size: var(--ao-font-fixed-3xs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
+}
+
+.record-summary__pins-empty {
+  font-size: var(--ao-font-fixed-2xs);
+  color: var(--ao-text-contrast);
+}
+
+/* Pinned row on screens without a panel (Order). Its own container: labels show from 600px, below that
+ * icon-only with the tooltip. */
+.record-pins {
+  container-type: inline-size;
+  container-name: record-pins;
+  min-width: 0;
+}
+
+.record-pins[hidden] {
+  display: none;
+}
+
+.record-summary__actions--bar .record-summary__tip {
+  display: none;
+}
+
+@container record-pins (max-width: 599px) {
+  .record-pins__label {
+    display: none;
+  }
+
+  .record-summary__actions--bar .record-summary__tip {
+    display: block;
+  }
+}
+
+/* Mobile density — the same as RecordSection's (designer amends, 2026-09-29), so the panel's padding
+ * matches every card under it (Mark, 2026-10-14). Same 559px breakpoint. */
+@container record-summary (max-width: 559px) {
+  .record-summary__grid,
+  .record-summary--compact .record-summary__grid,
+  .record-summary[data-collapsed] .record-summary__grid {
+    padding: var(--ao-spacing-4);
+  }
+
+  .record-summary__header {
+    padding: var(--ao-spacing-4);
+  }
+
+  .record-summary__title {
+    font-size: var(--ao-font-fixed-xs);
+  }
+}
+
+/* B: the figures are DS StatCards. Their own card (border, padding, height) replaces the plain tile; the
+ * grid and the row stretch stay ours, so the cards still meet the logo's top and bottom. */
+/* Fill as C's tiles, no stroke (Mark, 2026-10-14). */
+.record-summary__stats--cards .stat-card {
+  padding: var(--ao-spacing-4);
+  background-color: var(--ao-surface-minimal);
+  border: 0;
+  border-radius: var(--ao-radius-md);
+  min-width: 0;
+}
+
+.record-summary__stats--cards .stat-card__text {
+  min-width: 0;
+}
+
+/* The ellipsis needs overflow: hidden, which clips at the line box: StatCard's 16px line on 16px text cut
+ * the ascenders and "Regular"'s g (Mark, 2026-10-14). A 20px line gives the glyphs room. */
+.record-summary__stats--cards .stat-card__value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: var(--ao-leading-sm);
+}
+
+/* C · Contact: the round photo (80) and its search links are narrower than the 192 column — centre both
+ * over the full-width quick actions (Mark, 2026-10-14). Expanded only: collapsed keeps its one-line row. */
+.record-summary--collapsible.record-summary--contact:not([data-collapsed]) .record-summary__avatar,
+.record-summary--collapsible.record-summary--contact:not([data-collapsed]) .record-summary__identity .quick-links {
+  align-self: center;
+}

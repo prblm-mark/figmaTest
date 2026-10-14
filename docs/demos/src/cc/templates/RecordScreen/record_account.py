@@ -153,7 +153,7 @@ FREE_SUBS = [("Affino", "Affino Insight Premium", "01 Jan 2026", "31 Dec 2026", 
 
 
 # ── View: sidebar (the live header's facts and activity) ─────────────────────────────────────────
-def sidebar(a):
+def sidebar(a, skip=()):
     addr = ", ".join(x for x in a["address"] if x)
     facts = [("Account code", a["code"]), ("Account type", a["type"]), ("Primary contact", "Olivia Bennett"),
              ("Account manager", a["manager"]), ("Telephone", a["tel"]), ("Email", a["email"]), ("Website", a["website"]),
@@ -180,14 +180,15 @@ def sidebar(a):
     # Perplexity on the account name, the address on Google Maps.
     links = m.quick_links(a["name"], x="@northbridgemedia", linkedin="https://www.linkedin.com/company/northbridge-media-example",
                           address=addr)
-    return "".join([
+    # skip: panel titles to leave out (the summary-panel variants move Record / Engagement above the tabs).
+    return "".join(p for p in [
         m.fact_panel("Record", links + m.fact_list(facts)),
         m.fact_panel("Contacts", people, count=(str(len(CONTACTS)), f"{len(CONTACTS)} contacts"), action=more_link("contacts", "contacts")),
         m.fact_panel("Open tasks", tasks, action=more_link("tasks", "tasks")),
         m.fact_panel("Contact notes", notes, count=("48", "48 notes"), action=more_link("contact notes", "communication")),
         m.fact_panel("Opportunities", opps, action=more_link("opportunities", "commerce")),
         m.fact_panel("Engagement", m.fact_list(engagement)),
-    ])
+    ] if not any(f'>{t}</h2>' in p or f'>{t} <' in p for t in skip))
 
 
 # ── View: the other built tabs ───────────────────────────────────────────────────────────────────

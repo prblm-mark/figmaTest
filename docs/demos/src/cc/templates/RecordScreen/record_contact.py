@@ -58,11 +58,12 @@ def _avatar(seed, name):
             f'src="https://i.pravatar.cc/128?u={e(seed)}" alt="{e(name)}"></span>')
 
 
-def view_sections(c):
+def view_sections(c, photo=True):
     """Main column: the profile, the accounts, then interests and lists. Empty fields read "-"
     (the Article View rule)."""
     t = lambda label, v: m.view_row(label, "text", v or "-")
-    contact = [m.view_row("Photo", "html", _avatar(c["seed"], c["name"])),
+    # photo=False: the summary-panel pages show the photo in the panel only (Mark, 2026-10-14).
+    contact = ([m.view_row("Photo", "html", _avatar(c["seed"], c["name"]))] if photo else []) + [
                t("Name", c["name"]), t("Job title", c.get("job")), t("Email", c.get("email")),
                t("Telephone", c.get("tel")), t("Mobile", c.get("mobile")), t("Address", c.get("address"))]
     accounts = [_tags_or_dash("Account", c.get("accounts")), _tags_or_dash("Former accounts", c.get("former")),
@@ -78,7 +79,7 @@ def _badge(label, tone):
     return f'<span class="badge badge--{tone}">{e(label)}</span>'
 
 
-def sidebar(c):
+def sidebar(c, skip=()):
     facts = [("User code", c["code"]), ("Account type", c["type"]), ("Engagement level", c["level"]),
              ("Points", c["points"])]
     for label in ("On-site contacts", "Followers"):
@@ -111,7 +112,8 @@ def sidebar(c):
     # Perplexity on the contact's name and company.
     links = m.quick_links(" ".join(x for x in (c["name"], (c.get("accounts") or [""])[0]) if x),
                           x=c.get("x"), linkedin=c.get("linkedin"))
-    return "".join([
+    # skip: panel titles to leave out (the summary-panel variants move Record / Engagement above the tabs).
+    return "".join(p for p in [
         m.fact_panel("Record", links + m.fact_list(facts)),
         m.fact_panel("Customer signals", signals, count=(c["signal_total"], f'{c["signal_total"]} signals'),
                      action='<button type="button" class="btn btn--tertiary btn--xs" aria-label="Assign a customer signal" '
@@ -123,7 +125,7 @@ def sidebar(c):
         m.fact_panel("Opportunities", opp_summary + opp_rows, action=more_link("opportunities", "commerce")),
         m.fact_panel("Events", m.fact_list(c["events"])),
         m.fact_panel("Engagement", m.fact_list(c["engagement"]), subtitle="All time unless stated"),
-    ])
+    ] if not any(f'>{t}</h2>' in p or f'>{t} <' in p for t in skip))
 
 
 SIG = {  # signal → Lucide glyph (stand-ins for each signal's badge image, as Recent Viewers)
