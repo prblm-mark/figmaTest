@@ -58,11 +58,12 @@ def _avatar(seed, name):
             f'src="https://i.pravatar.cc/128?u={e(seed)}" alt="{e(name)}"></span>')
 
 
-def view_sections(c):
+def view_sections(c, photo=True):
     """Main column: the profile, the accounts, then interests and lists. Empty fields read "-"
     (the Article View rule)."""
     t = lambda label, v: m.view_row(label, "text", v or "-")
-    contact = [m.view_row("Photo", "html", _avatar(c["seed"], c["name"])),
+    # photo=False: the summary-panel pages show the photo in the panel only (Mark, 2026-10-14).
+    contact = ([m.view_row("Photo", "html", _avatar(c["seed"], c["name"]))] if photo else []) + [
                t("Name", c["name"]), t("Job title", c.get("job")), t("Email", c.get("email")),
                t("Telephone", c.get("tel")), t("Mobile", c.get("mobile")), t("Address", c.get("address"))]
     accounts = [_tags_or_dash("Account", c.get("accounts")), _tags_or_dash("Former accounts", c.get("former")),

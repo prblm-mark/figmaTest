@@ -21,18 +21,24 @@ import record_markup as m
 e = m.e
 VARIANTS = {"A": "Classic", "B": "Compact", "C": "Collapsible"}
 
+# Pinning (Markus, 2026-10-14): any kebab action can be pinned to the page — per user, per record type,
+# 6 at most. These are the defaults a user starts with (ids = m.action_id(label)).
+MAX_PINS = 6
+ACCOUNT_PINS = ["add-contact", "add-topic", "add-opportunity", "add-pro-forma", "add-to-account-list"]
+CONTACT_PINS = ["add-task", "add-pro-forma", "add-to-topic", "add-to-contact-list", "my-contact"]
+ORDER_PINS = []   # no panel to inherit from: the pinned row appears once the user pins something
+
 
 # ── Data: the same records as the View pages ─────────────────────────────────────────────────────
-def account_summary(a, contacts):
+def account_summary(a, contacts, kebab):
     addr = ", ".join(x for x in a["address"] if x)
     task = a["task_rows"]["open"][0] if a["task_rows"]["open"] else None
     return {
         "kind": "account", "name": a["name"],
         "media": '<img class="record-summary__logo" src="northbridge-logo.svg" alt="Northbridge Media logo">',
-        # The live panel's buttons under the logo (CRMAccountView.cfm), in its order.
-        "actions": [("Add contact", "user-plus"), ("Add topic", "tag"), ("Add opportunity", "briefcase"),
-                    ("Add pro forma", "receipt-pound-sterling"), ("Add to account list", "list-plus")],
-        "todo": "account-actions",
+        # Quick actions = the user's pinned kebab actions (RecordPins.js). The defaults are the live panel's
+        # buttons under the logo (CRMAccountView.cfm), in its order.
+        "kebab": kebab, "defaults": ACCOUNT_PINS,
         "facts": [("Account code", e(a["code"])), ("Account type", _chip(a["type"])),
                   ("Next task", _next_task(task[0], task[1], task[2]) if task else "-"),
                   ("Telephone", e(a["tel"])), ("Website", _link(a["website"])), ("Address", e(addr)),
@@ -46,7 +52,7 @@ def account_summary(a, contacts):
     }
 
 
-def contact_summary(c):
+def contact_summary(c, kebab):
     task = c["tasks"][0] if c["tasks"] else None
     accounts = c.get("accounts") or []
     facts = [("User code", e(c["code"])), ("Job title", e(c.get("job") or "-")),
@@ -60,10 +66,8 @@ def contact_summary(c):
         "kind": "contact", "name": c["name"],
         "media": (f'<span class="avatar avatar--size-5 record-summary__avatar"><img class="portrait" '
                   f'src="https://i.pravatar.cc/160?u={e(c["seed"])}" alt="{e(c["name"])}"></span>'),
-        # The live contact panel's buttons under the photo (CRMUserView.cfm).
-        "actions": [("Add task", "list-todo"), ("Add pro forma", "receipt-pound-sterling"), ("Add to topic", "tag"),
-                    ("Add to contact list", "list-plus"), ("My contact", "star")],
-        "todo": "contact-actions",
+        # Defaults: the live contact panel's buttons under the photo (CRMUserView.cfm).
+        "kebab": kebab, "defaults": CONTACT_PINS,
         "facts": facts,
         "links": m.quick_links(" ".join(x for x in (c["name"], (accounts or [""])[0]) if x),
                                x=c.get("x"), linkedin=c.get("linkedin")),
@@ -89,20 +93,40 @@ def _next_task(title, due, who):
             f'<span class="record-summary__meta">Due {e(due)} · {e(who)}</span></span>')
 
 
+def pinned_actions(kebab, defaults, style):
+    """The pinned actions, rendered as RecordPins.js renders them (it re-renders from the user's saved
+    pins; this is the no-JS / first-paint default). style: stack (A) · icon (B) · list (C) · bar (no panel)."""
+    by_id = {m.action_id(label): (label, ic, attrs) for label, ic, attrs in kebab}
+    items = []
+    for pid in defaults:
+        label, ic, attrs = by_id[pid]
+        tip = (f'<span class="tooltip record-summary__tip" aria-hidden="true"><span class="tooltip__text">{e(label)}</span></span>')
+        if style == "icon":
+            items.append(f'<li class="record-summary__tip-anchor"><a class="btn btn--secondary btn--icon btn--sm" aria-label="{e(label)}"{attrs}>'
+                         f'{m.icon(ic)}</a>{tip}</li>')
+        elif style == "bar":
+            items.append(f'<li class="record-summary__tip-anchor"><a class="btn btn--secondary btn--xs" aria-label="{e(label)}"{attrs}>'
+                         f'{m.icon(ic)}<span class="record-pins__label">{e(label)}</span></a>{tip}</li>')
+        else:
+            kind = "btn--secondary btn--xs" if style == "stack" else "btn--tertiary btn--sm"
+            items.append(f'<li><a class="btn {kind}"{attrs}>{m.icon(ic)}<span>{e(label)}</span></a></li>')
+    if not items and style != "bar":
+        items.append('<li class="record-summary__pins-empty">Pin actions from the ⋮ menu</li>')
+    # TODO(backend:RecordScreen) record-pinned-actions: pins are saved in localStorage per record type → the user's preferences (GET/PUT the pinned action ids for a record type, max 6)
+    return (f'<ul class="record-summary__actions record-summary__actions--{style}" aria-label="Pinned actions" '
+            f'data-pinned-actions="{style}" data-default-pins="{",".join(defaults)}" data-max-pins="{MAX_PINS}">{"".join(items)}</ul>')
+
+
 def _actions(s, style):
-    todo = f' data-backend-todo="{s["todo"]}"'
-    if style == "icon":  # B: icon-only, the label in aria-label + title
-        # The DS Tooltip (components/Tooltip) on hover + keyboard focus; the button's own name is its aria-label,
-        # so the tooltip is aria-hidden rather than read twice.
-        items = "".join(f'<li class="record-summary__tip-anchor"><button type="button" class="btn btn--secondary btn--icon btn--sm" '
-                        f'aria-label="{e(label)}"{todo}>{m.icon(ic)}</button>'
-                        f'<span class="tooltip record-summary__tip" aria-hidden="true"><span class="tooltip__text">{e(label)}</span></span></li>'
-                        for label, ic in s["actions"])
-    else:  # A: stacked secondary xs · C: labelled list rows
-        kind = "btn--secondary btn--xs" if style == "stack" else "btn--tertiary btn--sm"
-        items = "".join(f'<li><button type="button" class="btn {kind}"{todo}>{m.icon(ic)}<span>{e(label)}</span></button></li>'
-                        for label, ic in s["actions"])
-    return f'<ul class="record-summary__actions record-summary__actions--{style}" aria-label="Quick actions">{items}</ul>'
+    return pinned_actions(s["kebab"], s["defaults"], style)
+
+
+def pins_bar(kebab, defaults=ORDER_PINS):
+    """Screens without a summary panel (Order): a slim row of pinned actions under the header, hidden
+    until something is pinned."""
+    hidden = "" if defaults else " hidden"
+    return (f'<section class="record-pins" aria-label="Pinned actions" data-record-pins-bar{hidden}>'
+            f'{pinned_actions(kebab, defaults, "bar")}</section>')
 
 
 def _facts(s, cls=""):

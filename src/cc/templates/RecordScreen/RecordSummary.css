@@ -459,3 +459,117 @@
 .record-summary[data-collapsed] .record-summary__identity .quick-links {
   margin-inline-end: auto;
 }
+
+/* ── Pinning (RecordPins.js, code-first 2026-10-14) ── */
+
+/* Kebab rows: the action link fills the row, the pin toggle sits at its end. The toggle is quiet until
+ * the row is hovered or focused (always shown where there is no hover); a pinned row keeps it, filled. */
+.record-pins__row {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-spacing-1);
+}
+
+.record-pins__row .dropdown-item {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.record-pins__toggle {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ao-spacing-7);
+  block-size: var(--ao-spacing-7);
+  padding: 0;
+  color: var(--ao-icon-secondary);
+  background: none;
+  border: 0;
+  border-radius: var(--ao-radius-md);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--ao-transition-default), background-color var(--ao-transition-default);
+}
+
+.record-pins__toggle svg {
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+}
+
+.record-pins__row:hover .record-pins__toggle,
+.record-pins__row:focus-within .record-pins__toggle,
+.record-pins__toggle[aria-pressed="true"] {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .record-pins__toggle {
+    opacity: 1;
+  }
+}
+
+.record-pins__toggle:hover {
+  background-color: var(--ao-surface-minimal);
+}
+
+.record-pins__toggle:focus-visible {
+  outline: 2px solid var(--ao-surface-brand);
+  outline-offset: -2px;
+}
+
+.record-pins__toggle[aria-pressed="true"] {
+  color: var(--ao-icon-brand);
+}
+
+.record-pins__toggle[aria-pressed="true"] svg {
+  fill: currentColor;
+}
+
+.record-pins__toggle[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+.record-pins__toggle[aria-disabled="true"] svg {
+  opacity: 0.4;
+}
+
+.record-pins__note {
+  margin-block-start: var(--ao-spacing-1);
+  padding: var(--ao-spacing-3) var(--ao-spacing-4) var(--ao-spacing-1);
+  border-top: 1px solid var(--ao-border-secondary);
+  font-size: var(--ao-font-fixed-3xs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
+}
+
+.record-summary__pins-empty {
+  font-size: var(--ao-font-fixed-2xs);
+  color: var(--ao-text-contrast);
+}
+
+/* Pinned row on screens without a panel (Order). Its own container: labels show from 600px, below that
+ * icon-only with the tooltip. */
+.record-pins {
+  container-type: inline-size;
+  container-name: record-pins;
+  min-width: 0;
+}
+
+.record-pins[hidden] {
+  display: none;
+}
+
+.record-summary__actions--bar .record-summary__tip {
+  display: none;
+}
+
+@container record-pins (max-width: 599px) {
+  .record-pins__label {
+    display: none;
+  }
+
+  .record-summary__actions--bar .record-summary__tip {
+    display: block;
+  }
+}
