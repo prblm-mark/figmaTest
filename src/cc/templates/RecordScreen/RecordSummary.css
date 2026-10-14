@@ -233,10 +233,43 @@
   line-height: var(--ao-leading-sm);
 }
 
+/* From 600px: one 2 × 2 grid so the two sides share rows (Mark, 2026-10-14) — logo | stat cards, then
+ * pinned icons | next task. Each row is as tall as its taller side and the other stretches to it, so the
+ * stat cards' top and bottom meet the logo's and the next-task box meets the icon block's, however many
+ * actions are pinned. The two wrappers step aside (display: contents) so their children join the grid. */
 @container record-summary (min-width: 600px) {
   .record-summary--compact .record-summary__grid {
-    grid-template-columns: max-content minmax(0, 1fr);
-    align-items: start;
+    grid-template-columns: var(--ao-size-1) minmax(0, 1fr);
+    grid-template-areas:
+      "media stats"
+      "actions next";
+    gap: var(--ao-spacing-4) var(--ao-spacing-6);
+  }
+
+  .record-summary--compact .record-summary__identity,
+  .record-summary--compact .record-summary__body {
+    display: contents;
+  }
+
+  .record-summary--compact .record-summary__logo,
+  .record-summary--compact .record-summary__avatar {
+    grid-area: media;
+    align-self: start;
+  }
+
+  .record-summary--compact .record-summary__actions--icon {
+    grid-area: actions;
+    align-self: start;
+  }
+
+  .record-summary--compact .record-summary__stats--tiles {
+    grid-area: stats;
+    align-self: stretch;
+  }
+
+  .record-summary--compact .record-summary__next {
+    grid-area: next;
+    align-self: stretch;
   }
 }
 
