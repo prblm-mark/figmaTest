@@ -172,6 +172,11 @@
   inline-size: var(--ao-size-1);
 }
 
+/* The round contact photo (80) is narrower than the icon block (128): centre it over the buttons. */
+.record-summary--compact .record-summary__avatar {
+  align-self: center;
+}
+
 /* Three equal square buttons per row with the SAME gap across and down (Mark, 2026-10-14: no asymmetric
  * spacing), filling the logo's width so both edges line up with it. */
 .record-summary__actions--icon {
@@ -255,6 +260,10 @@
   .record-summary--compact .record-summary__avatar {
     grid-area: media;
     align-self: start;
+  }
+
+  .record-summary--compact .record-summary__avatar {
+    justify-self: center;
   }
 
   .record-summary--compact .record-summary__actions--icon {
@@ -602,8 +611,11 @@
   min-width: 0;
 }
 
+/* The ellipsis needs overflow: hidden, which clips at the line box: StatCard's 16px line on 16px text cut
+ * the ascenders and "Regular"'s g (Mark, 2026-10-14). A 20px line gives the glyphs room. */
 .record-summary__stats--cards .stat-card__value {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  line-height: var(--ao-leading-sm);
 }
