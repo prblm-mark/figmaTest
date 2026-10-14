@@ -133,10 +133,25 @@
 }
 
 /* Stats as tiles (B, C) */
+/* Four figures go 4 across, 2 × 2, or 1 per row — never 3 + an orphan (Mark, 2026-10-14; auto-fit wrapped
+ * 3 + 1 at mid widths). Keyed on the PANEL's width (record-summary); 1000px is where four StatCards keep
+ * "Active contacts" and "£98,148" on one line beside the logo column. */
 .record-summary__stats--tiles {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(var(--ao-size-1), 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--ao-spacing-3);
+}
+
+@container record-summary (min-width: 1000px) {
+  .record-summary__stats--tiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@container record-summary (max-width: 399px) {
+  .record-summary__stats--tiles {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .record-summary__stats--tiles .record-summary__stat {
@@ -306,11 +321,11 @@
   margin-inline-start: auto;
 }
 
-.record-summary--collapsible .record-summary__grid {
+.record-summary__view--full .record-summary__grid {
   grid-template-columns: minmax(0, 1fr);
 }
 
-.record-summary--collapsible .record-summary__body {
+.record-summary__view--full .record-summary__body {
   display: flex;
   flex-direction: column;
   gap: var(--ao-spacing-6);
@@ -333,15 +348,6 @@
   color: var(--ao-text-contrast);
 }
 
-.record-summary__name {
-  display: none;
-  margin: 0;
-  font-family: var(--ao-font-title);
-  font-weight: var(--ao-font-semibold);
-  font-size: var(--ao-font-fixed-sm);
-  color: var(--ao-text-primary);
-}
-
 .record-summary__actions--list {
   flex-direction: column;
   align-self: stretch;
@@ -355,55 +361,13 @@
 
 @container record-summary (min-width: 600px) {
   /* 192, not A's 160: up to six 24px links on one row under the logo */
-  .record-summary--collapsible .record-summary__grid {
+  .record-summary__view--full .record-summary__grid {
     grid-template-columns: var(--ao-size-3) minmax(0, 1fr);
   }
 }
 
-.record-summary--collapsible .record-summary__logo {
+.record-summary__view--full .record-summary__logo {
   max-inline-size: 100%;
-}
-
-/* Collapsed: one line — small logo, the name, the quick actions inline */
-.record-summary[data-collapsed] .record-summary__grid {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-.record-summary[data-collapsed] .record-summary__identity {
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.record-summary[data-collapsed] .record-summary__logo {
-  inline-size: auto;
-  block-size: var(--ao-spacing-9);
-}
-
-.record-summary[data-collapsed] .record-summary__avatar {
-  inline-size: var(--ao-spacing-9);
-  block-size: var(--ao-spacing-9);
-}
-
-.record-summary[data-collapsed] .record-summary__name {
-  display: block;
-  margin-inline-end: auto;
-}
-
-.record-summary[data-collapsed] .record-summary__actions--list {
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-self: auto;
-  gap: var(--ao-spacing-2);
-}
-
-.record-summary[data-collapsed] .record-summary__actions--list .btn {
-  inline-size: auto;
-}
-
-.record-summary[data-collapsed] .record-summary__header {
-  border-bottom-width: 0;
-  padding-block: var(--ao-spacing-6) 0;   /* 24 above the title = the 24 below the row: symmetrical */
 }
 
 .record-summary__facts--grid dd {
@@ -443,18 +407,15 @@
   visibility: visible;
 }
 
-/* C: the search / map links sit under the logo (Mark, 2026-10-14 — not in the panel header). Collapsed,
- * they follow the name on the one line. */
-.record-summary--collapsible .record-summary__identity .quick-links {
+/* C: the search / map links sit under the logo (Mark, 2026-10-14 — not in the panel header). */
+.record-summary__view--full .record-summary__identity .quick-links {
   gap: var(--ao-spacing-2);
 }
 
-.record-summary[data-collapsed] .record-summary__name {
-  margin-inline-end: 0;
-}
-
-.record-summary[data-collapsed] .record-summary__identity .quick-links {
-  margin-inline-end: auto;
+/* C collapsed = B's compact view (Mark, 2026-10-14): RecordSummary.js swaps the two views; the compact one
+ * is laid out by B's rules (it carries .record-summary--compact). */
+.record-summary__view[hidden] {
+  display: none;
 }
 
 /* ── Pinning (RecordPins.js, code-first 2026-10-14) ── */
@@ -583,8 +544,7 @@
  * matches every card under it (Mark, 2026-10-14). Same 559px breakpoint. */
 @container record-summary (max-width: 559px) {
   .record-summary__grid,
-  .record-summary--compact .record-summary__grid,
-  .record-summary[data-collapsed] .record-summary__grid {
+  .record-summary--compact .record-summary__grid {
     padding: var(--ao-spacing-4);
   }
 
@@ -622,8 +582,8 @@
 }
 
 /* C · Contact: the round photo (80) and its search links are narrower than the 192 column — centre both
- * over the full-width quick actions (Mark, 2026-10-14). Expanded only: collapsed keeps its one-line row. */
-.record-summary--collapsible.record-summary--contact:not([data-collapsed]) .record-summary__avatar,
-.record-summary--collapsible.record-summary--contact:not([data-collapsed]) .record-summary__identity .quick-links {
+ * over the full-width quick actions (Mark, 2026-10-14). Full view only: collapsed is B's layout. */
+.record-summary--contact .record-summary__view--full .record-summary__avatar,
+.record-summary--contact .record-summary__view--full .record-summary__identity .quick-links {
   align-self: center;
 }

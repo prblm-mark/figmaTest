@@ -157,16 +157,20 @@ def _stats(s, cls=""):
 def panel(variant, s):
     label = f'{s["kind"].title()} summary'
     # TODO(backend:RecordScreen) record-summary: the panel's facts, counts and touch dates are static → the record's CRM data (same source as the sidebar's Record + Engagement panels)
-    if variant == "B":
-        nxt = s["next"]
-        task = (f'<div class="record-summary__next"><span class="record-summary__next-label">{m.icon("list-todo")}Next task</span>'
-                f'{_next_task(*nxt)}</div>') if nxt else ''
-        return f'''<section class="record-summary record-summary--compact record-summary--{s["kind"]}" aria-label="{label}">
-          <div class="record-summary__grid">
+    nxt = s["next"]
+    task = (f'<div class="record-summary__next"><span class="record-summary__next-label">{m.icon("list-todo")}Next task</span>'
+            f'{_next_task(*nxt)}</div>') if nxt else ''
+    compact_grid = f'''<div class="record-summary__grid">
             <div class="record-summary__identity">{s["media"]}{_actions(s, "icon")}</div>
             <div class="record-summary__body">{_stat_cards(s)}{task}</div>
-          </div>
+          </div>'''
+    if variant == "B":
+        return f'''<section class="record-summary record-summary--compact record-summary--{s["kind"]}" aria-label="{label}">
+          {compact_grid}
         </section>'''
+    # C (2026-10-14, Mark): expanded = the full view (facts + dates grid); collapsed = B's compact view, not a
+    # one-line strip. Both views are in the markup; RecordSummary.js shows one. The compact view carries B's
+    # class, so B's rules lay it out unchanged; C's own rules are scoped to the full view.
     # C carries the touch dates in its fact grid (Engagement leaves the account sidebar here too).
     s = dict(s, facts=s["facts"] + [(label, e(v) + (f'<span class="record-summary__meta">{e(sub)}</span>' if sub else ""))
                                      for label, v, sub in s["dates"]])
@@ -174,10 +178,15 @@ def panel(variant, s):
           <header class="record-summary__header">
             <h2 class="record-summary__title">{label}</h2>
             <button type="button" class="btn btn--tertiary btn--xs record-summary__toggle" aria-expanded="true"
-                    aria-controls="record-summary-body" data-record-summary-toggle>{m.icon("chevron-up")}<span>Collapse</span></button>
+                    aria-controls="record-summary-full" data-record-summary-toggle>{m.icon("chevron-up")}<span>Collapse</span></button>
           </header>
-          <div class="record-summary__grid">
-            <div class="record-summary__identity">{s["media"]}<p class="record-summary__name">{e(s["name"])}</p>{s["links"]}{_actions(s, "list")}</div>
-            <div class="record-summary__body" id="record-summary-body">{_facts(s, " record-summary__facts--grid")}{_stats(s, " record-summary__stats--tiles")}</div>
+          <div class="record-summary__view record-summary__view--full" id="record-summary-full" data-summary-view="full">
+            <div class="record-summary__grid">
+              <div class="record-summary__identity">{s["media"]}{s["links"]}{_actions(s, "list")}</div>
+              <div class="record-summary__body">{_facts(s, " record-summary__facts--grid")}{_stats(s, " record-summary__stats--tiles")}</div>
+            </div>
+          </div>
+          <div class="record-summary__view record-summary--compact" id="record-summary-compact" data-summary-view="compact" hidden>
+          {compact_grid}
           </div>
         </section>'''
