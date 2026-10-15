@@ -158,7 +158,7 @@ FREE_SUBS = [("Affino", "Insight Premium", "01 Jan 2026", "31 Dec 2026", "Email 
 def sidebar(a, skip=()):
     addr = ", ".join(x for x in a["address"] if x)
     facts = [("Account code", a["code"]), ("Account type", a["type"]), ("Primary contact", "Olivia Bennett"),
-             ("Account manager", a["manager"]), ("Telephone", a["tel"]), ("Email", m.email_copy(a["email"])), ("Website", a["website"]),
+             ("Account manager", a["manager"]), ("Telephone", m.phone_copy(a["tel"])), ("Email", m.email_copy(a["email"])), ("Website", m.web_copy(a["website"])),
              ("Address", addr), ("Industry", a["industry"]), ("Company size", a["size"]), ("Turnover", a["turnover"]),
              ("Topics", m.topic_tags(a["topics"]))]
     people = m.record_list([(n, job, ct._badge(r[0], "neutral") if r else None) for n, _, job, _, _, r in CONTACTS[:4]],

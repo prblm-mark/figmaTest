@@ -65,7 +65,7 @@ def view_sections(c, photo=True):
     # photo=False: the summary-panel pages show the photo in the panel only (Mark, 2026-10-14).
     contact = ([m.view_row("Photo", "html", _avatar(c["seed"], c["name"]))] if photo else []) + [
                t("Name", c["name"]), t("Job title", c.get("job")), t("Email", m.email_copy(c.get("email"))),
-               t("Telephone", c.get("tel")), t("Mobile", c.get("mobile")), t("Address", c.get("address"))]
+               t("Telephone", m.phone_copy(c.get("tel"))), t("Mobile", m.phone_copy(c.get("mobile"))), t("Address", c.get("address"))]
     accounts = [_tags_or_dash("Account", c.get("accounts")), _tags_or_dash("Former accounts", c.get("former")),
                 _tags_or_dash("Connections", c.get("connections"))]
     lists = [m.view_row("Topics", "text", m.topic_tags(c.get("topics"))), _tags_or_dash("Mailing lists", c.get("mailing")),

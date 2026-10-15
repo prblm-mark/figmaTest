@@ -352,20 +352,17 @@
   flex-direction: row;
 }
 
-/* B's icon-only quick actions: the DS Tooltip under the button on hover / keyboard focus. Sized to its
- * label here (the component's own width is for long help text). */
+/* B's icon-only quick actions: the DS Tooltip (Arrow=Top) under the button on hover / keyboard focus. The
+ * component's own radius, padding and hug width — only placement here (Mark, 2026-10-15). */
 .record-summary__tip-anchor {
   position: relative;
 }
 
 .record-summary__tip {
   position: absolute;
-  inset-block-start: calc(100% + var(--ao-spacing-2));
+  inset-block-start: calc(100% + var(--ao-spacing-3));   /* below the button, clear of the Top arrow */
   inset-inline-start: 50%;
   z-index: 2;
-  inline-size: max-content;
-  padding: var(--ao-spacing-2) var(--ao-spacing-3);
-  border-radius: var(--ao-radius-sm);
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
@@ -616,15 +613,11 @@
   min-height: var(--ao-spacing-7);
 }
 
-/* The shared status-strip tooltip (RecordSummary.js): the DS Tooltip, sized to its label as B's pinned-icon
- * tips are, fixed under the hovered signal / subscription. */
+/* The shared status-strip tooltip (RecordSummary.js): the DS Tooltip (Arrow=Top) fixed under the hovered
+ * signal / subscription — the component's own look; only placement here. */
 .record-summary__float-tip {
   position: fixed;
   z-index: 50;
-  inline-size: max-content;
-  max-inline-size: var(--ao-size-6);
-  padding: var(--ao-spacing-2) var(--ao-spacing-3);
-  border-radius: var(--ao-radius-sm);
   pointer-events: none;
 }
 

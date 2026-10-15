@@ -225,14 +225,42 @@ class Html(str):
     Lets a value carry a control (email + copy button) without a new row kind."""
 
 
-def email_copy(addr):
-    """An email address with a Copy button (Markus, 2026-10-15: "a big usability deal" — every address on
-    the record screens). RecordScreen.js copies it and confirms; the icon swaps to a tick."""
-    if not addr or addr == "-":
+def copy_value(text, what, copy=None, href=None):
+    """A value with a Copy button (code-first, 2026-10-15). Emails first (Markus: "a big usability deal"),
+    then phone numbers and web addresses (Mark). `copy` is what lands on the clipboard when it differs from
+    the text shown; `href` makes the value a link (a web address opens in a new tab). RecordScreen.js copies,
+    swaps the icon to a tick and announces it."""
+    if not text or text == "-":
         return "-"
-    return Html(f'<span class="copy-value"><span class="copy-value__text">{e(addr)}</span>'
-                f'<button type="button" class="copy-value__btn" data-copy-value="{e(addr)}" aria-label="Copy {e(addr)}" title="Copy email address">'
+    copy = copy or text
+    title = f"Copy {what}"
+    shown = (f'<a class="copy-value__text copy-value__link" href="{e(href)}" target="_blank" rel="noopener noreferrer">{e(text)}</a>'
+             if href else f'<span class="copy-value__text">{e(text)}</span>')
+    return Html(f'<span class="copy-value">{shown}'
+                f'<button type="button" class="copy-value__btn" data-copy-value="{e(copy)}" data-copy-title="{e(title)}" '
+                f'aria-label="{e(title)}: {e(text)}" title="{e(title)}">'
                 f'{icon("copy", "copy-value__icon copy-value__icon--copy")}{icon("check", "copy-value__icon copy-value__icon--done")}</button></span>')
+
+
+def email_copy(addr):
+    return copy_value(addr, "email address")
+
+
+def phone_copy(number):
+    """Shown as written; copied as digits (and a leading +) so it pastes straight into a dialler."""
+    if not number or number == "-":
+        return "-"
+    digits = number.strip()
+    if digits.startswith("+"):
+        digits = digits.replace("(0)", "")   # "+44 (0)20 …" dials as +4420…, not +44020…
+    return copy_value(number, "phone number", copy=re.sub(r"(?!^\+)[^\d]", "", digits))
+
+
+def web_copy(url):
+    """A web address: a link that opens in a new tab, plus Copy (copies the full URL)."""
+    if not url or url == "-":
+        return "-"
+    return copy_value(re.sub(r"^https?://", "", url).rstrip("/"), "web address", copy=url, href=url)
 
 
 # Colour-coded topics (Markus, 2026-10-15): live colours a topic from its own setting; the demo gives a few

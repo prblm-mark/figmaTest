@@ -40,7 +40,7 @@ def account_summary(a, contacts, kebab):
         "kebab": kebab, "defaults": ACCOUNT_PINS,
         "facts": [("Account code", e(a["code"])), ("Account type", _chip(a["type"])),
                   ("Next task", _next_task(task[0], task[1], task[2]) if task else "-"),
-                  ("Telephone", e(a["tel"])), ("Website", _link(a["website"])), ("Address", e(addr)),
+                  ("Telephone", m.phone_copy(a["tel"])), ("Website", m.web_copy(a["website"])), ("Address", e(addr)),
                   ("Topics", "".join(m.topic_chip(t) for t in a["topics"]))],
         "links": m.quick_links(a["name"], x="@northbridgemedia",
                                linkedin="https://www.linkedin.com/company/northbridge-media-example", address=addr),
@@ -59,7 +59,7 @@ def contact_summary(c, kebab):
     facts = [("User code", e(c["code"])), ("External user ID", e(c.get("external") or "-")), ("Job title", e(c.get("job") or "-")),
              ("Account", "".join(_chip(x) for x in accounts) or "-"),
              ("Email", m.email_copy(c.get("email"))),
-             ("Telephone", e(c.get("tel") or "-")), ("Mobile", e(c.get("mobile") or "-")),
+             ("Telephone", m.phone_copy(c.get("tel"))), ("Mobile", m.phone_copy(c.get("mobile"))),
              ("Next task", _next_task(task[0], *task[1].replace("Due ", "").split(" · ")) if task else "-"),
              ("Topics", "".join(m.topic_chip(t) for t in c["topics"]) or "-")]
     first, last = c["first"].split(" · "), c["last"].split(" · ")
@@ -102,7 +102,7 @@ def pinned_actions(kebab, defaults, style):
     items = []
     for pid in defaults:
         label, ic, attrs = by_id[pid]
-        tip = (f'<span class="tooltip record-summary__tip" aria-hidden="true"><span class="tooltip__text">{e(label)}</span></span>')
+        tip = (f'<span class="tooltip tooltip--arrow-top record-summary__tip" aria-hidden="true"><span class="tooltip__text">{e(label)}</span></span>')
         if style == "icon":
             items.append(f'<li class="record-summary__tip-anchor"><a class="btn btn--secondary btn--icon btn--sm" aria-label="{e(label)}"{attrs}>'
                          f'{m.icon(ic)}</a>{tip}</li>')

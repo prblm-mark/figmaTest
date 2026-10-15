@@ -180,7 +180,7 @@ def sidebar(o, c):
               f'<span>Change</span></button></div>')
     history = m.record_list([(t, when, None, g) for t, when, g in o["history"]], "No status changes yet.",
                             todo="order-history", timeline=True)
-    customer = m.fact_list([("Name", c["name"]), ("Company", c["company"]), ("Email", m.email_copy(c["email"])), ("Telephone", c["tel"])])
+    customer = m.fact_list([("Name", c["name"]), ("Company", c["company"]), ("Email", m.email_copy(c["email"])), ("Telephone", m.phone_copy(c["tel"]))])
     view_contact = ('<a class="btn btn--tertiary btn--xs" href="ContactView.html" aria-label="View the customer\'s contact record" '
                     'data-keep-width data-backend-todo="order-record"><span>View contact</span></a>')
     notes = m.record_list([], "No order notes yet.", todo="order-notes")

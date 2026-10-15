@@ -497,7 +497,7 @@
       btn.title = 'Copied';
       announce('Copied ' + text);
       clearTimeout(btn._copyTimer);
-      btn._copyTimer = setTimeout(function () { btn.classList.remove('is-copied'); btn.title = 'Copy email address'; }, 1600);
+      btn._copyTimer = setTimeout(function () { btn.classList.remove('is-copied'); btn.title = btn.getAttribute('data-copy-title') || 'Copy'; }, 1600);
     }
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(fallbackCopy(text)); });

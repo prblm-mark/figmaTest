@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!document.querySelector(ITEMS)) return;
 
   var tip = document.createElement('span');
-  tip.className = 'tooltip record-summary__float-tip';
+  tip.className = 'tooltip tooltip--arrow-top record-summary__float-tip';
   tip.setAttribute('aria-hidden', 'true');
   tip.hidden = true;
   tip.innerHTML = '<span class="tooltip__text"></span>';
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var w = tip.offsetWidth;
     var left = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), window.innerWidth - w - 8);
     tip.style.left = left + 'px';
-    tip.style.top = (r.bottom + 6) + 'px';
+    tip.style.top = (r.bottom + 10) + 'px';   // clears the Top arrow (6px) with a small gap
   }
 
   function hide() { current = null; tip.hidden = true; }

@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function tip(label) {
     var t = document.createElement('span');
-    t.className = 'tooltip record-summary__tip';
+    t.className = 'tooltip tooltip--arrow-top record-summary__tip';
     t.setAttribute('aria-hidden', 'true');
     t.innerHTML = '<span class="tooltip__text"></span>';
     t.firstChild.textContent = label;
