@@ -116,22 +116,6 @@
   list-style: none;
 }
 
-.record-summary__stat {
-  display: flex;
-  min-width: 0;
-}
-
-.record-summary__stat-value {
-  font-family: var(--ao-font-title);
-  font-weight: var(--ao-font-semibold);
-  color: var(--ao-text-primary);
-}
-
-.record-summary__stat-label {
-  font-size: var(--ao-font-fixed-xs);
-  color: var(--ao-text-contrast);
-}
-
 /* Stats as tiles (B, C) */
 /* Four figures go 4 across, 2 × 2, or 1 per row — never 3 + an orphan (Mark, 2026-10-14; auto-fit wrapped
  * 3 + 1 at mid widths). Keyed on the PANEL's width (record-summary); 1000px is where four StatCards keep
@@ -152,22 +136,6 @@
   .record-summary__stats--tiles {
     grid-template-columns: minmax(0, 1fr);
   }
-}
-
-.record-summary__stats--tiles .record-summary__stat {
-  flex-direction: column;
-  gap: var(--ao-spacing-1);
-  padding: var(--ao-spacing-4) var(--ao-spacing-5);
-  background-color: var(--ao-surface-minimal);
-  border-radius: var(--ao-radius-md);
-}
-
-.record-summary__stats--tiles .record-summary__stat-value {
-  font-size: var(--ao-font-fixed-xl);
-  line-height: var(--ao-leading-sm);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 /* ── B · Compact ──────────────────────────────────── */
@@ -632,20 +600,10 @@
   list-style: none;
 }
 
+/* The badge's box positions the Avatar's own .avatar__dot (top right), as on any Avatar. */
 .record-summary__sub {
   position: relative;
   display: inline-flex;
-}
-
-.record-summary__sub-live {
-  position: absolute;
-  inset-block-end: 0;
-  inset-inline-end: 0;
-  inline-size: var(--ao-spacing-3);   /* 8 on a 32 badge, as the signal circles' scale */
-  block-size: var(--ao-spacing-3);
-  background-color: var(--ao-surface-success);
-  border: 2px solid var(--ao-surface-primary);
-  border-radius: var(--ao-radius-full);
 }
 
 .record-summary__flags .badge svg {

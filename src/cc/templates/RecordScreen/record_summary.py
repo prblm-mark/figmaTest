@@ -135,7 +135,7 @@ def _facts(s, cls=""):
     return f'<dl class="record-summary__facts{cls}">{rows}</dl>'
 
 
-# B's figures are the DS StatCard (patterns/StatCard), Number First, SOLID icon squares (Mark 2026-10-14, was soft); accents lagoon-first
+# The figures, in B and in BOTH of C's views, are the DS StatCard (patterns/StatCard), Number First, SOLID icon squares (Mark 2026-10-14, was soft); accents lagoon-first
 # (feedback: CC cards lead with lagoon, blue last).
 STAT_HUES = ["lagoon", "jade", "violet-radix", "purple"]
 
@@ -147,11 +147,6 @@ def _stat_cards(s):
                     for i, (v, label, ic) in enumerate(s["stats"]))
     return f'<ul class="record-summary__stats record-summary__stats--tiles record-summary__stats--cards" aria-label="Key figures">{cards}</ul>'
 
-
-def _stats(s, cls=""):
-    tiles = "".join(f'<li class="record-summary__stat"><span class="record-summary__stat-value">{e(v)}</span>'
-                    f'<span class="record-summary__stat-label">{e(label)}</span></li>' for v, label, _ in s["stats"])
-    return f'<ul class="record-summary__stats{cls}" aria-label="Key figures">{tiles}</ul>'
 
 
 
@@ -167,7 +162,9 @@ def _status(s):
         badges = "".join(
             f'<li class="record-summary__sub">'
             f'<span class="avatar avatar--size-2 avatar--initials" role="img" aria-label="{e(name)}, active until {e(until)}" data-tip="{e(name)} · active until {e(until)}">{e(abbr)}</span>'
-            f'<span class="record-summary__sub-live" aria-hidden="true"></span></li>' for name, abbr, until in s["subs"])
+            # The Avatar component's notification dot (top right, green). A sibling, not a child: the Initials
+            # type clips its contents (overflow: hidden), which would cut the dot on the circle's corner.
+            f'<span class="avatar__dot avatar__dot--green" aria-hidden="true"></span></li>' for name, abbr, until in s["subs"])
         groups.append(("Active subscriptions", f'<ul class="record-summary__subs">{badges}</ul>', ""))
     if s["flags"]:
         flags = "".join(f'<li class="badge badge--warning">{m.icon("triangle-alert")}{e(f)}</li>' for f in s["flags"])
@@ -213,7 +210,7 @@ def panel(variant, s):
           <div class="record-summary__view record-summary__view--full" id="record-summary-full" data-summary-view="full">
             <div class="record-summary__grid">
               <div class="record-summary__identity">{s["media"]}{s["links"]}{_actions(s, "list")}</div>
-              <div class="record-summary__body">{_facts(s, " record-summary__facts--grid")}{_stats(s, " record-summary__stats--tiles")}{_status(s)}</div>
+              <div class="record-summary__body">{_stat_cards(s)}{_facts(s, " record-summary__facts--grid")}{_status(s)}</div>
             </div>
           </div>
           <div class="record-summary__view record-summary--compact" id="record-summary-compact" data-summary-view="compact" hidden>
