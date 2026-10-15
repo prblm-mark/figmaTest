@@ -261,7 +261,8 @@
     grid-template-columns: var(--ao-size-1) minmax(0, 1fr);
     grid-template-areas:
       "media stats"
-      "actions next";
+      "actions next"
+      "status status";
     gap: var(--ao-spacing-4) var(--ao-spacing-6);
   }
 
@@ -293,6 +294,10 @@
   .record-summary--compact .record-summary__next {
     grid-area: next;
     align-self: stretch;
+  }
+
+  .record-summary--compact .record-summary__status {
+    grid-area: status;
   }
 }
 
@@ -375,7 +380,12 @@
   align-items: flex-start;
 }
 
-.record-summary__facts--grid dd:has(.badge) {
+/* Chips (badges and the linked topic chips) wrap in a row; text values stack. */
+.record-summary__facts--grid dd:has(.badge, .btn) {
+  flex-direction: row;
+}
+
+.record-summary__facts--grid dd:has(.copy-value) {
   flex-direction: row;
 }
 
@@ -586,4 +596,69 @@
 .record-summary--contact .record-summary__view--full .record-summary__avatar,
 .record-summary--contact .record-summary__view--full .record-summary__identity .quick-links {
   align-self: center;
+}
+
+/* ── Status strip (code-first, 2026-10-15; Markus) ──────────────────────────────────────────────────────
+ * The live header's right-hand status: customer signals, active subscriptions as product badges (a green
+ * "live" dot, as live's + marker), and flags as warnings. Full width under the figures in B (its own grid row)
+ * and at the foot of C's full view. Groups appear only when they have something. */
+.record-summary__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--ao-spacing-5) var(--ao-spacing-8);
+  min-width: 0;
+  padding-block-start: var(--ao-spacing-5);
+  border-block-start: 1px solid var(--ao-border-secondary);
+}
+
+.record-summary__status-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-3);
+  min-width: 0;
+}
+
+.record-summary__status-label {
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-2xs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
+}
+
+.record-summary__subs,
+.record-summary__flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ao-spacing-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.record-summary__sub {
+  position: relative;
+  display: inline-flex;
+}
+
+.record-summary__sub-live {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  inline-size: var(--ao-spacing-4);
+  block-size: var(--ao-spacing-4);
+  background-color: var(--ao-surface-success);
+  border: 2px solid var(--ao-surface-primary);
+  border-radius: var(--ao-radius-full);
+}
+
+.record-summary__flags .badge svg {
+  inline-size: var(--ao-icon-size-xs);
+  block-size: var(--ao-icon-size-xs);
+  flex: none;
+}
+
+.record-summary__status .avatar-group {
+  min-height: var(--ao-spacing-7);
 }

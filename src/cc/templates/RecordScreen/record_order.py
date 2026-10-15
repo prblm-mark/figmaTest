@@ -151,8 +151,8 @@ def view_sections(o, c):
                        + _th("Tax", drop=2, num=True) + _th("External code", drop=1), pay_rows)
     payment = [t("Payment method", p["method"]), m.view_row("Payment status", "html", _badge(p["status"], "success")),
                t("Gateway reference", None), t("Payment ID", None), t("Payment provider return", None)]
-    customer = [t("Name", c["name"]), t("Email", c["email"]), t("Member type", c["member"]), t("Job title", c["job"]),
-                t("Company VAT number", None), t("End user", c["name"]), t("End user email", c["email"])]
+    customer = [t("Name", c["name"]), t("Email", m.email_copy(c["email"])), t("Member type", c["member"]), t("Job title", c["job"]),
+                t("Company VAT number", None), t("End user", c["name"]), t("End user email", m.email_copy(c["email"]))]
     addr = "<br>".join(e(x) for x in [c["name"]] + ADDRESS + [c["tel"]])
     addresses = [m.view_row(label, "html", f'<address class="order-address">{addr}</address>')
                  for label in ("Invoice address", "Billing address", "Delivery address")]
@@ -180,7 +180,7 @@ def sidebar(o, c):
               f'<span>Change</span></button></div>')
     history = m.record_list([(t, when, None, g) for t, when, g in o["history"]], "No status changes yet.",
                             todo="order-history", timeline=True)
-    customer = m.fact_list([("Name", c["name"]), ("Company", c["company"]), ("Email", c["email"]), ("Telephone", c["tel"])])
+    customer = m.fact_list([("Name", c["name"]), ("Company", c["company"]), ("Email", m.email_copy(c["email"])), ("Telephone", c["tel"])])
     view_contact = ('<a class="btn btn--tertiary btn--xs" href="ContactView.html" aria-label="View the customer\'s contact record" '
                     'data-keep-width data-backend-todo="order-record"><span>View contact</span></a>')
     notes = m.record_list([], "No order notes yet.", todo="order-notes")

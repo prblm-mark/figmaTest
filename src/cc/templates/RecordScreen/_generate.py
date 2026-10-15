@@ -336,7 +336,8 @@ C0 = contact.CONTACTS[0]
 ACCOUNT_PIN_KEBAB = [("Add contact", "user-plus", ' href="#" data-backend-todo="account-actions"')] + account.KEBAB
 for v, vname in summary.VARIANTS.items():
     skip_a = () if v == "B" else ("Record", "Engagement")
-    skip_c = () if v == "B" else ("Record",)
+    # Customer signals now sit in the panel's status strip (Markus, 2026-10-15), so not in the sidebar too.
+    skip_c = ("Customer signals",) if v == "B" else ("Record", "Customer signals")
     pages[f"AccountViewPanel{v}.html"] = swap(build(
         f"Account · View · Panel {v} ({vname})",
         m.record_header("Account", A["name"], "view", view_href=account.VIEW, edit_href=account.EDIT,
@@ -345,13 +346,15 @@ for v, vname in summary.VARIANTS.items():
              + m.record_tabs("details", sidebar=True, tabs=account.tabs())
              + body(account.view_sections(A), account.sidebar(A, skip=skip_a)), mode="view", record_type="account"),
         KIT_JS + TAB_JS + SUMMARY_JS, crumbs=("CRM", "Accounts", "Account")), "</head>", SUMMARY_CSS)
-    pages[f"ContactViewPanel{v}.html"] = swap(build(
-        f"Contact · View · Panel {v} ({vname})",
-        m.record_header("Contact", C0["name"], "view", view_href=C0["file"], edit_href=C0.get("edit", "#"),
-                        secondary=contact.SECONDARY, more=contact.KEBAB, pins="contact"),
-        page(summary.panel(v, summary.contact_summary(C0, contact.KEBAB)) + m.record_tabs("details", sidebar=True, tabs=contact.tabs(C0))
-             + body(contact.view_sections(C0, photo=False), contact.sidebar(C0, skip=skip_c)), mode="view", record_type="contact"),
-        KIT_JS + SUMMARY_JS, crumbs=("CRM", "Contacts", "Contact")), "</head>", SUMMARY_CSS)
+    # The full contact, and the sparse one (inactive: flags, no subscriptions — 2026-10-15).
+    for cc_, fname in ((C0, f"ContactViewPanel{v}.html"), (contact.CONTACTS[1], f"ContactViewSparsePanel{v}.html")):
+        pages[fname] = swap(build(
+            f"Contact · View · Panel {v} ({vname})" + (" · Sparse" if cc_ is not C0 else ""),
+            m.record_header("Contact", cc_["name"], "view", view_href=cc_["file"], edit_href=cc_.get("edit", "#"),
+                            secondary=contact.SECONDARY, more=contact.KEBAB, pins="contact"),
+            page(summary.panel(v, summary.contact_summary(cc_, contact.KEBAB)) + m.record_tabs("details", sidebar=True, tabs=contact.tabs(cc_))
+                 + body(contact.view_sections(cc_, photo=False), contact.sidebar(cc_, skip=skip_c)), mode="view", record_type="contact"),
+            KIT_JS + SUMMARY_JS, crumbs=("CRM", "Contacts", "Contact")), "</head>", SUMMARY_CSS)
 
 # ── Media View + Edit (code-first, 2026-10-13): the live media item screens (MediaDetail.cfm +
 # MediaAllElements.cfm) on the kit. Live has no tabs: Details carries its panels, Page analysis its

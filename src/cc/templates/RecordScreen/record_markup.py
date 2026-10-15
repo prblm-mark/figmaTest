@@ -220,6 +220,42 @@ def media_picker(label, src=None, modal="modal-media", placeholder="image"):
 
 
 # ── FieldRow (view) ──────────────────────────────────────────────────
+class Html(str):
+    """Markup passed where a view row / fact list expects text: view_row(kind="text") keeps it unescaped.
+    Lets a value carry a control (email + copy button) without a new row kind."""
+
+
+def email_copy(addr):
+    """An email address with a Copy button (Markus, 2026-10-15: "a big usability deal" — every address on
+    the record screens). RecordScreen.js copies it and confirms; the icon swaps to a tick."""
+    if not addr or addr == "-":
+        return "-"
+    return Html(f'<span class="copy-value"><span class="copy-value__text">{e(addr)}</span>'
+                f'<button type="button" class="copy-value__btn" data-copy-value="{e(addr)}" aria-label="Copy {e(addr)}" title="Copy email address">'
+                f'{icon("copy", "copy-value__icon copy-value__icon--copy")}{icon("check", "copy-value__icon copy-value__icon--done")}</button></span>')
+
+
+# Colour-coded topics (Markus, 2026-10-15): live colours a topic from its own setting; the demo gives a few
+# topics an accent so the chips read as the live ones do. Unlisted topics stay neutral.
+# TODO(backend:RecordScreen) record-topic-colours: each topic's colour → the topic's own colour setting
+TOPIC_HUES = {"Commerce": "jade", "Ecommerce": "jade", "eMedia": "jade", "Control": "purple",
+              "Publishing and Media": "jade"}
+
+
+def topic_chip(name):
+    hue = TOPIC_HUES.get(name)
+    if not hue:
+        return chip(name)
+    # Same linked chip as every tag (Button Tertiary xs), re-coloured by the topic's accent.
+    return f'<a class="btn btn--tertiary btn--xs topic-chip topic-chip--{hue}" href="#"><span>{e(name)}</span></a>'
+
+
+def topic_tags(names):
+    if not names:
+        return "-"
+    return Html('<div class="field-row__tags">' + "".join(topic_chip(t) for t in names) + '</div>')
+
+
 def view_row(label, kind, value=None, compact=False):
     mods = ["field-row"]
     if compact:
@@ -239,7 +275,7 @@ def view_row(label, kind, value=None, compact=False):
     elif kind == "html":
         val = value  # pre-built markup (Avatar, badges): the caller escapes its own text
     else:
-        val = e(value)
+        val = value if isinstance(value, Html) else e(value)
     return f'''<div class="{' '.join(mods)}">
             <dt class="field-row__label">{e(label)}</dt>
             <dd class="field-row__value">{val}</dd>
