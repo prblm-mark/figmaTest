@@ -48,7 +48,7 @@ No interactive states. The arrow variants were added in Figma on 2026-10-06 and 
 |---|---|---|
 | Background + arrow | `Neutral/1000` = `#0b0b0c` | Approved primitive — the tooltip is a fixed dark panel in both themes. Arrow re-approved 2026-10-15. |
 | Text color | `Neutral/0` = `#ffffff` | Approved primitive — always white on the dark panel. |
-| Box shadow | Figma: raw `0 2px 10px rgba(0,0,0,0.15)` (no effect style) | Code keeps `var(--ao-shadow-md)` (designer, 2026-10-15). Known mismatch: resolve in Figma by binding a shadow style. |
+| Box shadow | `shadow/md` effect style | `var(--ao-shadow-md)` (designer, 2026-10-15). Figma had a raw `0 2 10 / 15%`; all 5 variants bound to `shadow/md` on 2026-10-15, so Figma and code now match. |
 | Arrow overlap | Figma places the 6px arrow at -5 (1px into the body) | `calc(var(--ao-spacing-2) * -1 + 1px)` — the 1px is an optical overlap so no seam shows. |
 
 ## Notes
@@ -58,4 +58,4 @@ No interactive states. The arrow variants were added in Figma on 2026-10-06 and 
   Arrow=Top.
 - Earlier notes listed `Neutral/950 #0c121c` and a fixed 351px width — both stale; Figma binds Neutral/1000 and
   hugs up to size/7.
-- Code Connect (`Tooltip.figma.ts`) maps the Arrow enum to the modifier class — written 2026-10-15, not yet published.
+- Code Connect (`Tooltip.figma.ts`) maps the Arrow enum to the modifier class — PUBLISHED 2026-10-15.

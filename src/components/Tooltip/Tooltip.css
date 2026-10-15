@@ -21,7 +21,7 @@
   background-color: #0b0b0c;             /* Neutral/1000 — approved primitive; intentionally fixed dark in both themes */
   border-radius: var(--ao-radius-lg);
   padding: var(--ao-spacing-5);
-  box-shadow: var(--ao-shadow-md);       /* Figma draws a raw 0 2 10 / 15% shadow; --ao-shadow-md kept (designer, 2026-10-15) */
+  box-shadow: var(--ao-shadow-md);       /* shadow/md — Figma variants bound to the style 2026-10-15 */
   /* Text set on the container too, so a bare text child (the Code Connect snippet) is styled. */
   font-family: var(--ao-font-body);
   font-size: var(--ao-font-fixed-xxs);   /* 12px — body/xxs */
