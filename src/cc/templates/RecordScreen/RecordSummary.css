@@ -641,8 +641,8 @@
   position: absolute;
   inset-block-end: 0;
   inset-inline-end: 0;
-  inline-size: var(--ao-spacing-4);
-  block-size: var(--ao-spacing-4);
+  inline-size: var(--ao-spacing-3);   /* 8 on a 32 badge, as the signal circles' scale */
+  block-size: var(--ao-spacing-3);
   background-color: var(--ao-surface-success);
   border: 2px solid var(--ao-surface-primary);
   border-radius: var(--ao-radius-full);

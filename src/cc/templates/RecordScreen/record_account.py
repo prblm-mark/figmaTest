@@ -83,7 +83,7 @@ ACCOUNT = {
                       "referrers": [("https://www.google.com/", "61"), ("https://www.linkedin.com/", "18"),
                                     ("https://www.northbridge-media.example/about", "9")]},
     # Active subscriptions as badges (Markus, 2026-10-15) — the account's free subscription below.
-    "subs": [("Affino Insight Premium", "AIP", "31 Dec 2026")], "flags": [],
+    "subs": [("Insight Premium", "I", "31 Dec 2026")], "flags": [],
     "created": "08 Jan 2016, 15:12", "updated": "06 Oct 2026, 10:41", "first": "08 Jan 2016 · Account created",
     "last": "06 Oct 2026 · Login (Tom Hartley)", "public": "Yes",
 }
@@ -151,7 +151,7 @@ PUBLIC_VIEW = [("Public", "Yes"), ("Public Name", "Northbridge Media"), ("Priori
                ("Open Featured Link In New Tab", "Yes"), ("Featured Contacts", "Olivia Bennett, James Okafor"),
                ("Featured Articles", "-"), ("Featured Images", "-"), ("Featured Documents", "-")]
 
-FREE_SUBS = [("Affino", "Affino Insight Premium", "01 Jan 2026", "31 Dec 2026", "Email domain", "10", "4")]
+FREE_SUBS = [("Affino", "Insight Premium", "01 Jan 2026", "31 Dec 2026", "Email domain", "10", "4")]
 
 
 # ── View: sidebar (the live header's facts and activity) ─────────────────────────────────────────

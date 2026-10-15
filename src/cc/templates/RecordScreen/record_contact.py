@@ -156,7 +156,7 @@ FULL = {
     "code": "208114", "type": "Full account", "level": "Regular", "points": "671",
     # Markus, 2026-10-15: External User ID, active subscriptions (badges) and flags (warnings) from the live header.
     "external": "NBM-00417",
-    "subs": [("Affino Insight Premium", "AIP", "31 Dec 2026"), ("Affino Briefing Plus", "ABP", "30 Jun 2027")],
+    "subs": [("Insight Premium", "I", "31 Dec 2026"), ("Briefing Plus", "B", "30 Jun 2027")],
     "flags": [],
     "first": "08 Jan 2016 · Member", "last": "27 Aug 2026 · Login", "login": "27 Aug 2026",
     "signals": _signals([("New opportunity", 34), ("Regular user (10 logins)", 10), ("Campaign message read", 5),

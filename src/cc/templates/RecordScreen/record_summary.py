@@ -163,9 +163,10 @@ def _status(s):
     if s["signals"]:
         groups.append(('Customer signals', m.signal_group(s["signals"]), ""))
     if s["subs"]:
+        # Same 32px as the signal circles, one initial (Mark, 2026-10-15); the name is in the tooltip + label.
         badges = "".join(
             f'<li class="record-summary__sub" title="{e(name)} · active until {e(until)}">'
-            f'<span class="avatar avatar--size-3 avatar--initials" role="img" aria-label="{e(name)}, active until {e(until)}">{e(abbr)}</span>'
+            f'<span class="avatar avatar--size-2 avatar--initials" role="img" aria-label="{e(name)}, active until {e(until)}">{e(abbr)}</span>'
             f'<span class="record-summary__sub-live" aria-hidden="true"></span></li>' for name, abbr, until in s["subs"])
         groups.append(("Active subscriptions", f'<ul class="record-summary__subs">{badges}</ul>', ""))
     if s["flags"]:
