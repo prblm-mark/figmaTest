@@ -77,6 +77,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function hide() { current = null; tip.hidden = true; }
 
+  // Lift every title up front, so no item can show the browser's own box alongside ours.
+  document.querySelectorAll(ITEMS).forEach(text);
+
   document.addEventListener('mouseover', function (e) {
     var el = e.target.closest(ITEMS);
     if (el && el !== current) show(el);
