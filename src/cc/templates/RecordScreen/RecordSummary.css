@@ -657,3 +657,19 @@
 .record-summary__status .avatar-group {
   min-height: var(--ao-spacing-7);
 }
+
+/* The shared status-strip tooltip (RecordSummary.js): the DS Tooltip, sized to its label as B's pinned-icon
+ * tips are, fixed under the hovered signal / subscription. */
+.record-summary__float-tip {
+  position: fixed;
+  z-index: 50;
+  inline-size: max-content;
+  max-inline-size: var(--ao-size-6);
+  padding: var(--ao-spacing-2) var(--ao-spacing-3);
+  border-radius: var(--ao-radius-sm);
+  pointer-events: none;
+}
+
+.record-summary__float-tip[hidden] {
+  display: none;
+}
