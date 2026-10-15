@@ -23,6 +23,7 @@
       letter-spacing: 0.08em;
       margin: 0 0 var(--ao-spacing-5);
     }
+    .demo-arrows { display: flex; flex-wrap: wrap; gap: var(--ao-spacing-7); padding: var(--ao-spacing-3); }
   </style>
 </head>
 <body>
@@ -30,9 +31,19 @@
   <h1 style="font-size: var(--ao-font-fixed-4xl); font-weight: var(--ao-font-bold); color: var(--ao-text-primary); margin: 0 0 var(--ao-spacing-6);">Tooltip</h1>
 
   <div class="demo-section">
-    <p class="demo-section__title">Default</p>
+    <p class="demo-section__title">Arrow = None (default) · hugs its text up to size-7, then wraps</p>
     <div class="tooltip" role="tooltip">
       <p class="tooltip__text">Enter the prompt used to initiate the conversation with the AI Large Language Model (LLM). Note: Please be aware that this will directly instruct the LLM how to retrieve and present the answer. For more details, contact the Affino team to customise your system role.</p>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <p class="demo-section__title">Arrow = Top / Bottom / Left / Right — the side the arrow sits on, pointing at the target</p>
+    <div class="demo-arrows">
+      <div class="tooltip tooltip--arrow-top" role="tooltip"><p class="tooltip__text">Tooltip text</p></div>
+      <div class="tooltip tooltip--arrow-bottom" role="tooltip"><p class="tooltip__text">Tooltip text</p></div>
+      <div class="tooltip tooltip--arrow-left" role="tooltip"><p class="tooltip__text">Tooltip text</p></div>
+      <div class="tooltip tooltip--arrow-right" role="tooltip"><p class="tooltip__text">Tooltip text</p></div>
     </div>
   </div>
 

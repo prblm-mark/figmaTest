@@ -82,6 +82,8 @@ ACCOUNT = {
     "page_analysis": {"total": "214", "per_day": "0.59", "year": "214", "viewers": m.VIEWERS[:3],
                       "referrers": [("https://www.google.com/", "61"), ("https://www.linkedin.com/", "18"),
                                     ("https://www.northbridge-media.example/about", "9")]},
+    # Active subscriptions as badges (Markus, 2026-10-15) — the account's free subscription below.
+    "subs": [("Insight Premium", "I", "31 Dec 2026")], "flags": [],
     "created": "08 Jan 2016, 15:12", "updated": "06 Oct 2026, 10:41", "first": "08 Jan 2016 · Account created",
     "last": "06 Oct 2026 · Login (Tom Hartley)", "public": "Yes",
 }
@@ -149,16 +151,16 @@ PUBLIC_VIEW = [("Public", "Yes"), ("Public Name", "Northbridge Media"), ("Priori
                ("Open Featured Link In New Tab", "Yes"), ("Featured Contacts", "Olivia Bennett, James Okafor"),
                ("Featured Articles", "-"), ("Featured Images", "-"), ("Featured Documents", "-")]
 
-FREE_SUBS = [("Affino", "Affino Insight Premium", "01 Jan 2026", "31 Dec 2026", "Email domain", "10", "4")]
+FREE_SUBS = [("Affino", "Insight Premium", "01 Jan 2026", "31 Dec 2026", "Email domain", "10", "4")]
 
 
 # ── View: sidebar (the live header's facts and activity) ─────────────────────────────────────────
 def sidebar(a, skip=()):
     addr = ", ".join(x for x in a["address"] if x)
     facts = [("Account code", a["code"]), ("Account type", a["type"]), ("Primary contact", "Olivia Bennett"),
-             ("Account manager", a["manager"]), ("Telephone", a["tel"]), ("Email", a["email"]), ("Website", a["website"]),
+             ("Account manager", a["manager"]), ("Telephone", m.phone_copy(a["tel"])), ("Email", m.email_copy(a["email"])), ("Website", m.web_copy(a["website"])),
              ("Address", addr), ("Industry", a["industry"]), ("Company size", a["size"]), ("Turnover", a["turnover"]),
-             ("Topics", a["topics"])]
+             ("Topics", m.topic_tags(a["topics"]))]
     people = m.record_list([(n, job, ct._badge(r[0], "neutral") if r else None) for n, _, job, _, _, r in CONTACTS[:4]],
                            "No contacts yet.", more=f"{len(CONTACTS) - 4} more contacts", todo="account-contacts")
     tasks = m.record_list([(row[0], f"Due {row[1]} · {row[2]}", None) for row in a["task_rows"]["open"]], "No open tasks.",
@@ -199,12 +201,12 @@ def _person(name, seed, sub):
 
 
 def contacts_tab(a):
-    rows = [[_person(n, seed, job), e(mail), " ".join(ct._badge(r, "neutral") for r in roles) or "-", e(login)]
+    rows = [[_person(n, seed, job), m.email_copy(mail), " ".join(ct._badge(r, "neutral") for r in roles) or "-", e(login)]
             for n, seed, job, mail, login, roles in CONTACTS]
     cols = [("Contact", dict(keep=True, weight=2, fluid=True)), ("Email", dict(drop=2)), ("Role", dict(drop=1)),
             ("Last login", dict(keep=True))]
     former = [[e(n), e(job), e(when)] for n, job, when in FORMER]
-    pending = [[e(n), e(mail), e(when)] for n, mail, when in PENDING]
+    pending = [[e(n), m.email_copy(mail), e(when)] for n, mail, when in PENDING]
     # TODO(backend:RecordScreen) account-contacts: the account's contacts (with primary / marketing / invoice roles), former and pending contacts are static → AccountUser + pending registrations; Add contact opens the account contact form
     return (ct._rows_card("Account contacts", cols, rows, "No contacts yet.", "account-contacts", add="Add contact")
             + ct._grid(ct._rows_card("Former contacts", [("Contact", dict(keep=True, weight=2, fluid=True)), ("Job title", dict(drop=1)),

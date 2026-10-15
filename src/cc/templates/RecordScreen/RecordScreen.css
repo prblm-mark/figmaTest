@@ -1048,3 +1048,101 @@
   font-size: var(--ao-font-fixed-xs);
   color: var(--ao-text-secondary);
 }
+
+/* ── Copy value (code-first, 2026-10-15) ──────────────────────────────────────────────────────────────
+ * Every email address on the record screens carries a Copy button (Markus: "a big usability deal"), and
+ * so do phone numbers (copied as digits) and web addresses (a link + Copy) — Mark, 2026-10-15.
+ * record_markup.email_copy() builds it; RecordScreen.js copies, swaps the icon to a tick for a moment and
+ * announces "Copied" through one polite live region. */
+.copy-value {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ao-spacing-1);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.copy-value__text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* A web address is a link (opens in a new tab) — brand text, underline on hover, as other value links. */
+.copy-value__link {
+  color: var(--ao-text-brand);
+  text-decoration: none;
+}
+
+.copy-value__link:hover {
+  text-decoration: underline;
+}
+
+.copy-value__btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ao-spacing-7);
+  block-size: var(--ao-spacing-7);
+  margin-block: calc(var(--ao-spacing-2) * -1);   /* a 32px target without growing a 20px row */
+  padding: 0;
+  color: var(--ao-icon-secondary);
+  background: none;
+  border: 0;
+  border-radius: var(--ao-radius-md);
+  cursor: pointer;
+  transition: background-color var(--ao-transition-default), color var(--ao-transition-default);
+}
+
+.copy-value__btn:hover {
+  color: var(--ao-icon-primary);
+  background-color: var(--ao-surface-minimal);
+}
+
+.copy-value__btn:focus-visible {
+  outline: 2px solid var(--ao-surface-brand);
+  outline-offset: -2px;
+}
+
+.copy-value__btn svg {
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+}
+
+.copy-value__icon--done,
+.copy-value__btn.is-copied .copy-value__icon--copy {
+  display: none;
+}
+
+.copy-value__btn.is-copied .copy-value__icon--done {
+  display: inline-block;
+  color: var(--ao-text-success);
+}
+
+.copy-value__live {
+  position: fixed;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── Colour-coded topics (code-first, 2026-10-15; Markus) ────────────────────────────────────────────
+ * The same linked chip as every tag (Button Tertiary xs), on its topic's accent. Live colours come from
+ * each topic's own setting; the demo maps a few (record_markup.TOPIC_HUES). */
+.topic-chip--jade,
+.topic-chip--jade:hover {
+  color: var(--ao-accent-jade-soft-fg);
+  background-color: var(--ao-accent-jade-soft);
+}
+
+.topic-chip--purple,
+.topic-chip--purple:hover {
+  color: var(--ao-accent-purple-soft-fg);
+  background-color: var(--ao-accent-purple-soft);
+}
+
+.topic-chip:hover span {
+  text-decoration: underline;
+}

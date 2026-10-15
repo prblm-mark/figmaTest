@@ -116,22 +116,6 @@
   list-style: none;
 }
 
-.record-summary__stat {
-  display: flex;
-  min-width: 0;
-}
-
-.record-summary__stat-value {
-  font-family: var(--ao-font-title);
-  font-weight: var(--ao-font-semibold);
-  color: var(--ao-text-primary);
-}
-
-.record-summary__stat-label {
-  font-size: var(--ao-font-fixed-xs);
-  color: var(--ao-text-contrast);
-}
-
 /* Stats as tiles (B, C) */
 /* Four figures go 4 across, 2 × 2, or 1 per row — never 3 + an orphan (Mark, 2026-10-14; auto-fit wrapped
  * 3 + 1 at mid widths). Keyed on the PANEL's width (record-summary); 1000px is where four StatCards keep
@@ -152,22 +136,6 @@
   .record-summary__stats--tiles {
     grid-template-columns: minmax(0, 1fr);
   }
-}
-
-.record-summary__stats--tiles .record-summary__stat {
-  flex-direction: column;
-  gap: var(--ao-spacing-1);
-  padding: var(--ao-spacing-4) var(--ao-spacing-5);
-  background-color: var(--ao-surface-minimal);
-  border-radius: var(--ao-radius-md);
-}
-
-.record-summary__stats--tiles .record-summary__stat-value {
-  font-size: var(--ao-font-fixed-xl);
-  line-height: var(--ao-leading-sm);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 /* ── B · Compact ──────────────────────────────────── */
@@ -375,24 +343,26 @@
   align-items: flex-start;
 }
 
-.record-summary__facts--grid dd:has(.badge) {
+/* Chips (badges and the linked topic chips) wrap in a row; text values stack. */
+.record-summary__facts--grid dd:has(.badge, .btn) {
   flex-direction: row;
 }
 
-/* B's icon-only quick actions: the DS Tooltip under the button on hover / keyboard focus. Sized to its
- * label here (the component's own width is for long help text). */
+.record-summary__facts--grid dd:has(.copy-value) {
+  flex-direction: row;
+}
+
+/* B's icon-only quick actions: the DS Tooltip (Arrow=Top) under the button on hover / keyboard focus. The
+ * component's own radius, padding and hug width — only placement here (Mark, 2026-10-15). */
 .record-summary__tip-anchor {
   position: relative;
 }
 
 .record-summary__tip {
   position: absolute;
-  inset-block-start: calc(100% + var(--ao-spacing-2));
+  inset-block-start: calc(100% + var(--ao-spacing-3));   /* below the button, clear of the Top arrow */
   inset-inline-start: 50%;
   z-index: 2;
-  inline-size: max-content;
-  padding: var(--ao-spacing-2) var(--ao-spacing-3);
-  border-radius: var(--ao-radius-sm);
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
@@ -586,4 +556,71 @@
 .record-summary--contact .record-summary__view--full .record-summary__avatar,
 .record-summary--contact .record-summary__view--full .record-summary__identity .quick-links {
   align-self: center;
+}
+
+/* ── Status strip (code-first, 2026-10-15; Markus) ──────────────────────────────────────────────────────
+ * The live header's right-hand status: customer signals, active subscriptions as product badges (a green
+ * "live" dot, as live's + marker), and flags as warnings. At the foot of C's EXPANDED view only (Mark,
+ * 2026-10-15 — not in B or C collapsed). Groups appear only when they have something. */
+.record-summary__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--ao-spacing-5) var(--ao-spacing-8);
+  min-width: 0;
+  padding-block-start: var(--ao-spacing-5);
+  border-block-start: 1px solid var(--ao-border-secondary);
+}
+
+.record-summary__status-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-3);
+  min-width: 0;
+}
+
+.record-summary__status-label {
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-medium);
+  font-size: var(--ao-font-fixed-2xs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
+}
+
+.record-summary__subs,
+.record-summary__flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ao-spacing-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The badge's box positions the Avatar's own .avatar__dot (top right), as on any Avatar. */
+.record-summary__sub {
+  position: relative;
+  display: inline-flex;
+}
+
+.record-summary__flags .badge svg {
+  inline-size: var(--ao-icon-size-xs);
+  block-size: var(--ao-icon-size-xs);
+  flex: none;
+}
+
+.record-summary__status .avatar-group {
+  min-height: var(--ao-spacing-7);
+}
+
+/* The shared status-strip tooltip (RecordSummary.js): the DS Tooltip (Arrow=Top) fixed under the hovered
+ * signal / subscription — the component's own look; only placement here. */
+.record-summary__float-tip {
+  position: fixed;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.record-summary__float-tip[hidden] {
+  display: none;
 }

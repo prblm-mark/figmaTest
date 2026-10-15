@@ -1,17 +1,33 @@
 /* Tooltip component
- * Figma node: 68:4490 — "Tooltip"
- * Single variant
+ * Figma: component set 169:3025 — "Tooltip", Arrow = None (68:4490) / Top (4081:160050) /
+ * Bottom (4081:160053) / Left (4081:160056) / Right (4081:160059). Arrow added in Figma 2026-10-06;
+ * code caught up 2026-10-15.
+ *
+ * Figma: "Hugs its text up to size-7, then wraps. Arrow = the side the arrow sits on, pointing at the
+ * target. Arrow is a spacing-4 × spacing-2 triangle in the tooltip fill."
+ *
+ * The component owns its look only; the parent places it (position, offsets, z-index).
  */
 
 /* ── Container ───────────────────────────────────────── */
 
 .tooltip {
-  width: 100%;
-  max-width: 21.9375rem;                 /* 351px ÷ 16 — fixed design width, no --ao-* token */
+  position: relative;                    /* anchors the arrow; a parent may still set absolute/fixed */
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-3);              /* spacing/3 — between text blocks */
+  inline-size: max-content;              /* hugs its text… */
+  max-inline-size: var(--ao-size-7);     /* …up to size/7 (384), then wraps */
   background-color: #0b0b0c;             /* Neutral/1000 — approved primitive; intentionally fixed dark in both themes */
   border-radius: var(--ao-radius-lg);
   padding: var(--ao-spacing-5);
-  box-shadow: var(--ao-shadow-md);
+  box-shadow: var(--ao-shadow-md);       /* Figma draws a raw 0 2 10 / 15% shadow; --ao-shadow-md kept (designer, 2026-10-15) */
+  /* Text set on the container too, so a bare text child (the Code Connect snippet) is styled. */
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);   /* 12px — body/xxs */
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-xs);     /* 16px */
+  color: #ffffff;                        /* Neutral/0 — approved primitive */
 }
 
 /* ── Text ────────────────────────────────────────────── */
@@ -23,4 +39,53 @@
   font-weight: var(--ao-font-regular);   /* 400 */
   line-height: var(--ao-leading-xs);      /* 16px */
   color: #ffffff;                        /* Neutral/0 — approved primitive; always white on dark panel */
+}
+
+/* ── Arrow ───────────────────────────────────────────── */
+/* A spacing-4 × spacing-2 triangle (12 × 6) in the tooltip fill, centred on its side, pointing out at
+ * the target. It overlaps the body by 1px (Figma places it at -5 on a 6px arrow) so no seam shows. */
+
+.tooltip--arrow-top::before,
+.tooltip--arrow-bottom::before,
+.tooltip--arrow-left::before,
+.tooltip--arrow-right::before {
+  content: "";
+  position: absolute;
+  background-color: #0b0b0c;             /* Neutral/1000 — approved primitive (designer, 2026-10-15), = the body fill */
+}
+
+.tooltip--arrow-top::before,
+.tooltip--arrow-bottom::before {
+  inset-inline-start: 50%;
+  inline-size: var(--ao-spacing-4);      /* 12 */
+  block-size: var(--ao-spacing-2);       /* 6 */
+  transform: translateX(-50%);
+}
+
+.tooltip--arrow-top::before {
+  inset-block-start: calc(var(--ao-spacing-2) * -1 + 1px);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.tooltip--arrow-bottom::before {
+  inset-block-end: calc(var(--ao-spacing-2) * -1 + 1px);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.tooltip--arrow-left::before,
+.tooltip--arrow-right::before {
+  inset-block-start: 50%;
+  inline-size: var(--ao-spacing-2);      /* 6 */
+  block-size: var(--ao-spacing-4);       /* 12 */
+  transform: translateY(-50%);
+}
+
+.tooltip--arrow-left::before {
+  inset-inline-start: calc(var(--ao-spacing-2) * -1 + 1px);
+  clip-path: polygon(100% 0, 100% 100%, 0 50%);
+}
+
+.tooltip--arrow-right::before {
+  inset-inline-end: calc(var(--ao-spacing-2) * -1 + 1px);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
 }

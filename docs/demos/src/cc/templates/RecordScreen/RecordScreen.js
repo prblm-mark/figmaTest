@@ -457,3 +457,52 @@
     }
   });
 })();
+
+/* Copy value (code-first, 2026-10-15): the Copy button beside every email address (record_markup.email_copy).
+ * Delegated, so buttons rendered later (tabs, modals) work too. The icon swap is a class toggle — both icons
+ * are drawn up front; never createIcons() in a click (it redraws icons page-wide). */
+(function () {
+  var live = null;
+  function announce(msg) {
+    if (!live) {
+      live = document.createElement('div');
+      live.className = 'copy-value__live';
+      live.setAttribute('role', 'status');
+      document.body.appendChild(live);
+    }
+    live.textContent = '';
+    setTimeout(function () { live.textContent = msg; }, 50);
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    ta.remove();
+    return ok;
+  }
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-copy-value]');
+    if (!btn) return;
+    e.preventDefault();
+    var text = btn.getAttribute('data-copy-value');
+    function done(ok) {
+      if (!ok) { announce('Could not copy. Select the address and copy it instead.'); return; }
+      btn.classList.add('is-copied');
+      btn.title = 'Copied';
+      announce('Copied ' + text);
+      clearTimeout(btn._copyTimer);
+      btn._copyTimer = setTimeout(function () { btn.classList.remove('is-copied'); btn.title = btn.getAttribute('data-copy-title') || 'Copy'; }, 1600);
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(fallbackCopy(text)); });
+    } else {
+      done(fallbackCopy(text));
+    }
+  });
+})();

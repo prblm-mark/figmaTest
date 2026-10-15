@@ -220,6 +220,70 @@ def media_picker(label, src=None, modal="modal-media", placeholder="image"):
 
 
 # ── FieldRow (view) ──────────────────────────────────────────────────
+class Html(str):
+    """Markup passed where a view row / fact list expects text: view_row(kind="text") keeps it unescaped.
+    Lets a value carry a control (email + copy button) without a new row kind."""
+
+
+def copy_value(text, what, copy=None, href=None):
+    """A value with a Copy button (code-first, 2026-10-15). Emails first (Markus: "a big usability deal"),
+    then phone numbers and web addresses (Mark). `copy` is what lands on the clipboard when it differs from
+    the text shown; `href` makes the value a link (a web address opens in a new tab). RecordScreen.js copies,
+    swaps the icon to a tick and announces it."""
+    if not text or text == "-":
+        return "-"
+    copy = copy or text
+    title = f"Copy {what}"
+    shown = (f'<a class="copy-value__text copy-value__link" href="{e(href)}" target="_blank" rel="noopener noreferrer">{e(text)}</a>'
+             if href else f'<span class="copy-value__text">{e(text)}</span>')
+    return Html(f'<span class="copy-value">{shown}'
+                f'<button type="button" class="copy-value__btn" data-copy-value="{e(copy)}" data-copy-title="{e(title)}" '
+                f'aria-label="{e(title)}: {e(text)}" title="{e(title)}">'
+                f'{icon("copy", "copy-value__icon copy-value__icon--copy")}{icon("check", "copy-value__icon copy-value__icon--done")}</button></span>')
+
+
+def email_copy(addr):
+    return copy_value(addr, "email address")
+
+
+def phone_copy(number):
+    """Shown as written; copied as digits (and a leading +) so it pastes straight into a dialler."""
+    if not number or number == "-":
+        return "-"
+    digits = number.strip()
+    if digits.startswith("+"):
+        digits = digits.replace("(0)", "")   # "+44 (0)20 …" dials as +4420…, not +44020…
+    return copy_value(number, "phone number", copy=re.sub(r"(?!^\+)[^\d]", "", digits))
+
+
+def web_copy(url):
+    """A web address: a link that opens in a new tab, plus Copy (copies the full URL)."""
+    if not url or url == "-":
+        return "-"
+    return copy_value(re.sub(r"^https?://", "", url).rstrip("/"), "web address", copy=url, href=url)
+
+
+# Colour-coded topics (Markus, 2026-10-15): live colours a topic from its own setting; the demo gives a few
+# topics an accent so the chips read as the live ones do. Unlisted topics stay neutral.
+# TODO(backend:RecordScreen) record-topic-colours: each topic's colour → the topic's own colour setting
+TOPIC_HUES = {"Commerce": "jade", "Ecommerce": "jade", "eMedia": "jade", "Control": "purple",
+              "Publishing and Media": "jade"}
+
+
+def topic_chip(name):
+    hue = TOPIC_HUES.get(name)
+    if not hue:
+        return chip(name)
+    # Same linked chip as every tag (Button Tertiary xs), re-coloured by the topic's accent.
+    return f'<a class="btn btn--tertiary btn--xs topic-chip topic-chip--{hue}" href="#"><span>{e(name)}</span></a>'
+
+
+def topic_tags(names):
+    if not names:
+        return "-"
+    return Html('<div class="field-row__tags">' + "".join(topic_chip(t) for t in names) + '</div>')
+
+
 def view_row(label, kind, value=None, compact=False):
     mods = ["field-row"]
     if compact:
@@ -239,7 +303,7 @@ def view_row(label, kind, value=None, compact=False):
     elif kind == "html":
         val = value  # pre-built markup (Avatar, badges): the caller escapes its own text
     else:
-        val = e(value)
+        val = value if isinstance(value, Html) else e(value)
     return f'''<div class="{' '.join(mods)}">
             <dt class="field-row__label">{e(label)}</dt>
             <dd class="field-row__value">{val}</dd>

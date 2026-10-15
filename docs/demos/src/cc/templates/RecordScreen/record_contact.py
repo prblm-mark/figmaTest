@@ -64,11 +64,11 @@ def view_sections(c, photo=True):
     t = lambda label, v: m.view_row(label, "text", v or "-")
     # photo=False: the summary-panel pages show the photo in the panel only (Mark, 2026-10-14).
     contact = ([m.view_row("Photo", "html", _avatar(c["seed"], c["name"]))] if photo else []) + [
-               t("Name", c["name"]), t("Job title", c.get("job")), t("Email", c.get("email")),
-               t("Telephone", c.get("tel")), t("Mobile", c.get("mobile")), t("Address", c.get("address"))]
+               t("Name", c["name"]), t("Job title", c.get("job")), t("Email", m.email_copy(c.get("email"))),
+               t("Telephone", m.phone_copy(c.get("tel"))), t("Mobile", m.phone_copy(c.get("mobile"))), t("Address", c.get("address"))]
     accounts = [_tags_or_dash("Account", c.get("accounts")), _tags_or_dash("Former accounts", c.get("former")),
                 _tags_or_dash("Connections", c.get("connections"))]
-    lists = [_tags_or_dash("Topics", c.get("topics")), _tags_or_dash("Mailing lists", c.get("mailing")),
+    lists = [m.view_row("Topics", "text", m.topic_tags(c.get("topics"))), _tags_or_dash("Mailing lists", c.get("mailing")),
              _tags_or_dash("Contact lists", c.get("lists"))]
     # TODO(backend:RecordScreen) contact-record: the profile, accounts, topics and lists are static → the contact (Users / UserAccount / topics / list membership)
     return (m.record_section("Contact", contact, "view") + m.record_section("Accounts", accounts, "view")
@@ -80,8 +80,8 @@ def _badge(label, tone):
 
 
 def sidebar(c, skip=()):
-    facts = [("User code", c["code"]), ("Account type", c["type"]), ("Engagement level", c["level"]),
-             ("Points", c["points"])]
+    facts = [("User code", c["code"]), ("External user ID", c.get("external") or "-"), ("Account type", c["type"]),
+             ("Engagement level", c["level"]), ("Points", c["points"])]
     for label in ("On-site contacts", "Followers"):
         if c.get(label):
             facts.append((label, c[label]))
@@ -154,6 +154,10 @@ FULL = {
               "2026 Feb Customer Contacts", "Affino Briefing Mailer Nov 2018", "Affino Briefing Nov 2018",
               "Affino Customers and Subscribers Nov 2019"],
     "code": "208114", "type": "Full account", "level": "Regular", "points": "671",
+    # Markus, 2026-10-15: External User ID, active subscriptions (badges) and flags (warnings) from the live header.
+    "external": "NBM-00417",
+    "subs": [("Insight Premium", "I", "31 Dec 2026"), ("Briefing Plus", "B", "30 Jun 2027")],
+    "flags": [],
     "first": "08 Jan 2016 · Member", "last": "27 Aug 2026 · Login", "login": "27 Aug 2026",
     "signals": _signals([("New opportunity", 34), ("Regular user (10 logins)", 10), ("Campaign message read", 5),
                          ("Campaign message sent to", 5), ("Contact note", 3), ("Read master services agreement", 3),
@@ -189,6 +193,8 @@ SPARSE = {
               "2026 Feb Customer Contacts", "Affino 8 Aware", "Affino Briefing Nov 2018",
               "Affino Customers and Subscribers Nov 2019", "Affino Customers Nov 2018"],
     "code": "208117", "type": "Full account", "level": "Advocate", "points": "55",
+    "external": "CWP-55120", "subs": [],
+    "flags": ["Inactive contact", "No login since 15 Jun 2022", "All subscriptions expired"],
     "On-site contacts": "1", "Followers": "1",
     "first": "26 Nov 2018 · Event attendee", "last": "03 Jul 2026 · Campaign message sent to", "login": "15 Jun 2022",
     "signals": _signals([("Campaign message sent to", 5), ("Regular user (10 logins)", 1), ("Event attendee", 1),

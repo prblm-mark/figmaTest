@@ -40,8 +40,8 @@ def account_summary(a, contacts, kebab):
         "kebab": kebab, "defaults": ACCOUNT_PINS,
         "facts": [("Account code", e(a["code"])), ("Account type", _chip(a["type"])),
                   ("Next task", _next_task(task[0], task[1], task[2]) if task else "-"),
-                  ("Telephone", e(a["tel"])), ("Website", _link(a["website"])), ("Address", e(addr)),
-                  ("Topics", "".join(_chip(t) for t in a["topics"]))],
+                  ("Telephone", m.phone_copy(a["tel"])), ("Website", m.web_copy(a["website"])), ("Address", e(addr)),
+                  ("Topics", "".join(m.topic_chip(t) for t in a["topics"]))],
         "links": m.quick_links(a["name"], x="@northbridgemedia",
                                linkedin="https://www.linkedin.com/company/northbridge-media-example", address=addr),
         "stats": [(str(len(contacts)), "Contacts", "users"), ("5", "Active contacts", "user-check"), ("1,240", "Points", "award"),
@@ -49,18 +49,19 @@ def account_summary(a, contacts, kebab):
         "dates": [("Updated", "06 Oct 2026", "by Luis Montiel"), ("Created", "08 Jan 2016", None),
                   ("First touch", "08 Jan 2016", "Account created"), ("Last touch", "06 Oct 2026", "Login")],
         "next": task[:3] if task else None,
+        "signals": [], "subs": a.get("subs", []), "flags": a.get("flags", []),
     }
 
 
 def contact_summary(c, kebab):
     task = c["tasks"][0] if c["tasks"] else None
     accounts = c.get("accounts") or []
-    facts = [("User code", e(c["code"])), ("Job title", e(c.get("job") or "-")),
+    facts = [("User code", e(c["code"])), ("External user ID", e(c.get("external") or "-")), ("Job title", e(c.get("job") or "-")),
              ("Account", "".join(_chip(x) for x in accounts) or "-"),
-             ("Email", _link("mailto:" + c["email"], c["email"]) if c.get("email") else "-"),
-             ("Telephone", e(c.get("tel") or "-")), ("Mobile", e(c.get("mobile") or "-")),
+             ("Email", m.email_copy(c.get("email"))),
+             ("Telephone", m.phone_copy(c.get("tel"))), ("Mobile", m.phone_copy(c.get("mobile"))),
              ("Next task", _next_task(task[0], *task[1].replace("Due ", "").split(" · ")) if task else "-"),
-             ("Topics", "".join(_chip(t) for t in c["topics"]) or "-")]
+             ("Topics", "".join(m.topic_chip(t) for t in c["topics"]) or "-")]
     first, last = c["first"].split(" · "), c["last"].split(" · ")
     return {
         "kind": "contact", "name": c["name"],
@@ -76,6 +77,7 @@ def contact_summary(c, kebab):
         "dates": [("Updated", "06 Oct 2026", "by Markus Karlsson"), ("Created", first[0], None),
                   ("First touch", first[0], first[1]), ("Last touch", last[0], last[1])],
         "next": (task[0],) + tuple(task[1].replace("Due ", "").split(" · ")) if task else None,
+        "signals": c.get("signals", []), "subs": c.get("subs", []), "flags": c.get("flags", []),
     }
 
 
@@ -100,7 +102,7 @@ def pinned_actions(kebab, defaults, style):
     items = []
     for pid in defaults:
         label, ic, attrs = by_id[pid]
-        tip = (f'<span class="tooltip record-summary__tip" aria-hidden="true"><span class="tooltip__text">{e(label)}</span></span>')
+        tip = (f'<span class="tooltip tooltip--arrow-top record-summary__tip" aria-hidden="true"><span class="tooltip__text">{e(label)}</span></span>')
         if style == "icon":
             items.append(f'<li class="record-summary__tip-anchor"><a class="btn btn--secondary btn--icon btn--sm" aria-label="{e(label)}"{attrs}>'
                          f'{m.icon(ic)}</a>{tip}</li>')
@@ -133,7 +135,7 @@ def _facts(s, cls=""):
     return f'<dl class="record-summary__facts{cls}">{rows}</dl>'
 
 
-# B's figures are the DS StatCard (patterns/StatCard), Number First, SOLID icon squares (Mark 2026-10-14, was soft); accents lagoon-first
+# The figures, in B and in BOTH of C's views, are the DS StatCard (patterns/StatCard), Number First, SOLID icon squares (Mark 2026-10-14, was soft); accents lagoon-first
 # (feedback: CC cards lead with lagoon, blue last).
 STAT_HUES = ["lagoon", "jade", "violet-radix", "purple"]
 
@@ -146,11 +148,33 @@ def _stat_cards(s):
     return f'<ul class="record-summary__stats record-summary__stats--tiles record-summary__stats--cards" aria-label="Key figures">{cards}</ul>'
 
 
-def _stats(s, cls=""):
-    tiles = "".join(f'<li class="record-summary__stat"><span class="record-summary__stat-value">{e(v)}</span>'
-                    f'<span class="record-summary__stat-label">{e(label)}</span></li>' for v, label, _ in s["stats"])
-    return f'<ul class="record-summary__stats{cls}" aria-label="Key figures">{tiles}</ul>'
 
+
+def _status(s):
+    """The live header's right-hand status (Markus, 2026-10-15): customer signals, active subscriptions as
+    badges, and flags as warnings. Each group shows only when it has something; no groups → no strip.
+    Expanded view only (C's full view) — not in B or C's compact view (Mark, 2026-10-15)."""
+    groups = []
+    if s["signals"]:
+        groups.append(('Customer signals', m.signal_group(s["signals"]), ""))
+    if s["subs"]:
+        # Same 32px as the signal circles, one initial (Mark, 2026-10-15); the name is in the tooltip + label.
+        badges = "".join(
+            f'<li class="record-summary__sub">'
+            f'<span class="avatar avatar--size-2 avatar--initials" role="img" aria-label="{e(name)}, active until {e(until)}" data-tip="{e(name)} · active until {e(until)}">{e(abbr)}</span>'
+            # The Avatar component's notification dot (top right, green). A sibling, not a child: the Initials
+            # type clips its contents (overflow: hidden), which would cut the dot on the circle's corner.
+            f'<span class="avatar__dot avatar__dot--green" aria-hidden="true"></span></li>' for name, abbr, until in s["subs"])
+        groups.append(("Active subscriptions", f'<ul class="record-summary__subs">{badges}</ul>', ""))
+    if s["flags"]:
+        flags = "".join(f'<li class="badge badge--warning">{m.icon("triangle-alert")}{e(f)}</li>' for f in s["flags"])
+        groups.append(("Flags", f'<ul class="record-summary__flags">{flags}</ul>', " record-summary__status-group--flags"))
+    if not groups:
+        return ""
+    # TODO(backend:RecordScreen) record-status: signals, active subscriptions (product badge images) and flags are static → the record's signals, live subscriptions and flag rules
+    return ('<div class="record-summary__status">' + "".join(
+        f'<div class="record-summary__status-group{cls}"><span class="record-summary__status-label">{label}</span>{body}</div>'
+        for label, body, cls in groups) + '</div>')
 
 
 # ── The three variants ───────────────────────────────────────────────────────────────────────────
@@ -159,7 +183,10 @@ def panel(variant, s):
     # TODO(backend:RecordScreen) record-summary: the panel's facts, counts and touch dates are static → the record's CRM data (same source as the sidebar's Record + Engagement panels)
     nxt = s["next"]
     task = (f'<div class="record-summary__next"><span class="record-summary__next-label">{m.icon("list-todo")}Next task</span>'
-            f'{_next_task(*nxt)}</div>') if nxt else ''
+            f'{_next_task(*nxt)}</div>') if nxt else (
+        # No open task: keep the box so the row still meets the icons (an empty cell left a hole).
+        f'<div class="record-summary__next"><span class="record-summary__next-label">{m.icon("list-todo")}Next task</span>'
+        f'<span class="record-summary__meta">No open tasks</span></div>')
     compact_grid = f'''<div class="record-summary__grid">
             <div class="record-summary__identity">{s["media"]}{_actions(s, "icon")}</div>
             <div class="record-summary__body">{_stat_cards(s)}{task}</div>
@@ -183,7 +210,7 @@ def panel(variant, s):
           <div class="record-summary__view record-summary__view--full" id="record-summary-full" data-summary-view="full">
             <div class="record-summary__grid">
               <div class="record-summary__identity">{s["media"]}{s["links"]}{_actions(s, "list")}</div>
-              <div class="record-summary__body">{_facts(s, " record-summary__facts--grid")}{_stats(s, " record-summary__stats--tiles")}</div>
+              <div class="record-summary__body">{_stat_cards(s)}{_facts(s, " record-summary__facts--grid")}{_status(s)}</div>
             </div>
           </div>
           <div class="record-summary__view record-summary--compact" id="record-summary-compact" data-summary-view="compact" hidden>
