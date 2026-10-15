@@ -157,7 +157,8 @@ def _stats(s, cls=""):
 
 def _status(s):
     """The live header's right-hand status (Markus, 2026-10-15): customer signals, active subscriptions as
-    badges, and flags as warnings. Each group shows only when it has something; no groups → no strip."""
+    badges, and flags as warnings. Each group shows only when it has something; no groups → no strip.
+    Expanded view only (C's full view) — not in B or C's compact view (Mark, 2026-10-15)."""
     groups = []
     if s["signals"]:
         groups.append(('Customer signals', m.signal_group(s["signals"]), ""))
@@ -184,11 +185,13 @@ def panel(variant, s):
     # TODO(backend:RecordScreen) record-summary: the panel's facts, counts and touch dates are static → the record's CRM data (same source as the sidebar's Record + Engagement panels)
     nxt = s["next"]
     task = (f'<div class="record-summary__next"><span class="record-summary__next-label">{m.icon("list-todo")}Next task</span>'
-            f'{_next_task(*nxt)}</div>') if nxt else ''
+            f'{_next_task(*nxt)}</div>') if nxt else (
+        # No open task: keep the box so the row still meets the icons (an empty cell left a hole).
+        f'<div class="record-summary__next"><span class="record-summary__next-label">{m.icon("list-todo")}Next task</span>'
+        f'<span class="record-summary__meta">No open tasks</span></div>')
     compact_grid = f'''<div class="record-summary__grid">
             <div class="record-summary__identity">{s["media"]}{_actions(s, "icon")}</div>
             <div class="record-summary__body">{_stat_cards(s)}{task}</div>
-            {_status(s)}
           </div>'''
     if variant == "B":
         return f'''<section class="record-summary record-summary--compact record-summary--{s["kind"]}" aria-label="{label}">

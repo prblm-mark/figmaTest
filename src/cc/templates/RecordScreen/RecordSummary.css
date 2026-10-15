@@ -261,8 +261,7 @@
     grid-template-columns: var(--ao-size-1) minmax(0, 1fr);
     grid-template-areas:
       "media stats"
-      "actions next"
-      "status status";
+      "actions next";
     gap: var(--ao-spacing-4) var(--ao-spacing-6);
   }
 
@@ -294,10 +293,6 @@
   .record-summary--compact .record-summary__next {
     grid-area: next;
     align-self: stretch;
-  }
-
-  .record-summary--compact .record-summary__status {
-    grid-area: status;
   }
 }
 
@@ -600,8 +595,8 @@
 
 /* ── Status strip (code-first, 2026-10-15; Markus) ──────────────────────────────────────────────────────
  * The live header's right-hand status: customer signals, active subscriptions as product badges (a green
- * "live" dot, as live's + marker), and flags as warnings. Full width under the figures in B (its own grid row)
- * and at the foot of C's full view. Groups appear only when they have something. */
+ * "live" dot, as live's + marker), and flags as warnings. At the foot of C's EXPANDED view only (Mark,
+ * 2026-10-15 — not in B or C collapsed). Groups appear only when they have something. */
 .record-summary__status {
   display: flex;
   flex-wrap: wrap;

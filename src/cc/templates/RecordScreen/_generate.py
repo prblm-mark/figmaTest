@@ -336,8 +336,9 @@ C0 = contact.CONTACTS[0]
 ACCOUNT_PIN_KEBAB = [("Add contact", "user-plus", ' href="#" data-backend-todo="account-actions"')] + account.KEBAB
 for v, vname in summary.VARIANTS.items():
     skip_a = () if v == "B" else ("Record", "Engagement")
-    # Customer signals now sit in the panel's status strip (Markus, 2026-10-15), so not in the sidebar too.
-    skip_c = ("Customer signals",) if v == "B" else ("Record", "Customer signals")
+    # C's expanded view carries Customer signals in its status strip (Markus, 2026-10-15), so C's sidebar drops
+    # them; B has no strip (expanded only — Mark), so B keeps the sidebar panel.
+    skip_c = () if v == "B" else ("Record", "Customer signals")
     pages[f"AccountViewPanel{v}.html"] = swap(build(
         f"Account · View · Panel {v} ({vname})",
         m.record_header("Account", A["name"], "view", view_href=account.VIEW, edit_href=account.EDIT,
