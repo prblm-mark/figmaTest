@@ -131,7 +131,8 @@ def pins_bar(kebab, defaults=ORDER_PINS):
 
 
 def _facts(s, cls=""):
-    rows = "".join(f'<div class="record-summary__fact"><dt>{e(label)}</dt><dd>{v}</dd></div>' for label, v in s["facts"])
+    rows = "".join(f'<div class="record-summary__fact"><dt>{e(label)}</dt><dd>{v}</dd></div>' for label, v in s["facts"]
+                   if not m.is_empty(v))   # no content → no fact (view screens hide empty fields)
     return f'<dl class="record-summary__facts{cls}">{rows}</dl>'
 
 

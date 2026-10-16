@@ -21,6 +21,13 @@ Full width is the shell's ONE switch (`control-width.js`), not separate pages �
 Every screen frame was swapped to kit instances in Figma on 2026-09-28; the pre-swap drafts are kept
 below them as "… — draft backup (pre-swap)".
 
+## View screens hide empty fields (Mark, 2026-10-16 — rule for ALL view screens)
+A field with no content is not shown: no "-" / "—" placeholder. `record_markup.view_row` returns nothing for an
+empty value (`is_empty`: None, "", "-", "—", []), a view section whose rows are all empty is dropped, fact lists
+and the summary panel's facts skip empty facts. Exceptions: table cells keep "-" (a column needs its cell); Media
+rows (they draw an image); Order "AWB details" is rendered `hidden` and shown by OrderView.js on despatch.
+Edit screens are unchanged: every field shows, empty or not.
+
 ## Composition
 Shell = ControlScreen/ListingScreen app shell, ported as a bundle by `_generate.py` (sidebar menu,
 TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:

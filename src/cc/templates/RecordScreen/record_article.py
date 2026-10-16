@@ -9,8 +9,8 @@ a summary, stats, audit and index status.
 ONE table drives both screens — each field is (label, view kind, view value, edit kind, edit value
 [, extra]) — so View and Edit cannot disagree. Every live main-column section is here in the live
 order; the live Stats / Recent Viewers / Meta Information / Audit / Index Status sections are the
-sidebar panels (FACTS / PERF / VIEWERS below). Empty live fields render "-" on View and an empty
-control on Edit. View-mode check-marks were read from the live icons (TBY = yes, TBN = no).
+sidebar panels (FACTS / PERF / VIEWERS below). Empty live fields are left OUT of View (no "-";
+Mark 2026-10-16, all view screens) and are an empty control on Edit. View-mode check-marks were read from the live icons (TBY = yes, TBN = no).
 
 Row kinds rich / checkbox / date / datetime / lookup / image / file are code-first — flagged for
 Figma (record_markup.py, FieldRow.figma-notes.md).

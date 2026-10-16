@@ -284,7 +284,21 @@ def topic_tags(names):
     return Html('<div class="field-row__tags">' + "".join(topic_chip(t) for t in names) + '</div>')
 
 
+EMPTY = (None, "", "-", "—", "–")
+
+
+def is_empty(value):
+    """No content to show. View screens leave the field out entirely rather than print a dash (Mark,
+    2026-10-16: a rule for ALL view screens)."""
+    if isinstance(value, (list, tuple)):
+        return not value
+    return value in EMPTY or (isinstance(value, str) and not value.strip())
+
+
 def view_row(label, kind, value=None, compact=False):
+    # Media with no value draws the demo image, so it is the one kind an empty value does not hide.
+    if kind != "media" and is_empty(value):
+        return ""
     mods = ["field-row"]
     if compact:
         mods.append("field-row--compact")
@@ -529,6 +543,8 @@ def prompt_modifier(pid, title, fills, prompt, outputs):
 def record_section(title, rows_html, mode, prompt="", description=None):
     sid = "sec-" + "".join(ch for ch in title.lower() if ch.isalnum())
     body_tag = "dl" if mode == "view" else "div"
+    if mode == "view" and not prompt and not "".join(rows_html).strip():
+        return ""   # every field empty: the section goes too (view screens hide empty fields)
     # description: per-section help text a workflow can set (code-first, 2026-10-05; TASK-531782 Q3).
     desc = f'<p class="record-section__description" id="{sid}-desc" data-backend-todo="record-section-help">{e(description)}</p>' if description else ""
     described = f' aria-describedby="{sid}-desc"' if description else ""

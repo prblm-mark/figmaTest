@@ -140,7 +140,7 @@
       if (focusFirst(validate(form))) return false;
       var courier = selected('order-courier'), awb = val('order-awb');
       var awbEl = $('[data-order-awb]');
-      if (awbEl) awbEl.textContent = courier + ' · ' + awb;
+      if (awbEl) { awbEl.textContent = courier + ' · ' + awb; awbEl.closest('.field-row').hidden = false; }
       setStatus('Shipped');
       addHistory('Shipped', 'truck', courier + ' ' + awb);
       document.getElementById('order-awb').value = '';
