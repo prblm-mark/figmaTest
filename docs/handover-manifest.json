@@ -1,6 +1,6 @@
 {
  "description": "Backend-developer handover manifest. Machine-readable index of front-end elements that are mock / visual-only / in-memory and need real backend implementation. Front-end-only repo (vanilla HTML/CSS/JS, no framework, no backend). See HANDOVER.md for the human-readable version and the TODO(backend:<Surface>) in-code marker convention.",
- "updated": "2026-10-05",
+ "updated": "2026-10-16",
  "categories": {
   "visual-only": "Rendered but no behaviour wired at all.",
   "fe-wired": "Works client-side; no backend required (may be fine as-is).",
@@ -1844,6 +1844,34 @@
      "element": "Order View → Contact notes / Next task panels",
      "current": "Empty states; Create note / Create task do nothing.",
      "needs": "The customer's notes and next task for this order; open the note and task forms."
+    },
+    {
+     "id": "record-summary",
+     "category": "needs-backend",
+     "element": "Summary panel above the tabs (Account / Contact View, C pages) → facts, stat cards, touch dates",
+     "current": "Static values in record_summary.py; empty facts are left out (view screens hide empty fields).",
+     "needs": "The record's CRM data, from the same source as the sidebar's Record + Engagement panels: codes, external user ID, account(s), email/phone/web, next task, topics, updated/created, first and last touch with their signal. Collapsed state per user per record type (cc-record-summary-collapsed:<type> in the demo)."
+    },
+    {
+     "id": "record-pinned-actions",
+     "category": "needs-backend",
+     "element": "Kebab pin toggles + pinned actions (summary panel quick actions; slim pinned row under the Order View header)",
+     "current": "Pins saved in localStorage cc-pinned-actions:<type>; defaults = the live panel's five per type (Order: none).",
+     "needs": "A user preference: GET/PUT the pinned action ids for a record type (per user, per record TYPE not per record), max 6. Pinned buttons reuse the menu item's own link/handler."
+    },
+    {
+     "id": "record-status",
+     "category": "needs-backend",
+     "element": "Summary panel status strip (C expanded only) → Customer signals, Active subscriptions, Flags",
+     "current": "Static signals (Lucide glyphs), subscription initials badges with a live dot, warning-badge flags (e.g. Inactive contact, No login since …, All subscriptions expired).",
+     "needs": "The record's customer signals with counts, its live subscriptions (the product's badge image + name), and the flag rules that apply (inactivity, lapsed subscriptions, etc.). Hide each group when empty."
+    },
+    {
+     "id": "record-topic-colours",
+     "category": "needs-backend",
+     "element": "Topic chips (contact/account Topics, summary panel)",
+     "current": "Demo colours from TOPIC_HUES in record_markup.py; unlisted topics are neutral.",
+     "needs": "Each topic's own colour setting → an accent hue name (jade, purple, …) rendered as topic-chip--<hue>."
     }
    ]
   }

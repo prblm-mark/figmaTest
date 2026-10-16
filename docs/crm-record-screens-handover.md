@@ -13,7 +13,7 @@
 > and [`handover-manifest.json`](handover-manifest.json) → `surfaces.RecordScreen`. The items for
 > these screens are prefixed `contact-*`, `order-*` and `account-*` (listed in §6).
 >
-> Written 2026-10-13. Where this document and the code disagree, **the code wins.** Please report
+> Written 2026-10-13, revised 2026-10-16 (§0). Where this document and the code disagree, **the code wins.** Please report
 > the gap.
 
 **Run it:** `npm install && npm run tokens && npm start`, then open
@@ -44,6 +44,68 @@ people, the account (Northbridge Media) and the order customer are made up. Fiel
 order, options, required marks and help text are taken **verbatim** from the live definitions.
 
 ---
+
+## 0. Revisions since the 13 Oct handover (2026-10-16)
+
+Markus (CEO) reviewed the Contact and Account screens. These changes come from that review. **If you
+have already ported the 13 Oct screens, this section is the diff.**
+
+| Page | What it shows |
+|---|---|
+| `AccountViewPanelC.html` | Account View with the summary panel |
+| `ContactViewPanelC.html` | Contact View with the summary panel (full contact) |
+| `ContactViewSparsePanelC.html` | Inactive contact: flags, no subscriptions, sparse data |
+| `OrderViewPins.html` | Order View with the pinned-actions row under the header |
+
+Live previews: `https://prblm-mark.github.io/figmaTest/src/cc/templates/RecordScreen/<page>`.
+Figma: page "Screens — code-first", section **Record summary panel** (`4277:4943`), at 1440 and 390.
+
+1. **Summary panel above the tabs** (`record_summary.py`, `RecordSummary.css/.js`). It brings back the
+   live header's grey panel. The logo (account) or photo (contact) sits on the left, with the quick
+   actions **beneath it**; Markus was firm on that.
+   - **Expanded:** the facts in a responsive grid, then the stat cards (DS StatCard, Number First),
+     then the status strip (item 3).
+   - **Collapse** folds the panel to its compact view: logo, icon-only quick actions with a DS
+     Tooltip, the stat cards and the next task. The state is remembered per user per record type
+     (`cc-record-summary-collapsed:<type>`).
+   - On these pages the sidebar's Record panel is skipped, because the panel carries it. The
+     `…PanelB.html` pages are the compact view on its own, kept for comparison: **build C**.
+   - Backend: `record-summary`.
+2. **Pin kebab actions to the page** (`RecordPins.js`). Every kebab item gets a pin toggle.
+   - Pinned actions become the panel's quick actions. On Order, which has no panel, they go in a slim
+     row under the header, hidden until something is pinned.
+   - Pins are per user per record **type** (not per record), 6 at most, with an "n of 6" note.
+     Defaults are the live panel's five per type; Order starts with none.
+   - A pinned button copies the menu link's own attributes, so it does exactly what the menu item
+     does.
+   - The kebab stops being an ARIA menu, because a row holding a second button is not a menuitem.
+     It becomes links plus `aria-pressed` toggles behind a disclosure trigger.
+   - Backend: `record-pinned-actions`.
+3. **Status strip** (expanded panel only). It shows three groups:
+   - **Customer signals:** the same AvatarGroup as the sidebar, with a Tooltip on each.
+   - **Active subscriptions:** badges with a live dot.
+   - **Flags:** warning badges, e.g. Inactive contact, No login since …, All subscriptions expired.
+   Hide each group when it is empty. Backend: `record-status`.
+4. **Copy buttons** on every email address, phone number and web address, on all record screens
+   (`m.copy_value`; RecordScreen.js copies, swaps the icon to a tick and announces it).
+   - Phone numbers are copied as digits so they paste into a dialler: "+44 (0)20 …" becomes +4420…
+   - A web address is also a link that opens in a new tab.
+   - Front end only, so no backend needed.
+5. **External user ID** on Contact (Record panel and summary panel).
+6. **Colour-coded topics.** Topic chips take the topic's own colour (`topic-chip--<hue>`); topics
+   without a colour stay neutral. Backend: `record-topic-colours`.
+7. **Tooltip** now has arrows (DS `Tooltip`, `tooltip--arrow-top|bottom|left|right`, Figma
+   `169:3025`). The panel uses it in place of native `title` tooltips.
+8. **View screens hide empty fields. This is a rule for ALL view screens.**
+   - A field with no content is not shown at all: no "-" or "—" placeholder.
+   - A section whose fields are all empty goes too. So do empty facts in sidebar panels and in the
+     summary panel.
+   - Exceptions: a table cell still shows "-", because the column needs its cell. Image fields
+     still show.
+   - Order "AWB details" is hidden until the order is despatched.
+   - Edit screens are unchanged: every field shows, empty or not.
+   - In the kit, `view_row` / `is_empty` in `record_markup.py` do this, so never pass "-" to mean
+     "empty".
 
 ## 1. What is shared across all three
 
@@ -144,7 +206,8 @@ Overflow Notifications, Event Credits. **Not built:** Advanced.
   `account-commerce`, `account-events`, `account-analysis`, `account-page-analysis`,
   `account-edit`
 - **Shared:** `record-edit-grid`, `record-help-preference`, `record-viewer-contact`,
-  `record-sidebar-order`, `record-lookup`, plus the Article-era `record-load` / `record-save`
+  `record-sidebar-order`, `record-lookup`, and from the 16 Oct revisions `record-summary`,
+  `record-pinned-actions`, `record-status`, `record-topic-colours`, plus the Article-era `record-load` / `record-save`
   pattern
 
 Find every marker: `grep -rn "TODO(backend:RecordScreen)" src/`.
