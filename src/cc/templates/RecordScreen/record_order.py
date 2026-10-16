@@ -157,7 +157,8 @@ def view_sections(o, c):
     addresses = [m.view_row(label, "html", f'<address class="order-address">{addr}</address>')
                  for label in ("Invoice address", "Billing address", "Delivery address")]
     delivery = [t("Delivery time frame", None),
-                m.view_row("AWB details", "html", '<span data-order-awb>-</span>'),
+                # Empty until despatched, so hidden (view screens hide empty fields); OrderView.js shows it.
+                m.view_row("AWB details", "html", '<span data-order-awb></span>').replace('class="field-row"', 'class="field-row" hidden', 1),
                 m.view_row("Invoices sent", "html", '<span data-order-invoices>0</span>')]
     more = [t("Comments", None), t("Custom data", None), t("Gift Aid", "No"), t("Checkout journey", None)]
     # TODO(backend:RecordScreen) order-record: the order, payment, customer, addresses, delivery and extra data are static → the order (Orders / OrderPayment / OrderAddress), its customer and end user
