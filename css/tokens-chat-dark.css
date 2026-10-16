@@ -25,10 +25,10 @@
   --ao-surface-neutral-soft: #2e2e32;
   --ao-text-primary: #f6f6f7;
   --ao-text-secondary: #e2e2e3;
-  --ao-text-contrast: #929295;
+  --ao-text-contrast: #c2c2c4;
   --ao-text-invert: #1b1b1f;
   --ao-text-invert-secondary: #262629;
-  --ao-text-error: #e5484d;
+  --ao-text-error: #eb8e90;
   --ao-text-brand: #5eb1ef;
   --ao-text-success: #8eceaa;
   --ao-text-info: #5eb1ef;
@@ -68,9 +68,9 @@
   --ao-chat-msg-text: #0090ff;
   --ao-chat-sidebar-bg: #1b1b1f;
   --ao-chat-sidebar-text: #e2e2e3;
-  --ao-btn-primary-bg: #0588f0;
-  --ao-btn-primary-bg-hover: #0090ff;
-  --ao-btn-primary-bg-pressed: #0d74ce;
+  --ao-btn-primary-bg: #0d74ce;
+  --ao-btn-primary-bg-hover: #113264;
+  --ao-btn-primary-bg-pressed: #0d2847;
   --ao-btn-primary-border: rgba(0, 0, 0, 0);
   --ao-btn-primary-border-hover: rgba(0, 0, 0, 0);
   --ao-btn-primary-text: #ffffff;
