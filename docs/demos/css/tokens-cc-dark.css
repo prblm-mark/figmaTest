@@ -13,9 +13,9 @@
   --ao-surface-brand-dark: #0094ad;
   --ao-surface-brand-soft: #043840;
   --ao-surface-brand-soft-extra: #00282f;
-  --ao-surface-error: #e5484d;
+  --ao-surface-error: #ce2c31;
   --ao-surface-error-soft: #3b1219;
-  --ao-surface-success: #30a46c;
+  --ao-surface-success: #218358;
   --ao-surface-success-soft: #132d21;
   --ao-surface-info: #30b6c2;
   --ao-surface-info-soft: #00282f;
@@ -28,7 +28,7 @@
   --ao-text-contrast: #94a3b8;
   --ao-text-invert: #e2e8f0;
   --ao-text-invert-secondary: #cad5e2;
-  --ao-text-error: #e5484d;
+  --ao-text-error: #eb8e90;
   --ao-text-brand: #30b6c2;
   --ao-text-success: #8eceaa;
   --ao-text-info: #30b6c2;
@@ -68,9 +68,9 @@
   --ao-chat-msg-text: #edf5f5;
   --ao-chat-sidebar-bg: #172033;
   --ao-chat-sidebar-text: #cad5e2;
-  --ao-btn-primary-bg: #009fba;
-  --ao-btn-primary-bg-hover: #0094ad;
-  --ao-btn-primary-bg-pressed: #007a8d;
+  --ao-btn-primary-bg: #007a8d;
+  --ao-btn-primary-bg-hover: #043840;
+  --ao-btn-primary-bg-pressed: #00282f;
   --ao-btn-primary-border: rgba(0, 0, 0, 0);
   --ao-btn-primary-border-hover: rgba(0, 0, 0, 0);
   --ao-btn-primary-text: #ffffff;
