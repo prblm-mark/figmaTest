@@ -19,6 +19,15 @@ To compare against another build (this is how the regression column below was pr
 TOKENS_DIR=/path/to/other/css node scripts/contrast-audit.mjs --json
 ```
 
+> **2026-10-16 — Control Centre contrast fixes (TASK-555946).** The CCLight and CCDark Semantic modes were
+> repointed to existing primitives so the failing text pairs measured on qa9 pass 4.5:1:
+> `btn-primary-bg` → Lagoon/11 (hover Lagoon/12, pressed Lagoon/13, both themes) · `text/contrast` → Mid Blue/600
+> (CCLight) · `surface/error` → RedRadix/11 · `surface/success` → GreenRadix/11 (both themes) · `text/warning` →
+> OrangeRadix/12 and `text/success` → Emerald/700 (CCLight) · `text/error` → RedRadix/8 (CCDark).
+> Re-run: CCLight blocking failures 18 → 6, CCDark 18 → 14, 16 pairings fixed, no regressions. Still failing in CC:
+> white on `surface/warning` and `surface/info`, CCDark `text/contrast` on secondary/elevated-2 surfaces, CCDark text on
+> invert/status fills, and the border-only (1.4.11) pairs. Light/Dark/Chat modes were not changed.
+
 ---
 
 ## Headline
