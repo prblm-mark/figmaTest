@@ -111,9 +111,9 @@ Figma default for all text-button variants has `showLeftIcon=true` — both slot
 | State | Figma Primitive | Value | Token Needed | Affected Variants | Status |
 |---|---|---|---|---|---|
 | Primary focus ring | `--ao-surface-brand-light` | `#3a8fff` | ✓ resolved | Primary | ✅ Implemented |
-| Alert hover bg | `Red/400` | `#f87171` | `--ao-btn-alert-hover` | Alert, Alert Outline | ✅ Primitive approved |
-| Alert focus ring | `Red/400` | `#f87171` | `--ao-btn-alert-focus-ring` | Alert, Alert Outline | ✅ Primitive approved |
-| Alert pressed | `Red/600` | `#dc2626` | `--ao-btn-alert-pressed` | Alert | ✅ Primitive approved |
+| Alert hover bg | `RedRadix/12` | `#641723` | `--ao-btn-alert-hover` | Alert, Alert Outline | ✅ Primitive approved (2026-10-16, was Red/400 — white text failed at 2.77:1; TASK-555946) |
+| Alert focus ring | `RedRadix/12` | `#641723` | `--ao-btn-alert-focus-ring` | Alert, Alert Outline | ✅ Primitive approved (2026-10-16, was Red/400) |
+| Alert pressed | `RedRadix/13` | `#3b1219` | `--ao-btn-alert-pressed` | Alert, Alert Outline | ✅ Primitive approved (2026-10-16, was Red/600) |
 
 **Note:** Alert hover/pressed/focus states implemented using Figma primitives directly (approved). If semantic tokens are added to Figma in future, update `Button.css` to use `--ao-*` variables.
 
@@ -197,3 +197,6 @@ sidebar's search Input has none), so Figma's component defaults trail this.
 
 Token: `--ao-shadow-2xs`. Only Secondary: Primary, Tertiary and the alert types are unchanged. The focus-visible ring replaces it while focused. A disabled Secondary keeps the shadow (the disabled rule does not reset box-shadow); Figma's disabled state has not been checked.
 
+
+
+**2026-10-16 (TASK-555946):** Alert hover/focus/pressed now go DARKER than the default (RedRadix/12 / 13), mirroring the primary button; Figma's 18 hover/focus/pressed Alert variants rebound to match, and the solid Alert Default fill was rebound from the `Red/500` primitive to `surface/error` (code already used it). Outline Default in Figma still uses `Red/500` for stroke/text while code uses `border-error` / `text-error` — flagged, not changed.

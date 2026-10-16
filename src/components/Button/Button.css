@@ -124,24 +124,26 @@
 }
 
 .btn--alert:hover {
-  background-color: #f87171; /* Red/400 — primitive, approved */
-  border-color: #f87171;     /* Red/400 — primitive, approved */
+  background-color: #641723; /* RedRadix/12 — primitive, approved (Mark 2026-10-16, TASK-555946) */
+  border-color: #641723;     /* RedRadix/12 */
 }
 
 .btn--alert:active {
-  background-color: #dc2626; /* Red/600 — primitive, approved */
-  border-color: #dc2626;     /* Red/600 — primitive, approved */
+  background-color: #3b1219; /* RedRadix/13 — primitive, approved (Mark 2026-10-16) */
+  border-color: #3b1219;     /* RedRadix/13 */
 }
 
 .btn--alert:focus-visible {
-  background-color: #f87171; /* Red/400 — primitive, approved */
+  background-color: #641723; /* RedRadix/12 — primitive, approved (Mark 2026-10-16, TASK-555946) */
   border: 2px solid var(--ao-surface-primary);
-  box-shadow: 0 0 0 2px #f87171; /* Red/400 — primitive, approved */
+  box-shadow: 0 0 0 2px #641723; /* RedRadix/12 */
   outline: none;
 }
 
 /* ── Alert Outline ───────────────────────────────────── */
-/* Default: outlined red. Hover/focus/pressed: flips to solid red (same as alert). */
+/* Default: outlined red. Hover/focus/pressed: flips to solid red (same as alert).
+   Hover/focus RedRadix/12, pressed RedRadix/13 — darker than the default, like the primary button, so white
+   text passes 4.5:1 (was Red/400 at 2.77:1; Figma variants rebound 2026-10-16). */
 
 .btn--alert-outline {
   background-color: var(--ao-surface-primary);
@@ -150,22 +152,22 @@
 }
 
 .btn--alert-outline:hover {
-  background-color: #f87171; /* Red/400 — primitive, approved */
-  border-color: #f87171;
+  background-color: #641723; /* RedRadix/12 — primitive, approved (Mark 2026-10-16, TASK-555946) */
+  border-color: #641723;
   color: var(--ao-btn-primary-text);
 }
 
 .btn--alert-outline:active {
-  background-color: #dc2626; /* Red/600 — primitive, approved */
-  border-color: #dc2626;
+  background-color: #3b1219; /* RedRadix/13 — primitive, approved (Mark 2026-10-16) */
+  border-color: #3b1219;
   color: var(--ao-btn-primary-text);
 }
 
 .btn--alert-outline:focus-visible {
-  background-color: #f87171; /* Red/400 — primitive, approved */
+  background-color: #641723; /* RedRadix/12 — primitive, approved (Mark 2026-10-16, TASK-555946) */
   color: var(--ao-btn-primary-text);
   border: 2px solid var(--ao-surface-primary);
-  box-shadow: 0 0 0 2px #f87171; /* Red/400 — primitive, approved */
+  box-shadow: 0 0 0 2px #641723; /* RedRadix/12 */
   outline: none;
 }
 
