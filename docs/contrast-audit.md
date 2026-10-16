@@ -19,6 +19,19 @@ To compare against another build (this is how the regression column below was pr
 TOKENS_DIR=/path/to/other/css node scripts/contrast-audit.mjs --json
 ```
 
+> **2026-10-16 (round 2) — remaining fixes across all six modes.** Same rule: lightest passing step on an existing ramp.
+> Light/Dark: btn-primary Lagoon/11 (hover 12, pressed 13), surface/info Lagoon/11, success GreenRadix/11, error
+> RedRadix/11, warning OrangeRadix/12 (white text now passes; "Switch Mode" needs no component change). Light:
+> text/success Emerald/700, text/warning OrangeRadix/12, text/contrast Grey/550. Dark + CCDark: text/invert Grey/0 (was
+> Grey/200), text/contrast Grey/300; Dark text/error RedRadix/8. CCLight/CCDark: surface/info Lagoon/11, warning
+> OrangeRadix/12. Chat: btn-primary BlueRadix/11 (12/13), ChatLight info BlueRadix/11 + status as Light +
+> text/contrast Neutral/550 + icon/brand BlueRadix/11; ChatDark text/contrast Neutral/300, text/error RedRadix/8.
+> Result: 49 more pairings fixed, 0 regressions; Light and CCLight have no text failures left. **Still failing (need a
+> design call, not a swap):** Dark/CCDark `text-invert` / `text-invert-secondary` / `icon-invert-secondary` on
+> `surface-invert` (one token serves both status fills and the light invert surface); ChatDark `text-invert` (dark) on
+> `surface-error` / `surface-neutral` (white btn text and dark invert text share those fills); ChatLight
+> `surface-brand` focus ring on `surface-minimal` (2.8:1 — changing it moves the chat brand colour).
+
 > **2026-10-16 — Control Centre contrast fixes (TASK-555946).** The CCLight and CCDark Semantic modes were
 > repointed to existing primitives so the failing text pairs measured on qa9 pass 4.5:1:
 > `btn-primary-bg` → Lagoon/11 (hover Lagoon/12, pressed Lagoon/13, both themes) · `text/contrast` → Mid Blue/600
