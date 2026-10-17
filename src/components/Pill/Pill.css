@@ -50,7 +50,7 @@
 
 /* ── Type=Brand — blue pill ──────────────────────── */
 .pill--brand {
-  background-color: var(--ao-surface-brand);
+  background-color: var(--ao-surface-brand-dark); /* Figma rebound 2026-10-17: white text failed on surface/brand (3.6 light, 3.15 dark) */
 }
 .pill--brand .pill__label {
   color: var(--ao-btn-primary-text); /* Figma: --ao-text-invert; overridden — see figma-notes */

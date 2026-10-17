@@ -19,6 +19,11 @@ To compare against another build (this is how the regression column below was pr
 TOKENS_DIR=/path/to/other/css node scripts/contrast-audit.mjs --json
 ```
 
+> **2026-10-17 — chat brand + Brand pill.** ChatLight `surface/brand` → BlueRadix/11 (brand-light /10, brand-dark /12)
+> fixes the focus ring (3.68:1). ChatDark brand stays BlueRadix/10 (4.43:1 on the dark page; /11 would be 3.37). Dark/CCDark
+> `surface/brand-dark` → Lagoon/11 (was Lagoon/10). Pill Brand fill → `surface/brand-dark` (white 4.77–5.04+ in every
+> theme). **The audit now has no blocking text or focus failures in any mode** (border-only 1.4.11 pairs aside).
+
 > **2026-10-17 — inverse surface stays dark in every theme (Option A).** `surface/invert` no longer flips light in the
 > dark themes: Dark/CCDark Grey/650, ChatDark Neutral/550 (same idea as the Tooltip and the CC chrome, which are dark in
 > both themes). `icon/invert` is white in Dark/CCDark/ChatDark; ChatDark also gets white `text/invert`, Neutral/200
