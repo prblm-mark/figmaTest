@@ -12,7 +12,7 @@
 | 68:4502 | Type=Default | `--ao-surface-invert` | `--ao-text-invert` | `.pill--default` |
 | 68:4504 | Type=Contrast | `--ao-surface-contrast` | `--ao-text-primary` | `.pill--contrast` |
 | 68:4511 | Type=Warning | `--ao-surface-error` | `--ao-btn-primary-text`* | `.pill--warning` |
-| 68:4515 | Type=Brand | `--ao-surface-brand` | `--ao-btn-primary-text`* | `.pill--brand` |
+| 68:4515 | Type=Brand | `--ao-surface-brand-dark` | `--ao-btn-primary-text`* | `.pill--brand` |
 
 ## CSS Class Mapping
 
@@ -33,7 +33,7 @@
 | Background (Default) | `--ao-surface-invert` | `--ao-surface-invert` |
 | Background (Contrast) | `--ao-surface-contrast` | `--ao-surface-contrast` |
 | Background (Warning) | `--ao-surface-error` | `--ao-surface-error` |
-| Background (Brand) | `--ao-surface-brand` | `--ao-surface-brand` |
+| Background (Brand) | `--ao-surface-brand-dark` | `--ao-surface-brand-dark` |
 | Text color (Success) | `--ao-text-invert` | `--ao-btn-primary-text`* |
 | Text color (Default) | `--ao-text-invert` | `--ao-text-invert` |
 | Text color (Contrast) | `--ao-text-primary` | `--ao-text-primary` |
@@ -62,3 +62,6 @@
 - The base `.pill` class carries Success colours — VersionHistoryRow and VersionHistory
   use `.pill` without a modifier and must not be broken.
 - Text content is dynamic (e.g. "Live", "2 minutes ago").
+
+
+**2026-10-17 (TASK-555946):** Brand fill moved from `surface/brand` to `surface/brand-dark` in Figma and code — white text was 3.6:1 (light) / 3.15:1 (dark). `surface/brand-dark` is Lagoon/11 in Light/CC and now also in Dark/CCDark (was Lagoon/10), BlueRadix/11–12 in Chat: white text 4.77–5.04+ everywhere. Default pill: `surface/invert` now stays dark in dark themes (Grey/650), so white text reads in both. Figma's Success variant was also rebound from the `Emerald/500` primitive (white text 2.5:1) to `surface/success`, which the code already used.
