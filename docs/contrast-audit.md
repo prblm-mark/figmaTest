@@ -19,6 +19,15 @@ To compare against another build (this is how the regression column below was pr
 TOKENS_DIR=/path/to/other/css node scripts/contrast-audit.mjs --json
 ```
 
+> **2026-10-17 — inverse surface stays dark in every theme (Option A).** `surface/invert` no longer flips light in the
+> dark themes: Dark/CCDark Grey/650, ChatDark Neutral/550 (same idea as the Tooltip and the CC chrome, which are dark in
+> both themes). `icon/invert` is white in Dark/CCDark/ChatDark; ChatDark also gets white `text/invert`, Neutral/200
+> `text/invert-secondary`, Neutral/300 `icon/invert-secondary`, and the darker status fills the other themes already had
+> (info BlueRadix/11, success GreenRadix/11, error RedRadix/11, warning OrangeRadix/12). Fixes the dark-theme Pill Default
+> (near-white on near-white). Result: every text pair passes in Light, Dark, ChatDark, CCLight and CCDark; the only
+> blocking non-border failure left is the ChatLight focus ring (surface-brand on surface-minimal, 2.8:1). Not covered by
+> the audit and noticed in the Pill demo: Brand pill white on dark-theme surface/brand (Lagoon/9) ≈ 3.15:1.
+
 > **2026-10-16 (round 2) — remaining fixes across all six modes.** Same rule: lightest passing step on an existing ramp.
 > Light/Dark: btn-primary Lagoon/11 (hover 12, pressed 13), surface/info Lagoon/11, success GreenRadix/11, error
 > RedRadix/11, warning OrangeRadix/12 (white text now passes; "Switch Mode" needs no component change). Light:
