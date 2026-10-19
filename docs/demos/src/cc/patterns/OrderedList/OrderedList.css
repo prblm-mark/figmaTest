@@ -30,7 +30,6 @@
   display: grid;
   grid-template-columns: auto auto 1fr auto;
   column-gap: var(--ao-spacing-3);
-  row-gap: var(--ao-spacing-1);
   inline-size: 100%;
   min-block-size: var(--ao-spacing-8);
   margin: 0;
@@ -107,7 +106,8 @@
   gap: var(--ao-spacing-1);
 }
 
-/* Move / remove buttons: `btn btn--tertiary btn--sm` + the subtle border line Selector's sort
+/* Move / remove buttons: `btn btn--tertiary btn--xs btn--icon` (24×24, Mark 2026-10-19 — sm was
+ * heavy beside the labels) + the subtle border line Selector's sort
  * buttons carry (its Case B override, designer 2026-09-29) — a borderless button disappears into
  * the hover tint. Restated for hover and focus because `.btn--tertiary:hover` sets the
  * transparent hover border at (0,2,0). */

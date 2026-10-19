@@ -345,7 +345,7 @@ def ordered_list(fid, label, items, modal=None, described=""):
                 <span class="ordered-list__grip" data-ordered-list-grip title="Drag to reorder" aria-hidden="true">{icon("grip-vertical")}</span>
                 <span class="ordered-list__position">{n}</span>
                 <span class="ordered-list__label">{e(t)}</span>
-                <span class="ordered-list__actions">{btn(f"Move {t} up", "tertiary", "sm", icon_left="arrow-up", icon_only=True, attrs=' data-ordered-list-move="up"' + (" disabled" if n == 1 else ""))}{btn(f"Move {t} down", "tertiary", "sm", icon_left="arrow-down", icon_only=True, attrs=' data-ordered-list-move="down"' + (" disabled" if n == len(pairs) else ""))}{btn(f"Remove {t}", "tertiary", "sm", icon_left="x", icon_only=True, attrs=" data-ordered-list-remove") if modal else ""}</span>
+                <span class="ordered-list__actions">{btn(f"Move {t} up", "tertiary", "xs", icon_left="arrow-up", icon_only=True, attrs=' data-ordered-list-move="up"' + (" disabled" if n == 1 else ""))}{btn(f"Move {t} down", "tertiary", "xs", icon_left="arrow-down", icon_only=True, attrs=' data-ordered-list-move="down"' + (" disabled" if n == len(pairs) else ""))}{btn(f"Remove {t}", "tertiary", "xs", icon_left="x", icon_only=True, attrs=" data-ordered-list-remove") if modal else ""}</span>
               </li>''' for n, (k, t) in enumerate(pairs, 1))
     select = btn("Select", "secondary", "sm", attrs=f' data-ordered-list-select="{modal}" aria-haspopup="dialog"') if modal else ""
     return f'''<div class="ordered-list" data-ordered-list>
