@@ -4,7 +4,7 @@
 `Lus07xi8pPXLN87sQIyrEt`, View & Edit page, Board `3861:1903`: **OrderedList** set `4392:181669` (Kind=Fixed `4392:181501`,
 Selectable `4392:181604`, Empty `4392:181656`, View `4392:181663`) and **OrderedListRow** set `4392:30279`
 (Position=First / Middle / Last; props Number, Label, Removable). Built from Button Tertiary xs icon-only (`2926:3571`),
-the code-first Lucide icons and Semantic / Scale / Typography variables. The code is the reference. No Code Connect yet.
+the code-first Lucide icons and Semantic / Scale / Typography variables. The code is the reference. **Code Connect published 2026-10-19** (`OrderedList.figma.ts`: one mapping per Kind + the row).
 
 A short list field whose **order is the value**, reordered in place on the page. It replaces v1's listbox with
 ↑ ↓ arrows on the simple Control Centre record screens (Hub agent Cat's migration):
