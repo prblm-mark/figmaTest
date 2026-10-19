@@ -56,7 +56,7 @@ is `1fr` with no `min-inline-size: 0`, so a word is never broken mid-word ("Arti
 | Grip | `.ordered-list__grip` + `[data-ordered-list-grip]` (Lucide `grip-vertical`) |
 | Position | `.ordered-list__position` |
 | Label | `.ordered-list__label` |
-| Buttons | `.ordered-list__actions` › `btn btn--tertiary btn--sm btn--icon`: `[data-ordered-list-move="up"/"down"]` (`arrow-up` / `arrow-down`), `[data-ordered-list-remove]` (`x`) |
+| Buttons | `.ordered-list__actions` › `btn btn--tertiary btn--xs btn--icon` (24×24; Mark chose xs over sm, 2026-10-19): `[data-ordered-list-move="up"/"down"]` (`arrow-up` / `arrow-down`), `[data-ordered-list-remove]` (`x`) |
 | Value | `input[type=hidden][data-ordered-list-value]`: keys, comma-joined, in order |
 | Live region | `.ordered-list__live` + `[data-ordered-list-live]` |
 | Select | `[data-ordered-list-select="<modal id>"]` |
@@ -71,7 +71,7 @@ Record screens: `edit_row(label, "ordered", tags=[…], modal=None|"modal-id")` 
 |---|---|---|
 | Box bg / border / radius | `surface-primary` / `border-secondary` / `radius-md` | TagBox `.tag-box__tags` |
 | Box padding / min-height | `spacing-3` / `spacing-8` | TagBox |
-| Row gap / column gap | `spacing-1` / `spacing-3` | Selector `.selector__sort-list` / `__sort-row` |
+| Row gap / column gap | none (Mark, 2026-10-19) / `spacing-3` | — / Selector `.selector__sort-row` |
 | Row padding / radius / hover | `spacing-2` `spacing-3` / `radius-sm` / `surface-minimal` | Selector `.selector__sort-row` |
 | Moved / drop line | `border-brand` | Selector |
 | Grip | `icon-contrast`, `icon-size-sm` | Selector `.selector__grip` |
@@ -86,8 +86,8 @@ Record screens: `edit_row(label, "ordered", tags=[…], modal=None|"modal-id")` 
 None. There is no Figma source. Review points for the Figma pass:
 - Label weight is **semibold** (from the Selector's sort title). Form values are usually regular, so the
   designer should confirm.
-- The move buttons are `btn--sm` (32px), as in Selector. That's under the 44px touch target, a precedent
-  carried over.
+- The move buttons are `btn--xs` (24px, Mark 2026-10-19). That's under the 44px touch target; on touch
+  they are the only way to reorder.
 
 ## Backend
 

@@ -84,7 +84,7 @@
   }
 
   function button(attr, aria, ico) {
-    return '<button type="button" class="btn btn--tertiary btn--sm btn--icon" ' + attr +
+    return '<button type="button" class="btn btn--tertiary btn--xs btn--icon" ' + attr +
       ' aria-label="' + aria + '"><i data-lucide="' + ico + '" aria-hidden="true"></i></button>';
   }
 
