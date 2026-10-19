@@ -51,6 +51,7 @@ CSS = """
   <link rel="stylesheet" href="../../patterns/AdvisoryList/AdvisoryList.css">
   <link rel="stylesheet" href="../../patterns/PerformanceSummary/PerformanceSummary.css">
   <link rel="stylesheet" href="../../patterns/TagBox/TagBox.css">
+  <link rel="stylesheet" href="../../patterns/OrderedList/OrderedList.css">
   <link rel="stylesheet" href="../../../components/SearchInput/SearchInput.css">
   <link rel="stylesheet" href="../../patterns/Selector/Selector.css">
   <link rel="stylesheet" href="../../../components/SegmentedControl/SegmentedControl.css">
@@ -139,6 +140,7 @@ def body(sections, side=None):
 KIT_JS = '''  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="../../components/AdvisoryItem/AdvisoryItem.js"></script>
   <script src="../../patterns/TagBox/TagBox.js"></script>
+  <script src="../../patterns/OrderedList/OrderedList.js"></script>
   <script src="../../components/MediaPicker/MediaPicker.js"></script>
   <script src="../../patterns/Selector/Selector.js"></script>
   <script src="../../components/RichTextEditor/RichTextEditor.js"></script>

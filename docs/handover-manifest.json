@@ -1237,6 +1237,13 @@
      "needs": "Search endpoint per field source { id, name, parent, channel, zone } with the pill filters; tags submit as ids."
     },
     {
+     "id": "ordered-list-value",
+     "category": "needs-backend",
+     "element": "OrderedList field (record field type `ordered`)",
+     "current": "Order kept in the DOM + a hidden input of keys, comma-joined; Selectable modal rows static.",
+     "needs": "Submit the keys in order with the page Save, in the field's v1 format; Selectable: the field's item source for the Multi Select Modal."
+    },
+    {
      "id": "select-options",
      "category": "needs-backend",
      "element": "Edit selects (Zone, Section, Priority, Alignment, Category Topic)",

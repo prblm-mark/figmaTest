@@ -1,0 +1,163 @@
+/* OrderedList — a short list field whose ORDER is the value (Search Profile "Content Group
+ * Priority", Recruitment Sector "Sequence", address-field order). Reordered in place on the
+ * page: grip (drag), ↑ ↓, and — Kind=Selectable — a remove button per row plus "Select", which
+ * opens the Multi Select Modal (as TagBox). The page's own Save stores the order.
+ *
+ * CODE-FIRST (Mark, 2026-10-19). No Figma source yet; every value is reused from an existing
+ * component so the field reads as part of the family:
+ *   box  = TagBox's bordered box (.tag-box__tags)
+ *   rows = Selector Type=Sort's row (.selector__sort-row), its grip and its move buttons
+ */
+
+.ordered-list {
+  /* Self-container: the list spans its field's value column, so its own width is the signal
+   * (CLAUDE.md §4a). FieldRow never stacks — its label keeps 192px — so on a phone the list gets
+   * ~140px. */
+  container-type: inline-size;
+  container-name: ordered-list;
+  inline-size: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ao-spacing-3);
+  min-inline-size: 0;
+}
+
+/* The box (TagBox). Rows share one grid through subgrid, so the position numbers, labels and
+ * buttons line up in columns without fixing any widths. The label track is `1fr` (min-content
+ * floor), not minmax(0, 1fr): at a narrow width a 0 floor broke "Articles" into "Arti / cles". */
+.ordered-list__items {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  column-gap: var(--ao-spacing-3);
+  row-gap: var(--ao-spacing-1);
+  inline-size: 100%;
+  min-block-size: var(--ao-spacing-8);
+  margin: 0;
+  padding: var(--ao-spacing-3);
+  list-style: none;
+  background-color: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+}
+
+.ordered-list__items:empty { display: block; }
+
+.ordered-list__items:empty::before {
+  content: attr(data-empty);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-contrast);
+}
+
+/* The row (Selector sort row). The insertion line is a border, so dragging never shifts the list. */
+.ordered-list__row {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  align-items: center;
+  padding: var(--ao-spacing-2) var(--ao-spacing-3);
+  border-radius: var(--ao-radius-sm);
+  border-block: 1px solid transparent;
+}
+
+.ordered-list__row:hover { background-color: var(--ao-surface-minimal); }
+
+/* A row that just moved, so the eye can follow it (cleared by OrderedList.js). */
+.ordered-list__row--moved { box-shadow: inset 2px 0 0 var(--ao-border-brand); }
+
+.ordered-list__row--dragging { opacity: 0.5; }
+.ordered-list__row--over-before { border-block-start-color: var(--ao-border-brand); }
+.ordered-list__row--over-after { border-block-end-color: var(--ao-border-brand); }
+
+.ordered-list__grip {
+  display: flex;
+  align-items: center;
+  color: var(--ao-icon-contrast);
+  cursor: grab;
+}
+
+.ordered-list__grip svg {
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+}
+
+.ordered-list__position {
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-2xs);
+  line-height: var(--ao-leading-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--ao-text-secondary);
+  text-align: end;
+}
+
+.ordered-list__label {
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-2xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
+  overflow-wrap: break-word;
+}
+
+.ordered-list__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-spacing-1);
+}
+
+/* Move / remove buttons: `btn btn--tertiary btn--sm` + the subtle border line Selector's sort
+ * buttons carry (its Case B override, designer 2026-09-29) — a borderless button disappears into
+ * the hover tint. Restated for hover and focus because `.btn--tertiary:hover` sets the
+ * transparent hover border at (0,2,0). */
+.ordered-list__actions .btn--tertiary,
+.ordered-list__actions .btn--tertiary:hover,
+.ordered-list__actions .btn--tertiary:focus-visible {
+  border-color: var(--ao-border-secondary);
+}
+
+/* The first row cannot go up and the last cannot go down: disabled AND invisible, so the
+ * columns of buttons stay aligned (Selector's rule). */
+.ordered-list__actions .btn:disabled { visibility: hidden; }
+
+.ordered-list__live {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Touch has no HTML5 drag: the grip goes and ↑ ↓ are the way to reorder. */
+@media (hover: none) {
+  .ordered-list__grip { display: none; }
+}
+
+/* Narrow (under `--ao-size-5`, 280px): the columns go and each row wraps — the buttons drop under
+ * the label, pushed to the end, rather than squeezing it to a letter per line. */
+@container ordered-list (max-width: 279px) {
+  .ordered-list__items {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ordered-list__row {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--ao-spacing-3);
+    row-gap: var(--ao-spacing-1);
+  }
+
+  .ordered-list__label { flex: 1 1 auto; }
+
+  .ordered-list__actions { margin-inline-start: auto; }
+}
+
+/* View — the order as a plain numbered list in the field row's own type. */
+.ordered-list-view {
+  margin: 0;
+  padding: 0;
+  list-style: decimal inside;
+}

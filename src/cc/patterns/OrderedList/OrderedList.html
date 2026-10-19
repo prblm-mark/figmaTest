@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>OrderedList — Control Centre</title>
+  <link rel="stylesheet" href="../../../styles/base.css">
+  <link rel="stylesheet" href="../../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../../components/Checkbox/Checkbox.css">
+  <link rel="stylesheet" href="../../../components/Table/Table.css">
+  <link rel="stylesheet" href="../../../components/Datatables/Datatables.css">
+  <link rel="stylesheet" href="../../../patterns/Modal/Modal.css">
+  <link rel="stylesheet" href="../../../patterns/FilterDropdowns/FilterDropdowns.css">
+  <link rel="stylesheet" href="../../components/FieldRow/FieldRow.css">
+  <link rel="stylesheet" href="OrderedList.css">
+  <style>
+    body { margin: 0; padding: var(--ao-spacing-7); background: var(--cc-ui-primary-bg); min-height: 100vh; color: var(--ao-text-primary); font-family: var(--ao-font-body); }
+    .demo-section { max-width: var(--ao-size-11); padding: var(--ao-spacing-6); background: var(--ao-surface-primary); border: 1px solid var(--ao-border-secondary); border-radius: var(--ao-radius-lg); margin-bottom: var(--ao-spacing-5); }
+    .demo-section__title { font-size: var(--ao-font-fixed-xs); font-weight: var(--ao-font-semibold); color: var(--ao-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 var(--ao-spacing-5); }
+    .demo-note { margin: 0 0 var(--ao-spacing-5); font-size: var(--ao-font-fixed-xs); color: var(--ao-text-secondary); }
+    .demo-stack { display: flex; flex-direction: column; gap: var(--ao-spacing-5); margin: 0; }
+  </style>
+</head>
+<body>
+  <div class="demo-section">
+    <p class="demo-section__title">Kind=Fixed</p><p class="demo-note">The items are given; only their order changes (Search Profile → Content Group Priority). Drag by the grip, or use ↑ ↓. The first row has no ↑ and the last no ↓. The page's Save stores the order.</p>
+    <div class="demo-stack"><div class="field-row field-row--edit">
+            <span class="field-row__label" id="f-contentgrouppriority-1-label">Content Group Priority</span>
+            <div class="field-row__value"><div class="ordered-list" data-ordered-list>
+              <ol class="ordered-list__items" id="f-contentgrouppriority-1" aria-label="Content Group Priority" data-empty="None selected"><li class="ordered-list__row" data-ordered-list-key="Articles">
+                <span class="ordered-list__grip" data-ordered-list-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+                <span class="ordered-list__position">1</span>
+                <span class="ordered-list__label">Articles</span>
+                <span class="ordered-list__actions"><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Articles up" data-ordered-list-move="up" disabled><i data-lucide="arrow-up" aria-hidden="true"></i></button><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Articles down" data-ordered-list-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button></span>
+              </li><li class="ordered-list__row" data-ordered-list-key="Contacts">
+                <span class="ordered-list__grip" data-ordered-list-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+                <span class="ordered-list__position">2</span>
+                <span class="ordered-list__label">Contacts</span>
+                <span class="ordered-list__actions"><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Contacts up" data-ordered-list-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Contacts down" data-ordered-list-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button></span>
+              </li><li class="ordered-list__row" data-ordered-list-key="Accounts">
+                <span class="ordered-list__grip" data-ordered-list-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+                <span class="ordered-list__position">3</span>
+                <span class="ordered-list__label">Accounts</span>
+                <span class="ordered-list__actions"><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Accounts up" data-ordered-list-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Accounts down" data-ordered-list-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button></span>
+              </li><li class="ordered-list__row" data-ordered-list-key="Editions">
+                <span class="ordered-list__grip" data-ordered-list-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+                <span class="ordered-list__position">4</span>
+                <span class="ordered-list__label">Editions</span>
+                <span class="ordered-list__actions"><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Editions up" data-ordered-list-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Editions down" data-ordered-list-move="down" disabled><i data-lucide="arrow-down" aria-hidden="true"></i></button></span>
+              </li></ol>
+              <input type="hidden" name="f-contentgrouppriority-1" value="Articles,Contacts,Accounts,Editions" data-ordered-list-value>
+              <p class="ordered-list__live" aria-live="polite" data-ordered-list-live></p>
+              
+            </div></div>
+          </div></div>
+  </div>
+  <div class="demo-section">
+    <p class="demo-section__title">Kind=Fixed · longer list</p><p class="demo-note">Address-field order (Checkout / Demographic Profiles). Position numbers and buttons line up in columns.</p>
+    <div class="demo-stack"><div class="field-row field-row--edit">
+            <span class="field-row__label" id="f-addressfieldorder-2-label">Address Field Order</span>
+            <div class="field-row__value"><div class="ordered-list" data-ordered-list>
+              <ol class="ordered-list__items" id="f-addressfieldorder-2" aria-label="Address Field Order" data-empty="None selected"><li class="ordered-list__row" data-ordered-list-key="Address 1">
+                <span class="ordered-list__grip" data-ordered-list-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+                <span class="ordered-list__position">1</span>
+                <span class="ordered-list__label">Address 1</span>
+                <span class="ordered-list__actions"><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Address 1 up" data-ordered-list-move="up" disabled><i data-lucide="arrow-up" aria-hidden="true"></i></button><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Address 1 down" data-ordered-list-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button></span>
+              </li><li class="ordered-list__row" data-ordered-list-key="Address 2">
+                <span class="ordered-list__grip" data-ordered-list-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+                <span class="ordered-list__position">2</span>
+                <span class="ordered-list__label">Address 2</span>
+                <span class="ordered-list__actions"><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Address 2 up" data-ordered-list-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Address 2 down" data-ordered-list-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button></span>
+              </li><li class="ordered-list__row" data-ordered-list-key="Address 3">
+                <span class="ordered-list__grip" data-ordered-list-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+                <span class="ordered-list__position">3</span>
+                <span class="ordered-list__label">Address 3</span>
+                <span class="ordered-list__actions"><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Address 3 up" data-ordered-list-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Address 3 down" data-ordered-list-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button></span>
+              </li><li class="ordered-list__row" data-ordered-list-key="Town / City">
+                <span class="ordered-list__grip" data-ordered-list-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+                <span class="ordered-list__position">4</span>
+                <span class="ordered-list__label">Town / City</span>
+                <span class="ordered-list__actions"><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Town / City up" data-ordered-list-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Town / City down" data-ordered-list-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button></span>
+              </li><li class="ordered-list__row" data-ordered-list-key="County / State">
+                <span class="ordered-list__grip" data-ordered-list-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+                <span class="ordered-list__position">5</span>
+                <span class="ordered-list__label">County / State</span>
+                <span class="ordered-list__actions"><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move County / State up" data-ordered-list-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move County / State down" data-ordered-list-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button></span>
+              </li><li class="ordered-list__row" data-ordered-list-key="Postcode / Zip">
+                <span class="ordered-list__grip" data-ordered-list-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+                <span class="ordered-list__position">6</span>
+                <span class="ordered-list__label">Postcode / Zip</span>
+                <span class="ordered-list__actions"><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Postcode / Zip up" data-ordered-list-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Postcode / Zip down" data-ordered-list-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button></span>
+              </li><li class="ordered-list__row" data-ordered-list-key="Country">
+                <span class="ordered-list__grip" data-ordered-list-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+                <span class="ordered-list__position">7</span>
+                <span class="ordered-list__label">Country</span>
+                <span class="ordered-list__actions"><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Country up" data-ordered-list-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Country down" data-ordered-list-move="down" disabled><i data-lucide="arrow-down" aria-hidden="true"></i></button></span>
+              </li></ol>
+              <input type="hidden" name="f-addressfieldorder-2" value="Address 1,Address 2,Address 3,Town / City,County / State,Postcode / Zip,Country" data-ordered-list-value>
+              <p class="ordered-list__live" aria-live="polite" data-ordered-list-live></p>
+              
+            </div></div>
+          </div></div>
+  </div>
+  <div class="demo-section">
+    <p class="demo-section__title">Kind=Selectable</p><p class="demo-note">Select opens the Multi Select Modal pre-ticked with the current items; Apply keeps the order of those that stay and adds new ones at the bottom. × removes a row (v1 Contact Topics).</p>
+    <div class="demo-stack"><div class="field-row field-row--edit">
+            <span class="field-row__label" id="f-contacttopics-3-label">Contact Topics</span>
+            <div class="field-row__value"><div class="ordered-list" data-ordered-list>
+              <ol class="ordered-list__items" id="f-contacttopics-3" aria-label="Contact Topics" data-empty="None selected"><li class="ordered-list__row" data-ordered-list-key="Coronavirus Hub">
+                <span class="ordered-list__grip" data-ordered-list-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+                <span class="ordered-list__position">1</span>
+                <span class="ordered-list__label">Coronavirus Hub</span>
+                <span class="ordered-list__actions"><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Coronavirus Hub up" data-ordered-list-move="up" disabled><i data-lucide="arrow-up" aria-hidden="true"></i></button><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move Coronavirus Hub down" data-ordered-list-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Remove Coronavirus Hub" data-ordered-list-remove><i data-lucide="x" aria-hidden="true"></i></button></span>
+              </li><li class="ordered-list__row" data-ordered-list-key="AI">
+                <span class="ordered-list__grip" data-ordered-list-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+                <span class="ordered-list__position">2</span>
+                <span class="ordered-list__label">AI</span>
+                <span class="ordered-list__actions"><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move AI up" data-ordered-list-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move AI down" data-ordered-list-move="down" disabled><i data-lucide="arrow-down" aria-hidden="true"></i></button><button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Remove AI" data-ordered-list-remove><i data-lucide="x" aria-hidden="true"></i></button></span>
+              </li></ol>
+              <input type="hidden" name="f-contacttopics-3" value="Coronavirus Hub,AI" data-ordered-list-value>
+              <p class="ordered-list__live" aria-live="polite" data-ordered-list-live></p>
+              <button type="button" class="btn btn--secondary btn--sm" data-ordered-list-select="modal-topics" aria-haspopup="dialog"><span>Select</span></button>
+            </div></div>
+          </div><div class="field-row field-row--edit">
+            <span class="field-row__label" id="f-contacttopicsempty-4-label">Contact Topics (empty)</span>
+            <div class="field-row__value"><div class="ordered-list" data-ordered-list>
+              <ol class="ordered-list__items" id="f-contacttopicsempty-4" aria-label="Contact Topics (empty)" data-empty="None selected"></ol>
+              <input type="hidden" name="f-contacttopicsempty-4" value="" data-ordered-list-value>
+              <p class="ordered-list__live" aria-live="polite" data-ordered-list-live></p>
+              <button type="button" class="btn btn--secondary btn--sm" data-ordered-list-select="modal-topics" aria-haspopup="dialog"><span>Select</span></button>
+            </div></div>
+          </div></div>
+  </div>
+  <div class="demo-section">
+    <p class="demo-section__title">View</p><p class="demo-note">The order as a numbered list. With no items the field is left out (view screens hide empty fields).</p>
+    <dl class="demo-stack"><div class="field-row">
+            <dt class="field-row__label">Content Group Priority</dt>
+            <dd class="field-row__value"><ol class="ordered-list-view"><li>Articles</li><li>Contacts</li><li>Accounts</li><li>Editions</li></ol></dd>
+          </div></dl>
+  </div>
+
+  <div class="modal-overlay" id="modal-topics" role="presentation">
+    <div class="modal filter-dropdowns__modal" role="dialog" aria-modal="true" aria-labelledby="modal-topics-title">
+      <div class="modal__header">
+        <h2 class="modal__title" id="modal-topics-title">Select Contact Topics</h2>
+        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="filter-dropdowns__table-region">
+        <div class="datatables"><div class="datatables__body">
+          <table class="table">
+            <thead><tr><th class="datatables__col--tight"></th><th>Name</th><th>Zone</th></tr></thead>
+            <tbody><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Coronavirus Hub"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Coronavirus Hub</td><td>Affino</td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select AI"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>AI</td><td>Affino</td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Insight &amp; Blogs"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Insight &amp; Blogs</td><td>Affino</td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Commercial Hub"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Commercial Hub</td><td>Affino</td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Events"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Events</td><td>Affino</td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Affino Social Commerce Blog"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Affino Social Commerce Blog</td><td>Affino</td></tr></tbody>
+          </table>
+        </div></div>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+        <button type="button" class="btn btn--primary" data-filter-dropdowns-apply>Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="OrderedList.js"></script>
+</body>
+</html>
