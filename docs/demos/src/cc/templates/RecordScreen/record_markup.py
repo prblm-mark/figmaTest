@@ -306,6 +306,8 @@ def view_row(label, kind, value=None, compact=False):
         mods.append(f"field-row--{'paragraph' if kind == 'rich' else kind}")
     if kind == "tags":
         val = '<div class="field-row__tags">' + "".join(chip(t) for t in value) + '</div>'
+    elif kind == "ordered":
+        val = '<ol class="ordered-list-view">' + "".join(f"<li>{e(t)}</li>" for t in value) + '</ol>'
     elif kind == "media":
         val = media_meta(rows=value) if value else media_meta()
     elif kind == "rich":
@@ -331,6 +333,28 @@ _uid = [0]
 def _id(label):
     _uid[0] += 1
     return "f-" + "".join(ch for ch in label.lower() if ch.isalnum())[:24] + f"-{_uid[0]}"
+
+
+def ordered_list(fid, label, items, modal=None, described=""):
+    """OrderedList (src/cc/patterns/OrderedList) — a short list whose order is the value, reordered in
+    place (Mark, 2026-10-19: v1 shows the whole list on the page, so no modal). `items` are names or
+    (key, name). Kind=Fixed reorders only; a `modal` makes it Kind=Selectable: a remove button per row
+    and Select, the Multi Select Modal. OrderedList.js numbers the rows and disables the end arrows."""
+    pairs = [i if isinstance(i, tuple) else (i, i) for i in items]
+    rows = "".join(f'''<li class="ordered-list__row" data-ordered-list-key="{e(k)}">
+                <span class="ordered-list__grip" data-ordered-list-grip title="Drag to reorder" aria-hidden="true">{icon("grip-vertical")}</span>
+                <span class="ordered-list__position">{n}</span>
+                <span class="ordered-list__label">{e(t)}</span>
+                <span class="ordered-list__actions">{btn(f"Move {t} up", "tertiary", "sm", icon_left="arrow-up", icon_only=True, attrs=' data-ordered-list-move="up"' + (" disabled" if n == 1 else ""))}{btn(f"Move {t} down", "tertiary", "sm", icon_left="arrow-down", icon_only=True, attrs=' data-ordered-list-move="down"' + (" disabled" if n == len(pairs) else ""))}{btn(f"Remove {t}", "tertiary", "sm", icon_left="x", icon_only=True, attrs=" data-ordered-list-remove") if modal else ""}</span>
+              </li>''' for n, (k, t) in enumerate(pairs, 1))
+    select = btn("Select", "secondary", "sm", attrs=f' data-ordered-list-select="{modal}" aria-haspopup="dialog"') if modal else ""
+    return f'''<div class="ordered-list" data-ordered-list>
+              <ol class="ordered-list__items" id="{fid}" aria-label="{e(label)}" data-empty="None selected"{described}>{rows}</ol>
+              <input type="hidden" name="{fid}" value="{e(",".join(k for k, _ in pairs))}" data-ordered-list-value>
+              <p class="ordered-list__live" aria-live="polite" data-ordered-list-live></p>
+              {select}
+            </div>'''
+    # TODO(backend:RecordScreen) ordered-list-value: hidden input = keys in order → the field's v1 value on Save
 
 
 ERROR_TARGETS = []  # (label, message, field id) for the validation summary — filled by edit_row(error=…)
@@ -385,6 +409,8 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
               <ul class="tag-box__tags" id="{fid}" aria-label="{e(label)}" data-empty="None selected"{described}>{items}</ul>
               {btn("Select", "secondary", "sm", attrs=f' data-tag-box-select="{modal}" aria-haspopup="dialog"')}
             </div>'''
+    elif kind == "ordered":
+        ctl = ordered_list(fid, label, tags or [], modal, described)
     elif kind == "media":
         ctl = media_picker(label)
     # ── New edit types (Article 10007, code-first — flagged for Figma 2026-09-29) ──
