@@ -214,6 +214,23 @@ Dashboard on the ControlScreen shell (shell items are inherited). Full spec: `Cr
 
 ---
 
+## Surface: TopicManager
+
+`src/cc/templates/ListingScreen/TopicManager.html` is v1's `/control/taxonomy-manager-screen` (ControlProfile 850) on v3 (Hub TASK-571925,
+code-first). The Hierarchy view is the new TopicTree pattern (`src/cc/patterns/TopicTree/`); the List view is the Listing template, whose
+own items are inherited. Build notes for Cat: [`docs/topic-manager-handover.md`](docs/topic-manager-handover.md).
+
+| id | Element | Now | Backend work needed | Category |
+|---|---|---|---|---|
+| `topic-tree-data` | Hierarchy rows (TopicTree) and List rows | Generated demo data in src/cc/patterns/TopicTree/topic-tree-data.js: real AffinoComrz 'Affino Taxonomy' names, links and order (a 200-topic sample); invented counts; one invented second parent. | One level per call: GET /control/topics?TaxonomyCode=N&parent=<code|root> → { topics: { code: { name, externalId, children, articles, contacts, accounts, parents[] } }, children: [codes] }, ordered by TaxonomyCategoryBTNT.SO then name, capped at 300 per level (v1). Top level = topics with no BTNT parent. | needs-backend |
+| `topic-tree-search` | Topic / Parent / Starts with chips + Search, in the Hierarchy | Filters the whole in-memory graph and draws matches with their ancestor paths. | GET /control/topics?TaxonomyCode=&q=&parent=&letter= → the matches AND every ancestor on a path to them ({ topics, children, parents } for just those), so the tree can draw a result without loading each level. v1 rule: a one-character Topic term is 'starts with', longer is 'contains', on Name or ExternalID. | needs-backend |
+| `topic-manager-rows` | List view table, counts, paging | The same demo rows through the Listing template. | GET /control/topics?TaxonomyCode=&page=&per_page=&sort= returning { columns[], rows[], page } with v1's List CProperties (TaxonomyManagerDisplayListing.cfm): Name, Parents, TotalChilds, TotalChannels, TotalArticles, TotalAccounts, TotalContacts, the 'le2' counts, Created. | needs-backend |
+| `topic-manager-routes` | Topic name / row / pencil, header Add, breadcrumb topic list | href='#topic', '#topic/edit', '#'. | The topic's View and Edit routes (record pattern; v1 TaxonomyCategoryEdit.cfm), Add = new topic in this TaxonomyCode, the crumb = the topic list's own View. | needs-backend |
+
+`grep -rn "TODO(backend:TopicManager)\|topic-manager-\|topic-tree-" src/`
+
+---
+
 ## Surface: Login
 
 `src/cc/templates/Login/Login.html` — the CC Control Centre login screen. A standalone

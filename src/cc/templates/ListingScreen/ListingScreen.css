@@ -388,6 +388,17 @@
 .cc-listing[data-layout="grid"] > .datatables > .datatables__body { display: none; }
 .cc-listing[data-layout="listing"] > .datatables > .cc-listing__grid { display: none; }
 
+/* Topic Manager's Hierarchy (TopicTree) — a second `.datatables__body` in the card, shown only in its
+ * own layout. The tree is not paged (levels load as they open), so the page-size meta and the footer
+ * go with the table. Same child-combinator care as above. */
+.cc-listing:not([data-layout="hierarchy"]) > .datatables > .cc-listing__tree { display: none; }
+.cc-listing[data-layout="hierarchy"] > .datatables > .datatables__body:not(.cc-listing__tree),
+.cc-listing[data-layout="hierarchy"] > .datatables > .datatables__footer,
+.cc-listing[data-layout="hierarchy"] > .datatables > .datatables__toolbar > .datatables__meta { display: none; }
+/* …and with the meta gone the switch would slide to the toolbar's left edge — under a different
+   pointer position in each view. Held right, where List puts it. */
+.cc-listing[data-layout="hierarchy"] > .datatables > .datatables__toolbar > .datatables__actions { margin-inline-start: auto; }
+
 .cc-listing__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(var(--ao-size-2), 1fr));

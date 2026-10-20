@@ -1,0 +1,159 @@
+/* TopicTree — a topic list's hierarchy as a tree-table (Tier: pattern, Control Centre).
+ *
+ * CODE-FIRST (Mark, 2026-10-20, Hub TASK-571925). No Figma source yet. Everything here is the existing
+ * kit — the Datatables row and cells, the tertiary xs icon Button as the chevron, the edit pencil, the
+ * DS Tooltip — plus the three values the tree itself needed, each the designer's call:
+ *   - indent per level  = --ao-spacing-7 (32px): the chevron (spacing-6) + the name gap (spacing-3),
+ *     so a child's chevron sits under its parent's NAME.
+ *   - search ancestors  = --ao-text-secondary; matches keep the cell's own colour.
+ *   - "also under" hint = Lucide link-2 at icon-size-sm in --ao-icon-contrast, with the DS Tooltip.
+ *
+ * Sits inside `.datatables.datatables--orders` — the Listing template's card — so header, borders,
+ * hover tint and the record link's semibold all come from Datatables.css.
+ */
+
+/* `--orders` renders its tables `table-layout: fixed`, at widths ListingScreen.js measures and writes.
+ * The tree has no such fit — one column that takes the slack and counts that hug is exactly what auto
+ * layout does — and under fixed layout the Topic column's `width: 100%` took the whole table and the
+ * counts drew at 0px (measured 2026-10-20). */
+.datatables--orders .table.topic-tree {
+  table-layout: auto;
+}
+
+/* ── Name cell ──────────────────────────────────────────── */
+
+.topic-tree__name {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-spacing-3);
+  min-inline-size: 0;
+}
+
+/* One indent step per level below the top. v1 walks at most 10 levels
+ * (TaxonomyManagerDisplayHierarchy.cfm stops its ancestry loop at 10). */
+.topic-tree__name[data-level="2"]  { padding-inline-start: var(--ao-spacing-7); }
+.topic-tree__name[data-level="3"]  { padding-inline-start: calc(var(--ao-spacing-7) * 2); }
+.topic-tree__name[data-level="4"]  { padding-inline-start: calc(var(--ao-spacing-7) * 3); }
+.topic-tree__name[data-level="5"]  { padding-inline-start: calc(var(--ao-spacing-7) * 4); }
+.topic-tree__name[data-level="6"]  { padding-inline-start: calc(var(--ao-spacing-7) * 5); }
+.topic-tree__name[data-level="7"]  { padding-inline-start: calc(var(--ao-spacing-7) * 6); }
+.topic-tree__name[data-level="8"]  { padding-inline-start: calc(var(--ao-spacing-7) * 7); }
+.topic-tree__name[data-level="9"]  { padding-inline-start: calc(var(--ao-spacing-7) * 8); }
+.topic-tree__name[data-level="10"] { padding-inline-start: calc(var(--ao-spacing-7) * 9); }
+
+/* The Topic column takes all the slack and the counts hug. `max-width: 0` + `width: 100%` is the
+ * table-cell form of that: the cell stops reporting its text as a minimum, so the browser sizes the
+ * counts first and gives Topic the rest — without it, Datatables' 160px truncate cap clipped names
+ * while the counts sat on spare width (measured 2026-10-20). PHYSICAL `max-width` on purpose: the
+ * logical `max-inline-size` is ignored on a table cell and the table overflowed its card by 90px. */
+.topic-tree__name-cell {
+  width: 100%;
+  max-width: 0;
+  /* …but never nothing: at 390px the four counts took the whole card and Topic drew at 0px. The
+   * same 160px as Datatables' own truncate cap. Clipped, so a deep indent cannot paint over Children. */
+  min-width: var(--ao-size-2);
+  overflow: hidden;
+}
+
+/* A narrow card keeps the structure — Topic and Children — and drops the tagged-item counts, which
+ * the List view (and the topic's own page) still carry. Queries the `.datatables` card, the nearest
+ * inline-size container; it is the card's width that matters, not the window's (CLAUDE.md §4a). */
+@container (max-width: 767px) {
+  .topic-tree [data-topic-tree-col="articles"],
+  .topic-tree [data-topic-tree-col="contacts"],
+  .topic-tree [data-topic-tree-col="accounts"] {
+    display: none;
+  }
+}
+
+/* The name is the part that yields: it truncates, the chevron and the hint never shrink. */
+.topic-tree__name .datatables__truncate {
+  flex: 0 1 auto;
+  min-inline-size: 0;
+  max-inline-size: none;
+}
+
+/* A leaf keeps the chevron's slot, so names at one level line up whether or not they have children. */
+.topic-tree__spacer {
+  flex: none;
+  inline-size: var(--ao-spacing-6);
+}
+
+/* ── Chevron ────────────────────────────────────────────── */
+
+/* The OrderedList / Selector treatment for a tertiary xs control in a table row: it holds a hairline
+ * border so it reads as a button on the row's own hover tint. */
+.topic-tree__toggle {
+  flex: none;
+  border: 1px solid var(--ao-border-secondary);
+}
+
+.topic-tree__toggle:hover,
+.topic-tree__toggle:focus-visible {
+  border-color: var(--ao-border-secondary);
+}
+
+/* Lucide swaps the <i> for an <svg> that keeps `data-lucide`, so target that, not `i`. */
+.topic-tree__toggle [data-lucide] {
+  transition: transform var(--ao-transition-default);
+}
+
+.topic-tree__row[aria-expanded="true"] .topic-tree__toggle [data-lucide] {
+  transform: rotate(90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topic-tree__toggle [data-lucide] { transition: none; }
+}
+
+/* ── "Also under" hint (multi-parent topics) ────────────── */
+
+.topic-tree__also {
+  display: inline-flex;
+  flex: none;
+  color: var(--ao-icon-contrast);
+}
+
+.topic-tree__also [data-lucide] {
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+}
+
+/* The shared tooltip (TopicTree.js): the DS Tooltip, Arrow=Top, fixed under the hovered hint —
+ * the component's own look; only placement here (as .record-summary__float-tip). */
+.topic-tree__float-tip {
+  position: fixed;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.topic-tree__float-tip[hidden] {
+  display: none;
+}
+
+/* ── Rows ───────────────────────────────────────────────── */
+
+/* Row focus is the treegrid's keyboard cursor. Inset, so the card's clip never cuts it. */
+.topic-tree__row:focus-visible {
+  outline: 2px solid var(--ao-surface-brand);
+  outline-offset: -2px;
+}
+
+/* Search: the ancestors drawn only to reach a match are context, not results. */
+.topic-tree__row--context td,
+.topic-tree__row--context .datatables__record-link {
+  color: var(--ao-text-secondary);
+}
+
+/* Loading a level, and "Show more" past the per-level cap. Not rows you can act on, so no hover. */
+.topic-tree__status td {
+  color: var(--ao-text-secondary);
+}
+
+.topic-tree__status .spinner {
+  flex: none;
+}
+
+.topic-tree__status-text {
+  color: var(--ao-text-secondary);
+}

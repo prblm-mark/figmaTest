@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>TopicTree — Control Centre</title>
+  <link rel="stylesheet" href="../../../styles/base.css">
+  <link rel="stylesheet" href="../../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../../components/Table/Table.css">
+  <link rel="stylesheet" href="../../../components/Datatables/Datatables.css">
+  <link rel="stylesheet" href="../../../components/Tooltip/Tooltip.css">
+  <link rel="stylesheet" href="../../../components/Spinner/Spinner.css">
+  <link rel="stylesheet" href="TopicTree.css">
+  <style>
+    body { margin: 0; padding: var(--ao-spacing-7); background: var(--cc-ui-primary-bg); min-height: 100vh; color: var(--ao-text-primary); font-family: var(--ao-font-body); }
+    .demo-section { max-width: var(--ao-size-12); padding: var(--ao-spacing-6); background: var(--ao-surface-primary); border: 1px solid var(--ao-border-secondary); border-radius: var(--ao-radius-lg); margin-bottom: var(--ao-spacing-5); }
+    .demo-section__title { font-size: var(--ao-font-fixed-xs); font-weight: var(--ao-font-semibold); color: var(--ao-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 var(--ao-spacing-5); }
+    .demo-note { margin: 0 0 var(--ao-spacing-5); font-size: var(--ao-font-fixed-xs); color: var(--ao-text-secondary); }
+    .demo-empty { padding: var(--ao-spacing-6) var(--ao-spacing-5); color: var(--ao-text-secondary); font-size: var(--ao-font-fixed-xs); }
+  </style>
+</head>
+<body>
+  <div class="demo-section">
+    <p class="demo-section__title">Default · collapsed, levels load on demand</p>
+    <p class="demo-note">The topic list's top level (topics with no parent), A–Z. A chevron expands a topic; its children load the first time (a short delay here, so the loading row shows). The name, or anywhere else on the row, opens the topic; the pencil edits it. Keyboard: ↑ ↓, → expand / step in, ← collapse / step out, Home, End, Enter.</p>
+    <div class="datatables datatables--orders datatables--rows-clickable"><div class="datatables__body"><table class="table" data-demo="default"></table></div></div>
+  </div>
+
+  <div class="demo-section">
+    <p class="demo-section__title">Expanded · 8 levels deep</p>
+    <p class="demo-note">The deepest real branch on Affino's own list: Solutions › Affino › Content Management › Website Management › Design › Display › Display Format › Text Size. Each level indents 32px (--ao-spacing-7), so a child's chevron sits under its parent's name; the name truncates rather than the counts.</p>
+    <div class="datatables datatables--orders datatables--rows-clickable"><div class="datatables__body"><table class="table" data-demo="deep"></table></div></div>
+  </div>
+
+  <div class="demo-section">
+    <p class="demo-section__title">Multi-parent · "also under"</p>
+    <p class="demo-note">Accessibility sits under Website Management AND under Standards, so it appears in both places. The link icon names the other parent (hover it, or focus the row). The second link is invented for the demo; the schema allows any number.</p>
+    <div class="datatables datatables--orders datatables--rows-clickable"><div class="datatables__body"><table class="table" data-demo="multi"></table></div></div>
+  </div>
+
+  <div class="demo-section">
+    <p class="demo-section__title">Search · matches with their ancestors</p>
+    <p class="demo-note">Topic contains "image": every match is shown with the path that leads to it, opened. Ancestors drawn only for context are muted (--ao-text-secondary); matches keep the row's own colour.</p>
+    <div class="datatables datatables--orders datatables--rows-clickable"><div class="datatables__body"><table class="table" data-demo="search"></table></div></div>
+  </div>
+
+  <div class="demo-section">
+    <p class="demo-section__title">Show more · per-level cap</p>
+    <p class="demo-note">v1 caps a level at 300 topics. The cap here is 10 so it shows: the rest of the level is one click away, and the count says how many are drawn.</p>
+    <div class="datatables datatables--orders datatables--rows-clickable"><div class="datatables__body"><table class="table" data-demo="more"></table></div></div>
+  </div>
+
+  <div class="demo-section">
+    <p class="demo-section__title">Search · no matches</p>
+    <p class="demo-note">The host supplies the empty row (on the Topic Manager it is the listing's own empty state).</p>
+    <div class="datatables datatables--orders"><div class="datatables__body"><table class="table" data-demo="empty"></table></div></div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="topic-tree-data.js"></script>
+  <script src="TopicTree.js"></script>
+  <script>
+    (function () {
+      var D = window.TOPIC_TREE_DATA;
+      var COLUMNS = [
+        { key: 'name', label: 'Topic', type: 'name' },
+        { key: 'children', label: 'Children', type: 'count' },
+        { key: 'articles', label: 'Articles', type: 'count' },
+        { key: 'contacts', label: 'Contacts', type: 'count' },
+        { key: 'accounts', label: 'Accounts', type: 'count' },
+        { key: 'edit', label: '', type: 'edit', hug: true }
+      ];
+
+      function copy(o) { return JSON.parse(JSON.stringify(o)); }
+      /* A path key from topic names, top down. */
+      function pathTo(names) {
+        var at = 'root', out = [];
+        names.forEach(function (n) {
+          var code = D.children[at].filter(function (c) { return D.topics[c].name === n; })[0];
+          out.push(code); at = code;
+        });
+        return out.join('/');
+      }
+      function prefixes(key) {
+        return key.split('/').map(function (_, i, a) { return a.slice(0, i + 1).join('/'); });
+      }
+      function mount(name, extra) {
+        var table = document.querySelector('[data-demo="' + name + '"]');
+        var opts = {
+          label: 'Affino Taxonomy topics',
+          topics: D.topics, children: copy(D.children), parents: D.parents, columns: COLUMNS,
+          href: function () { return '#topic'; }, editHref: function () { return '#topic/edit'; }
+        };
+        Object.keys(extra || {}).forEach(function (k) { opts[k] = extra[k]; });
+        return window.TopicTree.mount(table, opts);
+      }
+
+      /* Lazy: only the top level is "loaded"; a level arrives after a short delay. */
+      var lazy = { root: D.children.root };
+      mount('default', {
+        children: lazy,
+        loadChildren: function (code) {
+          return new Promise(function (resolve) {
+            setTimeout(function () { lazy[code] = D.children[code] || []; resolve(); }, 700);
+          });
+        }
+      });
+
+      /* These two show one branch, so their top level is just Solutions — most of the list's 56
+         top-level topics are parentless leaves that would bury the example. */
+      var solutionsOnly = copy(D.children);
+      solutionsOnly.root = [pathTo(['Solutions'])];
+
+      mount('deep', { children: solutionsOnly }).open(prefixes(pathTo(['Solutions', 'Affino', 'Content Management', 'Website Management', 'Design', 'Display', 'Display Format'])));
+
+      var wm = pathTo(['Solutions', 'Affino', 'Content Management', 'Website Management']);
+      mount('multi', { children: copy(solutionsOnly) }).open(prefixes(wm).concat([wm + '/' + pathTo(['Solutions', 'Affino', 'Content Management', 'Website Management', 'Standards']).split('/').pop()]));
+
+      mount('search').filter(function (t) { return t.name.toLowerCase().indexOf('image') !== -1; });
+
+      mount('more', { pageSize: 10 });
+
+      mount('empty', {
+        emptyHtml: '<tr><td colspan="6" class="demo-empty">No topics match "zzz".</td></tr>'
+      }).filter(function (t) { return t.name.indexOf('zzz') !== -1; });
+    })();
+  </script>
+</body>
+</html>

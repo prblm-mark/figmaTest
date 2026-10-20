@@ -1,6 +1,6 @@
 {
  "description": "Backend-developer handover manifest. Machine-readable index of front-end elements that are mock / visual-only / in-memory and need real backend implementation. Front-end-only repo (vanilla HTML/CSS/JS, no framework, no backend). See HANDOVER.md for the human-readable version and the TODO(backend:<Surface>) in-code marker convention.",
- "updated": "2026-10-16",
+ "updated": "2026-10-20",
  "categories": {
   "visual-only": "Rendered but no behaviour wired at all.",
   "fe-wired": "Works client-side; no backend required (may be fine as-is).",
@@ -1879,6 +1879,40 @@
      "element": "Topic chips (contact/account Topics, summary panel)",
      "current": "Demo colours from TOPIC_HUES in record_markup.py; unlisted topics are neutral.",
      "needs": "Each topic's own colour setting → an accent hue name (jade, purple, …) rendered as topic-chip--<hue>."
+    }
+   ]
+  },
+  "TopicManager": {
+   "file": "src/cc/templates/ListingScreen/TopicManager.html",
+   "note": "v3 Topic Manager (Hub TASK-571925): /control/taxonomy-manager-screen, Hierarchy (TopicTree pattern) + List (Listing template). Listing items (saved views, column prefs, header actions) are inherited from ListingScreen.",
+   "items": [
+    {
+     "id": "topic-tree-data",
+     "category": "needs-backend",
+     "element": "Hierarchy rows (TopicTree) and List rows",
+     "current": "Generated demo data in src/cc/patterns/TopicTree/topic-tree-data.js: real AffinoComrz 'Affino Taxonomy' names, links and order (a 200-topic sample); invented counts; one invented second parent.",
+     "needs": "One level per call: GET /control/topics?TaxonomyCode=N&parent=<code|root> → { topics: { code: { name, externalId, children, articles, contacts, accounts, parents[] } }, children: [codes] }, ordered by TaxonomyCategoryBTNT.SO then name, capped at 300 per level (v1). Top level = topics with no BTNT parent."
+    },
+    {
+     "id": "topic-tree-search",
+     "category": "needs-backend",
+     "element": "Topic / Parent / Starts with chips + Search, in the Hierarchy",
+     "current": "Filters the whole in-memory graph and draws matches with their ancestor paths.",
+     "needs": "GET /control/topics?TaxonomyCode=&q=&parent=&letter= → the matches AND every ancestor on a path to them ({ topics, children, parents } for just those), so the tree can draw a result without loading each level. v1 rule: a one-character Topic term is 'starts with', longer is 'contains', on Name or ExternalID."
+    },
+    {
+     "id": "topic-manager-rows",
+     "category": "needs-backend",
+     "element": "List view table, counts, paging",
+     "current": "The same demo rows through the Listing template.",
+     "needs": "GET /control/topics?TaxonomyCode=&page=&per_page=&sort= returning { columns[], rows[], page } with v1's List CProperties (TaxonomyManagerDisplayListing.cfm): Name, Parents, TotalChilds, TotalChannels, TotalArticles, TotalAccounts, TotalContacts, the 'le2' counts, Created."
+    },
+    {
+     "id": "topic-manager-routes",
+     "category": "needs-backend",
+     "element": "Topic name / row / pencil, header Add, breadcrumb topic list",
+     "current": "href='#topic', '#topic/edit', '#'.",
+     "needs": "The topic's View and Edit routes (record pattern; v1 TaxonomyCategoryEdit.cfm), Add = new topic in this TaxonomyCode, the crumb = the topic list's own View."
     }
    ]
   }
