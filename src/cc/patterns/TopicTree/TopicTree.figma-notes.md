@@ -22,7 +22,7 @@ A–Z; a level loads when you open its parent (a page reload per click), capped 
 |---|---|
 | Collapsed / expanded | Lucide `chevron-right`, rotated 90° when open |
 | Leaf | an empty chevron-width slot, so names at one level align |
-| Selected | `--ao-surface-brand-soft-extra` row, semibold (the Selector's current-row fill) |
+| Selected | `--ao-surface-secondary` row, semibold — neutral, not brand (Mark, 2026-10-20) |
 | Hover | `--ao-surface-minimal` |
 | Loading a level | a row: Spinner `--sm --neutral` + "Loading topics…" (`role="status"`) |
 | Multi-parent | Lucide `link-2` after the name; DS Tooltip (Arrow=Top) "Also under: X, Y" |
@@ -50,7 +50,7 @@ A–Z; a level loads when you open its parent (a page reload per click), capped 
 | Gap | `--ao-spacing-2` | |
 | Indent per level | `--ao-icon-size-sm` + `--ao-spacing-2` (22px) | Mark, 2026-10-20: a child's chevron sits under its parent's name |
 | Hover | `--ao-surface-minimal` | OrderedList / Selector row hover |
-| Selected | `--ao-surface-brand-soft-extra` + `--ao-font-semibold` | Selector current row |
+| Selected | `--ao-surface-secondary` + `--ao-font-semibold` | Mark, 2026-10-20: a brand fill felt wrong; one step up from hover, the SegmentedControl's active fill |
 | Search ancestors | `--ao-text-secondary` | Mark, 2026-10-20 |
 | Focus | `2px solid --ao-surface-brand`, inset, on the ROW (the `<li>` holds its branch) | CLAUDE.md §9 |
 

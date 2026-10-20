@@ -822,6 +822,12 @@
  * flush right — it used to slide 135px sideways the moment you pressed it. */
 .cc-listing__layout[hidden] { display: none; }
 
+/* Each button hugs its label. The component shares the width equally (`flex: 1 0 0`), which was
+ * invisible with Media Items' near-equal "Listing" / "Grid" but not with Topic Manager's "Hierarchy" /
+ * "List": the active fill hugged "Hierarchy" while "List" floated in spare width (designer,
+ * 2026-10-20). Hugging gives both the component's own spacing-4 padding. */
+.cc-listing__layout .seg-control__btn { flex: 0 0 auto; }
+
 /* Icons only when the column is narrow (designer, 2026-09-22). The toolbar has
  * to hold a page-size control, a count and this; at 390px the two labels are
  * the first thing that can go without losing a function.

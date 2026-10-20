@@ -6,7 +6,7 @@
  *   - row        = --ao-spacing-7 (32px) min height, compact (Mark, 2026-10-20)
  *   - indent     = chevron (--ao-icon-size-sm) + gap (--ao-spacing-2) per level, so a child's chevron
  *                  sits under its parent's NAME (22px)
- *   - selected   = --ao-surface-brand-soft-extra, semibold — the Selector's current-row fill
+ *   - selected   = --ao-surface-secondary, semibold — neutral, not brand
  *   - hover      = --ao-surface-minimal — the OrderedList / Selector row hover
  *   - search ancestors = --ao-text-secondary; matches keep the row's colour
  *   - "also under" = Lucide link-2, icon-size-sm, --ao-icon-contrast, with the DS Tooltip
@@ -50,8 +50,10 @@
   background-color: var(--ao-surface-minimal);
 }
 
+/* Neutral, not brand (designer, 2026-10-20): one step up from the hover fill, the SegmentedControl's
+ * own active fill. */
 .topic-tree [aria-selected="true"] > .topic-tree__item {
-  background-color: var(--ao-surface-brand-soft-extra);
+  background-color: var(--ao-surface-secondary);
   font-weight: var(--ao-font-semibold);
 }
 
