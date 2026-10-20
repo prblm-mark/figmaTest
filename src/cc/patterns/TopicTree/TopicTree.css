@@ -1,0 +1,144 @@
+/* TopicTree — a topic list's hierarchy as a site tree (Tier: pattern, Control Centre).
+ *
+ * CODE-FIRST (Mark, 2026-10-20, Hub TASK-571925). No Figma source yet. Names only, like v1's Hierarchy —
+ * the selected topic's facts are the host's panel (Topic Manager: FactPanel). The values below are the
+ * designer's calls for this pattern:
+ *   - row        = --ao-spacing-7 (32px) min height, compact (Mark, 2026-10-20)
+ *   - indent     = chevron (--ao-icon-size-sm) + gap (--ao-spacing-2) per level, so a child's chevron
+ *                  sits under its parent's NAME (22px)
+ *   - selected   = --ao-surface-secondary, semibold — neutral, not brand
+ *   - hover      = --ao-surface-minimal — the OrderedList / Selector row hover
+ *   - search ancestors = --ao-text-secondary; matches keep the row's colour
+ *   - "also under" = Lucide link-2, icon-size-sm, --ao-icon-contrast, with the DS Tooltip
+ */
+
+.topic-tree,
+.topic-tree [role="group"] {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ── Row ────────────────────────────────────────────────── */
+
+.topic-tree__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-spacing-2);
+  min-block-size: var(--ao-spacing-7);
+  padding-inline: var(--ao-spacing-3);
+  border-radius: var(--ao-radius-sm);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-primary);
+  cursor: pointer;
+  transition: background-color var(--ao-transition-default);
+}
+
+/* One step per level below the top; v1 walks at most 10 levels. */
+.topic-tree__item[data-level="2"]  { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2))); }
+.topic-tree__item[data-level="3"]  { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2)) * 2); }
+.topic-tree__item[data-level="4"]  { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2)) * 3); }
+.topic-tree__item[data-level="5"]  { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2)) * 4); }
+.topic-tree__item[data-level="6"]  { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2)) * 5); }
+.topic-tree__item[data-level="7"]  { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2)) * 6); }
+.topic-tree__item[data-level="8"]  { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2)) * 7); }
+.topic-tree__item[data-level="9"]  { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2)) * 8); }
+.topic-tree__item[data-level="10"] { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2)) * 9); }
+
+.topic-tree [role="treeitem"] > .topic-tree__item:hover {
+  background-color: var(--ao-surface-minimal);
+}
+
+/* Neutral, not brand (designer, 2026-10-20): one step up from the hover fill, the SegmentedControl's
+ * own active fill. */
+.topic-tree [aria-selected="true"] > .topic-tree__item {
+  background-color: var(--ao-surface-secondary);
+  font-weight: var(--ao-font-semibold);
+}
+
+/* The treeitem <li> holds its children, so its own outline would ring the whole branch. The ring goes on
+ * its row instead. Inset, so a scrolling host never clips it. */
+.topic-tree [role="treeitem"]:focus-visible {
+  outline: none;
+}
+
+.topic-tree [role="treeitem"]:focus-visible > .topic-tree__item {
+  outline: 2px solid var(--ao-surface-brand);
+  outline-offset: -2px;
+}
+
+/* ── Chevron, leaf slot, name ───────────────────────────── */
+
+.topic-tree__chevron,
+.topic-tree__spacer {
+  display: inline-flex;
+  flex: none;
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+  color: var(--ao-icon-contrast);
+}
+
+/* Lucide swaps the <i> for an <svg> that keeps `data-lucide`, so target that, not `i`. */
+.topic-tree__chevron [data-lucide] {
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+  transition: transform var(--ao-transition-default);
+}
+
+.topic-tree [aria-expanded="true"] > .topic-tree__item .topic-tree__chevron [data-lucide] {
+  transform: rotate(90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topic-tree__item,
+  .topic-tree__chevron [data-lucide] { transition: none; }
+}
+
+.topic-tree__name {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── "Also under" hint (multi-parent topics) ────────────── */
+
+.topic-tree__also {
+  display: inline-flex;
+  flex: none;
+  color: var(--ao-icon-contrast);
+}
+
+.topic-tree__also [data-lucide] {
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+}
+
+/* The shared tooltip (TopicTree.js): the DS Tooltip, Arrow=Top, fixed under the hovered hint —
+ * the component's own look; only placement here (as .record-summary__float-tip). */
+.topic-tree__float-tip {
+  position: fixed;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.topic-tree__float-tip[hidden] {
+  display: none;
+}
+
+/* ── Search context, loading, show more ─────────────────── */
+
+/* Search: the ancestors drawn only to reach a match are context, not results. */
+.topic-tree__item--context {
+  color: var(--ao-text-secondary);
+}
+
+.topic-tree__status > .topic-tree__item {
+  color: var(--ao-text-secondary);
+  cursor: default;
+}
+
+.topic-tree__status .spinner {
+  flex: none;
+}

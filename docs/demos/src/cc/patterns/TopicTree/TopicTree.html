@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>TopicTree — Control Centre</title>
+  <link rel="stylesheet" href="../../../styles/base.css">
+  <link rel="stylesheet" href="../../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../../components/Tooltip/Tooltip.css">
+  <link rel="stylesheet" href="../../../components/Spinner/Spinner.css">
+  <link rel="stylesheet" href="TopicTree.css">
+  <style>
+    body { margin: 0; padding: var(--ao-spacing-7); background: var(--cc-ui-primary-bg); min-height: 100vh; color: var(--ao-text-primary); font-family: var(--ao-font-body); }
+    .demo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--ao-size-7)), 1fr)); gap: var(--ao-spacing-5); align-items: start; }
+    .demo-section { padding: var(--ao-spacing-6); background: var(--ao-surface-primary); border: 1px solid var(--ao-border-secondary); border-radius: var(--ao-radius-lg); }
+    .demo-section__title { font-size: var(--ao-font-fixed-xs); font-weight: var(--ao-font-semibold); color: var(--ao-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 var(--ao-spacing-5); }
+    .demo-note { margin: 0 0 var(--ao-spacing-5); font-size: var(--ao-font-fixed-xs); color: var(--ao-text-secondary); }
+    .demo-tree { max-block-size: var(--ao-size-10); overflow-y: auto; }
+    .demo-empty { padding: var(--ao-spacing-5) var(--ao-spacing-3); color: var(--ao-text-secondary); font-size: var(--ao-font-fixed-xs); }
+  </style>
+</head>
+<body>
+  <div class="demo-grid">
+    <div class="demo-section">
+      <p class="demo-section__title">Default · levels load on demand</p>
+      <p class="demo-note">The top level is every topic with no parent, A–Z. The chevron opens a topic (its children load the first time); the rest of the row selects it. Keyboard: ↑ ↓, → open / step in, ← close / step out, Home, End, Enter. Selected: <strong data-demo-selected>none</strong></p>
+      <div class="demo-tree"><ul data-demo="default"></ul></div>
+    </div>
+
+    <div class="demo-section">
+      <p class="demo-section__title">Open · 8 levels, one selected</p>
+      <p class="demo-note">Affino's deepest real branch. Each level indents by the chevron and its gap, so a child's chevron sits under its parent's name.</p>
+      <div class="demo-tree"><ul data-demo="deep"></ul></div>
+    </div>
+
+    <div class="demo-section">
+      <p class="demo-section__title">Multi-parent · "also under"</p>
+      <p class="demo-note">Accessibility sits under Website Management and under Standards, so it appears in both places; the link icon names the other parent. (The second link is invented for the demo.)</p>
+      <div class="demo-tree"><ul data-demo="multi"></ul></div>
+    </div>
+
+    <div class="demo-section">
+      <p class="demo-section__title">Search · "image"</p>
+      <p class="demo-note">Matches with the path that leads to them, opened. Ancestors shown only for context are muted.</p>
+      <div class="demo-tree"><ul data-demo="search"></ul></div>
+    </div>
+
+    <div class="demo-section">
+      <p class="demo-section__title">Show more · per-level cap</p>
+      <p class="demo-note">v1 caps a level at 300. The cap here is 8 so it shows.</p>
+      <div class="demo-tree"><ul data-demo="more"></ul></div>
+    </div>
+
+    <div class="demo-section">
+      <p class="demo-section__title">Search · no matches</p>
+      <p class="demo-note">The host supplies the empty state.</p>
+      <div class="demo-tree"><ul data-demo="empty"></ul></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="topic-tree-data.js"></script>
+  <script src="TopicTree.js"></script>
+  <script>
+    (function () {
+      var D = window.TOPIC_TREE_DATA;
+      function copy(o) { return JSON.parse(JSON.stringify(o)); }
+      /* A path key from topic names, top down. */
+      function pathTo(names) {
+        var at = 'root', out = [];
+        names.forEach(function (n) {
+          var code = D.children[at].filter(function (c) { return D.topics[c].name === n; })[0];
+          out.push(code); at = code;
+        });
+        return out.join('/');
+      }
+      function prefixes(key) {
+        return key.split('/').map(function (_, i, a) { return a.slice(0, i + 1).join('/'); });
+      }
+      function mount(name, extra) {
+        var opts = { label: 'Affino Taxonomy topics', topics: D.topics, children: copy(D.children), parents: D.parents };
+        Object.keys(extra || {}).forEach(function (k) { opts[k] = extra[k]; });
+        return window.TopicTree.mount(document.querySelector('[data-demo="' + name + '"]'), opts);
+      }
+
+      /* Lazy: only the top level is "loaded"; a level arrives after a short delay. */
+      var lazy = { root: D.children.root };
+      mount('default', {
+        children: lazy,
+        loadChildren: function (code) {
+          return new Promise(function (resolve) {
+            setTimeout(function () { lazy[code] = D.children[code] || []; resolve(); }, 700);
+          });
+        },
+        onSelect: function (t) { document.querySelector('[data-demo-selected]').textContent = t.name; }
+      });
+
+      /* These show one branch, so their top level is just Solutions — most of the list's 56 top-level
+         topics are parentless leaves that would bury the example. */
+      var solutionsOnly = copy(D.children);
+      solutionsOnly.root = [pathTo(['Solutions'])];
+
+      var deepest = pathTo(['Solutions', 'Affino', 'Content Management', 'Website Management', 'Design', 'Display', 'Display Format', 'Text Size']);
+      var deep = mount('deep', { children: copy(solutionsOnly) });
+      deep.open(prefixes(deepest).slice(0, -1));
+      deep.select(deepest);
+
+      var wm = pathTo(['Solutions', 'Affino', 'Content Management', 'Website Management']);
+      mount('multi', { children: copy(solutionsOnly) })
+        .open(prefixes(wm).concat([wm + '/' + pathTo(['Solutions', 'Affino', 'Content Management', 'Website Management', 'Standards']).split('/').pop()]));
+
+      mount('search').filter(function (t) { return t.name.toLowerCase().indexOf('image') !== -1; });
+
+      mount('more', { pageSize: 8 });
+
+      mount('empty', { emptyHtml: '<li class="demo-empty" role="none">No topics match "zzz".</li>' })
+        .filter(function (t) { return t.name.indexOf('zzz') !== -1; });
+    })();
+  </script>
+</body>
+</html>

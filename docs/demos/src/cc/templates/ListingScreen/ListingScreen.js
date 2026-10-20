@@ -1438,7 +1438,15 @@
   }
 
   function renderResults(root, config) {
-    var matched = sortRows(applyFilters(config).rows, config);
+    var result = applyFilters(config);
+    var matched = sortRows(result.rows, config);
+
+    /* A screen's OWN rendering of the same result (config.renderLayout(root, { rows, filtered })),
+       beside the table and the grid. Topic Manager's Hierarchy is a tree over every matched row, so
+       it takes the whole result, unpaged. */
+    if (typeof config.renderLayout === 'function') {
+      config.renderLayout(root, { rows: matched, filtered: result.filtered });
+    }
 
     /* Filter, then sort, then page — in that order. Paging first would sort
        only the visible slice, and sorting first would page a list the filter
@@ -1493,8 +1501,9 @@
     return '<tr class="cc-listing__empty-row"><td class="cc-listing__empty-cell" colspan="' + columns.length + '">' +
       '<div class="cc-listing__empty">' +
         '<span class="cc-listing__empty-icon"><i data-lucide="search-x" aria-hidden="true"></i></span>' +
-        '<p class="cc-listing__empty-title">No matching orders</p>' +
-        '<p class="cc-listing__empty-desc">No orders match the filters you have applied. Try removing one, or clearing them all.</p>' +
+        /* The screen's own noun — this said "orders" on every screen until Topic Manager (2026-10-20). */
+        '<p class="cc-listing__empty-title">No matching ' + esc(ROW_ID.spoken) + 's</p>' +
+        '<p class="cc-listing__empty-desc">No ' + esc(ROW_ID.spoken) + 's match the filters you have applied. Try removing one, or clearing them all.</p>' +
       '</div>' +
     '</td></tr>';
   }
@@ -2263,7 +2272,9 @@
       /* Derived: baseFilters + added. Rebuilt by rebuildFilters(). */
       defaultFilters: defaults.slice(),
       query: '',
-      hiddenColumns: [],
+      /* Columns a screen ships switched OFF — still listed in Edit Columns. Topic Manager's are v1's
+         "le2" CProperties, the counts its List declares but does not show by default. */
+      hiddenColumns: (config.defaultHiddenColumns || []).slice(),
       /* Live state, separate from the shipped defaults so the config object
          still describes a fresh screen. */
       sort: Object.assign({ by: 'Date', dir: 'desc' }, config.sort || {}),
@@ -2363,7 +2374,8 @@
        arriving from the index expects, and `?layout=grid` lands directly on
        the other half. Recorded rather than silently diverged from. */
     var layouts = config.layouts || [];
-    var urlLayout = (new RegExp('[?&]layout=(grid|listing)').exec(location.search) || [])[1];
+    /* Any layout the screen declares (Media Items: listing | grid; Topic Manager: hierarchy | listing). */
+    var urlLayout = (new RegExp('[?&]layout=([a-z-]+)').exec(location.search) || [])[1];
     config.layout = (layouts.indexOf(urlLayout) !== -1 ? urlLayout : layouts[0]) || 'listing';
 
     function applyLayout() {

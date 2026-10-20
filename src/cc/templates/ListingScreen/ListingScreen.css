@@ -388,6 +388,54 @@
 .cc-listing[data-layout="grid"] > .datatables > .datatables__body { display: none; }
 .cc-listing[data-layout="listing"] > .datatables > .cc-listing__grid { display: none; }
 
+/* Topic Manager's Hierarchy — the TopicTree beside a FactPanel for the selected topic, in the same card,
+ * shown only in its own layout. The tree is not paged (levels load as they open), so the page-size meta
+ * and the footer go with the table. Same child-combinator care as above. */
+.cc-listing:not([data-layout="hierarchy"]) > .datatables > .cc-listing__tree { display: none; }
+.cc-listing[data-layout="hierarchy"] > .datatables > .datatables__body,
+.cc-listing[data-layout="hierarchy"] > .datatables > .datatables__footer,
+.cc-listing[data-layout="hierarchy"] > .datatables > .datatables__toolbar > .datatables__meta { display: none; }
+/* …and with the meta gone the switch would slide to the toolbar's left edge — under a different
+   pointer position in each view. Held right, where List puts it. */
+.cc-listing[data-layout="hierarchy"] > .datatables > .datatables__toolbar > .datatables__actions { margin-inline-start: auto; }
+
+/* Tree | panel. The card body takes the toolbar's own padding, so the tree's rows line up under the
+ * switch; the panel is the record screens' sidebar width (size-7, 384px) and gap (spacing-5). The
+ * FactPanel keeps its own border-secondary edge: it is a card INSIDE a card. */
+.cc-listing__tree {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--ao-size-7);
+  gap: var(--ao-spacing-5);
+  align-items: start;
+  padding: var(--ao-spacing-4) var(--ao-spacing-5) var(--ao-spacing-5);
+}
+
+/* The tree runs to hundreds of rows; the panel stays with the topic you picked. At 0 it pins the page's
+ * own top padding (spacing-6) below the header — a gap, unlike the selection bar, which must sit flush
+ * and so pulls back by it. The card is `overflow: clip`, which creates no scroll container, so the
+ * sticky reaches the page scroller (see the selection bar's note). */
+.cc-listing__tree-panel {
+  position: sticky;
+  inset-block-start: 0;
+}
+
+.cc-listing__tree-hint {
+  margin: 0;
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-secondary);
+}
+
+/* The record screens stack their sidebar at the same width (RecordScreen.css). */
+@container cs-page (max-width: 1023px) {
+  .cc-listing__tree {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cc-listing__tree-panel {
+    position: static;
+  }
+}
+
 .cc-listing__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(var(--ao-size-2), 1fr));
@@ -773,6 +821,12 @@
  * Columns appearing and disappearing happens to its left and the switch stays
  * flush right — it used to slide 135px sideways the moment you pressed it. */
 .cc-listing__layout[hidden] { display: none; }
+
+/* Each button hugs its label. The component shares the width equally (`flex: 1 0 0`), which was
+ * invisible with Media Items' near-equal "Listing" / "Grid" but not with Topic Manager's "Hierarchy" /
+ * "List": the active fill hugged "Hierarchy" while "List" floated in spare width (designer,
+ * 2026-10-20). Hugging gives both the component's own spacing-4 padding. */
+.cc-listing__layout .seg-control__btn { flex: 0 0 auto; }
 
 /* Icons only when the column is narrow (designer, 2026-09-22). The toolbar has
  * to hold a page-size control, a count and this; at 390px the two labels are
