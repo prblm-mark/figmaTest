@@ -168,6 +168,24 @@ function renderTopicHierarchy(root, result) {
       onSelect: function (t) { if (panel) renderTopicPanel(panel, t); },
       emptyHtml: '<li class="cc-listing__tree-hint" role="none">No topics match the filters you have applied. Try removing one, or clearing them all.</li>'
     });
+    /* Demo deep link: ?topic=<name> opens the path to that topic and selects it — v1 lands the same way
+       (&TaxonomyCategoryCode=). Used for the Figma frames. */
+    var wanted = new URLSearchParams(location.search).get('topic');
+    var path = wanted && (function find(code, trail) {
+      var kids = TOPICS.children[code] || [];
+      for (var i = 0; i < kids.length; i++) {
+        var p = trail.concat(kids[i]);
+        if (TOPICS.topics[kids[i]].name === wanted) return p;
+        var deeper = find(kids[i], p);
+        if (deeper) return deeper;
+      }
+      return null;
+    })('root', []);
+    if (path) {
+      path.forEach(function (c) { TOPIC_TREE_LOADED[c] = TOPICS.children[c] || []; });
+      TOPIC_TREE.open(path.map(function (_, i) { return path.slice(0, i + 1).join('/'); }));
+      setTimeout(function () { TOPIC_TREE.select(path.join('/')); });
+    }
   }
   if (!result.filtered) {
     TOPIC_TREE.filter(null);
