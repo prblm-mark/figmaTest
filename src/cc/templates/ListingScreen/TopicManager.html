@@ -86,6 +86,8 @@
   <link rel="stylesheet" href="../../../components/Tooltip/Tooltip.css">
   <link rel="stylesheet" href="../../../components/Spinner/Spinner.css">
   <link rel="stylesheet" href="../../patterns/TopicTree/TopicTree.css">
+  <link rel="stylesheet" href="../../components/FieldRow/FieldRow.css">
+  <link rel="stylesheet" href="../../patterns/FactPanel/FactPanel.css">
 </head>
 <body class="cc-control">
 
@@ -662,10 +664,19 @@
             </table>
           </div>
 
-          <!-- The Hierarchy: TopicTree writes this table's head and body. Same
-               card, same toolbar; it is not paged (levels load as they open). -->
-          <div class="datatables__body cc-listing__tree">
-            <table class="table" data-listing-tree></table>
+          <!-- The Hierarchy, v1's shape (Mark, 2026-10-20): a name-only site tree,
+               and the selected topic's facts in the FactPanel beside it — Edit
+               acts on the selection. Same card and toolbar as List; not paged
+               (levels load as they open). The panel stacks under the tree on a
+               narrow page (the record screens' 1023px). -->
+          <div class="cc-listing__tree">
+            <ul class="cc-listing__tree-nav" data-listing-tree></ul>
+            <section class="fact-panel cc-listing__tree-panel" aria-live="polite" aria-labelledby="topic-panel-title" data-listing-tree-panel>
+              <div class="fact-panel__header">
+                <div class="fact-panel__title-block"><h2 class="fact-panel__title" id="topic-panel-title">Topic</h2></div>
+              </div>
+              <p class="cc-listing__tree-hint">Select a topic to see its details.</p>
+            </section>
           </div>
 
           <div class="datatables__footer">

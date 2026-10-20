@@ -1,109 +1,103 @@
-/* TopicTree — a topic list's hierarchy as a tree-table (Tier: pattern, Control Centre).
+/* TopicTree — a topic list's hierarchy as a site tree (Tier: pattern, Control Centre).
  *
- * CODE-FIRST (Mark, 2026-10-20, Hub TASK-571925). No Figma source yet. Everything here is the existing
- * kit — the Datatables row and cells, the tertiary xs icon Button as the chevron, the edit pencil, the
- * DS Tooltip — plus the three values the tree itself needed, each the designer's call:
- *   - indent per level  = --ao-spacing-7 (32px): the chevron (spacing-6) + the name gap (spacing-3),
- *     so a child's chevron sits under its parent's NAME.
- *   - search ancestors  = --ao-text-secondary; matches keep the cell's own colour.
- *   - "also under" hint = Lucide link-2 at icon-size-sm in --ao-icon-contrast, with the DS Tooltip.
- *
- * Sits inside `.datatables.datatables--orders` — the Listing template's card — so header, borders,
- * hover tint and the record link's semibold all come from Datatables.css.
+ * CODE-FIRST (Mark, 2026-10-20, Hub TASK-571925). No Figma source yet. Names only, like v1's Hierarchy —
+ * the selected topic's facts are the host's panel (Topic Manager: FactPanel). The values below are the
+ * designer's calls for this pattern:
+ *   - row        = --ao-spacing-7 (32px) min height, compact (Mark, 2026-10-20)
+ *   - indent     = chevron (--ao-icon-size-sm) + gap (--ao-spacing-2) per level, so a child's chevron
+ *                  sits under its parent's NAME (22px)
+ *   - selected   = --ao-surface-brand-soft-extra, semibold — the Selector's current-row fill
+ *   - hover      = --ao-surface-minimal — the OrderedList / Selector row hover
+ *   - search ancestors = --ao-text-secondary; matches keep the row's colour
+ *   - "also under" = Lucide link-2, icon-size-sm, --ao-icon-contrast, with the DS Tooltip
  */
 
-/* `--orders` renders its tables `table-layout: fixed`, at widths ListingScreen.js measures and writes.
- * The tree has no such fit — one column that takes the slack and counts that hug is exactly what auto
- * layout does — and under fixed layout the Topic column's `width: 100%` took the whole table and the
- * counts drew at 0px (measured 2026-10-20). */
-.datatables--orders .table.topic-tree {
-  table-layout: auto;
+.topic-tree,
+.topic-tree [role="group"] {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-/* ── Name cell ──────────────────────────────────────────── */
+/* ── Row ────────────────────────────────────────────────── */
 
-.topic-tree__name {
+.topic-tree__item {
   display: flex;
   align-items: center;
-  gap: var(--ao-spacing-3);
-  min-inline-size: 0;
+  gap: var(--ao-spacing-2);
+  min-block-size: var(--ao-spacing-7);
+  padding-inline: var(--ao-spacing-3);
+  border-radius: var(--ao-radius-sm);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-primary);
+  cursor: pointer;
+  transition: background-color var(--ao-transition-default);
 }
 
-/* One indent step per level below the top. v1 walks at most 10 levels
- * (TaxonomyManagerDisplayHierarchy.cfm stops its ancestry loop at 10). */
-.topic-tree__name[data-level="2"]  { padding-inline-start: var(--ao-spacing-7); }
-.topic-tree__name[data-level="3"]  { padding-inline-start: calc(var(--ao-spacing-7) * 2); }
-.topic-tree__name[data-level="4"]  { padding-inline-start: calc(var(--ao-spacing-7) * 3); }
-.topic-tree__name[data-level="5"]  { padding-inline-start: calc(var(--ao-spacing-7) * 4); }
-.topic-tree__name[data-level="6"]  { padding-inline-start: calc(var(--ao-spacing-7) * 5); }
-.topic-tree__name[data-level="7"]  { padding-inline-start: calc(var(--ao-spacing-7) * 6); }
-.topic-tree__name[data-level="8"]  { padding-inline-start: calc(var(--ao-spacing-7) * 7); }
-.topic-tree__name[data-level="9"]  { padding-inline-start: calc(var(--ao-spacing-7) * 8); }
-.topic-tree__name[data-level="10"] { padding-inline-start: calc(var(--ao-spacing-7) * 9); }
+/* One step per level below the top; v1 walks at most 10 levels. */
+.topic-tree__item[data-level="2"]  { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2))); }
+.topic-tree__item[data-level="3"]  { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2)) * 2); }
+.topic-tree__item[data-level="4"]  { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2)) * 3); }
+.topic-tree__item[data-level="5"]  { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2)) * 4); }
+.topic-tree__item[data-level="6"]  { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2)) * 5); }
+.topic-tree__item[data-level="7"]  { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2)) * 6); }
+.topic-tree__item[data-level="8"]  { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2)) * 7); }
+.topic-tree__item[data-level="9"]  { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2)) * 8); }
+.topic-tree__item[data-level="10"] { padding-inline-start: calc(var(--ao-spacing-3) + (var(--ao-icon-size-sm) + var(--ao-spacing-2)) * 9); }
 
-/* The Topic column takes all the slack and the counts hug. `max-width: 0` + `width: 100%` is the
- * table-cell form of that: the cell stops reporting its text as a minimum, so the browser sizes the
- * counts first and gives Topic the rest — without it, Datatables' 160px truncate cap clipped names
- * while the counts sat on spare width (measured 2026-10-20). PHYSICAL `max-width` on purpose: the
- * logical `max-inline-size` is ignored on a table cell and the table overflowed its card by 90px. */
-.topic-tree__name-cell {
-  width: 100%;
-  max-width: 0;
-  /* …but never nothing: at 390px the four counts took the whole card and Topic drew at 0px. The
-   * same 160px as Datatables' own truncate cap. Clipped, so a deep indent cannot paint over Children. */
-  min-width: var(--ao-size-2);
-  overflow: hidden;
+.topic-tree [role="treeitem"] > .topic-tree__item:hover {
+  background-color: var(--ao-surface-minimal);
 }
 
-/* A narrow card keeps the structure — Topic and Children — and drops the tagged-item counts, which
- * the List view (and the topic's own page) still carry. Queries the `.datatables` card, the nearest
- * inline-size container; it is the card's width that matters, not the window's (CLAUDE.md §4a). */
-@container (max-width: 767px) {
-  .topic-tree [data-topic-tree-col="articles"],
-  .topic-tree [data-topic-tree-col="contacts"],
-  .topic-tree [data-topic-tree-col="accounts"] {
-    display: none;
-  }
+.topic-tree [aria-selected="true"] > .topic-tree__item {
+  background-color: var(--ao-surface-brand-soft-extra);
+  font-weight: var(--ao-font-semibold);
 }
 
-/* The name is the part that yields: it truncates, the chevron and the hint never shrink. */
-.topic-tree__name .datatables__truncate {
-  flex: 0 1 auto;
-  min-inline-size: 0;
-  max-inline-size: none;
+/* The treeitem <li> holds its children, so its own outline would ring the whole branch. The ring goes on
+ * its row instead. Inset, so a scrolling host never clips it. */
+.topic-tree [role="treeitem"]:focus-visible {
+  outline: none;
 }
 
-/* A leaf keeps the chevron's slot, so names at one level line up whether or not they have children. */
+.topic-tree [role="treeitem"]:focus-visible > .topic-tree__item {
+  outline: 2px solid var(--ao-surface-brand);
+  outline-offset: -2px;
+}
+
+/* ── Chevron, leaf slot, name ───────────────────────────── */
+
+.topic-tree__chevron,
 .topic-tree__spacer {
+  display: inline-flex;
   flex: none;
-  inline-size: var(--ao-spacing-6);
-}
-
-/* ── Chevron ────────────────────────────────────────────── */
-
-/* The OrderedList / Selector treatment for a tertiary xs control in a table row: it holds a hairline
- * border so it reads as a button on the row's own hover tint. */
-.topic-tree__toggle {
-  flex: none;
-  border: 1px solid var(--ao-border-secondary);
-}
-
-.topic-tree__toggle:hover,
-.topic-tree__toggle:focus-visible {
-  border-color: var(--ao-border-secondary);
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+  color: var(--ao-icon-contrast);
 }
 
 /* Lucide swaps the <i> for an <svg> that keeps `data-lucide`, so target that, not `i`. */
-.topic-tree__toggle [data-lucide] {
+.topic-tree__chevron [data-lucide] {
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
   transition: transform var(--ao-transition-default);
 }
 
-.topic-tree__row[aria-expanded="true"] .topic-tree__toggle [data-lucide] {
+.topic-tree [aria-expanded="true"] > .topic-tree__item .topic-tree__chevron [data-lucide] {
   transform: rotate(90deg);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .topic-tree__toggle [data-lucide] { transition: none; }
+  .topic-tree__item,
+  .topic-tree__chevron [data-lucide] { transition: none; }
+}
+
+.topic-tree__name {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* ── "Also under" hint (multi-parent topics) ────────────── */
@@ -131,29 +125,18 @@
   display: none;
 }
 
-/* ── Rows ───────────────────────────────────────────────── */
-
-/* Row focus is the treegrid's keyboard cursor. Inset, so the card's clip never cuts it. */
-.topic-tree__row:focus-visible {
-  outline: 2px solid var(--ao-surface-brand);
-  outline-offset: -2px;
-}
+/* ── Search context, loading, show more ─────────────────── */
 
 /* Search: the ancestors drawn only to reach a match are context, not results. */
-.topic-tree__row--context td,
-.topic-tree__row--context .datatables__record-link {
+.topic-tree__item--context {
   color: var(--ao-text-secondary);
 }
 
-/* Loading a level, and "Show more" past the per-level cap. Not rows you can act on, so no hover. */
-.topic-tree__status td {
+.topic-tree__status > .topic-tree__item {
   color: var(--ao-text-secondary);
+  cursor: default;
 }
 
 .topic-tree__status .spinner {
   flex: none;
-}
-
-.topic-tree__status-text {
-  color: var(--ao-text-secondary);
 }

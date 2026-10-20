@@ -3260,7 +3260,7 @@ Spec for the tree: `src/cc/patterns/TopicTree/TopicTree.figma-notes.md`. Build n
 |---|---|
 | Shell, header, Add, FilterBar, Datatables card, Edit Columns, Settings | this template, unchanged |
 | Hierarchy / List switch | SegmentedControl, as Media Items' Listing / Grid; Hierarchy first (v1's default tab) |
-| Hierarchy | **TopicTree** (new pattern) in a second `.datatables__body.cc-listing__tree` |
+| Hierarchy | **TopicTree** (new pattern, a name-only site tree) beside a **FactPanel** for the selected topic, in `.cc-listing__tree` (grid: tree, size-7 panel, spacing-5 gap; sticky panel; stacks at `cs-page` ≤1023px like the record screens). A first pass as a tree-table with count columns was rejected as too heavy (Mark, 2026-10-20) |
 | List | the template's table: v1's List CProperties, 8 shown, the 9 "le2" counts off by default |
 | Back (v1 `origin`) | the breadcrumb: Content › Topic Lists › Affino Taxonomy › Topics |
 | Topic / Parent / A–Z | three chips: Topic (v1's 1-char = starts-with rule), Parent, Starts with |
@@ -3276,6 +3276,6 @@ Spec for the tree: `src/cc/patterns/TopicTree/TopicTree.figma-notes.md`. Build n
 
 ## Measured (Chrome, 2026-10-20)
 
-- 1400 and 390 wide, dark and light: no horizontal overflow; at 390 the tree keeps Topic + Children.
+- 1400 and 390 wide, dark and light: no horizontal overflow; at 390 the panel stacks under the tree and selecting a topic scrolls it into view.
 - Search "image" draws the same result in both views; the tree shows 4 muted ancestors on the path to Images.
 - Switch position identical in Hierarchy and List.

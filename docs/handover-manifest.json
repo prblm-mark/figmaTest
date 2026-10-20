@@ -1910,9 +1910,9 @@
     {
      "id": "topic-manager-routes",
      "category": "needs-backend",
-     "element": "Topic name / row / pencil, header Add, breadcrumb topic list",
-     "current": "href='#topic', '#topic/edit', '#'.",
-     "needs": "The topic's View and Edit routes (record pattern; v1 TaxonomyCategoryEdit.cfm), Add = new topic in this TaxonomyCode, the crumb = the topic list's own View."
+     "element": "Hierarchy panel Edit + count links, List row / pencil, header Add, breadcrumb topic list",
+     "current": "href='#topic/edit', '#topic', '#'.",
+     "needs": "The topic's Edit and View routes (record pattern; v1 TaxonomyCategoryEdit.cfm), each count's listing filtered to the topic (v1 links, e.g. StandardItems.cfm?Topics=<code>), Add = new topic in this TaxonomyCode, the crumb = the topic list's own View."
     }
    ]
   }

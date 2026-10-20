@@ -1,36 +1,34 @@
-/* TopicTree — a topic list's hierarchy as a tree-table (role="treegrid").
+/* TopicTree — a topic list's hierarchy as a site tree (role="tree").
  *
- * Code-first (Mark, 2026-10-20, Hub TASK-571925): the v3 Topic Manager's Hierarchy view. The kit had no
- * tree, and v1's is a column of nested <table>s that reloads the page on every expand.
+ * Code-first (Mark, 2026-10-20, Hub TASK-571925): the v3 Topic Manager's Hierarchy view. v1's tree is a
+ * plain list of names with a details panel beside it, and that is the model: names only, one row per
+ * topic, the selected topic's facts in a panel the HOST draws (Topic Manager uses the FactPanel). A first
+ * pass as a tree-TABLE (counts in columns) read as too heavy and was replaced the same day.
  *
  * The data is the v1 schema, normalised — a topic list is a GRAPH, not a tree: TaxonomyCategoryBTNT is
- * many-to-many, so one topic can sit under several parents (v1's List shows a plural "Parents" column).
- * Each placement is its own row, keyed by its PATH, and a topic with other parents says so with the
- * "also under" hint.
+ * many-to-many, so one topic can sit under several parents. Each placement is its own row, keyed by its
+ * PATH, and a topic with other parents says so with the "also under" hint.
  *
- *   TopicTree.mount(host, {
- *     topics:   { <code>: { code, name, externalId?, children, articles, contacts, accounts } },
- *     children: { root: [codes], <code>: [codes] },   // ordered (BTNT.SO, then name); a missing key = not loaded yet
- *     parents:  { <code>: [codes] },                  // every parent of a topic (for the hint + search ancestry)
- *     columns:  [{ key, label, type: 'name'|'count'|'edit', hug? }],
- *     href(topic), editHref(topic),
+ *   TopicTree.mount(ul, {
+ *     topics:   { <code>: { code, name, children, … } },   // `children` = how many (drives the chevron)
+ *     children: { root: [codes], <code>: [codes] },      // ordered (BTNT.SO, then name); a missing key = not loaded
+ *     parents:  { <code>: [codes] },                     // every parent of a topic
+ *     label:    'Affino Taxonomy topics',
  *     loadChildren(code) → Promise   // optional; resolves once `children[code]` is filled
+ *     onSelect(topic, path)          // optional; the host shows the topic's details
  *     pageSize: 300,                 // v1 caps a level at 300 (TaxonomyManagerDisplayHierarchy.cfm)
- *     emptyHtml: '<tr>…</tr>'        // what a search with no matches shows
- *   }) → { filter(predicate|null, graph?), expandAll(), collapseAll(), open(paths) }
+ *     emptyHtml: '<li>…</li>'        // what a search with no matches shows
+ *   }) → { filter(predicate|null, graph?), open(paths), select(path), render() }
  *
- * `host` is a <table class="table">; the tree writes its <thead> and <tbody>.
+ * Mouse: the chevron opens and closes; the rest of the row selects. Keyboard (APG tree view): ↑ ↓ move,
+ * → opens or steps into the first child, ← closes or steps out to the parent, Home / End, Enter or Space
+ * selects. One row is in the tab order.
  *
- * Keyboard (APG treegrid, row-focus): ↑ ↓ move, → expands or steps into the first child, ← collapses or
- * steps out to the parent, Home / End, Enter opens the topic. One row is in the tab order at a time,
- * and only that row's link and pencil are tabbable — so Tab reaches the focused row's Edit, not
- * every pencil in the tree.
- *
- * Search: `filter(fn)` shows every row whose topic matches PLUS the ancestors that lead to it, opened;
- * the ancestors are muted (designer, 2026-10-20). It needs the whole graph, which the demo has.
+ * Search: `filter(fn, graph)` shows every topic that matches PLUS the ancestors that lead to it, opened;
+ * the ancestors are muted (designer, 2026-10-20). `graph` is the search response's { children, parents }.
  * TODO(backend:TopicManager) topic-tree-search: the server must return matches WITH their ancestor
  *   paths → GET /control/topics?TaxonomyCode=&q=&parent=&letter= → { topics{}, children{}, parents{} }
- *   for the matched rows and every ancestor, so the tree can draw them without loading each level.
+ *   for the matched topics and every ancestor, so the tree can draw them without loading each level.
  */
 (function () {
   'use strict';
@@ -46,43 +44,31 @@
     if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
   }
 
-  function mount(table, opts) {
+  function mount(list, opts) {
     var topics = opts.topics;
     var children = opts.children;
     var parents = opts.parents || {};
-    var columns = opts.columns;
     var pageSize = opts.pageSize || PAGE;
 
-    var open = {};        // path → true
-    var loading = {};     // path → true while loadChildren runs
-    var shown = {};       // path → how many children are drawn (paging)
-    var match = null;     // search predicate, or null
-    var visible = null;   // search: code → true for matches and their ancestors
-    var matched = null;   // search: code → true for matches only
-    var activePath = null;
-    var folded = {};      // search: paths the user folded (a result opens whole, but each chevron still works)
+    var open = {};          // path → true
+    var loading = {};       // path → true while loadChildren runs
+    var shown = {};         // path → how many children are drawn (paging)
+    var visible = null;     // search: code → true for matches and their ancestors
+    var matched = null;     // search: code → true for matches only
+    var folded = {};        // search: paths the user closed (a result opens whole; each chevron still works)
+    var searchKids = null;  // search: the response's children, read instead of what is loaded
+    var activePath = null;  // the row in the tab order
+    var selectedPath = null;
 
-    table.classList.add('topic-tree');
-    table.setAttribute('role', 'treegrid');
-    if (opts.label) table.setAttribute('aria-label', opts.label);
+    list.classList.add('topic-tree');
+    list.setAttribute('role', 'tree');
+    if (opts.label) list.setAttribute('aria-label', opts.label);
 
-    table.innerHTML = '<thead><tr>' + columns.map(function (c) {
-      var cls = c.type === 'name' ? ' class="topic-tree__name-cell"' : ' class="datatables__col--hug"';
-      var col = ' data-topic-tree-col="' + esc(c.key) + '"';
-      return c.label
-        ? '<th scope="col"' + cls + col + '>' + esc(c.label) + '</th>'
-        : '<th scope="col" aria-label="Actions"' + cls + col + '></th>';
-    }).join('') + '</tr></thead><tbody></tbody>';
-    var tbody = table.tBodies[0];
+    function kids(code) { return (searchKids || children)[code === null ? 'root' : code]; }
 
-    var searchGraph = null;   // search: the server's matches + ancestors, read instead of what is loaded
-
-    function kids(code) { return (searchGraph || children)[code === null ? 'root' : code]; }
-
-    /* Children to draw under a node: in search, only the ones on a path to a match. */
     function drawnKids(code) {
-      var list = kids(code) || [];
-      return visible ? list.filter(function (c) { return visible[c]; }) : list;
+      var all = kids(code) || [];
+      return visible ? all.filter(function (c) { return visible[c]; }) : all;
     }
 
     function hasKids(code) {
@@ -91,118 +77,100 @@
       return !!(t && t.children);
     }
 
-    function cell(col, t, path, level, expanded) {
-      if (col.type === 'name') {
-        var toggle = hasKids(t.code)
-          ? '<button type="button" class="btn btn--tertiary btn--xs btn--icon topic-tree__toggle" tabindex="-1"' +
-              ' aria-label="' + (expanded ? 'Collapse ' : 'Expand ') + esc(t.name) + '" data-topic-tree-toggle>' +
-              '<i data-lucide="chevron-right" aria-hidden="true"></i></button>'
-          : '<span class="topic-tree__spacer" aria-hidden="true"></span>';
-        /* The OTHER parents — the one this row sits under is already the row above it. */
-        var here = path.length > 1 ? path[path.length - 2] : null;
-        var others = (parents[t.code] || []).filter(function (p) { return p !== here && topics[p]; });
-        var also = others.length
-          ? '<span class="topic-tree__also" tabindex="-1" role="img" data-topic-tree-tip' +
-              ' aria-label="Also under: ' + esc(others.map(function (p) { return topics[p].name; }).join(', ')) + '">' +
+    function item(t, key, level, i, size, expandable, expanded) {
+      var here = key.indexOf('/') !== -1 ? key.split('/').slice(-2)[0] : null;
+      var others = (parents[t.code] || []).filter(function (p) { return p !== here && topics[p]; });
+      return '<div class="topic-tree__item' +
+          (matched && !matched[t.code] ? ' topic-tree__item--context' : '') + '" data-level="' + level + '">' +
+        (expandable
+          ? '<span class="topic-tree__chevron" data-topic-tree-toggle aria-hidden="true"><i data-lucide="chevron-right"></i></span>'
+          : '<span class="topic-tree__spacer" aria-hidden="true"></span>') +
+        '<span class="topic-tree__name">' + esc(t.name) + '</span>' +
+        (others.length
+          ? '<span class="topic-tree__also" data-topic-tree-tip' +
+              ' data-tip="Also under: ' + esc(others.map(function (p) { return topics[p].name; }).join(', ')) + '">' +
               '<i data-lucide="link-2" aria-hidden="true"></i></span>'
-          : '';
-        return '<td role="gridcell" class="topic-tree__name-cell">' +
-          '<div class="topic-tree__name" data-level="' + level + '">' + toggle +
-            '<span class="datatables__truncate" title="' + esc(t.name) + '">' +
-              '<a class="datatables__record-link topic-tree__link" href="' + esc(opts.href(t)) + '" tabindex="-1"' +
-              ' data-backend-todo="topic-manager-routes">' + esc(t.name) + '</a></span>' +
-            also +
-          '</div></td>';
-      }
-      if (col.type === 'edit') {
-        return '<td role="gridcell" class="datatables__col--hug datatables__col--edit">' +
-          '<a class="datatables__row-edit" href="' + esc(opts.editHref(t)) + '" tabindex="-1"' +
-          ' data-backend-todo="topic-manager-routes" aria-label="Edit ' + esc(t.name) + '">' +
-          '<i data-lucide="pencil" aria-hidden="true"></i></a></td>';
-      }
-      var v = t[col.key];
-      return '<td role="gridcell" class="datatables__col--hug" data-topic-tree-col="' + esc(col.key) + '">' +
-        esc(v === undefined || v === null ? '' : Number(v).toLocaleString('en-GB')) + '</td>';
+          : '') +
+      '</div>';
     }
 
-    function statusRow(level, html) {
-      return '<tr class="topic-tree__status" role="row" aria-level="' + level + '">' +
-        '<td role="gridcell" colspan="' + columns.length + '"><div class="topic-tree__name" data-level="' + level + '">' +
-        '<span class="topic-tree__spacer" aria-hidden="true"></span>' + html + '</div></td></tr>';
+    function statusItem(level, html) {
+      return '<li class="topic-tree__status" role="none"><div class="topic-tree__item" data-level="' + level + '">' +
+        '<span class="topic-tree__spacer" aria-hidden="true"></span>' + html + '</div></li>';
     }
 
     function rows(code, path, level) {
-      var list = drawnKids(code);
-      var limit = visible ? list.length : (shown[path.join('/')] || pageSize);
-      var out = list.slice(0, limit).map(function (c, i) {
+      var all = drawnKids(code);
+      var limit = visible ? all.length : (shown[path.join('/')] || pageSize);
+      var out = all.slice(0, limit).map(function (c, i) {
         var t = topics[c];
         if (!t) return '';
         var p = path.concat(c);
         var key = p.join('/');
         var expandable = hasKids(c);
         var expanded = expandable && (visible ? !folded[key] : !!open[key]);
-        var tr = '<tr class="datatables__row topic-tree__row' +
-          (matched && !matched[c] ? ' topic-tree__row--context' : '') + '" role="row"' +
-          ' data-topic-tree-path="' + esc(key) + '" aria-level="' + level + '"' +
-          ' aria-posinset="' + (i + 1) + '" aria-setsize="' + list.length + '"' +
+        var others = (parents[c] || []).length > 1
+          ? ' aria-description="Also under: ' + esc((parents[c] || []).filter(function (x) { return x !== path[path.length - 1] && topics[x]; })
+              .map(function (x) { return topics[x].name; }).join(', ')) + '"'
+          : '';
+        var li = '<li role="treeitem" data-topic-tree-path="' + esc(key) + '"' +
+          ' aria-level="' + level + '" aria-posinset="' + (i + 1) + '" aria-setsize="' + all.length + '"' +
           (expandable ? ' aria-expanded="' + expanded + '"' : '') +
+          ' aria-selected="' + (key === selectedPath) + '"' + others +
           ' tabindex="' + (key === activePath ? '0' : '-1') + '">' +
-          columns.map(function (col) { return cell(col, t, p, level, expanded); }).join('') + '</tr>';
+          item(t, key, level, i, all.length, expandable, expanded);
         if (expanded) {
-          if (loading[key]) {
-            tr += statusRow(level + 1,
-              /* The visible text is the status; the ring is decoration (no hidden label, nothing read twice). */
-              '<span class="spinner spinner--sm spinner--neutral" aria-hidden="true"><svg class="spinner__svg" viewBox="0 0 24 24" fill="none">' +
-              '<circle class="spinner__track" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>' +
-              '<path class="spinner__arc" d="M12 2 a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></span>' +
-              '<span class="topic-tree__status-text" role="status">Loading topics…</span>');
-          } else {
-            tr += rows(c, p, level + 1);
-          }
+          li += '<ul role="group">' + (loading[key]
+            ? statusItem(level + 1,
+                '<span class="spinner spinner--sm spinner--neutral" aria-hidden="true"><svg class="spinner__svg" viewBox="0 0 24 24" fill="none">' +
+                '<circle class="spinner__track" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>' +
+                '<path class="spinner__arc" d="M12 2 a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></span>' +
+                '<span class="topic-tree__status-text" role="status">Loading topics…</span>')
+            : rows(c, p, level + 1)) + '</ul>';
         }
-        return tr;
+        return li + '</li>';
       }).join('');
-      if (list.length > limit) {
-        var more = Math.min(pageSize, list.length - limit);
-        out += statusRow(level,
-          '<button type="button" class="btn btn--tertiary btn--sm topic-tree__more" data-topic-tree-more="' + esc(path.join('/')) + '">' +
-          'Show ' + more + ' more</button><span class="topic-tree__status-text">' + limit + ' of ' + list.length + '</span>');
+      if (all.length > limit) {
+        out += statusItem(level,
+          '<button type="button" class="btn btn--tertiary btn--xs topic-tree__more" data-topic-tree-more="' + esc(path.join('/')) + '">' +
+          'Show ' + Math.min(pageSize, all.length - limit) + ' more</button>' +
+          '<span class="topic-tree__status-text">' + limit + ' of ' + all.length + '</span>');
       }
       return out;
     }
 
+    function items() { return Array.prototype.slice.call(list.querySelectorAll('[data-topic-tree-path]')); }
+
     function render() {
-      var html = rows(null, [], 1);
-      tbody.innerHTML = html || (opts.emptyHtml || '');
-      var all = tbody.querySelectorAll('[data-topic-tree-path]');
-      if (all.length && !tbody.querySelector('[data-topic-tree-path][tabindex="0"]')) {
-        setActive(all[0], false);
-      } else {
-        syncActive();
+      var focused = list.contains(document.activeElement);
+      list.innerHTML = rows(null, [], 1) || (opts.emptyHtml || '');
+      var all = items();
+      if (!all.length) { activePath = null; icons(); return; }
+      if (!activePath || !list.querySelector('[data-topic-tree-path="' + activePath + '"]')) {
+        activePath = all[0].getAttribute('data-topic-tree-path');
       }
+      all.forEach(function (li) { li.tabIndex = li.getAttribute('data-topic-tree-path') === activePath ? 0 : -1; });
+      if (focused) focusPath(activePath);
       icons();
     }
 
-    function rowEls() { return Array.prototype.slice.call(tbody.querySelectorAll('[data-topic-tree-path]')); }
+    /* `still`: a clicked row is already on screen — focusing it must not scroll, or it undoes the host
+       scrolling its panel into view on select (Topic Manager, stacked). */
+    function focusPath(key, still) {
+      var li = list.querySelector('[data-topic-tree-path="' + key + '"]');
+      if (!li) return;
+      items().forEach(function (x) { x.tabIndex = -1; });
+      li.tabIndex = 0;
+      activePath = key;
+      li.focus({ preventScroll: !!still });
+    }
 
-    /* Only the active row's link and pencil are in the tab order. */
-    function syncActive() {
-      rowEls().forEach(function (r) {
-        var on = r.getAttribute('data-topic-tree-path') === activePath;
-        r.tabIndex = on ? 0 : -1;
-        r.querySelectorAll('a').forEach(function (a) { a.tabIndex = on ? 0 : -1; });
+    function select(key) {
+      selectedPath = key;
+      items().forEach(function (li) {
+        li.setAttribute('aria-selected', String(li.getAttribute('data-topic-tree-path') === key));
       });
-    }
-
-    function setActive(row, focus) {
-      activePath = row.getAttribute('data-topic-tree-path');
-      syncActive();
-      if (focus) row.focus();
-    }
-
-    function focusPath(key) {
-      var r = tbody.querySelector('[data-topic-tree-path="' + key + '"]');
-      if (r) setActive(r, true);
+      if (opts.onSelect) opts.onSelect(topics[key.split('/').pop()], key);
     }
 
     function expand(key) {
@@ -211,11 +179,7 @@
       if (!kids(code) && opts.loadChildren) {
         loading[key] = true;
         render();
-        opts.loadChildren(code).then(function () {
-          delete loading[key];
-          render();
-          focusPath(key);
-        });
+        opts.loadChildren(code).then(function () { delete loading[key]; render(); });
         return;
       }
       render();
@@ -230,7 +194,7 @@
       if (open[key]) { delete open[key]; render(); } else { expand(key); }
     }
 
-    tbody.addEventListener('click', function (e) {
+    list.addEventListener('click', function (e) {
       var more = e.target.closest('[data-topic-tree-more]');
       if (more) {
         var at = more.getAttribute('data-topic-tree-more');
@@ -238,56 +202,45 @@
         render();
         return;
       }
-      var row = e.target.closest('[data-topic-tree-path]');
-      if (!row) return;
-      setActive(row, false);
-      if (e.target.closest('[data-topic-tree-toggle]')) {
-        var key = row.getAttribute('data-topic-tree-path');
-        toggle(key);
-        focusPath(key);
-        return;
-      }
-      /* The rest of the row opens the topic, as a listing row does — only the chevron folds. */
-      if (!e.target.closest('a')) {
-        var link = row.querySelector('.topic-tree__link');
-        if (link) link.click();
-      }
+      /* The nearest treeitem: a click inside a child's row must not reach its parent's. */
+      var li = e.target.closest('[data-topic-tree-path]');
+      if (!li || !e.target.closest('.topic-tree__item')) return;
+      var key = li.getAttribute('data-topic-tree-path');
+      activePath = key;
+      if (e.target.closest('[data-topic-tree-toggle]')) { toggle(key); focusPath(key, true); return; }
+      focusPath(key, true);
+      select(key);
     });
 
-    tbody.addEventListener('keydown', function (e) {
-      var row = e.target.closest('[data-topic-tree-path]');
-      if (!row || e.target !== row) return;
-      var list = rowEls();
-      var i = list.indexOf(row);
-      var key = row.getAttribute('data-topic-tree-path');
-      var expanded = row.getAttribute('aria-expanded');
+    list.addEventListener('keydown', function (e) {
+      var li = e.target.closest('[data-topic-tree-path]');
+      if (!li || e.target !== li) return;
+      var all = items();
+      var i = all.indexOf(li);
+      var key = li.getAttribute('data-topic-tree-path');
+      var expanded = li.getAttribute('aria-expanded');
       var next = null;
       switch (e.key) {
-        case 'ArrowDown': next = list[i + 1]; break;
-        case 'ArrowUp': next = list[i - 1]; break;
-        case 'Home': next = list[0]; break;
-        case 'End': next = list[list.length - 1]; break;
+        case 'ArrowDown': next = all[i + 1]; break;
+        case 'ArrowUp': next = all[i - 1]; break;
+        case 'Home': next = all[0]; break;
+        case 'End': next = all[all.length - 1]; break;
         case 'ArrowRight':
-          if (expanded === 'false') { toggle(key); focusPath(key); }
-          else if (expanded === 'true') next = list[i + 1];
+          if (expanded === 'false') toggle(key);
+          else if (expanded === 'true') next = all[i + 1];
           break;
         case 'ArrowLeft':
-          if (expanded === 'true') { toggle(key); focusPath(key); }
-          else if (key.indexOf('/') !== -1) focusPath(key.slice(0, key.lastIndexOf('/')));
+          if (expanded === 'true') toggle(key);
+          else if (key.indexOf('/') !== -1) next = list.querySelector('[data-topic-tree-path="' + key.slice(0, key.lastIndexOf('/')) + '"]');
           break;
         case 'Enter':
-          var link = row.querySelector('.topic-tree__link');
-          if (link) link.click();
+        case ' ':
+          select(key);
           break;
         default: return;
       }
       e.preventDefault();
-      if (next) setActive(next, true);
-    });
-
-    tbody.addEventListener('focusin', function (e) {
-      var row = e.target.closest('[data-topic-tree-path]');
-      if (row && row.getAttribute('data-topic-tree-path') !== activePath) setActive(row, false);
+      if (next) focusPath(next.getAttribute('data-topic-tree-path'));
     });
 
     /* Every code that leads to a match, through EVERY parent — a match under two parents shows twice. */
@@ -297,13 +250,13 @@
       (parents[code] || []).forEach(function (p) { ancestry(p, into); });
     }
 
-    var api = {
-      /* `graph` is the search response's { children, parents } — the levels a search has to open are
-         generally not loaded yet. Without one, the search reads what is loaded. */
+    render();
+
+    return {
       filter: function (fn, graph) {
-        match = fn;
-        searchGraph = fn && graph ? graph.children : null;
+        searchKids = fn && graph ? graph.children : null;
         if (fn && graph && graph.parents) parents = graph.parents;
+        folded = {};
         if (!fn) {
           visible = matched = null;
         } else {
@@ -313,34 +266,19 @@
             if (fn(topics[code])) { matched[code] = true; ancestry(code, visible); }
           });
         }
-        activePath = null;
-        folded = {};
         render();
         return Object.keys(matched || {}).length;
       },
-      expandAll: function () {
-        (function walk(code, path) {
-          (kids(code) || []).forEach(function (c) {
-            var p = path.concat(c);
-            if (kids(c) && kids(c).length) { open[p.join('/')] = true; walk(c, p); }
-          });
-        })(null, []);
-        render();
-      },
-      collapseAll: function () { open = {}; render(); },
       open: function (keys) { keys.forEach(function (k) { open[k] = true; }); render(); },
+      select: function (key) { render(); select(key); },
       render: render
     };
-
-    render();
-    return api;
   }
 
-  /* The "also under" hint: the DS Tooltip (Arrow=Top), one shared and fixed under the hovered or
-   * focused icon — the record summary's pattern (RecordSummary.js). The icon keeps its aria-label;
-   * the tooltip is aria-hidden so it isn't read twice. */
+  /* The "also under" hint: the DS Tooltip (Arrow=Top), one shared and fixed under the hovered icon — the
+   * record summary's pattern (RecordSummary.js). Screen readers get the same text from the row's
+   * aria-description, so the tooltip is aria-hidden. Keyboard: it shows while its row has focus. */
   function tooltips() {
-    var SEL = '[data-topic-tree-tip]';
     var tip = document.createElement('span');
     tip.className = 'tooltip tooltip--arrow-top topic-tree__float-tip';
     tip.setAttribute('aria-hidden', 'true');
@@ -351,7 +289,7 @@
 
     function show(el) {
       current = el;
-      tip.firstChild.textContent = el.getAttribute('aria-label');
+      tip.firstChild.textContent = el.getAttribute('data-tip');
       tip.hidden = false;
       var r = el.getBoundingClientRect();
       var w = tip.offsetWidth;
@@ -359,16 +297,19 @@
       tip.style.top = (r.bottom + 10) + 'px';   // clears the Top arrow (6px) with a small gap
     }
     function hide() { current = null; tip.hidden = true; }
+    /* The row's OWN hint, not a descendant row's. */
+    function ownTip(li) {
+      var row = li && li.querySelector(':scope > .topic-tree__item');
+      return row && row.querySelector('[data-topic-tree-tip]');
+    }
 
     document.addEventListener('mouseover', function (e) {
-      var el = e.target.closest(SEL);
+      var el = e.target.closest('[data-topic-tree-tip]');
       if (el && el !== current) show(el);
       else if (!el && current) hide();
     });
-    /* Keyboard: the hint shows while its ROW is focused, since the icon itself is not a tab stop. */
     document.addEventListener('focusin', function (e) {
-      var row = e.target.closest('[data-topic-tree-path]');
-      var el = row && row.querySelector(SEL);
+      var el = ownTip(e.target.closest && e.target.closest('[data-topic-tree-path]'));
       if (el) show(el); else hide();
     });
     document.addEventListener('focusout', hide);

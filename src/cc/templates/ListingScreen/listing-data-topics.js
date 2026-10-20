@@ -88,44 +88,85 @@ var LISTING_TOPIC_FILTERS = [
 ];
 
 /* ── Hierarchy ────────────────────────────────────────────────
- * The tree draws the SAME result the table does: the chips and the search narrow both, and in the
- * Hierarchy every match is shown with the path to it. Levels load as they are opened.
+ * v1's shape (Mark, 2026-10-20): a name-only tree, and the selected topic's facts in the FactPanel beside
+ * it. The tree draws the SAME result the table does — the chips and the search narrow both, and every
+ * match is shown with the path to it. Levels load as they are opened.
  * TODO(backend:TopicManager) topic-tree-data: see topic-tree-data.js. */
 var TOPIC_TREE = null;
 var TOPIC_TREE_LOADED = { root: TOPICS.children.root };
 
+function topicEsc(s) {
+  return String(s === undefined || s === null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/* v1's details panel (TaxonomyManagerInclude.cfm), field for field: Topic Code, Name (the title here),
+ * Screen Name, Child Topics, then each count that is not zero as a link to that listing filtered to the
+ * topic, then Created. Empty fields are left out, as on every view screen. */
+var TOPIC_PANEL_COUNTS = [
+  ['channels', 'Channels'], ['articles', 'Articles'], ['accounts', 'Accounts'], ['contacts', 'Contacts'],
+  ['trendingViews', 'Trending Views'], ['liveCampaigns', 'Live Campaigns'], ['campaignViews', 'Campaign Views'],
+  ['editions', 'Editions'], ['events', 'Events'], ['seminars', 'Seminars'], ['products', 'Products'],
+  ['opportunities', 'Opportunities'], ['proformaOrders', 'Pro forma Orders']
+];
+
+function topicRow(label, html) {
+  return '<div class="field-row field-row--compact"><dt class="field-row__label">' + topicEsc(label) +
+    '</dt><dd class="field-row__value">' + html + '</dd></div>';
+}
+
+function renderTopicPanel(panel, t) {
+  var kids = (TOPICS.children[t.code] || []).map(function (c) { return TOPICS.topics[c].name; });
+  var rows = [
+    topicRow('Topic Code', topicEsc(t.code)),
+    /* TODO(backend:TopicManager) topic-manager-rows: Screen Name is derived here — the real field is
+       TaxonomyCategory's screen name. */
+    topicRow('Screen Name', topicEsc(t.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')))
+  ];
+  if (t.parents) rows.push(topicRow('Parents', topicEsc(t.parents)));
+  if (kids.length) rows.push(topicRow('Child Topics', topicEsc(kids.join(', '))));
+  TOPIC_PANEL_COUNTS.forEach(function (c) {
+    if (!t[c[0]]) return;
+    /* TODO(backend:TopicManager) topic-manager-routes: each count opens that listing filtered to the topic. */
+    rows.push(topicRow(c[1], '<a class="btn btn--tertiary btn--xs" href="#" data-backend-todo="topic-manager-routes">' +
+      '<span>' + Number(t[c[0]]).toLocaleString('en-GB') + '</span></a>'));
+  });
+  if (t.created) rows.push(topicRow('Created', topicEsc(new Date(t.created).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }))));
+
+  panel.innerHTML =
+    '<div class="fact-panel__header">' +
+      '<div class="fact-panel__title-block"><h2 class="fact-panel__title" id="topic-panel-title">' + topicEsc(t.name) + '</h2></div>' +
+      /* v1's Edit acts on the selected topic. TODO(backend:TopicManager) topic-manager-routes. */
+      '<div class="fact-panel__trailing"><a class="btn btn--secondary btn--xs" href="#topic/edit" data-backend-todo="topic-manager-routes">' +
+        '<i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></a></div>' +
+    '</div>' +
+    '<dl class="fact-list">' + rows.join('') + '</dl>';
+  if (window.lucide) window.lucide.createIcons();
+
+  /* Stacked (narrow page), the panel is below a long tree — bring it to the topic just picked. */
+  var wrap = panel.parentElement;
+  if (getComputedStyle(wrap).gridTemplateColumns.split(' ').length === 1) {
+    panel.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+}
+
 function renderTopicHierarchy(root, result) {
-  var table = root.querySelector('[data-listing-tree]');
-  if (!table) return;
+  var list = root.querySelector('[data-listing-tree]');
+  var panel = root.querySelector('[data-listing-tree-panel]');
+  if (!list) return;
   if (!TOPIC_TREE) {
-    TOPIC_TREE = window.TopicTree.mount(table, {
+    TOPIC_TREE = window.TopicTree.mount(list, {
       label: TOPICS.taxonomy + ' topics',
       topics: TOPICS.topics,
       children: TOPIC_TREE_LOADED,
       parents: TOPICS.parents,
-      columns: [
-        { key: 'name', label: 'Topic', type: 'name' },
-        { key: 'children', label: 'Children', type: 'count' },
-        { key: 'articles', label: 'Articles', type: 'count' },
-        { key: 'contacts', label: 'Contacts', type: 'count' },
-        { key: 'accounts', label: 'Accounts', type: 'count' },
-        { key: 'edit', label: '', type: 'edit', hug: true }
-      ],
-      /* Every row opens the one demo topic record, like the other listings' rows.
-         TODO(backend:TopicManager) topic-manager-routes: the topic's View / Edit routes. */
-      href: function () { return '#topic'; },
-      editHref: function () { return '#topic/edit'; },
       loadChildren: function (code) {
         return new Promise(function (resolve) {
           setTimeout(function () { TOPIC_TREE_LOADED[code] = TOPICS.children[code] || []; resolve(); }, 500);
         });
       },
-      emptyHtml: '<tr class="cc-listing__empty-row"><td class="cc-listing__empty-cell" colspan="6">' +
-        '<div class="cc-listing__empty">' +
-          '<span class="cc-listing__empty-icon"><i data-lucide="search-x" aria-hidden="true"></i></span>' +
-          '<p class="cc-listing__empty-title">No matching topics</p>' +
-          '<p class="cc-listing__empty-desc">No topics match the filters you have applied. Try removing one, or clearing them all.</p>' +
-        '</div></td></tr>'
+      onSelect: function (t) { if (panel) renderTopicPanel(panel, t); },
+      emptyHtml: '<li class="cc-listing__tree-hint" role="none">No topics match the filters you have applied. Try removing one, or clearing them all.</li>'
     });
   }
   if (!result.filtered) {
