@@ -1,0 +1,207 @@
+/* Stepper component — code-first (no Figma node yet), built for the Import pattern (TASK-575621).
+ *
+ * A numbered, horizontal list of the steps in a multi-step flow. Each step is one of four states:
+ *   upcoming  (default)            — number in an outlined circle, muted label, not interactive
+ *   current   (.stepper__step--current)  — brand-filled circle, primary label, aria-current="step"
+ *   complete  (.stepper__step--complete) — check in a brand-soft circle; a <button> to go back
+ *   error     (.stepper__step--error)    — "!" in an error-filled circle (a done step that needs
+ *                                          attention, e.g. Review found row errors)
+ *
+ * Every value is an existing token; the choices are recorded in Stepper.figma-notes.md.
+ *
+ * Responsive: `.stepper` is its own container (it always spans its parent's width). When it is
+ * narrower than 640px (`size-10`) the labels of the non-current steps are visually hidden — they
+ * stay in the accessibility tree — so five steps fit at phone width without wrapping.
+ */
+
+.stepper {
+  container-type: inline-size;
+  container-name: stepper;
+}
+
+.stepper__list {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-spacing-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* A step is its marker + label, then a connector that fills the space up to the next step. */
+.stepper__step {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  gap: var(--ao-spacing-3);
+  min-inline-size: 0;
+}
+
+/* The last step has no connector, so it only takes its content's width. */
+.stepper__step:last-child {
+  flex: 0 0 auto;
+}
+
+.stepper__step:not(:last-child)::after {
+  content: "";
+  flex: 1 1 auto;
+  min-inline-size: var(--ao-spacing-5);
+  border-top: 2px solid var(--ao-border-secondary);
+}
+
+/* The line leaving a finished step is brand: the progress so far reads at a glance. */
+.stepper__step--complete:not(:last-child)::after,
+.stepper__step--error:not(:last-child)::after {
+  border-top-color: var(--ao-border-brand);
+}
+
+/* The item (a <span>, or a <button> for a complete step). 48px tall so a finished step is a
+ * comfortable touch target (WCAG 44px minimum). */
+.stepper__item {
+  display: inline-flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: var(--ao-spacing-3);
+  min-inline-size: 0;
+  min-block-size: var(--ao-spacing-9);
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: var(--ao-radius-md);
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+button.stepper__item {
+  cursor: pointer;
+}
+
+button.stepper__item:focus-visible {
+  outline: 2px solid var(--ao-surface-brand);
+  outline-offset: 2px;
+}
+
+/* ── Marker ─────────────────────────────────────────── */
+
+.stepper__marker {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ao-spacing-7);
+  block-size: var(--ao-spacing-7);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-full);
+  background-color: var(--ao-surface-primary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
+  transition: background-color var(--ao-transition-default),
+              border-color var(--ao-transition-default);
+}
+
+.stepper__marker svg,
+.stepper__marker [data-lucide] {
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+}
+
+/* ── Label ──────────────────────────────────────────── */
+
+.stepper__label {
+  overflow: hidden;
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-medium);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-contrast);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Current ────────────────────────────────────────── */
+
+.stepper__step--current .stepper__marker {
+  border-color: var(--ao-surface-brand);
+  background-color: var(--ao-surface-brand);
+  color: var(--ao-text-invert);
+}
+
+.stepper__step--current .stepper__label {
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
+}
+
+/* ── Complete ───────────────────────────────────────── */
+
+.stepper__step--complete .stepper__marker {
+  border-color: var(--ao-surface-brand-soft);
+  background-color: var(--ao-surface-brand-soft);
+  color: var(--ao-icon-brand);
+}
+
+.stepper__step--complete .stepper__label {
+  color: var(--ao-text-secondary);
+}
+
+.stepper__step--complete .stepper__item:hover .stepper__label {
+  color: var(--ao-text-primary);
+}
+
+.stepper__step--complete .stepper__item:hover .stepper__marker {
+  border-color: var(--ao-border-brand);
+}
+
+/* ── Error ──────────────────────────────────────────── */
+
+.stepper__step--error .stepper__marker {
+  border-color: var(--ao-surface-error);
+  background-color: var(--ao-surface-error);
+  color: var(--ao-text-invert);
+}
+
+.stepper__step--error .stepper__label {
+  color: var(--ao-text-error);
+}
+
+/* ── Narrow: only the current step keeps a visible label ───────────── */
+
+@container stepper (max-width: 640px) {
+  .stepper__step:not(.stepper__step--current) .stepper__label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* The hidden label is positioned against its own step, so it can't escape a scroll box. */
+  .stepper__step {
+    position: relative;
+  }
+
+  /* Upcoming steps no longer share space equally with the current one: the current label
+   * gets the room it needs, the rest shrink to marker + a short connector. */
+  .stepper__step:not(.stepper__step--current) {
+    flex: 0 1 auto;
+  }
+
+  .stepper__step--current {
+    flex: 1 1 auto;
+  }
+
+  .stepper__step:not(:last-child)::after {
+    min-inline-size: var(--ao-spacing-3);
+  }
+
+  /* The touch target holds even with the label hidden. */
+  button.stepper__item {
+    min-inline-size: var(--ao-spacing-9);
+    justify-content: center;
+  }
+}

@@ -1,0 +1,685 @@
+/* ImportScreen — the v3 Import pattern (TASK-575621, Markus via Cat, 22 Oct 2026).
+ *
+ * One flow for every Control import: Upload → Map columns → [Options] → Review → Results, on the
+ * ControlScreen shell. The same file styles the Batch delete screen. Code-first: no Figma frame
+ * yet, so every value is an existing token, and the layout borrows from parts already in the
+ * system (each rule says where from). Decisions are in ImportScreen.figma-notes.md.
+ */
+
+/* ── Page ───────────────────────────────────────────────
+   Banner / in-progress card / flow card gap: the record screens' card gap (as ExportSystem). */
+.cc-control__page.cc-import {
+  gap: var(--ao-spacing-5);
+}
+
+.cc-control[data-cc-width="full"] .cc-control__page.cc-import {
+  gap: 0;
+}
+
+/* Top-level cards: border/card + shadow/2xs in standard width — the CC top-level card rule. */
+.cc-control:not([data-cc-width="full"]) .cc-import > .record-section {
+  border-color: var(--ao-border-card);
+  box-shadow: var(--ao-shadow-2xs);
+}
+
+.cc-control:not([data-cc-width="full"]) .cc-import > .record-section > .record-section__header {
+  border-bottom-color: var(--ao-border-card);
+}
+
+/* A count beside a card title sits in a neutral chip (the CC count rule). */
+.cc-import__title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-spacing-3);
+}
+
+/* ── Stepper row ────────────────────────────────────────
+   Between the card head and the step's body, with RecordSection's own body padding and divider. */
+.cc-import__steps {
+  padding: var(--ao-spacing-4) var(--ao-spacing-6);
+  border-bottom: 1px solid var(--ao-border-secondary);
+}
+
+.cc-control:not([data-cc-width="full"]) .cc-import__steps {
+  border-bottom-color: var(--ao-border-card);
+}
+
+/* ── Step body ──────────────────────────────────────────
+   One panel at a time. Inner gap 16px = the page's card gap, so blocks inside a step space like
+   the cards around it. */
+.cc-import__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-5);
+  min-inline-size: 0;
+}
+
+.cc-import__panel[hidden] {
+  display: none;
+}
+
+.cc-import__lead {
+  margin: 0;
+  max-inline-size: var(--ao-size-12);   /* a readable measure; the listing's widest column cap */
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
+}
+
+.cc-import__lead strong {
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
+}
+
+/* Options: FieldRows, 24px apart — RecordSection's own row gap (designer amend 2026-09-29), since
+ * here they sit one level down inside a step panel rather than directly in the section body. */
+.cc-import__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-6);
+}
+
+/* The batch screen's result slot takes no space until a delete is scheduled. */
+.cc-import > [data-batch-result]:empty {
+  display: none;
+}
+
+/* ── Upload ─────────────────────────────────────────────
+   DragDropFile as built. Its 280px design height is for a page with nothing else on it; here the
+   card already frames it, so it hugs its content (padding stays the component's). */
+.cc-import .drag-drop {
+  min-height: 0;
+}
+
+.cc-import .drag-drop:focus-visible {
+  outline: 2px solid var(--ao-surface-brand);
+  outline-offset: 2px;
+}
+
+.cc-import__upload-error {
+  margin: 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-error);
+}
+
+.cc-import__upload-error[hidden] {
+  display: none;
+}
+
+/* The chosen file: icon tile, name + facts, then Replace / Remove. A bordered row like the
+ * record screens' inner cards (border/secondary inside a top-level card). */
+.cc-import__file {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-spacing-4);
+  padding: var(--ao-spacing-4) var(--ao-spacing-5);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  background-color: var(--ao-surface-primary);
+}
+
+.cc-import__file[hidden] {
+  display: none;
+}
+
+/* Icon tile: DragDropFile's icon circle language (brand-soft-extra + brand icon), squared off
+ * to read as a file rather than an action. 40px = the Button's base height. */
+.cc-import__file-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ao-spacing-8);
+  block-size: var(--ao-spacing-8);
+  border-radius: var(--ao-radius-md);
+  background-color: var(--ao-surface-brand-soft-extra);
+  color: var(--ao-icon-brand);
+}
+
+.cc-import__file-icon svg {
+  inline-size: var(--ao-icon-size-md);
+  block-size: var(--ao-icon-size-md);
+}
+
+.cc-import__file-text {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--ao-spacing-1);
+  min-inline-size: 0;
+}
+
+.cc-import__file-name {
+  overflow: hidden;
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cc-import__file-meta {
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
+}
+
+.cc-import__file-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: var(--ao-spacing-3);
+}
+
+.cc-import__sample {
+  margin: 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
+}
+
+/* ── Map columns ────────────────────────────────────────
+   A Table, one row per column in the file. Cells keep the base Table's padding; the Select fills
+   its cell up to the listing's fluid column floor so long field names never squeeze it. */
+.cc-import__table-wrap {
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+}
+
+.cc-import__table-wrap--scroll {
+  overflow-x: auto;
+}
+
+.cc-import__table-wrap .table {
+  inline-size: 100%;
+}
+
+/* The base Table keeps cells on one line; here the field hints must wrap, or they push the
+ * Status column out of the card (measured: Status clipped at 1440 with the menu docked). */
+.cc-import__map .table td {
+  vertical-align: top;
+  white-space: normal;
+}
+
+.cc-import__map .table th:nth-child(2),
+.cc-import__map .table td.cc-import__map-arrow {
+  inline-size: var(--ao-icon-size-sm);
+  padding-inline: 0;
+}
+
+.cc-import__col-name {
+  display: block;
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-md);   /* one line of the Select beside it, so the two align */
+  color: var(--ao-text-primary);
+  overflow-wrap: anywhere;
+}
+
+.cc-import__col-sample,
+.cc-import__field-hint {
+  display: block;
+  margin-top: var(--ao-spacing-1);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
+  overflow-wrap: anywhere;
+}
+
+.cc-import__map .sel {
+  min-inline-size: var(--ao-size-3);
+  max-inline-size: var(--ao-size-6);
+}
+
+/* The arrow between "column" and "field": an icon, not a column of its own on narrow screens. */
+.cc-import__map-arrow {
+  inline-size: var(--ao-icon-size-sm);
+  color: var(--ao-icon-contrast);
+}
+
+.cc-import__map-arrow svg {
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+  margin-top: var(--ao-spacing-2);   /* centred on the 24px first line */
+}
+
+.cc-import__map .table td.cc-import__map-status {
+  white-space: nowrap;
+}
+
+/* A row whose column won't be imported recedes. */
+.cc-import__map-row--skip .cc-import__col-name {
+  color: var(--ao-text-secondary);
+}
+
+.cc-import__fields-left {
+  margin: 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
+}
+
+.cc-import__fields-left[hidden] {
+  display: none;
+}
+
+/* ── Review / Results summary ───────────────────────────
+   Three counts in a row: Ready / Fixed / Skipped. Tiles are bordered inner cards (border/secondary),
+   at least 160px (`size-2`) each, reflowing intrinsically. */
+.cc-import__summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ao-size-2)), 1fr));
+  gap: var(--ao-spacing-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cc-import__stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-1);
+  padding: var(--ao-spacing-4) var(--ao-spacing-5);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+}
+
+.cc-import__stat-value {
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-2xl);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-lg);
+  color: var(--ao-text-primary);
+}
+
+.cc-import__stat-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ao-spacing-2);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
+}
+
+.cc-import__stat-label svg {
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+}
+
+.cc-import__stat--ready .cc-import__stat-label svg { color: var(--ao-text-success); }
+.cc-import__stat--fixed .cc-import__stat-label svg { color: var(--ao-text-info); }
+.cc-import__stat--skipped .cc-import__stat-label svg { color: var(--ao-text-error); }
+
+/* Checking / importing: a Spinner and a line of status text. */
+.cc-import__busy {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-6) 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
+}
+
+.cc-import__busy[hidden] {
+  display: none;
+}
+
+/* Issues block: header line, then the table, 12px apart — the listing's toolbar-to-table gap
+ * (`.cc-listing`). Without it the Download button sat on the table's top edge (Mark, 2026-10-22). */
+.cc-import__issues {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-4);
+}
+
+/* Issues table: header line (title + chip, Download on the right). */
+.cc-import__issues-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ao-spacing-3);
+}
+
+.cc-import__issues-title {
+  margin: 0;
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-sm);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-primary);
+}
+
+.cc-import__issues .table td {
+  vertical-align: top;
+}
+
+/* Value and Problem wrap (they can be long); Row, Column and Outcome stay on one line. */
+.cc-import__issues .table td:nth-child(3),
+.cc-import__issues .table td:nth-child(4) {
+  white-space: normal;
+}
+
+.cc-import__issues .table td:nth-child(4) {
+  min-inline-size: var(--ao-size-4);
+}
+
+.cc-import__issues .table td:nth-child(3) {
+  max-inline-size: var(--ao-size-4);
+  overflow-wrap: anywhere;
+}
+
+/* A cell value shown as the file had it, whitespace and all, so "  Jo@Example.COM " is visible. */
+.cc-import__value {
+  font-family: var(--ao-font-body);
+  white-space: pre-wrap;
+  color: var(--ao-text-primary);
+}
+
+.cc-import__value--empty {
+  color: var(--ao-text-contrast);
+}
+
+/* ── Footer ─────────────────────────────────────────────
+   Back on the left, the step's primary action on the right, on the card's own divider. Same
+   padding as the stepper row (RecordSection body padding, horizontally). */
+.cc-import__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-4) var(--ao-spacing-6);
+  border-top: 1px solid var(--ao-border-secondary);
+}
+
+.cc-control:not([data-cc-width="full"]) .cc-import__footer {
+  border-top-color: var(--ao-border-card);
+}
+
+.cc-import__footer-end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ao-spacing-3);
+  margin-inline-start: auto;
+}
+
+.cc-import__footer-note {
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
+}
+
+.cc-import .btn .spinner {
+  flex: 0 0 auto;
+}
+
+/* ── In-progress card ───────────────────────────────────
+   v1's TaskProgress panel, as a card above the flow. Table edge to edge (ExportSystem's files). */
+.cc-import__progress .record-section__body {
+  padding: 0;
+}
+
+.cc-import__progress[hidden] {
+  display: none;
+}
+
+.cc-import__progress .table {
+  inline-size: 100%;
+}
+
+.cc-import__progress .table td,
+.cc-import__progress .table th {
+  white-space: nowrap;
+}
+
+/* Progress cell: "0 of 6" over a thin bar. Track/fill = the Stepper's connector colours. */
+.cc-import__meter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-1);
+  min-inline-size: var(--ao-size-1);
+}
+
+.cc-import__meter-bar {
+  block-size: var(--ao-spacing-1);
+  overflow: hidden;
+  border-radius: var(--ao-radius-full);
+  background-color: var(--ao-surface-secondary);
+}
+
+.cc-import__meter-fill {
+  display: block;
+  block-size: 100%;
+  border-radius: inherit;
+  background-color: var(--ao-surface-brand);
+}
+
+.cc-import__meter-text {
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-secondary);
+}
+
+/* ── Batch delete ───────────────────────────────────────
+   The batch table: a checkbox column, edge to edge in its card. */
+.cc-import__batches .record-section__body {
+  padding: 0;
+}
+
+.cc-import__batches .table {
+  inline-size: 100%;
+}
+
+.cc-import__batches .table td,
+.cc-import__batches .table th {
+  white-space: nowrap;
+}
+
+.cc-import__batches .table td:first-child,
+.cc-import__batches .table th:first-child {
+  inline-size: var(--ao-spacing-9);
+}
+
+.cc-import__batches .table tbody tr {
+  cursor: pointer;
+}
+
+.cc-import__batches .table tbody tr:hover td {
+  background-color: var(--ao-surface-minimal);
+}
+
+/* Deleted batches (v1's audit include): a plain list under its card head. */
+.cc-import__audit {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
+}
+
+.cc-import__audit strong {
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
+}
+
+/* The typed confirmation inside the delete modal: label + input under the description. */
+.cc-import__confirm-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-3);
+  inline-size: 100%;
+  margin-top: var(--ao-spacing-5);
+  text-align: left;
+}
+
+.cc-import__confirm-label {
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-primary);
+}
+
+/* Visually hidden, kept for screen readers (FieldRow's rule, property for property). */
+.cc-import__sr {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── Narrow screens (`cs-page` is the screen-width signal, CLAUDE.md §4a; 767 = mobile) ── */
+@container cs-page (max-width: 767px) {
+  .cc-import__steps,
+  .cc-import__footer {
+    padding-inline: var(--ao-spacing-5);
+  }
+
+  /* Map table → one stacked block per file column: name + sample, then the Select, then status. */
+  .cc-import__map .table thead {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .cc-import__map .table,
+  .cc-import__map .table tbody,
+  .cc-import__map .table tr,
+  .cc-import__map .table td {
+    display: block;
+  }
+
+  .cc-import__map .table tr {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ao-spacing-3);
+    padding: var(--ao-spacing-4) var(--ao-spacing-5);
+    border-bottom: 1px solid var(--ao-border-secondary);
+  }
+
+  .cc-import__map .table tr:last-child {
+    border-bottom: 0;
+  }
+
+  .cc-import__map .table td {
+    padding: 0;
+    border: 0;
+  }
+
+  .cc-import__map .table td.cc-import__map-arrow {
+    display: none;
+  }
+
+  .cc-import__map .sel {
+    max-inline-size: none;
+  }
+
+  /* Issues table → one block per issue: "Row 5 · Email" and the outcome on the first line, the
+   * value and the problem beneath at full width (it scrolled sideways and hid Problem at 500). */
+  .cc-import__issues .cc-import__table-wrap--scroll {
+    overflow-x: visible;
+  }
+
+  .cc-import__issues .table thead {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .cc-import__issues .table,
+  .cc-import__issues .table tbody {
+    display: block;
+  }
+
+  .cc-import__issues .table tr {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ao-spacing-1) var(--ao-spacing-3);
+    padding: var(--ao-spacing-4) var(--ao-spacing-5);
+    border-bottom: 1px solid var(--ao-border-secondary);
+  }
+
+  .cc-import__issues .table tr:last-child {
+    border-bottom: 0;
+  }
+
+  .cc-import__issues .table td {
+    padding: 0;
+    border: 0;
+    block-size: auto;
+  }
+
+  .cc-import__issues .table td:nth-child(1)::before {
+    content: "Row ";
+  }
+
+  .cc-import__issues .table td:nth-child(1),
+  .cc-import__issues .table td:nth-child(2) {
+    font-weight: var(--ao-font-semibold);
+  }
+
+  .cc-import__issues .table td:nth-child(5) {
+    order: -1;
+    margin-inline-start: auto;
+  }
+
+  .cc-import__issues .table td:nth-child(1) { order: -3; }
+  .cc-import__issues .table td:nth-child(2) { order: -2; }
+
+  .cc-import__issues .table td:nth-child(3),
+  .cc-import__issues .table td:nth-child(4) {
+    flex: 1 1 100%;
+    max-inline-size: none;
+    min-inline-size: 0;
+  }
+
+  /* The file row's buttons keep their icons and drop their words (aria-labels still say them). */
+  .cc-import__file-actions .btn span {
+    display: none;
+  }
+
+  /* Footer: the primary action spans the row; Back goes beneath it. */
+  .cc-import__footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .cc-import__footer-end {
+    flex-direction: column;
+    align-items: stretch;
+    margin-inline-start: 0;
+  }
+
+  .cc-import__footer .btn {
+    justify-content: center;
+  }
+}

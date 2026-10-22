@@ -1,0 +1,493 @@
+/* ExportScreen — the v3 Export pattern (TASK-575621, Markus via Cat; Mark's choices 22 Oct 2026).
+ *
+ * One page: the export's filters (grouped, collapsible) and its columns on the left, a sticky
+ * "Your export" summary on the right (live match count, applied filters, columns, format,
+ * Export), and "Your recent exports" above, where finished files are downloaded. Code-first:
+ * no Figma frame yet, so every value is an existing token, borrowed where noted. Sibling of
+ * ImportScreen; decisions are in ExportScreen.figma-notes.md.
+ */
+
+/* ── Page ─────────────────────────────────────────────── */
+.cc-control__page.cc-xp {
+  gap: var(--ao-spacing-5);                 /* the record screens' card gap (as ImportScreen) */
+}
+
+.cc-control[data-cc-width="full"] .cc-control__page.cc-xp {
+  gap: 0;
+}
+
+/* Top-level cards: the CC top-level card rule. */
+.cc-control:not([data-cc-width="full"]) .cc-xp .record-section {
+  border-color: var(--ao-border-card);
+  box-shadow: var(--ao-shadow-2xs);
+}
+
+.cc-control:not([data-cc-width="full"]) .cc-xp .record-section__header {
+  border-bottom-color: var(--ao-border-card);
+}
+
+.cc-xp__result:empty {
+  display: none;
+}
+
+/* A card title with its count chip (the CC count rule). */
+.cc-xp__title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-spacing-3);
+}
+
+.cc-xp__desc {
+  margin: 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
+}
+
+/* ── Layout: work column + summary ───────────────────────
+   The summary is 384px (`size-7`): wide enough for a filter label + value on one line and the
+   three format buttons; the gap is the page's card gap. */
+.cc-xp__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--ao-size-7);
+  align-items: start;
+  gap: var(--ao-spacing-5);
+}
+
+.cc-xp__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-5);
+  min-inline-size: 0;
+}
+
+/* The summary follows the page as it scrolls, so Export is always in reach. */
+.cc-xp__aside {
+  position: sticky;
+  top: 0;
+}
+
+/* ── Filters card ────────────────────────────────────────
+   "Export from" (the scope) sits above the groups; the groups are a flush Accordion that runs
+   edge to edge in the card, one item per v1 filter group. */
+.cc-xp__filters .record-section__body {
+  padding: 0;
+  gap: 0;
+}
+
+.cc-xp__scope {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-6);
+  padding: var(--ao-spacing-6);
+}
+
+.cc-xp__filters .acc--flush {
+  border-bottom: 0;
+}
+
+/* Contextual override (Case B, code-first): Accordion `--flush` has no side padding (it is for
+ * text on a page); inside a card the groups line up with the card's own body padding
+ * (RecordSection `spacing-6`), and an open group's rows end with that padding too. */
+.cc-xp__filters .acc--flush .acc__trigger {
+  padding-inline: var(--ao-spacing-6);
+}
+
+.cc-xp__filters .acc--flush .acc__panel {
+  padding: 0 var(--ao-spacing-6) var(--ao-spacing-6);
+}
+
+/* Group head: the title, then a count chip when any of its filters is set. */
+.cc-xp__group-title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ao-spacing-3);
+}
+
+.cc-xp__group-title .badge[hidden] {
+  display: none;
+}
+
+/* Field rows inside an open group, 24px apart — RecordSection's row gap. */
+.cc-xp__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-6);
+}
+
+/* ── Columns card ────────────────────────────────────── */
+.cc-xp__presets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-4);
+}
+
+.cc-xp__preset-count {
+  color: var(--ao-text-contrast);
+}
+
+/* The column picker: search + count, then one block per group of columns. */
+.cc-xp__picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-5);
+  padding: var(--ao-spacing-5);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+}
+
+.cc-xp__picker[hidden] {
+  display: none;
+}
+
+.cc-xp__picker-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ao-spacing-3);
+}
+
+.cc-xp__picker-head .input {
+  flex: 0 1 var(--ao-size-6);
+  min-inline-size: 0;
+}
+
+.cc-xp__picker-count {
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
+}
+
+.cc-xp__col-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-4);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-inline-size: 0;
+}
+
+.cc-xp__col-group[hidden] {
+  display: none;
+}
+
+.cc-xp__col-legend {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ao-spacing-3);
+  inline-size: 100%;
+  /* A legend is not a flex item, so the fieldset's gap skips it: space it like the grid rows. */
+  margin-block-end: var(--ao-spacing-4);
+  padding: 0;
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
+}
+
+/* Columns as many to a row as fit, each at least 192px (`size-3`); row / column gap =
+ * ExportSystem's target grid. */
+.cc-xp__cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--ao-size-3)), 1fr));
+  gap: var(--ao-spacing-4) var(--ao-spacing-6);
+}
+
+.cc-xp__cols .checkbox[hidden] {
+  display: none;
+}
+
+.cc-xp__picker-empty {
+  margin: 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-secondary);
+}
+
+.cc-xp__picker-empty[hidden] {
+  display: none;
+}
+
+/* ── Summary card ────────────────────────────────────── */
+.cc-xp__summary .record-section__body {
+  gap: var(--ao-spacing-5);
+}
+
+/* The live count: the number large, what it counts beneath (Import's count tiles). */
+.cc-xp__count {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-1);
+}
+
+.cc-xp__count-value {
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-3xl);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-xl);
+  color: var(--ao-text-primary);
+}
+
+.cc-xp__count--busy .cc-xp__count-value {
+  color: var(--ao-text-contrast);
+}
+
+.cc-xp__count-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ao-spacing-2);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
+}
+
+.cc-xp__count--zero .cc-xp__count-value,
+.cc-xp__count--zero .cc-xp__count-label {
+  color: var(--ao-text-error);
+}
+
+/* A labelled block in the summary: small heading, then its content. Divided like FactList. */
+.cc-xp__block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-3);
+  padding-top: var(--ao-spacing-5);
+  border-top: 1px solid var(--ao-border-secondary);
+}
+
+.cc-xp__block-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ao-spacing-3);
+  min-block-size: var(--ao-spacing-7);   /* the xs button's height, with or without one */
+}
+
+.cc-xp__block-title {
+  margin: 0;
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
+}
+
+/* Applied filters: "Label  value  ×", one per line. */
+.cc-xp__applied {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cc-xp__applied-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ao-spacing-3);
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+}
+
+.cc-xp__applied-text {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  padding-block: var(--ao-spacing-1);
+  overflow-wrap: anywhere;
+}
+
+.cc-xp__applied-label {
+  color: var(--ao-text-secondary);
+}
+
+.cc-xp__applied-value {
+  color: var(--ao-text-primary);
+  font-weight: var(--ao-font-medium);
+}
+
+.cc-xp__applied-item .btn {
+  flex: 0 0 auto;
+}
+
+.cc-xp__none {
+  margin: 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
+}
+
+.cc-xp__line {
+  margin: 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
+}
+
+.cc-xp__summary .seg-control {
+  inline-size: 100%;
+}
+
+.cc-xp__summary .seg-control__btn {
+  flex: 1 1 0;
+}
+
+.cc-xp__go {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-3);
+}
+
+.cc-xp__go .btn {
+  inline-size: 100%;
+  justify-content: center;
+}
+
+.cc-xp__go .spinner {
+  flex: 0 0 auto;
+}
+
+.cc-xp__note {
+  margin: 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
+}
+
+/* ── Your recent exports ─────────────────────────────────
+   Table edge to edge in its card (ExportSystem's files table). */
+.cc-xp__recent .record-section__body {
+  padding: 0;
+  overflow-x: auto;
+}
+
+.cc-xp__recent .table {
+  inline-size: 100%;
+}
+
+.cc-xp__recent .table td,
+.cc-xp__recent .table th {
+  white-space: nowrap;
+}
+
+.cc-xp__recent .table td:first-child {
+  white-space: normal;
+  min-inline-size: var(--ao-size-4);
+}
+
+.cc-xp__file-name {
+  display: block;
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
+}
+
+.cc-xp__file-meta {
+  display: block;
+  margin-top: var(--ao-spacing-1);
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
+}
+
+.cc-xp__status {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-1);
+  min-inline-size: var(--ao-size-1);
+}
+
+/* Progress bar: Import's meter (Stepper connector colours). */
+.cc-xp__meter-bar {
+  block-size: var(--ao-spacing-1);
+  overflow: hidden;
+  border-radius: var(--ao-radius-full);
+  background-color: var(--ao-surface-secondary);
+}
+
+.cc-xp__meter-fill {
+  display: block;
+  block-size: 100%;
+  border-radius: inherit;
+  background-color: var(--ao-surface-brand);
+  transition: inline-size var(--ao-transition-default);
+}
+
+.cc-xp__status-text {
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-secondary);
+}
+
+.cc-xp__dl {
+  text-align: right;
+}
+
+/* Visually hidden, kept for screen readers (FieldRow's rule, property for property). */
+.cc-xp__sr {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── Narrower screens (`cs-page` is the screen-width signal, CLAUDE.md §4a) ──
+   Under 1024 the summary drops below the work column and stops being sticky; it keeps Export. */
+@container cs-page (max-width: 1023px) {
+  .cc-xp__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cc-xp__aside {
+    position: static;
+  }
+}
+
+@container cs-page (max-width: 767px) {
+  .cc-xp__scope {
+    padding: var(--ao-spacing-5);
+  }
+
+  .cc-xp__filters .acc--flush .acc__trigger {
+    padding-inline: var(--ao-spacing-5);
+  }
+
+  .cc-xp__filters .acc--flush .acc__panel {
+    padding: 0 var(--ao-spacing-5) var(--ao-spacing-5);
+  }
+
+  .cc-xp__dl .btn span {
+    display: none;
+  }
+
+  /* Recent exports keep File, Status and Download in view. The count (a running export shows
+   * "n of N" in Status), Format (it is in the file name), Run by and Started give way: they
+   * pushed Download off-screen at 500. */
+  .cc-xp__recent .table th:nth-child(2),
+  .cc-xp__recent .table td:nth-child(2),
+  .cc-xp__recent .table th:nth-child(3),
+  .cc-xp__recent .table td:nth-child(3),
+  .cc-xp__recent .table th:nth-child(4),
+  .cc-xp__recent .table td:nth-child(4),
+  .cc-xp__recent .table th:nth-child(5),
+  .cc-xp__recent .table td:nth-child(5) {
+    display: none;
+  }
+
+  .cc-xp__recent .table td:first-child {
+    min-inline-size: var(--ao-size-2);
+    overflow-wrap: anywhere;
+  }
+}
