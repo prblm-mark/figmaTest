@@ -336,6 +336,14 @@
   display: none;
 }
 
+/* Issues block: header line, then the table, 12px apart — the listing's toolbar-to-table gap
+ * (`.cc-listing`). Without it the Download button sat on the table's top edge (Mark, 2026-10-22). */
+.cc-import__issues {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-4);
+}
+
 /* Issues table: header line (title + chip, Download on the right). */
 .cc-import__issues-head {
   display: flex;
