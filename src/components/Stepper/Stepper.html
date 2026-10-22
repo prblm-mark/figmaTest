@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Stepper — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Stepper.css">
+  <style>
+    body { padding: var(--ao-spacing-7); background: var(--ao-surface-secondary); min-height: 100vh; }
+    .demo-section {
+      padding: var(--ao-spacing-6);
+      background: var(--ao-surface-primary);
+      border-radius: var(--ao-radius-lg);
+      margin-bottom: var(--ao-spacing-5);
+    }
+    .demo-section__title {
+      font-size: var(--ao-font-fixed-xs);
+      font-weight: var(--ao-font-semibold);
+      color: var(--ao-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ao-spacing-3);
+    }
+    .demo-section__note {
+      font-size: var(--ao-font-fixed-xs);
+      color: var(--ao-text-secondary);
+      margin: 0 0 var(--ao-spacing-5);
+    }
+    .demo-narrow { max-inline-size: var(--ao-size-7); }
+    .demo-log { margin: var(--ao-spacing-5) 0 0; font-size: var(--ao-font-fixed-xs); color: var(--ao-text-secondary); }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ao-font-fixed-4xl); font-weight: var(--ao-font-bold); color: var(--ao-text-primary); margin: 0 0 var(--ao-spacing-6);">Stepper</h1>
+  <p style="font-size: var(--ao-font-fixed-sm); color: var(--ao-text-contrast); margin: 0 0 var(--ao-spacing-7);">
+    The steps of a multi-step flow, numbered in order. Four states: Upcoming, Current, Complete (a button that goes back to that step) and Error (a finished step that needs attention). Code-first, built for the Import pattern. Not in Figma yet.
+  </p>
+
+  <div class="demo-section">
+    <p class="demo-section__title">State=Upcoming · Current · Complete</p>
+    <p class="demo-section__note">Step 3 is current. Steps 1 and 2 are complete; click one to go back (the demo moves to it).</p>
+    <nav class="stepper" aria-label="Import steps" data-demo-stepper></nav>
+    <p class="demo-log" data-demo-log aria-live="polite"></p>
+  </div>
+
+  <div class="demo-section">
+    <p class="demo-section__title">State=Error</p>
+    <p class="demo-section__note">Review found row errors: the step reads as needing attention once the flow has moved past it.</p>
+    <nav class="stepper" aria-label="Import steps" data-demo-error></nav>
+  </div>
+
+  <div class="demo-section">
+    <p class="demo-section__title">Locked (the run has started)</p>
+    <p class="demo-section__note">Every earlier step is done but no longer clickable.</p>
+    <nav class="stepper" aria-label="Import steps" data-demo-locked></nav>
+  </div>
+
+  <div class="demo-section">
+    <p class="demo-section__title">Narrow (container under 640px)</p>
+    <p class="demo-section__note">Only the current step keeps a visible label. The others are still read out by screen readers.</p>
+    <div class="demo-narrow"><nav class="stepper" aria-label="Import steps" data-demo-narrow></nav></div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="Stepper.js"></script>
+  <script>
+    var FIVE = ['Upload', 'Map columns', 'Options', 'Review', 'Results'];
+    var main = document.querySelector('[data-demo-stepper]');
+    var state = { steps: FIVE, current: 2 };
+    Stepper.render(main, state);
+    main.addEventListener('stepper:select', function (e) {
+      state.current = e.detail.index;
+      Stepper.render(main, state);
+      document.querySelector('[data-demo-log]').textContent = 'stepper:select → step ' + (e.detail.index + 1) + ' (' + FIVE[e.detail.index] + ')';
+      var b = main.querySelector('[aria-current="step"]');
+      if (b) b.scrollIntoView({ block: 'nearest' });
+    });
+    Stepper.render(document.querySelector('[data-demo-error]'), { steps: FIVE, current: 4, errors: [3] });
+    Stepper.render(document.querySelector('[data-demo-locked]'), { steps: FIVE, current: 4, locked: true });
+    Stepper.render(document.querySelector('[data-demo-narrow]'), { steps: FIVE, current: 1 });
+  </script>
+</body>
+</html>
