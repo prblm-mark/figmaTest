@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../../../components/Button/Button.css">
   <link rel="stylesheet" href="../../../components/Tooltip/Tooltip.css">
   <link rel="stylesheet" href="../../../components/Spinner/Spinner.css">
+  <link rel="stylesheet" href="../../../components/Badge/Badge.css">
   <link rel="stylesheet" href="TopicTree.css">
   <style>
     body { margin: 0; padding: var(--ao-spacing-7); background: var(--cc-ui-primary-bg); min-height: 100vh; color: var(--ao-text-primary); font-family: var(--ao-font-body); }
@@ -50,6 +51,12 @@
       <p class="demo-section__title">Show more · per-level cap</p>
       <p class="demo-note">v1 caps a level at 300. The cap here is 8 so it shows.</p>
       <div class="demo-tree"><ul data-demo="more"></ul></div>
+    </div>
+
+    <div class="demo-section">
+      <p class="demo-section__title">Row marks · type icon + badges (Site Tree)</p>
+      <p class="demo-note">Optional per row: a Lucide type icon before the name, Badges after it. Screen readers hear them once, in the row's description.</p>
+      <div class="demo-tree"><ul data-demo="marks"></ul></div>
     </div>
 
     <div class="demo-section">
@@ -113,6 +120,24 @@
       mount('search').filter(function (t) { return t.name.toLowerCase().indexOf('image') !== -1; });
 
       mount('more', { pageSize: 8 });
+
+      /* Site Tree's row marks, with Cat's icon map (TASK-582058): zone globe, channel folder-tree,
+         section folder, article file-text. Hidden is neutral everywhere; Not live is warning. */
+      var HIDDEN = { text: 'Hidden', state: 'neutral' }, NOT_LIVE = { text: 'Not live', state: 'warning' };
+      var site = {
+        z1: { code: 'z1', name: 'Affino', children: 1, icon: 'globe', iconLabel: 'Zone' },
+        c1: { code: 'c1', name: 'Insights', children: 3, icon: 'folder-tree', iconLabel: 'Channel' },
+        c2: { code: 'c2', name: 'Archive', children: 0, icon: 'folder-tree', iconLabel: 'Channel', badges: [HIDDEN] },
+        s1: { code: 's1', name: 'Founder blog', children: 2, icon: 'folder', iconLabel: 'Section' },
+        s2: { code: 's2', name: 'Release notes', children: 0, icon: 'folder', iconLabel: 'Section', badges: [NOT_LIVE] },
+        s3: { code: 's3', name: 'Drafts for the 10.1 launch', children: 0, icon: 'folder', iconLabel: 'Section', badges: [HIDDEN, NOT_LIVE] },
+        a1: { code: 'a1', name: 'Why we rebuilt the Control Centre', children: 0, icon: 'file-text', iconLabel: 'Article' },
+        a2: { code: 'a2', name: 'What AI means for publishers', children: 0, icon: 'file-text', iconLabel: 'Article', badges: [NOT_LIVE] }
+      };
+      var siteKids = { root: ['z1'], z1: ['c1', 'c2'], c1: ['s1', 's2', 's3'], s1: ['a1', 'a2'] };
+      window.TopicTree.mount(document.querySelector('[data-demo="marks"]'),
+        { label: 'Site tree', topics: site, children: siteKids, parents: {} })
+        .open(['z1', 'z1/c1', 'z1/c1/s1']);
 
       mount('empty', { emptyHtml: '<li class="demo-empty" role="none">No topics match "zzz".</li>' })
         .filter(function (t) { return t.name.indexOf('zzz') !== -1; });
