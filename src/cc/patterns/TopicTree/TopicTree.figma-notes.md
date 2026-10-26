@@ -91,7 +91,13 @@ Added for the CC **Site Tree** screen. Cat built them first in the Control Centr
 `TODO(backend:TopicManager)` markers `topic-tree-data` (a level per call) and `topic-tree-search` (matches with
 their ancestor paths). See `docs/topic-manager-handover.md`.
 
+## Figma (code-first captures)
+
+File `Lus07xi8pPXLN87sQIyrEt`, page Records & Dashboards (4114:4847), section "Articles, listings & shell"
+(4204:4847): **states v2 with row marks `4435:2`** (2026-10-26, 1600 desktop; 297 paints on Semantic, the 6 left
+are opacity-0 strokes). v1 `4395:2` is renamed `[superseded]`, not deleted.
+
 ## Needs Figma
 
-Not drawn. When it is: a TopicTreeItem set (Level, State = Default / Hover / Selected / Context, Expandable =
+Not drawn as components. When it is: a TopicTreeItem set (Level, State = Default / Hover / Selected / Context, Expandable =
 Open / Closed / Leaf, Hint on/off), then Code Connect.
