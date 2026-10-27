@@ -102,6 +102,25 @@
   white-space: nowrap;
 }
 
+/* ── Row marks (optional): a type icon before the name, Badges after it ── */
+
+.topic-tree__icon {
+  display: inline-flex;
+  flex: none;
+  color: var(--ao-icon-contrast);
+}
+
+.topic-tree__icon [data-lucide] {
+  inline-size: var(--ao-icon-size-sm);
+  block-size: var(--ao-icon-size-sm);
+}
+
+.topic-tree__badges {
+  display: inline-flex;
+  flex: none;
+  gap: var(--ao-spacing-2);
+}
+
 /* ── "Also under" hint (multi-parent topics) ────────────── */
 
 .topic-tree__also {

@@ -29,6 +29,7 @@ A–Z; a level loads when you open its parent (a page reload per click), capped 
 | Search | matches + every ancestor on a path to them, opened; context-only ancestors in `--ao-text-secondary` |
 | Show more | past the per-level cap (v1: 300): "Show N more" (Button Tertiary xs) + "n of N" |
 | Empty search | the host's `emptyHtml` |
+| Row marks (optional) | a Lucide type icon before the name; DS Badges (`badge--sm`) after it, before the "also under" hint |
 
 ## Interaction
 
@@ -37,6 +38,8 @@ A–Z; a level loads when you open its parent (a page reload per click), capped 
   parent, Home / End, Enter / Space selects. One row is in the tab order. The "also under" text is the row's
   `aria-description`, and the tooltip also shows while the row has focus.
 - **Multi-parent:** a topic appears under **each** parent (each placement is a row keyed by its path).
+- **Row marks:** the icon and badges are `aria-hidden`; the row's `aria-description` reads them once, in
+  order: `iconLabel`, each badge's text, then "Also under: …". Without marks it is exactly as before.
 - **Search:** a result opens whole; the chevrons still fold it. Clearing the search returns to what was open.
 
 ## Tokens
@@ -47,7 +50,9 @@ A–Z; a level loads when you open its parent (a page reload per click), capped 
 | Row padding / radius | `--ao-spacing-3` inline, `--ao-radius-sm` | OrderedList row |
 | Text | `--ao-font-fixed-xs`, `--ao-leading-xs`, `--ao-text-primary` | the table cell size |
 | Chevron / leaf slot / hint | `--ao-icon-size-sm`, `--ao-icon-contrast` | |
-| Gap | `--ao-spacing-2` | |
+| Gap | `--ao-spacing-2` (also between badges) | |
+| Type icon | `--ao-icon-size-sm`, `--ao-icon-contrast` | the chevron / hint icon |
+| Badges | DS Badge `--sm` (18px tall, fits the 32px row), state from the data | Badge.css |
 | Indent per level | `--ao-icon-size-sm` + `--ao-spacing-2` (22px) | Mark, 2026-10-20: a child's chevron sits under its parent's name |
 | Hover | `--ao-surface-minimal` | OrderedList / Selector row hover |
 | Selected | `--ao-surface-secondary` + `--ao-font-semibold` | Mark, 2026-10-20: a brand fill felt wrong; one step up from hover, the SegmentedControl's active fill |
@@ -56,13 +61,29 @@ A–Z; a level loads when you open its parent (a page reload per click), capped 
 
 No token gaps.
 
+## Row marks (2026-10-26)
+
+Added for the CC **Site Tree** screen. Cat built them first in the Control Centre copy as a logged deviation
+(TASK-580895); this brings figmaTest level so the CC copy is a straight port again (TASK-582058).
+
+- Data per topic: `icon` (Lucide name), `iconLabel` (what it means, for screen readers; figmaTest addition),
+  `badges: [{ text, state }]` with `state` one of Badge's states (anything else → `neutral`).
+- Site Tree's map (Cat, from v1 `SiteHierarchy.cfm` / `ZoneHierarchy.cfm`): zone `globe`, channel `folder-tree`,
+  section `folder`, article `file-text`, dynamic form `clipboard-list`, forum `messages-square`, newsletter
+  `mail`, online form `file-input`, media item `image`. Badges: "Hidden" `neutral` (channels and sections —
+  v1 drew a section's H in red; Mark's session changed it, Cat agreed) and "Not live" `warning`, shown only to
+  right 190 as in v1. A section can carry both.
+- The per-level indent is unchanged, so with a type icon a child's chevron sits under its parent's icon, not its
+  name. In a narrow column the name truncates first; icon and badges keep their size.
+- Topic Manager passes no marks; its rendered tree is byte-identical to before (headless DOM compare).
+
 ## Files
 
 | File | |
 |---|---|
 | `TopicTree.js` | `TopicTree.mount(ul, opts)` → `{ filter, open, select, render }`; contract in the header |
 | `TopicTree.css` | the above |
-| `TopicTree.html` | demo: every state |
+| `TopicTree.html` | demo: every state, incl. row marks (links Badge.css) |
 | `topic-tree-data.js` | demo data, generated from AffinoComrz "Affino Taxonomy": real names, links and order; invented counts and one invented second parent |
 
 ## Backend
@@ -70,7 +91,13 @@ No token gaps.
 `TODO(backend:TopicManager)` markers `topic-tree-data` (a level per call) and `topic-tree-search` (matches with
 their ancestor paths). See `docs/topic-manager-handover.md`.
 
+## Figma (code-first captures)
+
+File `Lus07xi8pPXLN87sQIyrEt`, page Records & Dashboards (4114:4847), section "Articles, listings & shell"
+(4204:4847): **states v2 with row marks `4435:2`** (2026-10-26, 1600 desktop; 297 paints on Semantic, the 6 left
+are opacity-0 strokes). v1 `4395:2` is renamed `[superseded]`, not deleted.
+
 ## Needs Figma
 
-Not drawn. When it is: a TopicTreeItem set (Level, State = Default / Hover / Selected / Context, Expandable =
+Not drawn as components. When it is: a TopicTreeItem set (Level, State = Default / Hover / Selected / Context, Expandable =
 Open / Closed / Leaf, Hint on/off), then Code Connect.

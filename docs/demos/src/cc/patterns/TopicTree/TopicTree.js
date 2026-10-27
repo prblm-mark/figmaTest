@@ -11,6 +11,13 @@
  *
  *   TopicTree.mount(ul, {
  *     topics:   { <code>: { code, name, children, … } },   // `children` = how many (drives the chevron)
+ *               // optional row marks (Site Tree, from Cat's CC copy, TASK-580895 / TASK-582058):
+ *               //   icon: 'folder'                            a Lucide name, drawn before the name
+ *               //   iconLabel: 'Section'                      what the icon means, for screen readers
+ *               //   badges: [{ text: 'Hidden', state: 'neutral' }]   DS Badge sm after the name; state is a
+ *               //                                             Badge state (default|neutral|success|warning|
+ *               //                                             danger|info, else neutral). Host links Badge.css.
+ *               // Topic Manager passes none, and its rows are unchanged.
  *     children: { root: [codes], <code>: [codes] },      // ordered (BTNT.SO, then name); a missing key = not loaded
  *     parents:  { <code>: [codes] },                     // every parent of a topic
  *     label:    'Affino Taxonomy topics',
@@ -34,6 +41,7 @@
   'use strict';
 
   var PAGE = 300;
+  var BADGE_STATES = ['default', 'neutral', 'success', 'warning', 'danger', 'info'];   // Badge.css
 
   function esc(s) {
     return String(s === undefined || s === null ? '' : s)
@@ -80,12 +88,20 @@
     function item(t, key, level, i, size, expandable, expanded) {
       var here = key.indexOf('/') !== -1 ? key.split('/').slice(-2)[0] : null;
       var others = (parents[t.code] || []).filter(function (p) { return p !== here && topics[p]; });
+      var badges = t.badges || [];
       return '<div class="topic-tree__item' +
           (matched && !matched[t.code] ? ' topic-tree__item--context' : '') + '" data-level="' + level + '">' +
         (expandable
           ? '<span class="topic-tree__chevron" data-topic-tree-toggle aria-hidden="true"><i data-lucide="chevron-right"></i></span>'
           : '<span class="topic-tree__spacer" aria-hidden="true"></span>') +
+        (t.icon ? '<span class="topic-tree__icon" aria-hidden="true"><i data-lucide="' + esc(t.icon) + '"></i></span>' : '') +
         '<span class="topic-tree__name">' + esc(t.name) + '</span>' +
+        (badges.length
+          ? '<span class="topic-tree__badges" aria-hidden="true">' + badges.map(function (b) {
+              var state = BADGE_STATES.indexOf(b.state) !== -1 ? b.state : 'neutral';
+              return '<span class="badge badge--' + state + ' badge--sm">' + esc(b.text) + '</span>';
+            }).join('') + '</span>'
+          : '') +
         (others.length
           ? '<span class="topic-tree__also" data-topic-tree-tip' +
               ' data-tip="Also under: ' + esc(others.map(function (p) { return topics[p].name; }).join(', ')) + '">' +
@@ -109,10 +125,15 @@
         var key = p.join('/');
         var expandable = hasKids(c);
         var expanded = expandable && (visible ? !folded[key] : !!open[key]);
-        var others = (parents[c] || []).length > 1
-          ? ' aria-description="Also under: ' + esc((parents[c] || []).filter(function (x) { return x !== path[path.length - 1] && topics[x]; })
-              .map(function (x) { return topics[x].name; }).join(', ')) + '"'
-          : '';
+        /* The row's marks are read once, here: the type, each badge, then "also under". The icon and
+           badges themselves are aria-hidden. */
+        var marks = (t.iconLabel ? [t.iconLabel] : [])
+          .concat((t.badges || []).map(function (b) { return b.text; }));
+        if ((parents[c] || []).length > 1) {
+          marks.push('Also under: ' + (parents[c] || []).filter(function (x) { return x !== path[path.length - 1] && topics[x]; })
+            .map(function (x) { return topics[x].name; }).join(', '));
+        }
+        var others = marks.length ? ' aria-description="' + esc(marks.join(', ')) + '"' : '';
         var li = '<li role="treeitem" data-topic-tree-path="' + esc(key) + '"' +
           ' aria-level="' + level + '" aria-posinset="' + (i + 1) + '" aria-setsize="' + all.length + '"' +
           (expandable ? ' aria-expanded="' + expanded + '"' : '') +
