@@ -111,11 +111,11 @@ Figma default for all text-button variants has `showLeftIcon=true` — both slot
 | State | Figma Primitive | Value | Token Needed | Affected Variants | Status |
 |---|---|---|---|---|---|
 | Primary focus ring | `--ao-surface-brand-light` | `#3a8fff` | ✓ resolved | Primary | ✅ Implemented |
-| Alert hover bg | `RedRadix/12` | `#641723` | `--ao-btn-alert-hover` | Alert, Alert Outline | ✅ Primitive approved (2026-10-16, was Red/400 — white text failed at 2.77:1; TASK-555946) |
-| Alert focus ring | `RedRadix/12` | `#641723` | `--ao-btn-alert-focus-ring` | Alert, Alert Outline | ✅ Primitive approved (2026-10-16, was Red/400) |
-| Alert pressed | `RedRadix/13` | `#3b1219` | `--ao-btn-alert-pressed` | Alert, Alert Outline | ✅ Primitive approved (2026-10-16, was Red/600) |
+| Alert hover bg | `components/global/button/alert-bg-hover` | light `#A5242F` (RedRadix/12) · dark `#641723` (RedRadix/13) | `--ao-btn-alert-bg-hover` | Alert, Alert Outline | ✅ Semantic token (2026-10-27) |
+| Alert focus ring | `components/global/button/alert-bg-hover` | as hover | `--ao-btn-alert-bg-hover` | Alert, Alert Outline | ✅ Semantic token (2026-10-27); Figma ring was still on `Red/400`, rebound |
+| Alert pressed | `components/global/button/alert-bg-pressed` | light `#641723` (RedRadix/13) · dark `#3B1219` (RedRadix/14) | `--ao-btn-alert-bg-pressed` | Alert, Alert Outline | ✅ Semantic token (2026-10-27) |
 
-**Note:** Alert hover/pressed/focus states implemented using Figma primitives directly (approved). If semantic tokens are added to Figma in future, update `Button.css` to use `--ao-*` variables.
+**Note:** since 2026-10-27 Alert hover/focus/pressed use the Semantic tokens above; `Button.css` has no hardcoded alert hexes left.
 
 ## Notes
 
@@ -200,3 +200,12 @@ Token: `--ao-shadow-2xs`. Only Secondary: Primary, Tertiary and the alert types 
 
 
 **2026-10-16 (TASK-555946):** Alert hover/focus/pressed now go DARKER than the default (RedRadix/12 / 13), mirroring the primary button; Figma's 18 hover/focus/pressed Alert variants rebound to match, and the solid Alert Default fill was rebound from the `Red/500` primitive to `surface/error` (code already used it). Outline Default in Figma still uses `Red/500` for stroke/text while code uses `border-error` / `text-error` — flagged, not changed.
+
+**2026-10-27 (Mark): alert + primary hover one step lighter, light modes only.** Lagoon and RedRadix both had an
+11 → 12 cliff (≈0.22 OKLCH-L; other steps ≤ 0.12), so hover read as near-black. Each ramp gained a step: new
+**Lagoon/12 `#036170`** and **RedRadix/12 `#A5242F`**, the old 12/13/14 renamed 13/14/15 (same values and IDs).
+Primary hover/pressed in Light + CCLight → Lagoon/12 / 13. Alert got its own Semantic tokens
+`components/global/button/alert-bg-hover` / `-pressed` (`--ao-btn-alert-bg-hover` / `-pressed`): Light, CCLight and
+ChatLight → RedRadix/12 / 13; Dark, CCDark and ChatDark keep `#641723` / `#3B1219`. Figma's 24 Alert variants
+rebound (6 hover fills, 6 focus fills, 6 focus rings, 6 pressed fills). Outline Default's `Red/500` stroke/text is
+still the open item from 2026-10-16.

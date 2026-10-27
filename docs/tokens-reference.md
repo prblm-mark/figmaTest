@@ -149,9 +149,11 @@ soft 13 / 6. Names kept so no class or token breaks.
 
 | Variable | Value | Use |
 |---|---|---|
-| `--ao-btn-primary-bg` | `#0094AD` | Primary button background |
-| `--ao-btn-primary-bg-hover` | `#009FBA` | Primary hover + focus background |
-| `--ao-btn-primary-bg-pressed` | `#007A8D` | Primary pressed background |
+| `--ao-btn-primary-bg` | `#007A8D` | Primary button background (Lagoon/11) |
+| `--ao-btn-primary-bg-hover` | `#036170` | Primary hover + focus background (Lagoon/12; dark modes `#043840`, Lagoon/13) |
+| `--ao-btn-primary-bg-pressed` | `#043840` | Primary pressed background (Lagoon/13; dark modes `#00282F`, Lagoon/14) |
+| `--ao-btn-alert-bg-hover` | `#A5242F` | Alert + Alert Outline hover / focus background and focus ring (RedRadix/12; dark modes `#641723`) |
+| `--ao-btn-alert-bg-pressed` | `#641723` | Alert + Alert Outline pressed background (RedRadix/13; dark modes `#3B1219`) |
 | `--ao-btn-primary-text` | `#FFFFFF` | Primary text (theme-invariant) |
 | `--ao-btn-primary-text-hover` | `#FFFFFF` | Primary hover text |
 | `--ao-btn-primary-border` | `rgba(0,0,0,0)` | Primary default + hover border |
@@ -172,6 +174,14 @@ soft 13 / 6. Names kept so no class or token breaks.
 | `--ao-btn-tertiary-text-hover` | `#172033` | Tertiary hover text |
 | `--ao-btn-bg-disabled` | `#CAD5E2` | Disabled background (all variants) |
 | `--ao-btn-text-disabled` | `#64748B` | Disabled text (all variants) |
+
+> **2026-10-27 — Lagoon ramp gained a step.** 11 → 12 was a 0.22 OKLCH-lightness drop (every other step is
+> ≤ 0.08), so primary hover jumped from teal to near-black. A new **Lagoon/12 `#036170`** sits one 10→11 step
+> below 11; the old 12 / 13 / 14 are now **13 / 14 / 15** (same values, same variable IDs, so every alias kept
+> its colour). Light and CCLight primary hover → Lagoon/12 and pressed → Lagoon/13 (one step lighter each); dark
+> modes and chat-msg-text are unchanged (Mark). The same day **RedRadix** got the same treatment (new 12
+> `#A5242F`, old 12–14 → 13–15) and the alert button got its own `--ao-btn-alert-bg-hover` / `-pressed` tokens
+> (light modes on the new steps, dark modes unchanged).
 
 ## Spacing
 

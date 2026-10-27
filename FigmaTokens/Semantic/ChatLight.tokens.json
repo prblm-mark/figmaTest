@@ -2618,6 +2618,62 @@
               "targetVariableSetName": "Primitives"
             }
           }
+        },
+        "alert-bg-hover": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.6470588445663452,
+              0.1411764770746231,
+              0.18431372940540314
+            ],
+            "alpha": 1,
+            "hex": "#A5242F"
+          },
+          "$extensions": {
+            "com.figma.variableId": "VariableID:4441:7685",
+            "com.figma.scopes": [
+              "ALL_SCOPES"
+            ],
+            "com.figma.codeSyntax": {
+              "WEB": "--ao-btn-alert-bg-hover"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:14f3d0d23503ece65ae6521f59e65c4f85e13dd4/-1:-1",
+              "targetVariableName": "RedRadix/12",
+              "targetVariableSetId": "VariableCollectionId:8f6c1c1faabbdf0817d5304f220b65ab37368977/-1:-1",
+              "targetVariableSetName": "Primitives"
+            }
+          }
+        },
+        "alert-bg-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.3921569883823395,
+              0.09019599854946136,
+              0.137254998087883
+            ],
+            "alpha": 1,
+            "hex": "#641723"
+          },
+          "$extensions": {
+            "com.figma.variableId": "VariableID:4441:7686",
+            "com.figma.scopes": [
+              "ALL_SCOPES"
+            ],
+            "com.figma.codeSyntax": {
+              "WEB": "--ao-btn-alert-bg-pressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:79756d270d543404ef504929fcbea0da1b65dcb4/-1:-1",
+              "targetVariableName": "RedRadix/13",
+              "targetVariableSetId": "VariableCollectionId:8f6c1c1faabbdf0817d5304f220b65ab37368977/-1:-1",
+              "targetVariableSetName": "Primitives"
+            }
+          }
         }
       },
       "datatable": {
