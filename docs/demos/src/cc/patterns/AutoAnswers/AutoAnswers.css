@@ -253,7 +253,7 @@
 .cc-auto-answer__action--positive {
   background-color: var(--ao-surface-success);
   border-color: var(--ao-btn-primary-border);
-  color: var(--ao-btn-primary-text);
+  color: var(--ao-text-invert);
 }
 
 .cc-auto-answer__action--caution {

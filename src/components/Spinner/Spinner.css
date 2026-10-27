@@ -87,7 +87,8 @@
 .spinner--danger   { color: var(--ao-surface-error); }
 .spinner--info     { color: var(--ao-surface-info); }
 .spinner--neutral  { color: var(--ao-text-contrast); }
-.spinner--inverted { color: var(--ao-btn-primary-text); }   /* white on coloured bgs */
+.spinner--inverted { color: var(--ao-btn-primary-text); }   /* on primary / brand surfaces */
+.btn .spinner--inverted { color: inherit; }                  /* in a button: the button's own text colour (dark on dark-mode primary, white on alert) */
 
 /* ── Animation ─────────────────────────────────────────── */
 

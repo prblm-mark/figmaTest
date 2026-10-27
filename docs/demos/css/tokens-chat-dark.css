@@ -28,7 +28,7 @@
   --ao-text-contrast: #c2c2c4;
   --ao-text-invert: #ffffff;
   --ao-text-invert-secondary: #e2e2e3;
-  --ao-text-error: #eb8e90;
+  --ao-text-error: #f8999a;
   --ao-text-brand: #5eb1ef;
   --ao-text-success: #8eceaa;
   --ao-text-info: #5eb1ef;
@@ -91,6 +91,8 @@
   --ao-btn-tertiary-text-hover: #f6f6f7;
   --ao-btn-bg-disabled: #67676c;
   --ao-btn-text-disabled: #c2c2c4;
+  --ao-btn-alert-bg: #ce2c31;
+  --ao-btn-alert-text: #ffffff;
   --ao-btn-alert-bg-hover: #641723;
   --ao-btn-alert-bg-pressed: #3b1219;
   --ao-datatable-table-bg: #212123;

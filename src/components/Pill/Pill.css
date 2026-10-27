@@ -20,7 +20,7 @@
   font-size: var(--ao-font-fixed-xxs);   /* 12px — body/xxs/medium */
   font-weight: var(--ao-font-medium);    /* 500 */
   line-height: var(--ao-leading-xs);      /* 16px */
-  color: var(--ao-btn-primary-text);  /* always white — surface-success is theme-invariant */
+  color: var(--ao-text-invert);  /* always white — surface-success is theme-invariant */
   letter-spacing: 0.12px;
 }
 
