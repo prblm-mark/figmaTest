@@ -23,6 +23,7 @@
  *
  *   /tools/capture/harness.html?src=<url-encoded path?query>&w=1728&h=1117
  *        &tall=1&ls=key:val,key:val&clearls=prefix&do=<steps>&settle=800
+ *        &title=<frame name, e.g. "Orders · Filter open · Desktop">   (recommended)
  *        #figmacapture=<id>&figmaendpoint=<enc>&figmadelay=<ms>
  *
  * do= steps, separated by ';' :
@@ -124,6 +125,9 @@
       await sleep(300);
     }
     if (!/figmacapture=/.test(location.hash)) { say('ready (no capture id) ' + w + '×' + frame.offsetHeight); return; }
+    // ?title= names the captured frame, so each lands identifiable instead of
+    // every capture of a page arriving with the same document title
+    if (q.get('title')) doc.title = q.get('title');
     document.documentElement.setAttribute('data-capturing', '');
     var s = doc.createElement('script');
     s.src = 'https://mcp.figma.com/mcp/html-to-design/capture.js';

@@ -18,7 +18,16 @@ Do states in rounds of 4 captures to keep processing overlapped:
    `#figmacapture=<ID>&figmaendpoint=https%3A%2F%2Fmcp.figma.com%2Fmcp%2Fcapture%2F<ID>%2Fsubmit%3FbindVariables%3Dtrue&figmadelay=1500`
    - `do=` steps (`;`-separated, URL-encode the whole value): `click:<sel>`, `clickall:<sel>|<n>`,
      `type:<sel>=<text>`, `cls:<sel>=+a,-b`, `attr:<sel>=<a>=<v>`, `wait:<ms>`, `eval:<js>`.
+   - ALWAYS add `&title=<URL-encoded "Screen · State · Desktop|Mobile">` — the frame lands
+     with that name, so there is no guessing which capture is which (Phase 1 had to match
+     frames by width/order/height because every capture of a page shares its title).
    - Modal / overlay states: add `&tall=0` (viewport-height frame).
+   - Dropdowns/menus: the capture does NOT keep z-index — an open menu can land UNDER later
+     content (Phase 1: Edit Columns menu under the table). After post-processing, screenshot
+     every overlay state; if it's buried, move the menu node to the frame root
+     (`layoutPositioning='ABSOLUTE'`, same absolute x/y) in both Light and Dark.
+   - Mobile: many desktop controls are hidden at 390 (search field, some menus). If the
+     state can't be shown on mobile, capture desktop only and say so in the report.
    - Dry-run an UNTESTED interactive state first WITHOUT the hash, then read
      `document.getElementById('status').textContent` — "NOT FOUND: <sel>" means fix the selector.
 3. Wait 14 s before navigating to the next capture (lets capture.js submit).
