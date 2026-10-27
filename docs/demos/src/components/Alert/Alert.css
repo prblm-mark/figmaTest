@@ -282,3 +282,32 @@
 .alert--danger .alert__cta-btn { background-color: var(--ao-surface-error); }
 .alert--warning .alert__cta-btn { background-color: var(--ao-surface-warning); }
 .alert--neutral .alert__cta-btn { background-color: var(--ao-surface-neutral); }
+
+/* Text: Figma binds --ao-text-invert (2753:2258), not the primary button's
+ * text token — that one turns dark in dark mode and fails on these fills. */
+.alert .alert__cta-btn,
+.alert .alert__cta-btn:hover,
+.alert .alert__cta-btn:focus-visible {
+  color: var(--ao-text-invert);
+}
+
+/* Hover / focus / pressed: Figma defines none, and only Danger has tokens.
+ * Computed by darkening the type's own surface toward the navy base
+ * (color-mix convention) in BOTH themes — lightening in dark would drop
+ * white text below 4.5:1. User-approved 2026-10-27. */
+.alert .alert__cta-btn:hover,
+.alert .alert__cta-btn:focus-visible { background-color: color-mix(in srgb, var(--ao-surface-info) 85%, rgb(38 55 88)); }
+.alert--success .alert__cta-btn:hover,
+.alert--success .alert__cta-btn:focus-visible { background-color: color-mix(in srgb, var(--ao-surface-success) 85%, rgb(38 55 88)); }
+.alert--danger .alert__cta-btn:hover,
+.alert--danger .alert__cta-btn:focus-visible { background-color: color-mix(in srgb, var(--ao-surface-error) 85%, rgb(38 55 88)); }
+.alert--warning .alert__cta-btn:hover,
+.alert--warning .alert__cta-btn:focus-visible { background-color: color-mix(in srgb, var(--ao-surface-warning) 85%, rgb(38 55 88)); }
+.alert--neutral .alert__cta-btn:hover,
+.alert--neutral .alert__cta-btn:focus-visible { background-color: color-mix(in srgb, var(--ao-surface-neutral) 85%, rgb(38 55 88)); }
+
+.alert .alert__cta-btn:active { background-color: color-mix(in srgb, var(--ao-surface-info) 70%, rgb(38 55 88)); }
+.alert--success .alert__cta-btn:active { background-color: color-mix(in srgb, var(--ao-surface-success) 70%, rgb(38 55 88)); }
+.alert--danger .alert__cta-btn:active { background-color: color-mix(in srgb, var(--ao-surface-error) 70%, rgb(38 55 88)); }
+.alert--warning .alert__cta-btn:active { background-color: color-mix(in srgb, var(--ao-surface-warning) 70%, rgb(38 55 88)); }
+.alert--neutral .alert__cta-btn:active { background-color: color-mix(in srgb, var(--ao-surface-neutral) 70%, rgb(38 55 88)); }
