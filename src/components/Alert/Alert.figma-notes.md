@@ -108,8 +108,9 @@ Spacing / radius / typography:
 | 2 | Fixed Info bg in Figma | bound to `--ao-surface-brand-soft-extra` (`#f0f3ff`) — visually identical to `--ao-surface-info-soft` but inconsistent with other Fixed variants which use their type-specific soft token | User-approved (b): normalise to `--ao-surface-info-soft` for consistency. Designer to update Figma binding. |
 | 3 | Floating absent for Danger + Warning | only Info / Success / Neutral defined | User-approved (a): build only the 3 Figma defines. |
 | 4 | Type icon | all 5 Default variants reference `Icon/24px/Info` in Figma (placeholder) | Implementation uses semantic Lucide icons per Type: `info` / `check-circle-2` / `alert-circle` / `alert-triangle` / `info` — icon is consumer-controllable content. |
+| 5 | CTA button text + hover/focus/pressed | Figma binds text to `--ao-text-invert` (`2753:2258`); no hover/pressed states defined, and only Danger has hover/pressed tokens | Text → `--ao-text-invert` in all states (was inheriting `--ao-btn-primary-text`, which is `#00191F` in dark since 4331b9dcc — 3.1–3.8:1). Hover/focus = `color-mix(in srgb, var(--ao-surface-{type}) 85%, rgb(38 55 88))`, pressed = 70%, darkening in BOTH themes (lightening in dark drops white text to 3.6:1). User-approved 2026-10-27; replace with `--ao-surface-{type}-hover/-pressed` tokens if Figma adds them. |
 
-No raw primitives used. All colour, spacing, radius, typography values map to existing `--ao-*` tokens.
+No raw primitives used. All colour, spacing, radius, typography values map to existing `--ao-*` tokens, except the CTA hover/pressed `color-mix()` navy base `rgb(38 55 88)` (gap #5, project color-mix convention).
 
 ---
 
