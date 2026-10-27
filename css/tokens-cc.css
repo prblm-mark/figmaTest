@@ -69,8 +69,8 @@
   --ao-chat-sidebar-bg: #f2f4f5;
   --ao-chat-sidebar-text: #00222f;
   --ao-btn-primary-bg: #007a8d;
-  --ao-btn-primary-bg-hover: #043840;
-  --ao-btn-primary-bg-pressed: #00282f;
+  --ao-btn-primary-bg-hover: #036170;
+  --ao-btn-primary-bg-pressed: #043840;
   --ao-btn-primary-border: rgba(0, 0, 0, 0);
   --ao-btn-primary-border-hover: rgba(0, 0, 0, 0);
   --ao-btn-primary-text: #ffffff;
@@ -91,6 +91,8 @@
   --ao-btn-tertiary-text-hover: #00222f;
   --ao-btn-bg-disabled: #ccd4d8;
   --ao-btn-text-disabled: #99aab1;
+  --ao-btn-alert-bg-hover: #a5242f;
+  --ao-btn-alert-bg-pressed: #641723;
   --ao-datatable-table-bg: #ffffff;
   --ao-datatable-table-header-bg: #ffffff;
   --ao-datatable-table-subheader-bg: #ffffff;

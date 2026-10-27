@@ -124,19 +124,19 @@
 }
 
 .btn--alert:hover {
-  background-color: #641723; /* RedRadix/12 — primitive, approved (Mark 2026-10-16, TASK-555946) */
-  border-color: #641723;     /* RedRadix/12 */
+  background-color: var(--ao-btn-alert-bg-hover);
+  border-color: var(--ao-btn-alert-bg-hover);
 }
 
 .btn--alert:active {
-  background-color: #3b1219; /* RedRadix/13 — primitive, approved (Mark 2026-10-16) */
-  border-color: #3b1219;     /* RedRadix/13 */
+  background-color: var(--ao-btn-alert-bg-pressed);
+  border-color: var(--ao-btn-alert-bg-pressed);
 }
 
 .btn--alert:focus-visible {
-  background-color: #641723; /* RedRadix/12 — primitive, approved (Mark 2026-10-16, TASK-555946) */
+  background-color: var(--ao-btn-alert-bg-hover);
   border: 2px solid var(--ao-surface-primary);
-  box-shadow: 0 0 0 2px #641723; /* RedRadix/12 */
+  box-shadow: 0 0 0 2px var(--ao-btn-alert-bg-hover);
   outline: none;
 }
 
@@ -152,22 +152,22 @@
 }
 
 .btn--alert-outline:hover {
-  background-color: #641723; /* RedRadix/12 — primitive, approved (Mark 2026-10-16, TASK-555946) */
-  border-color: #641723;
+  background-color: var(--ao-btn-alert-bg-hover);
+  border-color: var(--ao-btn-alert-bg-hover);
   color: var(--ao-btn-primary-text);
 }
 
 .btn--alert-outline:active {
-  background-color: #3b1219; /* RedRadix/13 — primitive, approved (Mark 2026-10-16) */
-  border-color: #3b1219;
+  background-color: var(--ao-btn-alert-bg-pressed);
+  border-color: var(--ao-btn-alert-bg-pressed);
   color: var(--ao-btn-primary-text);
 }
 
 .btn--alert-outline:focus-visible {
-  background-color: #641723; /* RedRadix/12 — primitive, approved (Mark 2026-10-16, TASK-555946) */
+  background-color: var(--ao-btn-alert-bg-hover);
   color: var(--ao-btn-primary-text);
   border: 2px solid var(--ao-surface-primary);
-  box-shadow: 0 0 0 2px #641723; /* RedRadix/12 */
+  box-shadow: 0 0 0 2px var(--ao-btn-alert-bg-hover);
   outline: none;
 }
 
