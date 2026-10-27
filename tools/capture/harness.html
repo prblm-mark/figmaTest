@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capture harness</title>
+<style>
+  html, body { margin: 0; background: #fff; }
+  body { display: flex; justify-content: flex-start; align-items: flex-start; }
+  iframe { border: 0; display: block; flex: none; }
+  #status { position: fixed; right: 8px; bottom: 8px; font: 12px/1.4 system-ui; background: #0f172a; color: #fff; padding: 4px 8px; border-radius: 4px; z-index: 10; }
+  html[data-capturing] #status { display: none; }
+</style>
+</head>
+<body>
+<div id="status">harness: loading…</div>
+<script>
+/*
+ * Capture harness — loads one screen in an iframe of an exact viewport width so
+ * media + container queries fire as on a real device (Chrome windows can't go
+ * below ~500px), drives it into a state, then injects Figma's capture.js INTO
+ * the iframe so the capture is the screen itself, not this wrapper.
+ *
+ *   /tools/capture/harness.html?src=<url-encoded path?query>&w=1728&h=1117
+ *        &tall=1&ls=key:val,key:val&clearls=prefix&do=<steps>&settle=800
+ *        #figmacapture=<id>&figmaendpoint=<enc>&figmadelay=<ms>
+ *
+ * do= steps, separated by ';' :
+ *   click:<sel>        click the first match          clickall:<sel>|<n>  click first n
+ *   type:<sel>=<text>  set value + fire input/keyup   cls:<sel>=+a,-b     add/remove classes
+ *   attr:<sel>=<a>=<v> set attribute                  wait:<ms>
+ *   scroll:<sel>=<y>   scrollTop                      eval:<js>          run in the frame
+ *
+ * ?restore=1 puts localStorage demo-theme back to what it was before captures.
+ */
+(function () {
+  var q = new URLSearchParams(location.search);
+  var status = document.getElementById('status');
+  function say(s) { status.textContent = 'harness: ' + s; }
+
+  // --- theme: force light for theme-param.js pages, remember the old value ---
+  try {
+    if (q.get('restore')) {
+      var prev = localStorage.getItem('cap-prev-demo-theme');
+      if (prev === '__none__') localStorage.removeItem('demo-theme');
+      else if (prev !== null) localStorage.setItem('demo-theme', prev);
+      localStorage.removeItem('cap-prev-demo-theme');
+      say('restored demo-theme = ' + (prev || 'unchanged')); return;
+    }
+    if (localStorage.getItem('cap-prev-demo-theme') === null)
+      localStorage.setItem('cap-prev-demo-theme', localStorage.getItem('demo-theme') || '__none__');
+    localStorage.setItem('demo-theme', 'light');
+    localStorage.setItem('cc-assistant-popover-dismissed', '1');
+    ['cc-width', 'cc-density'].forEach(function (k) { localStorage.removeItem(k); });
+    Object.keys(localStorage).filter(function (k) { return k.indexOf('affino.listing.') === 0; })
+      .forEach(function (k) { localStorage.removeItem(k); });
+    (q.get('clearls') || '').split(',').filter(Boolean).forEach(function (p) {
+      Object.keys(localStorage).filter(function (k) { return k.indexOf(p) === 0; }).forEach(function (k) { localStorage.removeItem(k); });
+    });
+    (q.get('ls') || '').split(',').filter(Boolean).forEach(function (kv) {
+      var i = kv.indexOf(':'); localStorage.setItem(kv.slice(0, i), kv.slice(i + 1));
+    });
+  } catch (e) {}
+
+  var w = +q.get('w') || 1728, h = +q.get('h') || (w < 768 ? 844 : 1117);
+  var tall = q.get('tall') !== '0';
+  var settle = +q.get('settle') || 800;
+  var src = q.get('src');
+  if (!src) { say('missing ?src'); return; }
+
+  var frame = document.createElement('iframe');
+  frame.width = w; frame.height = h;
+  frame.style.width = w + 'px'; frame.style.height = h + 'px';
+  // capture params ride on the frame's hash so capture.js (and dark-mode-toggle's
+  // force-light) see them inside the screen
+  frame.src = src + (location.hash || '');
+  document.body.appendChild(frame);
+
+  var TALL_CSS =
+    'html,body.cc-control{height:auto!important;min-height:0!important}' +
+    '.cc-control,.cc-control__sidebar,.cc-control__actions{height:auto!important;min-height:' + h + 'px!important}' +
+    '.cc-control__main{min-height:auto!important}' +
+    '.cc-control__page{overflow:visible!important;scrollbar-gutter:auto!important}';
+
+  function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+  async function runSteps(win, doc) {
+    var steps = (q.get('do') || '').split(';').map(function (s) { return s.trim(); }).filter(Boolean);
+    for (var i = 0; i < steps.length; i++) {
+      var s = steps[i], c = s.indexOf(':'), op = s.slice(0, c), arg = s.slice(c + 1);
+      say('step ' + (i + 1) + '/' + steps.length + ' ' + op);
+      var el, parts;
+      if (op === 'wait') { await sleep(+arg); continue; }
+      if (op === 'eval') { win.eval(arg); await sleep(150); continue; }
+      if (op === 'clickall') {
+        parts = arg.split('|'); var n = +parts[1] || 999;
+        Array.prototype.slice.call(doc.querySelectorAll(parts[0]), 0, n).forEach(function (e) { e.click(); });
+        await sleep(200); continue;
+      }
+      var eq = arg.indexOf('='), sel = eq > -1 && op !== 'click' ? arg.slice(0, eq) : arg, val = eq > -1 ? arg.slice(eq + 1) : '';
+      el = doc.querySelector(sel);
+      if (!el) { say('NOT FOUND: ' + sel); console.warn('[harness] not found', sel); continue; }
+      if (op === 'click') el.click();
+      else if (op === 'type') {
+        el.focus(); el.value = val;
+        ['input', 'change', 'keyup'].forEach(function (t) { el.dispatchEvent(new win.Event(t, { bubbles: true })); });
+      }
+      else if (op === 'cls') val.split(',').forEach(function (t) { t[0] === '-' ? el.classList.remove(t.slice(1)) : el.classList.add(t.replace(/^\+/, '')); });
+      else if (op === 'attr') { parts = val.split('='); el.setAttribute(parts[0], parts.slice(1).join('=')); }
+      else if (op === 'scroll') el.scrollTop = +val;
+      await sleep(200);
+    }
+  }
+
+  frame.addEventListener('load', async function () {
+    var win = frame.contentWindow, doc = frame.contentDocument;
+    await sleep(settle);
+    if (tall) { var st = doc.createElement('style'); st.id = 'cap-tall'; st.textContent = TALL_CSS; doc.head.appendChild(st); }
+    await runSteps(win, doc);
+    await sleep(300);
+    if (tall) {
+      var full = Math.max(doc.documentElement.scrollHeight, doc.body.scrollHeight, h);
+      frame.height = full; frame.style.height = full + 'px';
+      await sleep(300);
+    }
+    if (!/figmacapture=/.test(location.hash)) { say('ready (no capture id) ' + w + '×' + frame.offsetHeight); return; }
+    document.documentElement.setAttribute('data-capturing', '');
+    var s = doc.createElement('script');
+    s.src = 'https://mcp.figma.com/mcp/html-to-design/capture.js';
+    s.async = true;
+    doc.head.appendChild(s);
+    say('capture.js injected');
+  });
+})();
+</script>
+</body>
+</html>
