@@ -306,6 +306,28 @@
 .alert--neutral .alert__cta-btn:hover,
 .alert--neutral .alert__cta-btn:focus-visible { background-color: color-mix(in srgb, var(--ao-surface-neutral) 85%, rgb(38 55 88)); }
 
+/* Focus ring follows the type, same pattern as .btn--primary/.btn--alert:
+ * 2px --ao-surface-primary gap + 2px ring in the focus bg colour. The gap's
+ * border-color is restated because the transparent base above out-ranks
+ * the Button's own focus border. */
+.alert .alert__cta-btn:focus-visible {
+  border-color: var(--ao-surface-primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ao-surface-info) 85%, rgb(38 55 88));
+}
+.alert--success .alert__cta-btn:focus-visible { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ao-surface-success) 85%, rgb(38 55 88)); }
+.alert--danger .alert__cta-btn:focus-visible { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ao-surface-error) 85%, rgb(38 55 88)); }
+.alert--warning .alert__cta-btn:focus-visible { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ao-surface-warning) 85%, rgb(38 55 88)); }
+.alert--neutral .alert__cta-btn:focus-visible { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ao-surface-neutral) 85%, rgb(38 55 88)); }
+
+/* Dark: the darkened ring sits at 2.3–2.7:1 on the dark soft alert bg, so the
+ * ring alone lightens toward white (dark color-mix convention) → 3.8–4.4:1.
+ * No text sits on the ring, so the white-text reason for darkening doesn't apply. */
+[data-theme="dark"] .alert .alert__cta-btn:focus-visible { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ao-surface-info) 80%, white); }
+[data-theme="dark"] .alert--success .alert__cta-btn:focus-visible { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ao-surface-success) 80%, white); }
+[data-theme="dark"] .alert--danger .alert__cta-btn:focus-visible { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ao-surface-error) 80%, white); }
+[data-theme="dark"] .alert--warning .alert__cta-btn:focus-visible { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ao-surface-warning) 80%, white); }
+[data-theme="dark"] .alert--neutral .alert__cta-btn:focus-visible { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ao-surface-neutral) 80%, white); }
+
 .alert .alert__cta-btn:active { background-color: color-mix(in srgb, var(--ao-surface-info) 70%, rgb(38 55 88)); }
 .alert--success .alert__cta-btn:active { background-color: color-mix(in srgb, var(--ao-surface-success) 70%, rgb(38 55 88)); }
 .alert--danger .alert__cta-btn:active { background-color: color-mix(in srgb, var(--ao-surface-error) 70%, rgb(38 55 88)); }
