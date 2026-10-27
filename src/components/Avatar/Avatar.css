@@ -138,7 +138,7 @@
 
 .avatar--checked {
   background-color: var(--ao-surface-success);
-  color: var(--ao-btn-primary-text);       /* tick stays white in light + dark */
+  color: var(--ao-text-invert);       /* tick stays white in light + dark */
   overflow: hidden;
 }
 

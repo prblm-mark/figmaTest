@@ -209,3 +209,20 @@ Primary hover/pressed in Light + CCLight → Lagoon/12 / 13. Alert got its own S
 ChatLight → RedRadix/12 / 13; Dark, CCDark and ChatDark keep `#641723` / `#3B1219`. Figma's 24 Alert variants
 rebound (6 hover fills, 6 focus fills, 6 focus rings, 6 pressed fills). Outline Default's `Red/500` stroke/text is
 still the open item from 2026-10-16.
+
+**2026-10-27 (Mark): dark primary = light lagoon, dark text.** Dark + CCDark: `primary-bg` Lagoon/8 `#30B6C2`,
+`-hover` (and `-focus`, which aliases it) Lagoon/7 `#77CAD0`, `-pressed` Lagoon/9 `#009FBA`, `primary-text` /
+`-text-hover` Lagoon/15 `#00191F`. Light, CCLight and the Chat modes unchanged. Alert + Alert Outline text and icons now
+use `--ao-text-invert` (Figma: `text/invert`) instead of `primary-text`, so they stay white. `.btn .spinner--inverted`
+inherits the button's text colour. Figma drift fixed: Primary Hover base (`53:2490`) had its fill on the raw `Lagoon/11`
+primitive; now `primary-bg-hover`.
+
+**2026-10-27 (Mark): dark alert mirrors dark primary.** New Semantic `components/global/button/alert-bg`
+(`--ao-btn-alert-bg`, VariableID:4446:4845) and `alert-text` (`--ao-btn-alert-text`, 4446:4846). Light, CCLight, ChatLight and
+ChatDark keep today's values (RedRadix/11 bg, white text); Dark + CCDark (revised same day): bg RedRadix/9 `#E5484D`,
+text RedRadix/15 `#201314`, hover/focus RedRadix/8 `#F07374`, pressed RedRadix/7 `#F8999A` — lighter as you interact. RedRadix 8
+and 7 were re-spaced evenly between 9 and 6 (old 8 `#EB8E90` read pink); see docs/tokens-reference.md. Figma: Alert Default fills → `alert-bg`; every
+Alert text/icon on a red fill (147 paints, incl. Alert Outline hover/focus/pressed) → `alert-text`, plus 8 paints in
+Dropdowns' nested alert button. Alert Outline Default is unchanged (its dark border `#CE2C31` is 2.8:1 on the page —
+pre-existing, text is 6.1:1).
+

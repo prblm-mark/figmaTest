@@ -118,9 +118,9 @@
 /* ── Alert (destructive — solid red) ─────────────────── */
 
 .btn--alert {
-  background-color: var(--ao-surface-error);
-  color: var(--ao-btn-primary-text);
-  border-color: var(--ao-surface-error);
+  background-color: var(--ao-btn-alert-bg);
+  color: var(--ao-btn-alert-text);
+  border-color: var(--ao-btn-alert-bg);
 }
 
 .btn--alert:hover {
@@ -141,9 +141,8 @@
 }
 
 /* ── Alert Outline ───────────────────────────────────── */
-/* Default: outlined red. Hover/focus/pressed: flips to solid red (same as alert).
-   Hover/focus RedRadix/12, pressed RedRadix/13 — darker than the default, like the primary button, so white
-   text passes 4.5:1 (was Red/400 at 2.77:1; Figma variants rebound 2026-10-16). */
+/* Default: outlined red. Hover/focus/pressed: flips to solid red (same as alert), on the alert tokens.
+   Light: white text on darker reds. Dark + CCDark: dark text on lighter reds, mirroring primary (2026-10-27). */
 
 .btn--alert-outline {
   background-color: var(--ao-surface-primary);
@@ -154,18 +153,18 @@
 .btn--alert-outline:hover {
   background-color: var(--ao-btn-alert-bg-hover);
   border-color: var(--ao-btn-alert-bg-hover);
-  color: var(--ao-btn-primary-text);
+  color: var(--ao-btn-alert-text);
 }
 
 .btn--alert-outline:active {
   background-color: var(--ao-btn-alert-bg-pressed);
   border-color: var(--ao-btn-alert-bg-pressed);
-  color: var(--ao-btn-primary-text);
+  color: var(--ao-btn-alert-text);
 }
 
 .btn--alert-outline:focus-visible {
   background-color: var(--ao-btn-alert-bg-hover);
-  color: var(--ao-btn-primary-text);
+  color: var(--ao-btn-alert-text);
   border: 2px solid var(--ao-surface-primary);
   box-shadow: 0 0 0 2px var(--ao-btn-alert-bg-hover);
   outline: none;

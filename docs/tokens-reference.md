@@ -149,12 +149,14 @@ soft 13 / 6. Names kept so no class or token breaks.
 
 | Variable | Value | Use |
 |---|---|---|
-| `--ao-btn-primary-bg` | `#007A8D` | Primary button background (Lagoon/11) |
-| `--ao-btn-primary-bg-hover` | `#036170` | Primary hover + focus background (Lagoon/12; dark modes `#043840`, Lagoon/13) |
-| `--ao-btn-primary-bg-pressed` | `#043840` | Primary pressed background (Lagoon/13; dark modes `#00282F`, Lagoon/14) |
-| `--ao-btn-alert-bg-hover` | `#A5242F` | Alert + Alert Outline hover / focus background and focus ring (RedRadix/12; dark modes `#641723`) |
-| `--ao-btn-alert-bg-pressed` | `#641723` | Alert + Alert Outline pressed background (RedRadix/13; dark modes `#3B1219`) |
-| `--ao-btn-primary-text` | `#FFFFFF` | Primary text (theme-invariant) |
+| `--ao-btn-primary-bg` | `#007A8D` | Primary button background (Lagoon/11; Dark + CCDark `#30B6C2`, Lagoon/8) |
+| `--ao-btn-primary-bg-hover` | `#036170` | Primary hover + focus background (Lagoon/12; Dark + CCDark `#77CAD0`, Lagoon/7) |
+| `--ao-btn-primary-bg-pressed` | `#043840` | Primary pressed background (Lagoon/13; Dark + CCDark `#009FBA`, Lagoon/9) |
+| `--ao-btn-alert-bg` | `#CE2C31` | Alert background + border (RedRadix/11; Dark + CCDark `#E5484D`, RedRadix/9) |
+| `--ao-btn-alert-text` | `#FFFFFF` | Alert text + icons, and Alert Outline's solid states (Dark + CCDark `#201314`, RedRadix/15) |
+| `--ao-btn-alert-bg-hover` | `#A5242F` | Alert + Alert Outline hover / focus background and focus ring (RedRadix/12; Dark + CCDark `#F07374`, RedRadix/8; ChatDark `#641723`) |
+| `--ao-btn-alert-bg-pressed` | `#641723` | Alert + Alert Outline pressed background (RedRadix/13; Dark + CCDark `#F8999A`, RedRadix/7; ChatDark `#3B1219`) |
+| `--ao-btn-primary-text` | `#FFFFFF` | Primary text — **not** theme-invariant: Dark + CCDark `#00191F` (Lagoon/15). Use it only on primary / brand surfaces; for white on red, green or chat colours use `--ao-text-invert` |
 | `--ao-btn-primary-text-hover` | `#FFFFFF` | Primary hover text |
 | `--ao-btn-primary-border` | `rgba(0,0,0,0)` | Primary default + hover border |
 | `--ao-btn-primary-border-hover` | `rgba(0,0,0,0)` | Primary hover border |
@@ -182,6 +184,20 @@ soft 13 / 6. Names kept so no class or token breaks.
 > modes and chat-msg-text are unchanged (Mark). The same day **RedRadix** got the same treatment (new 12
 > `#A5242F`, old 12–14 → 13–15) and the alert button got its own `--ao-btn-alert-bg-hover` / `-pressed` tokens
 > (light modes on the new steps, dark modes unchanged).
+>
+> **Dark primary (2026-10-27, Mark):** Dark + CCDark primary is a light lagoon with dark text — Lagoon/8 rest,
+> Lagoon/7 hover/focus, Lagoon/9 pressed, Lagoon/15 text (7.4 / 9.6 / 5.8 : 1). White text could not get
+> lighter on hover without failing AA, and the old dark hover was 1.15:1 against the page. Because
+> `--ao-btn-primary-text` is no longer white everywhere, components that used it for white on red / green / chat
+> colours (Alert buttons, Pill, Avatar tick, AutoAnswers positive, MessageInput send) moved to
+> `--ao-text-invert`; brand-surface users (SearchInput, FileInput brand, TimePicker, Selector, Banner logo) keep it
+> and go dark too (white there was 3.2:1). Figma: 361 such bindings moved to `text/invert`.
+>
+> **Dark alert (2026-10-27, Mark):** RedRadix/9 rest, 8 hover/focus, 7 pressed, RedRadix/15 text (4.6 / 6.4 / 8.6 : 1)
+> — gets lighter as you interact. RedRadix 8 and 7 were **re-spaced** evenly between 9 and 6 in OKLCH (9→8 was a
+> 0.119 lightness drop with chroma halving, so 8 read pink): **8 `#EB8E90` → `#F07374`, 7 `#F4A9AA` → `#F8999A`**.
+> Dark `text/error` (Dark, CCDark, ChatDark) moved from RedRadix/8 to 7 so it stays light: `#F8999A`, 7.0:1 on the page. New `--ao-btn-alert-bg` / `--ao-btn-alert-text` so the button no longer borrows
+> `--ao-surface-error` / `--ao-text-invert`; light and chat values unchanged.
 
 ## Spacing
 
