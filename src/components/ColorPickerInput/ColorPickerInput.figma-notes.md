@@ -7,8 +7,14 @@
   (2026-09-30).
 - **AI Chat (`Ikv8jxb5dcRH8ff4q4dR11`):** `2:6620`, first drawn as an instance in StyleSettings (`2160:5471`).
 - **Chip variant:** Seating Planner "Manage table types" (`lRKvtYSU3SvO5hbMT33jxw` `1:43245` / `1:44462`).
-- **Editable form:** code-first 2026-10-29, **not drawn yet**. It looks like the two Figma states,
-  plus a Clear x and an Error state.
+- **Editable form:** drawn 2026-10-29 in the same set, now with a `Form` axis: `Form=Display` (the two
+  originals, renamed and keeping their ids) and `Form=Editable, State=Empty` `4525:43560` / `Filled`
+  `4525:43565` / `Focus` `4525:43572` / `Error` `4525:43579`. They're copies of the Filled variant, so
+  every binding is kept, plus a spacing-2 inset, the chip swatch (spacing-8 wide, radius-xs,
+  border-secondary edge, and a 1px icon-contrast "/" when empty), the Clear `Icon/24px/X` (16px,
+  icon-contrast), Focus = Input's Field effects + border-brand, Error = border-error. The error message
+  is the field's help line, not part of the component. CCDark twins are in "Forms & Inputs — CCDark".
+  Code Connect: `ColorPickerInput.figma.ts`.
 
 ## Forms × States
 
@@ -72,7 +78,6 @@ v1 parity, checked 2026-10-29 in `AfcForm/EditForm.cfm` (a `type="text"` input, 
 
 ## Not yet
 
-- Draw the Editable form in Figma: the 40×26 chip swatch (empty = the "/" diagonal), Clear x, Error and Focus, as additions to the `3929:19338` set.
 - "Colours in this style" swatches (reusing a style's existing colours): an optional addition, later.
 - StyleSettings / AI Chat could move to the Editable form. They keep the Display form until someone
   asks, because their screens wire their own scripts.

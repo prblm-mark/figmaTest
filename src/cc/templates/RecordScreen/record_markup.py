@@ -1466,7 +1466,7 @@ def style_preview(kind, name, css, widths=None):
     segs = "".join(f'''<button class="seg-control__btn{' seg-control__btn--active' if v == 'desktop' else ''}" type="button" role="radio" aria-checked="{'true' if v == 'desktop' else 'false'}" data-value="{v}">{icon(ic)}<span class="seg-control__btn-label">{label}</span></button>'''
                    for v, label, ic in (("desktop", "Desktop", "monitor"), ("tablet", "Tablet", "tablet"), ("mobile", "Mobile", "smartphone")))
     sid = "sec-preview"
-    action = (f'<div class="seg-control seg-control--sm style-preview__widths" role="radiogroup" '
+    action = (f'<div class="seg-control style-preview__widths" role="radiogroup" '
               f'aria-label="Preview width" data-seg-control data-value="desktop">{segs}</div>')
     body = f'''<div class="style-preview" data-style-preview="{kind}" data-widths='{json.dumps(widths)}' data-thumb="{IMG}">
               <template data-style-preview-css>{css}</template>
