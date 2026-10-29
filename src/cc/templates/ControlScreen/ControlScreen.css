@@ -236,8 +236,13 @@
   isolation: isolate;
   /* Scrollbar: normal width + a stable gutter (no layout shift when it appears).
      Visible by DEFAULT (CC rail grey) — this is what touch devices get, since
-     they have no hover state to reveal an overlay bar. */
-  scrollbar-gutter: stable;
+     they have no hover state to reveal an overlay bar.
+     `both-edges` + even padding (Mark, 2026-10-29, decision #87088 — the v3 port's
+     rule, TASK-547322): the gutter is reserved on BOTH sides, so the page is
+     symmetric whatever the scrollbar is — 24+15 / 24+15 with a classic bar,
+     24 / 24 with an overlay one (macOS trackpads, phones), where the old
+     right-hand trim leaned 24 / 12. No per-device corrections needed. */
+  scrollbar-gutter: stable both-edges;
   scrollbar-width: auto;
   scrollbar-color: var(--cc-actions-menu-primary-bg) transparent;
 }
@@ -245,15 +250,17 @@
 /* Flush page (2026-09-23) — the full-width listing template, Figma 3788:16762:
    padding 0 and a surface/primary fill, so the content runs edge to edge.
    Two classes on purpose: at (0,2,0) it beats every single-class padding rule
-   in this file — the base, both viewport @media trims and their coarse-pointer
-   corrections — without having to repeat each of them. The scrollbar gutter
-   stays, so nothing shifts when the page starts to scroll. Toggled by the
+   in this file without having to repeat each of them. The scrollbar gutter
+   stays (right-only, below), so nothing shifts when the page starts to scroll. Toggled by the
    shared full-width switch, `ccWidth.apply()` in control-width.js, never
    written into the markup. A screen whose content sits on the page colour
    (the Seating Planner) sets its own background back. */
 .cc-control__page.cc-control__page--flush {
   padding: 0;
   background: var(--ao-surface-primary);
+  /* Right-only gutter: flush content runs edge to edge, so a both-edges reserve
+     would leave an empty strip down the LEFT edge with a classic scrollbar. */
+  scrollbar-gutter: stable;
 }
 
 /* Desktop + hover-capable pointers only: hide the thumb at rest and fade it in
@@ -630,59 +637,7 @@
  * ancestor, not themselves. */
 @media (max-width: 767px) {
   .cc-control__page {
-    padding: var(--ao-spacing-4);
-    /* Trim the right padding (as on desktop) so the reserved scrollbar gutter
-       doesn't make the right side look heavier than the left.
-       --ao-spacing-2 (6px) undershot: 6 + the 15px gutter read as 21 against
-       12 on the left, a 9px lean measured on every CC screen 2026-09-17.
-       --ao-spacing-0 brings it to 15 against 12 — the same 3px tolerance the
-       desktop rule lands on (24 vs 27), so both breakpoints now lean by the
-       same amount instead of mobile leaning three times as hard.
-       Exactly even is not reachable by trimming here: the reserved gutter
-       (15px) is already wider than the 12px left padding, so the only way to
-       match it would be `scrollbar-gutter: stable both-edges`, which costs
-       15px of content on each side of a 390px screen. */
-    padding-right: var(--ao-spacing-0);
-  }
-
-  /* …UNLESS the scrollbar is an overlay one, in which case there is no gutter
-   * to compensate for and the trim above leaves the content flush against the
-   * screen edge.
-   *
-   * Reported from a real Android device, 2026-09-21: no right padding at all.
-   * Desktop Chrome cannot show this — it reserves a classic 15px gutter, so
-   * the trim looks correct there and the bug only exists on the devices the
-   * breakpoint is FOR. `scrollbar-gutter: stable` reserves nothing against an
-   * overlay scrollbar, by spec, so the 15px the rule above is paying for is
-   * simply absent.
-   *
-   * `pointer: coarse` is the proxy — a touch primary input is what ships
-   * overlay scrollbars, and CSS has no way to ask about the scrollbar itself.
-   * A touch laptop would get the untrimmed padding, which is the harmless
-   * direction to be wrong in: 12px of padding beside a 15px gutter, rather
-   * than nothing at all. */
-  @media (pointer: coarse) {
-    .cc-control__page {
-      padding-right: var(--ao-spacing-4);
-    }
-  }
-}
-
-/* Desktop (≥768px): trim the right padding to spacing-4 so the content sits
-   evenly against the reserved scrollbar gutter, which adds width on the right
-   only. Same @media rationale as above — the page can't query its own container. */
-@media (min-width: 768px) {
-  .cc-control__page {
-    padding-right: var(--ao-spacing-4);
-  }
-
-  /* Same overlay-scrollbar correction as the mobile block above — a tablet in
-     landscape has no gutter either, and the trim would leave it 12px on the
-     right against 24 on the left. */
-  @media (pointer: coarse) {
-    .cc-control__page {
-      padding-right: var(--ao-spacing-6);
-    }
+    padding: var(--ao-spacing-4);   /* even all round — the both-edges gutter balances itself */
   }
 }
 
@@ -867,22 +822,16 @@
   gap: var(--ao-spacing-4);
 }
 
-/* Page padding at standard width: 24 → 12. Desktop only — mobile already pads spacing-4, the
-   same value. The right side keeps the house trim against the reserved 15px scrollbar gutter:
-   spacing-0 gives 15 against 12 on the left (exactly the mobile rule), and coarse pointers,
-   which have no gutter, get the full spacing-4. The Listing's sticky offsets read the top padding
-   from --cc-listing-pad-top, so it follows. */
+/* Page padding at standard width: 24 → 12, even all round (decision #87088, 2026-10-29: the
+   both-edges gutter keeps the sides symmetric, so no right-hand trim). Desktop only — mobile
+   already pads spacing-4, the same value. The Listing's sticky offsets read the top padding from
+   --cc-listing-pad-top, so it follows. */
 @media (min-width: 768px) {
   .cc-control[data-cc-density="condensed"] .cc-control__page:not(.cc-control__page--flush) {
-    padding: var(--ao-spacing-4) var(--ao-spacing-0) var(--ao-spacing-4) var(--ao-spacing-4);
+    padding: var(--ao-spacing-4);
   }
   .cc-control[data-cc-density="condensed"] .cc-listing:not([data-listing-template="full"]) {
     --cc-listing-pad-top: var(--ao-spacing-4);
-  }
-  @media (pointer: coarse) {
-    .cc-control[data-cc-density="condensed"] .cc-control__page:not(.cc-control__page--flush) {
-      padding-right: var(--ao-spacing-4);
-    }
   }
 }
 

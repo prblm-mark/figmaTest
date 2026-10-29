@@ -162,8 +162,11 @@
    * always present and the 15px is spent there either way; `auto` bought nothing back and instead
    * made No Event and No Plan 15px WIDER than the plan state, so choosing an event visibly shifted
    * the layout. `stable` costs those two states the 15px they were saving and makes all three agree,
-   * which is the point of the property. */
-  scrollbar-gutter: stable;
+   * which is the point of the property.
+   * `both-edges` (decision #87088, 2026-10-29): the shell's even-padding rule — reserved on both
+   * sides, so the page is symmetric with classic and overlay scrollbars. Flush keeps right-only
+   * (ControlScreen's `.cc-control__page.cc-control__page--flush` outranks this). */
+  scrollbar-gutter: stable both-edges;
 
   /* ── Sticky-scroll metrics (2026-09-11) ───────────────────────────────────
    * Both are MEASURED at runtime by SeatingPlanner.js, not designed, because neither is a
@@ -501,29 +504,10 @@
   }
 }
 
-/* ── Right padding: the shell's scrollbar-gutter trim (designer, 2026-10-02) ──
- * `padding: var(--sp-page-pad)` above overrode ControlScreen's right-side trim, so
- * this page sat 24 + the 15px reserved gutter = 39px on the right, against 27px on
- * every other CC screen. These restate the shell's values (ControlScreen.css):
- * spacing-4 on the right at the wide padding, spacing-0 at the narrow one, and no
- * trim on a coarse pointer, whose overlay scrollbar reserves no gutter. Inline-end
- * only, so `--sp-page-pad`, which the sticky offsets subtract, is untouched.
- * Not on flush pages: full width owns its padding (the plan view is 0 on every side). */
-.cc-control__page--seating:not(.cc-control__page--flush) {
-  padding-inline-end: var(--ao-spacing-4);
-}
-
-@container cs-main (max-width: 767px) {
-  .cc-control__page--seating:not(.cc-control__page--flush) {
-    padding-inline-end: var(--ao-spacing-0);
-  }
-}
-
-@media (pointer: coarse) {
-  .cc-control__page--seating:not(.cc-control__page--flush) {
-    padding-inline-end: var(--sp-page-pad);
-  }
-}
+/* ── Right padding: no trim (decision #87088, 2026-10-29) ──
+ * This page used to restate the shell's right-hand trim against a right-only gutter. The shell now
+ * reserves the gutter on both edges with even padding, so `--sp-page-pad` on every side is already
+ * symmetric — the trim and its coarse-pointer correction are gone. */
 
 /* ── Create Plan modal form ─────────────────────────────────────────────────
  * Figma 3515:212885 / 3515:228092 (help off) and 3515:212593 / 3515:212739 (help on +

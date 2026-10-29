@@ -21,8 +21,8 @@
 /* Page padding = the Listing screen's, at every width (designer, 2026-09-29 — "we need
  * consistency"). The record page no longer zeroes `.cc-control__page`'s padding, so it gets
  * exactly what `.cc-control__page--listing` gets from ControlScreen.css: `--ao-spacing-6` on
- * desktop and `--ao-spacing-4` below 768, with the same right-edge scrollbar-gutter trims and
- * their overlay-scrollbar corrections. `.record-screen` itself carries no padding any more
+ * desktop and `--ao-spacing-4` below 768, even all round with a both-edges scrollbar gutter
+ * (decision #87088, 2026-10-29). `.record-screen` itself carries no padding any more
  * (it was 16 / 16 / 24). Full width stays flush via `.cc-control__page--flush` (ccWidth). */
 .cc-control__page--record {
   gap: 0;
