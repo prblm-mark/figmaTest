@@ -8,6 +8,7 @@ Figma: Lus07xi8pPXLN87sQIyrEt · View & Edit page (3842:146669) · kit section 3
 Content is what the Figma screens show; step titles/openings are the Hub rows in
 steps_data.py (copied from the ArticleSteps prototype; content only — no styling is taken from it).
 """
+import json
 import re
 from html import escape as e
 
@@ -364,7 +365,7 @@ def ordered_list(fid, label, items, modal=None, described=""):
 ERROR_TARGETS = []  # (label, message, field id) for the validation summary — filled by edit_row(error=…)
 
 
-def edit_row(label, kind, value="", required=False, help_text=None, tags=None, modal=None, placeholder="None selected", options=None, error=None, file_icon="file-audio", fid=None):
+def edit_row(label, kind, value="", required=False, help_text=None, tags=None, modal=None, placeholder="None selected", options=None, error=None, file_icon="file-audio", fid=None, attrs=""):
     fid = fid or _id(label)   # fid: a grid row passes its own, so repeated rows keep unique ids
     if error:
         ERROR_TARGETS.append((label, error, fid))
@@ -518,7 +519,7 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
     if help_text:
         row_mods += " field-row--has-help"
     label_html = f'<{lab_tag} class="field-row__label"{lab_for}>{e(label)}{req}</{lab_tag}>'
-    return f'''<div class="{row_mods}">
+    return f'''<div class="{row_mods}"{attrs}>
             {label_html}
             <div class="field-row__value">{ctl}</div>
           </div>'''
@@ -570,7 +571,7 @@ def prompt_modifier(pid, title, fills, prompt, outputs):
           </div>'''
 
 
-def record_section(title, rows_html, mode, prompt="", description=None):
+def record_section(title, rows_html, mode, prompt="", description=None, action="", cls=""):
     sid = "sec-" + "".join(ch for ch in title.lower() if ch.isalnum())
     body_tag = "dl" if mode == "view" else "div"
     if mode == "view" and not prompt and not "".join(rows_html).strip():
@@ -580,8 +581,8 @@ def record_section(title, rows_html, mode, prompt="", description=None):
     described = f' aria-describedby="{sid}-desc"' if description else ""
     head = (f'<div class="record-section__title-block"><h2 class="record-section__title" id="{sid}">{e(title)}</h2>{desc}</div>'
             if description else f'<h2 class="record-section__title" id="{sid}">{e(title)}</h2>')
-    return f'''<section class="record-section" aria-labelledby="{sid}"{described}>
-          <div class="record-section__header">{head}</div>
+    return f'''<section class="record-section{f" {cls}" if cls else ""}" aria-labelledby="{sid}"{described}>
+          <div class="record-section__header">{head}{action}</div>
           <{body_tag} class="record-section__body">{prompt}{''.join(rows_html)}</{body_tag}>
         </section>'''
 
@@ -1447,6 +1448,32 @@ def edit_grid_rows(gid, title, rows, help_text=None, show_title=True, level=3):
             <div class="edit-grid__live" role="status" aria-live="polite"></div>
           </div>'''
     # TODO(backend:RecordScreen) record-edit-grid: rows are in memory only → they post with the form, in v1's row order
+
+
+# ── StylePreview (code-first, 2026-10-29; Hub TASK-575540) ───────────
+# Design Style / Design Frame open with a live preview drawn in the record's OWN CSS (v1:
+# DC_DesignStyle.cfm's resizable DesignTable; DC_DesignFrameDef.cfm's Preview tab). Here it is a
+# "Preview" RecordSection, first in the main column on View AND Edit (Mark, 2026-10-29), whose
+# header carries a Desktop / Tablet / Mobile SegmentedControl and whose body is a sandboxed iframe:
+# the client CSS lives inside it and can't restyle the Control Centre. StylePreview.js builds the
+# sample (v1's own text), fits the frame's height, and on Edit pushes [data-preview-prop] fields in.
+PREVIEW_WIDTHS = {"tablet": "768px", "mobile": "375px"}   # demo values — the site's Breakpoint Profile
+
+
+def style_preview(kind, name, css, widths=None):
+    widths = widths or PREVIEW_WIDTHS
+    segs = "".join(f'''<button class="seg-control__btn{' seg-control__btn--active' if v == 'desktop' else ''}" type="button" role="radio" aria-checked="{'true' if v == 'desktop' else 'false'}" data-value="{v}">{icon(ic)}<span class="seg-control__btn-label">{label}</span></button>'''
+                   for v, label, ic in (("desktop", "Desktop", "monitor"), ("tablet", "Tablet", "tablet"), ("mobile", "Mobile", "smartphone")))
+    sid = "sec-preview"
+    action = (f'<div class="seg-control seg-control--sm style-preview__widths" role="radiogroup" '
+              f'aria-label="Preview width" data-seg-control data-value="desktop">{segs}</div>')
+    body = f'''<div class="style-preview" data-style-preview="{kind}" data-widths='{json.dumps(widths)}' data-thumb="{IMG}">
+              <template data-style-preview-css>{css}</template>
+              <iframe class="style-preview__frame" title="Preview of {e(name)}" sandbox="allow-same-origin" loading="lazy"></iframe>
+            </div>'''
+    # TODO(backend:RecordScreen) style-preview-css: the record's generated front-end CSS (the style's
+    #   aos-DS<code>-* rules / the frame's rules) → GET per record; widths → the site's Breakpoint Profile
+    return record_section("Preview", [body], "edit", action=action, cls="record-section--preview")
 
 
 # ── Quick links (View screens, 2026-10-09) ───────────────────────────

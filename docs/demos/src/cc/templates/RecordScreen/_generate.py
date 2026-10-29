@@ -59,6 +59,7 @@ CSS = """
   <link rel="stylesheet" href="../../../components/ActionCard/ActionCard.css">
   <link rel="stylesheet" href="../../../components/ColorPickerInput/ColorPickerInput.css">
   <link rel="stylesheet" href="../../../components/Accordion/Accordion.css">
+  <link rel="stylesheet" href="../../patterns/StylePreview/StylePreview.css">
   <link rel="stylesheet" href="RecordScreen.css">
 </head>"""
 
@@ -151,6 +152,7 @@ KIT_JS = '''  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/char
   <script src="../../patterns/RecordTabs/RecordTabs.js"></script>
   <script src="../../../components/AvatarGroup/AvatarGroup.js"></script>
   <script src="../../components/FieldRow/FieldRow.js"></script>
+  <script src="../../patterns/StylePreview/StylePreview.js"></script>
   <script src="RecordScreen.js"></script>'''
 
 TITLE = "Affino 9.0.11.25 — The Refinement Update"
@@ -466,6 +468,83 @@ pages[DSP_FILE] = build(
     KIT_JS,
     crumbs=("Content", "Directory Step Profiles", "Directory Step Profile Edit"))
 
+# ── Design Style / Design Frame (code-first, 2026-10-29; Hub TASK-575540): the StylePreview section
+# first in the main column, on View and Edit (Mark). The CSS strings below are RECORD DATA — the client's
+# own front-end styling that the backend will serve (style-preview-css) — and live only inside the
+# preview's iframe. var() hooks with fallbacks let the Edit fields push values in live (style-preview-live).
+DS_NAME, DF_NAME = "zz Cat Style", "zz Cat Frame"
+STYLE_CSS = ("body{background:var(--bg,#ffffff);color:var(--n-color,#333333);font-family:Georgia,serif}"
+             ".ds{padding:12px;font-size:12pt}"
+             ".ds-H1{margin-bottom:18px;font:700 var(--h1-size,28px)/1.2 Georgia,serif;color:var(--h1-color,#0b3d5c)}"
+             ".ds-intro{display:flex;gap:10px;align-items:flex-start}.ds-thumb{flex:none;object-fit:cover}"
+             ".ds-H2{font:700 22px/1.25 Georgia,serif;color:var(--h1-color,#0b3d5c)}"
+             ".ds-H3,.ds-H4,.ds-Teaser{margin-top:10px}.ds-H3{font:700 18px/1.3 Georgia,serif;color:#0b3d5c}"
+             ".ds-H4{font:700 15px/1.3 Georgia,serif;color:#45606f}.ds-Teaser{font-size:14px;line-height:1.5;color:#45606f}"
+             ".ds-N{margin-top:20px;line-height:1.6}.ds-N a{color:var(--link-color,#0a7ea4)}"
+             ".ds-hl{padding:1px 2px;background:var(--hl-bg,#fff3b0);color:#000000}"
+             ".ds-error{padding:8px 12px;color:#b42318;background:#fef3f2;border:1px solid #fda29b}")
+FRAME_CSS = ("body{padding:16px;background:#f4f6f8;font-family:Arial,sans-serif}"
+             ".df{overflow:hidden;border:var(--border-width,2px) solid var(--border-color,#0b3d5c);border-radius:var(--radius,6px);background:#ffffff}"
+             ".df__h{padding:10px 14px;background:var(--h-bg,#0b3d5c);color:var(--h-color,#ffffff);font-weight:700;font-size:15px}"
+             ".df__b{padding:14px;color:#333333;font-size:14px;line-height:1.5}")
+SIZES = ["20px", "24px", "28px", "32px", "36px"]
+DS_MORE = [("Go to list", "list", ' href="#" data-backend-todo="design-style-list"'),
+           ("Copy", "copy", ' href="#" data-backend-todo="record-copy"')]
+
+
+def live(label, kind, value, prop, unit="", options=None):
+    attrs = f' data-preview-prop="{prop}"' + (f' data-preview-unit="{unit}"' if unit else "")
+    return m.edit_row(label, kind, value, options=options, attrs=attrs, fid="f-" + prop.strip("-"))
+
+
+def design_page(title, rtype, name, kind, css, mode, view_file, edit_file, sections):
+    head = m.record_header(rtype, name, mode, view_href=view_file, edit_href=edit_file,
+                           secondary=("Add", "plus", ' data-backend-todo="record-add"'), more=DS_MORE, save_href=view_file)
+    inner = (m.record_tabs("details", tabs=[("details", "Details", view_file if mode == "view" else edit_file)])
+             + '<div class="record-screen__body"><div class="record-screen__main">'
+             + m.style_preview(kind, name, css) + sections + '</div></div>')
+    return build(title, head, page(inner, sidebar_on=False, mode=mode, record_type=kind), KIT_JS,
+                 modals=m.delete_confirm_modal("modal-delete", rtype.lower(), name) if mode == "edit" else "",
+                 crumbs=("Design", "Design Styles" if kind == "style" else "Design Frames", rtype))
+
+
+pages["DesignStyleView.html"] = design_page(
+    "Design Style · View", "Design style", DS_NAME, "style", STYLE_CSS, "view", "DesignStyleView.html", "DesignStyleEdit.html",
+    m.record_section("Main", [m.view_row("Name", "text", DS_NAME), m.view_row("Design Style Section", "text", "Site styles"),
+                              m.view_row("Background Colour", "text", "#FFFFFF")], "view")
+    + m.record_section("Headings", [m.view_row("H1 Font Colour", "text", "#0B3D5C"), m.view_row("H1 Font Size", "text", "28px")], "view")
+    + m.record_section("Text & Links", [m.view_row("Link Colour", "text", "#0A7EA4"),
+                                        m.view_row("Highlight Background Colour", "text", "#FFF3B0")], "view"))
+
+pages["DesignStyleEdit.html"] = design_page(
+    "Design Style · Edit", "Design style", DS_NAME, "style", STYLE_CSS, "edit", "DesignStyleView.html", "DesignStyleEdit.html",
+    m.record_section("Main", [m.edit_row("Name", "input", DS_NAME, required=True, fid="f-ds-name"),
+                              live("Background Colour", "color", "#ffffff", "--bg")], "edit")
+    + m.record_section("Headings", [live("H1 Font Colour", "color", "#0b3d5c", "--h1-color"),
+                                    live("H1 Font Size", "select", "28px", "--h1-size", options=SIZES)], "edit")
+    + m.record_section("Text & Links", [live("Paragraph Font Colour", "color", "#333333", "--n-color"),
+                                        live("Link Colour", "color", "#0a7ea4", "--link-color"),
+                                        live("Highlight Background Colour", "color", "#fff3b0", "--hl-bg")], "edit"))
+
+pages["DesignFrameView.html"] = design_page(
+    "Design Frame · View", "Design frame", DF_NAME, "frame", FRAME_CSS, "view", "DesignFrameView.html", "DesignFrameEdit.html",
+    m.record_section("Main", [m.view_row("Name", "text", DF_NAME), m.view_row("Border Type", "text", "Color")], "view")
+    + m.record_section("Border", [m.view_row("Border Colour", "text", "#0B3D5C"), m.view_row("Border Width", "text", "2px"),
+                                  m.view_row("Corner Radius", "text", "6px")], "view")
+    + m.record_section("Header", [m.view_row("Header Background Colour", "text", "#0B3D5C"),
+                                  m.view_row("Header Font Colour", "text", "#FFFFFF")], "view"))
+
+pages["DesignFrameEdit.html"] = design_page(
+    "Design Frame · Edit", "Design frame", DF_NAME, "frame", FRAME_CSS, "edit", "DesignFrameView.html", "DesignFrameEdit.html",
+    m.record_section("Main", [m.edit_row("Name", "input", DF_NAME, required=True, fid="f-df-name"),
+                              m.edit_row("Border Type", "radio", "Color", options=["Color", "Image"], fid="f-df-bordertype")], "edit")
+    + m.record_section("Border", [live("Border Colour", "color", "#0b3d5c", "--border-color"),
+                                  live("Border Width", "input", "2", "--border-width", unit="px"),
+                                  live("Corner Radius", "input", "6", "--radius", unit="px")], "edit")
+    + m.record_section("Header", [live("Header Background Colour", "color", "#0b3d5c", "--h-bg"),
+                                  live("Header Font Colour", "color", "#ffffff", "--h-color")], "edit"))
+# TODO(backend:RecordScreen) design-frame-slicer: Border Type = Image's border-image slicer (v1 DC_DesignFrame.js) — separate pass
+
 # ── Import step (designer, 2026-09-30; code-first, flag for Figma) ──
 # The legacy "add Article Step Lookup" form, on the Steps screen: the tabs stay (Details leads back
 # to the article), the form replaces the table, and the tab actions become Cancel / Save.
@@ -647,3 +726,49 @@ def write_prompt_demo():
 
 
 write_prompt_demo()
+
+
+# ── StylePreview demo (src/cc/patterns/StylePreview/StylePreview.html) — the pattern's own gallery,
+#    built from the same builder + record data as the Design Style / Frame screens. Same folder depth,
+#    so m.IMG resolves unchanged. The body establishes cs-page (CLAUDE §4a) so the narrow rule fires.
+def write_style_preview_demo():
+    css = "".join(f'  <link rel="stylesheet" href="{h}">\n' for h in [
+        "../../../styles/base.css", "../../../components/Button/Button.css", "../../../components/Input/Input.css",
+        "../../../components/SegmentedControl/SegmentedControl.css", "../../../components/ColorPickerInput/ColorPickerInput.css",
+        "../../components/FieldRow/FieldRow.css", "../RecordSection/RecordSection.css", "StylePreview.css"])
+    style = m.style_preview("style", DS_NAME, STYLE_CSS)
+    live_row = m.record_section("Live field (Edit)", [live("H1 Font Colour", "color", "#0b3d5c", "--h1-color")], "edit")
+    frame = m.style_preview("frame", DF_NAME, FRAME_CSS).replace('id="sec-preview"', 'id="sec-preview-frame"').replace(
+        'aria-labelledby="sec-preview"', 'aria-labelledby="sec-preview-frame"')
+    html = f'''<!doctype html>
+<!-- GENERATED by src/cc/templates/RecordScreen/_generate.py — edit the .py, not this file. -->
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>StylePreview — Control Centre</title>
+{css}  <style>
+    body {{ margin: 0; padding: var(--ao-spacing-7); background: var(--cc-ui-primary-bg); min-height: 100vh; color: var(--ao-text-primary); font-family: var(--ao-font-body); container-type: inline-size; container-name: cs-page; }}
+    .demo-stack {{ display: flex; flex-direction: column; gap: var(--ao-spacing-5); max-width: var(--ao-size-12); }}
+    .demo-note {{ margin: 0 0 var(--ao-spacing-5); font-size: var(--ao-font-fixed-xs); color: var(--ao-text-secondary); max-width: var(--ao-size-12); }}
+    .demo-stack + .demo-stack {{ margin-top: var(--ao-spacing-7); }}
+  </style>
+</head>
+<body>
+  <h1>StylePreview</h1>
+  <p class="demo-note">Design Style and Design Frame open with this section on View and Edit: the record drawn in its own CSS inside a sandboxed frame, at the site's Desktop / Tablet / Mobile width. On Edit, fields marked data-preview-prop update it live (try the colour below). Full screens: DesignStyleView / Edit and DesignFrameView / Edit in RecordScreen.</p>
+  <div class="demo-stack" data-record-screen>{style}{live_row}</div>
+  <div class="demo-stack" data-record-screen>{frame}</div>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="../../../components/SegmentedControl/SegmentedControl.js"></script>
+  <script src="StylePreview.js"></script>
+</body>
+</html>
+'''
+    open(os.path.join(HERE, "../../patterns/StylePreview/StylePreview.html"), "w", encoding="utf-8").write(html)
+    print("wrote StylePreview.html", len(html))
+
+
+write_style_preview_demo()
