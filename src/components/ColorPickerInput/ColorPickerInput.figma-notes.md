@@ -22,7 +22,7 @@
 
 v1 parity, checked 2026-10-29 in `AfcForm/EditForm.cfm` (a `type="text"` input, `maxlength=6`, class
 `input-color`, with the swatch opening a jQuery ColorPicker) and `CheckForm.cfm` (strips non-hex,
-**empty allowed**, otherwise "<Field> needs to be exactly 6 characters long"):
+**empty allowed**, otherwise `<Field> needs to be exactly 6 characters long`):
 
 - **Type or paste** a hex: `#` optional, 3 or 6 digits, case and surrounding spaces ignored. The swatch
   follows while the text is valid. On leaving the field it is tidied to `#RRGGBB`, upper case.
