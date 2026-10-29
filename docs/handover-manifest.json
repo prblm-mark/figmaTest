@@ -1879,6 +1879,27 @@
      "element": "Topic chips (contact/account Topics, summary panel)",
      "current": "Demo colours from TOPIC_HUES in record_markup.py; unlisted topics are neutral.",
      "needs": "Each topic's own colour setting → an accent hue name (jade, purple, …) rendered as topic-chip--<hue>."
+    },
+    {
+     "id": "style-preview-css",
+     "category": "needs-backend",
+     "element": "StylePreview on Design Style / Design Frame View + Edit (record_markup.style_preview)",
+     "current": "Demo CSS strings (STYLE_CSS / FRAME_CSS in _generate.py) stand in for the record's front-end CSS; Desktop / Tablet / Mobile widths are demo values (768px / 375px).",
+     "needs": "The record's generated front-end CSS (the style's aos-DS<code>-* rules; the frame's rules) served per record, drawn against v1's sample markup (DC_DesignStyle.cfm) or the frame's real front-end markup; the preset widths from the site's Breakpoint Profile."
+    },
+    {
+     "id": "style-preview-live",
+     "category": "needs-backend",
+     "element": "StylePreview live update on Design Style / Design Frame Edit (StylePreview.js)",
+     "current": "Fields carrying data-preview-prop set a CSS custom property on the preview's root; the demo CSS reads those properties with the record's values as fallbacks.",
+     "needs": "Either regenerate the record CSS from the unsaved field values on change (debounced), or emit the generated CSS with var() hooks per field so the custom properties drive it."
+    },
+    {
+     "id": "design-frame-slicer",
+     "category": "needs-design",
+     "element": "Design Frame Edit, Border Type = Image: the border-image slicer (v1 DC_DesignFrame.js)",
+     "current": "Not built; the screen offers Color / Image and the colour fields only.",
+     "needs": "A separate design pass (Mark, 2026-10-29): the image with four draggable slice guides linked to the offset and border-width inputs, previewed in the StylePreview."
     }
    ]
   },

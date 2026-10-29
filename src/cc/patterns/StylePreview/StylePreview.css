@@ -1,0 +1,45 @@
+/* StylePreview pattern (code-first, 2026-10-29; Hub TASK-575540) — no Figma frame yet.
+ * The "Preview" section that opens Design Style and Design Frame, on View and Edit: the record drawn
+ * in its OWN front-end CSS inside a sandboxed iframe, at a Desktop / Tablet / Mobile width.
+ * Builder: record_markup.style_preview. Behaviour: StylePreview.js.
+ *
+ * No new design values: the section is RecordSection, the width switch is SegmentedControl sm, and the
+ * frame's edge is the kit's card edge (1px --ao-border-secondary, --ao-radius-md, as Accordion /
+ * Separated Cards and the datatables). Everything inside the iframe is the client's own CSS.
+ */
+
+/* The width switch sits at the end of the section header (RecordSection has no action slot in Figma
+   yet — flagged for the drawing). */
+.record-section--preview .style-preview__widths {
+  margin-inline-start: auto;
+}
+
+.style-preview {
+  display: flex;
+  justify-content: center;          /* a Tablet / Mobile width sits centred in the column */
+  min-inline-size: 0;
+}
+
+.style-preview__frame {
+  display: block;
+  inline-size: 100%;                /* Desktop; StylePreview.js sets the site's Tablet / Mobile widths */
+  max-inline-size: 100%;            /* never wider than the column, whatever the preset */
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+}
+
+/* Narrow column: the switch keeps its icons and drops the labels, so the header stays one line. */
+@container cs-page (max-width: 767px) {
+  .record-section--preview .style-preview__widths .seg-control__btn {
+    position: relative;             /* contains the hidden label, so it can't lengthen the page scroller */
+  }
+
+  .record-section--preview .style-preview__widths .seg-control__btn-label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
