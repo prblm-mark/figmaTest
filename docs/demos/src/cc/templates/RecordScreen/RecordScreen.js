@@ -432,6 +432,7 @@
      blank, Delete selected removes the ticked rows (one always stays, so Add row has a model).
      TODO(backend:RecordScreen) record-edit-grid: in memory only → the rows post with the form */
   document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-edit-grid-rows]')) return;   /* rich rows: their own handler below */
     var add = e.target.closest('[data-edit-grid-add]');
     if (add) {
       var body = add.closest('[data-edit-grid]').querySelector('tbody');
@@ -455,6 +456,162 @@
         if (cb && cb.checked && tbody.children.length > 1) tr.remove();
       });
     }
+  });
+
+  /* Rich rows (record_markup.edit_grid_rows; code-first 2026-10-29, Hub TASK-576528): each row is an
+     Accordion item, several open at once. The trigger's name follows the row's name field as it is
+     typed or picked; Move up / down keeps focus on the moved row's button and announces the move;
+     Add row copies the last row blank and opens it; Delete selected removes ticked rows (one stays).
+     Open all / Close all shows above more than 8 rows (record_markup.OPEN_ALL_MIN).
+     TODO(backend:RecordScreen) record-edit-grid: in memory only → the rows post with the form */
+  var OPEN_ALL_MIN = 9;
+  var rowSeq = 0;
+
+  function rowsOf(grid) { return Array.prototype.slice.call(grid.querySelectorAll('[data-edit-grid-row]')); }
+
+  function rowName(row) {
+    var src = row.querySelector('[data-edit-grid-row-name]');
+    if (!src) return '';
+    var ctl = src.querySelector('.input__control, .textarea__control');
+    /* A Select's own placeholder reads "Select..." — Select.js leaves the placeholder class on after a
+       pick, so the text is the test, not the class. */
+    var text = ctl ? ctl.value : (src.querySelector('.sel__value') || {}).textContent;
+    text = (text || '').trim();
+    return text === 'Select...' ? '' : text;
+  }
+
+  function setOpen(row, open) {
+    row.classList.toggle('acc__item--open', open);
+    row.querySelector('[data-acc-trigger]').setAttribute('aria-expanded', String(open));
+  }
+
+  /* Names, move-button labels, disabled ends and the Open all control — rerun after any change. */
+  function refresh(grid) {
+    var rows = rowsOf(grid);
+    rows.forEach(function (row, i) {
+      var name = rowName(row) || 'New row';
+      row.querySelector('.edit-grid__row-name').textContent = name;
+      var up = row.querySelector('[data-edit-grid-move="up"]');
+      var down = row.querySelector('[data-edit-grid-move="down"]');
+      up.setAttribute('aria-label', 'Move ' + name + ' up');
+      down.setAttribute('aria-label', 'Move ' + name + ' down');
+      up.disabled = i === 0;
+      down.disabled = i === rows.length - 1;
+    });
+    var bar = grid.querySelector('.edit-grid__toolbar');
+    bar.hidden = rows.length < OPEN_ALL_MIN;
+    var allOpen = rows.every(function (r) { return r.classList.contains('acc__item--open'); });
+    var toggle = bar.querySelector('[data-edit-grid-open-all]');
+    toggle.querySelector('span').textContent = allOpen ? 'Close all' : 'Open all';
+    toggle.setAttribute('aria-expanded', String(allOpen));
+  }
+
+  function announce(grid, msg) {
+    var live = grid.querySelector('.edit-grid__live');
+    live.textContent = '';
+    requestAnimationFrame(function () { live.textContent = msg; });
+  }
+
+  /* A copied row needs ids of its own: every id inside it, and every reference to one. */
+  function reid(row) {
+    var map = {};
+    var stamp = 'n' + (++rowSeq);
+    row.querySelectorAll('[id]').forEach(function (el) { map[el.id] = el.id + '-' + stamp; el.id = map[el.id]; });
+    ['for', 'aria-controls', 'aria-labelledby', 'aria-describedby'].forEach(function (attr) {
+      row.querySelectorAll('[' + attr + ']').forEach(function (el) {
+        el.setAttribute(attr, el.getAttribute(attr).split(' ').map(function (ref) { return map[ref] || ref; }).join(' '));
+      });
+    });
+  }
+
+  function blank(row) {
+    row.querySelectorAll('input, textarea').forEach(function (c) {
+      if (c.type === 'checkbox' || c.type === 'radio') c.checked = false; else c.value = '';
+      c.removeAttribute('aria-invalid');
+    });
+    row.querySelectorAll('.sel__value').forEach(function (v) { v.textContent = 'Select...'; v.classList.add('sel__value--placeholder'); });
+    row.querySelectorAll('.sel__menu-item--selected').forEach(function (o) { o.classList.remove('sel__menu-item--selected'); });
+    row.querySelectorAll('.input--error').forEach(function (f) {
+      f.classList.remove('input--error');
+      var msg = f.querySelector('.input__help');
+      if (msg) msg.remove();
+    });
+    var badge = row.querySelector('.edit-grid__row-title .badge');
+    if (badge) badge.remove();
+  }
+
+  document.addEventListener('click', function (e) {
+    var grid = e.target.closest('[data-edit-grid-rows]');
+    if (!grid) return;
+
+    var trigger = e.target.closest('[data-acc-trigger]');
+    if (trigger) {
+      var item = trigger.closest('[data-edit-grid-row]');
+      setOpen(item, !item.classList.contains('acc__item--open'));
+      refresh(grid);
+      return;
+    }
+
+    if (e.target.closest('[data-edit-grid-open-all]')) {
+      var rows = rowsOf(grid);
+      var open = !rows.every(function (r) { return r.classList.contains('acc__item--open'); });
+      rows.forEach(function (r) { setOpen(r, open); });
+      refresh(grid);
+      return;
+    }
+
+    var move = e.target.closest('[data-edit-grid-move]');
+    if (move && !move.disabled) {
+      var row = move.closest('[data-edit-grid-row]');
+      var dir = move.getAttribute('data-edit-grid-move');
+      var sib = dir === 'up' ? row.previousElementSibling : row.nextElementSibling;
+      if (!sib) return;
+      row.parentNode.insertBefore(row, dir === 'up' ? sib : sib.nextElementSibling);
+      refresh(grid);
+      /* Focus stays with the row; if that button is now disabled (it reached the end), use its partner. */
+      var keep = move.disabled ? row.querySelector('[data-edit-grid-move="' + (dir === 'up' ? 'down' : 'up') + '"]') : move;
+      keep.focus();
+      var pos = rowsOf(grid).indexOf(row) + 1;
+      announce(grid, rowName(row) + ' moved to row ' + pos + ' of ' + rowsOf(grid).length);
+      return;
+    }
+
+    if (e.target.closest('[data-edit-grid-add]')) {
+      var list = grid.querySelector('.edit-grid__rows');
+      var copy = list.lastElementChild.cloneNode(true);
+      blank(copy);
+      reid(copy);
+      list.appendChild(copy);
+      setOpen(copy, true);
+      refresh(grid);
+      var first = copy.querySelector('.acc__panel .input__control, .acc__panel .sel__control, .acc__panel .textarea__control');
+      if (first) first.focus();
+      return;
+    }
+
+    if (e.target.closest('[data-edit-grid-delete]')) {
+      rowsOf(grid).forEach(function (r) {
+        var tick = r.querySelector('[data-edit-grid-select]');
+        if (tick.checked && rowsOf(grid).length > 1) r.remove();
+      });
+      refresh(grid);
+      return;
+    }
+
+    /* A picked Select option renames the row once the Select has written its value. */
+    if (e.target.closest('[data-edit-grid-row-name] .sel__menu-item')) {
+      requestAnimationFrame(function () { refresh(grid); });
+    }
+  });
+
+  document.addEventListener('input', function (e) {
+    if (e.target.closest('[data-edit-grid-row-name]')) refresh(e.target.closest('[data-edit-grid-rows]'));
+  });
+
+  /* On load: a row holding a field in error is open (the markup does it too), then names + ends. */
+  document.querySelectorAll('[data-edit-grid-rows]').forEach(function (grid) {
+    rowsOf(grid).forEach(function (r) { if (r.querySelector('[aria-invalid="true"]')) setOpen(r, true); });
+    refresh(grid);
   });
 })();
 
