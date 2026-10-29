@@ -112,7 +112,7 @@
   function init() {
     document.querySelectorAll(ROOT).forEach(function (root) {
       var v = normalise(parts(root).text.value);
-      if (v === null) setError(root, true);
+      if (v === null) { setError(root, true); root.classList.add('color-picker-input--empty'); }   /* no valid colour to show */
       else { root.classList.toggle('color-picker-input--empty', v === ''); root.setAttribute('data-value', v); }
     });
   }

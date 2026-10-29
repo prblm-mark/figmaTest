@@ -192,9 +192,15 @@
   border-radius: var(--ao-radius-xs);
 }
 
-/* Empty: Figma State=Empty — the bare outline, no fill. */
+/* Empty: Figma State=Empty's bare outline, plus the "no colour" diagonal (Mark, 2026-10-29) so an empty
+   swatch can't be mistaken for a white one. A 1px corner-to-corner line in the neutral icon colour —
+   not red, which would read as the error state. */
 .color-picker-input--editable.color-picker-input--empty .color-picker-input__swatch-inner {
-  background-color: transparent;
+  background: linear-gradient(to bottom right,   /* the stripe runs bottom-left → top-right: "/" */
+    transparent calc(50% - 0.5px),
+    var(--ao-icon-contrast) calc(50% - 0.5px),
+    var(--ao-icon-contrast) calc(50% + 0.5px),
+    transparent calc(50% + 0.5px));
 }
 
 /* The hex as an <input>: the base's typography, with the browser's field chrome removed. */

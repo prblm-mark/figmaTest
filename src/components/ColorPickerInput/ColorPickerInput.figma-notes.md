@@ -66,12 +66,13 @@ v1 parity, checked 2026-10-29 in `AfcForm/EditForm.cfm` (a `type="text"` input, 
 ## Token Gaps / known pre-existing values
 
 - Display form: the swatch's `20px` box predates this work (an image in Figma with no bound size). It's left as-is.
-- Editable: an empty swatch and a white (#FFFFFF) one look alike in light mode; the text ("None" vs
-  "#FFFFFF") tells them apart. A "no colour" diagonal through the empty swatch is an open design question.
+- Editable empty swatch: a 1px "/" diagonal in `--ao-icon-contrast` (Mark, 2026-10-29), so it can't be
+  mistaken for a white swatch. It's neutral, not red, so it doesn't read as the error state. A field that
+  loads with invalid text has no valid colour, so it shows the diagonal too.
 
 ## Not yet
 
-- Draw the Editable form in Figma: the 40×26 chip swatch, Clear x, Error and Focus, as additions to the `3929:19338` set.
+- Draw the Editable form in Figma: the 40×26 chip swatch (empty = the "/" diagonal), Clear x, Error and Focus, as additions to the `3929:19338` set.
 - "Colours in this style" swatches (reusing a style's existing colours): an optional addition, later.
 - StyleSettings / AI Chat could move to the Editable form. They keep the Display form until someone
   asks, because their screens wire their own scripts.
