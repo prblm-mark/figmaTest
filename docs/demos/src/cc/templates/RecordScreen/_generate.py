@@ -60,6 +60,7 @@ CSS = """
   <link rel="stylesheet" href="../../../components/ColorPickerInput/ColorPickerInput.css">
   <link rel="stylesheet" href="../../../components/Accordion/Accordion.css">
   <link rel="stylesheet" href="../../patterns/StylePreview/StylePreview.css">
+  <link rel="stylesheet" href="../../patterns/NumericAnswers/NumericAnswers.css">
   <link rel="stylesheet" href="RecordScreen.css">
 </head>"""
 
@@ -154,6 +155,7 @@ KIT_JS = '''  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/char
   <script src="../../components/FieldRow/FieldRow.js"></script>
   <script src="../../../components/ColorPickerInput/ColorPickerInput.js"></script>
   <script src="../../patterns/StylePreview/StylePreview.js"></script>
+  <script src="../../patterns/NumericAnswers/NumericAnswers.js"></script>
   <script src="RecordScreen.js"></script>'''
 
 TITLE = "Affino 9.0.11.25 — The Refinement Update"
@@ -546,6 +548,46 @@ pages["DesignFrameEdit.html"] = design_page(
                                   live("Header Font Colour", "color", "#ffffff", "--h-color")], "edit"))
 # TODO(backend:RecordScreen) design-frame-slicer: Border Type = Image's border-image slicer (v1 DC_DesignFrame.js) — separate pass
 
+# ── AI Profile · Numeric Data Answers (code-first, 2026-10-29; Hub TASK-575540): the metric layer
+# section, View + Edit. Column readings are v1-style sample data (the kinds of reading the EA packs
+# produce, in aoMLDescribe's own wording); the layer state is a confirmed mapping whose figures
+# haven't been rebuilt yet, plus one advisory.
+AIP_NAME = "Environment Analyst AI"
+ML_COLUMNS = [
+    dict(header="2023", source="Market Overview 2024 › Overview",
+         concern="Typed with the catch-all metric_value. One unit and one totalling rule are being applied to columns that may not be the same kind of number."),
+    dict(header="Fee income", source="Consultancy League Table 2024 › Firms",
+         concern="These can be totalled but no unit is stated, so a total could be reported in the wrong terms."),
+    dict(header="Firm", source="Consultancy League Table 2024 › Firms", words="labels each row (firm)"),
+    dict(header="Sector", source="Market Overview 2024 › Overview", words="labels each row (sector) — categories can overlap, so totalling across them double counts"),
+    dict(header="Revenue 2023", source="Consultancy League Table 2024 › Firms", words="money in £ millions, can be totalled"),
+    dict(header="Rank 2023", source="Consultancy League Table 2024 › Firms", words="not added up"),
+    dict(header="Market share", source="Market Overview 2024 › Overview", words="a share of 1, so 0.05 means 5%, not added up"),
+    dict(header="Consultants", source="Consultancy League Table 2024 › Firms", words="a count of people, can be totalled"),
+]
+ML_STATE = dict(enabled=True, layer="confirmed", on="28 Oct 2026 14:12", by="Markus Berger", stale=True,
+                last_index="27 Oct 2026 02:00", problems=["Check: Fee income has no unit — confirm it's in £ thousands before relying on totals."],
+                prompt_default=True, columns=ML_COLUMNS)
+
+
+def aip_page(mode):
+    view_f, edit_f = "AIProfileView.html", "AIProfileEdit.html"
+    head = m.record_header("AI profile", AIP_NAME, mode, view_href=view_f, edit_href=edit_f,
+                           secondary=("Add", "plus", ' data-backend-todo="record-add"'), more=DS_MORE, save_href=view_f)
+    main = (m.record_section("Main", [m.edit_row("Name", "input", AIP_NAME, required=True, fid="f-aip-name")] if mode == "edit"
+                             else [m.view_row("Name", "text", AIP_NAME)], mode)
+            + m.numeric_answers(mode, ML_STATE))
+    inner = (m.record_tabs("details", tabs=[("details", "Details", view_f if mode == "view" else edit_f)])
+             + '<div class="record-screen__body"><div class="record-screen__main">' + main + '</div></div>')
+    return build(f"AI Profile · {'Edit' if mode == 'edit' else 'View'}", head,
+                 page(inner, sidebar_on=False, mode=mode, record_type="ai-profile"), KIT_JS,
+                 modals=m.delete_confirm_modal("modal-delete", "AI profile", AIP_NAME) if mode == "edit" else "",
+                 crumbs=("AI", "AI Profiles", "AI Profile"))
+
+
+pages["AIProfileView.html"] = aip_page("view")
+pages["AIProfileEdit.html"] = aip_page("edit")
+
 # ── Import step (designer, 2026-09-30; code-first, flag for Figma) ──
 # The legacy "add Article Step Lookup" form, on the Steps screen: the tabs stay (Details leads back
 # to the article), the form replaces the table, and the tab actions become Cancel / Save.
@@ -774,3 +816,52 @@ def write_style_preview_demo():
 
 
 write_style_preview_demo()
+
+
+# ── NumericAnswers demo (src/cc/patterns/NumericAnswers/NumericAnswers.html): every state of the
+#    section, from the same builder + data as AIProfileEdit. Same folder depth as RecordScreen.
+def write_numeric_answers_demo():
+    css = "".join(f'  <link rel="stylesheet" href="{h}">\n' for h in [
+        "../../../styles/base.css", "../../../components/Button/Button.css", "../../../components/Input/Input.css",
+        "../../../components/Textarea/Textarea.css", "../../../components/Checkbox/Checkbox.css", "../../../components/Badge/Badge.css",
+        "../../../components/Alert/Alert.css", "../../../components/Accordion/Accordion.css", "../../../components/Table/Table.css",
+        "../../components/FieldRow/FieldRow.css", "../RecordSection/RecordSection.css", "../../templates/RecordScreen/RecordScreen.css",
+        "NumericAnswers.css"])
+    states = [
+        ("Confirmed — figures not rebuilt yet, one advisory (Edit)", "edit", ML_STATE, "ml1"),
+        ("Draft — a blocking problem, customised prompt (Edit)", "edit", dict(enabled=True, layer="draft", problems=["Sector is typed as a measure but every value is text, so no figures can be read from it."], prompt="Treat 'Fee income' as £ thousands. " + m.ML_STANDARD_PROMPT, prompt_default=False, columns=ML_COLUMNS[2:]), "ml2"),
+        ("No mapping yet, nothing indexed (Edit)", "edit", dict(enabled=True, layer="none", columns=[]), "ml3"),
+        ("New profile, not saved yet (Add)", "edit", dict(enabled=True, saved=False), "ml4"),
+        ("Confirmed (View)", "view", dict(ML_STATE, stale=False, problems=[]), "ml5"),
+    ]
+    blocks = "".join(f'<h2 class="demo-label">{t}</h2><div data-record-screen>{m.numeric_answers(mode, st, fid=fid).replace("sec-numericdata", f"sec-{fid}")}</div>' for t, mode, st, fid in states)
+    html = f'''<!doctype html>
+<!-- GENERATED by src/cc/templates/RecordScreen/_generate.py — edit the .py, not this file. -->
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>NumericAnswers — Control Centre</title>
+{css}  <style>
+    body {{ margin: 0; padding: var(--ao-spacing-7); background: var(--cc-ui-primary-bg); min-height: 100vh; color: var(--ao-text-primary); font-family: var(--ao-font-body); container-type: inline-size; container-name: cs-page; }}
+    .demo-stack {{ display: flex; flex-direction: column; gap: var(--ao-spacing-5); max-width: var(--ao-size-12); }}
+    .demo-note {{ margin: 0 0 var(--ao-spacing-5); font-size: var(--ao-font-fixed-xs); color: var(--ao-text-secondary); max-width: var(--ao-size-12); }}
+    .demo-label {{ margin: var(--ao-spacing-5) 0 0; font-size: var(--ao-font-fixed-xs); font-weight: var(--ao-font-semibold); color: var(--ao-text-secondary); }}
+  </style>
+</head>
+<body>
+  <h1>NumericAnswers</h1>
+  <p class="demo-note">AI Profile's metric layer: the Numeric Data Answers switch, the mapping's status, notices, the generation prompt and how each spreadsheet column is being read. Read-only apart from the switch and the prompt; saving the profile works the mapping out. Full screens: AIProfileView / AIProfileEdit in RecordScreen.</p>
+  <div class="demo-stack">{blocks}</div>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="NumericAnswers.js"></script>
+</body>
+</html>
+'''
+    open(os.path.join(HERE, "../../patterns/NumericAnswers/NumericAnswers.html"), "w", encoding="utf-8").write(html)
+    print("wrote NumericAnswers.html", len(html))
+
+
+write_numeric_answers_demo()

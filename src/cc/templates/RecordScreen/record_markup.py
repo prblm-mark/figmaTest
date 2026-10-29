@@ -1477,6 +1477,114 @@ def style_preview(kind, name, css, widths=None):
     return record_section("Preview", [body], "edit", action=action, cls="record-section--preview")
 
 
+# ── NumericAnswers (code-first, 2026-10-29; Hub TASK-575540) ─────────
+# AI Profile's metric layer (v1 AfcAI/CC/AIProfileMetricLayerInclude.cfm, TASK-354014 / 390334): the
+# switch, the mapping's status, the generation prompt and how each spreadsheet column is being read.
+# Read-only apart from the switch and the prompt — Markus (21 Aug): no JSON, no Generate / Apply; the
+# profile Save works the mapping out and puts it into service, so saving IS the confirmation.
+# Mark (2026-10-29): status = Badge row + Alerts; columns = collapsed Accordion + Table; prompt gets a
+# "Use standard wording" button. NumericAnswers.js.
+ML_STANDARD_PROMPT = ("You are mapping the column headings of a client's spreadsheets for numeric answering. For each "
+                      "heading, decide whether it labels a row (a dimension) or holds a figure (a measure). For a measure, "
+                      "give its unit and whether its values can be added up. Use only the headings provided.")
+
+
+def numeric_answers(mode, s, fid="ml"):
+    """s: dict(enabled, saved, layer: none|draft|confirmed, on, by, stale, last_index, prompt_moved,
+    problems: [str], prompt, prompt_default, columns: [dict(header, source, words, concern)])."""
+    rows = []
+    switch_help = ("Answers questions about figures in spreadsheets by calculating from the data instead of "
+                   "reading it as text. It stays dormant until the mapping is confirmed. Saved with the profile.")
+    if mode == "edit":
+        rows.append(edit_row("Numeric Data Answers", "checkbox", s.get("enabled", True), help_text=switch_help, fid=f"{fid}-enabled"))
+    else:
+        rows.append(view_row("Numeric Data Answers", "text", "On" if s.get("enabled", True) else "Off"))
+    if not s.get("saved", True):
+        rows.append(f'<p class="numeric-answers__note">The numeric data mapping can be set up once this profile has been saved.</p>')
+        return record_section("Numeric Data", rows, mode)
+
+    layer = s.get("layer", "none")
+    tone, label, meta = {
+        "confirmed": ("success", "Confirmed", f'on {e(s.get("on", ""))}' + (f' by {e(s["by"])}' if s.get("by") else "") + " · numeric answering is live"),
+        "draft": ("warning", "Draft", "Saved, but not used for answering until it's confirmed"),
+        "none": ("neutral", "No mapping yet", "Numeric answering is off for this profile"),
+    }[layer]
+    rows.append(f'''<div class="field-row field-row--{"edit" if mode == "edit" else "view"} field-row--check">
+            <span class="field-row__label">Mapping</span>
+            <div class="field-row__value"><p class="numeric-answers__status"><span class="badge badge--{tone}">{label}</span><span class="numeric-answers__meta">{meta}</span></p></div>
+          </div>''')
+
+    notices = []
+    if s.get("stale"):
+        last = s.get("last_index")
+        notices.append(alert("warning", "triangle-alert", "The figures have not been rebuilt yet.",
+                             f"This mapping was stored {s.get('on', '')}" + (f", and the data behind numeric answers was last built {last}" if last else ", and no indexing run has happened yet")
+                             + ". Until this profile is reindexed, numeric answers still use the previous mapping."))
+    if s.get("prompt_moved"):
+        notices.append(alert("warning", "triangle-alert", "This mapping is older than the prompt.",
+                             "The wording changed since the mapping was built, and the rebuild that should have followed didn't finish. "
+                             "Save the profile again to retry it. Until then the figures are read using the previous wording."))
+    blocking = [p for p in s.get("problems", []) if not p.startswith("Check:")]
+    advice = [p[len("Check:"):].strip() for p in s.get("problems", []) if p.startswith("Check:")]
+    if blocking:
+        notices.append(alert("danger", "circle-alert", "This mapping can't be put into service yet.",
+                             body="<ul class=\"alert__list\">" + "".join(f"<li>{e(p)}</li>" for p in blocking) + "</ul>"))
+    if advice:
+        notices.append(alert("warning", "info", "Worth checking with your spreadsheets in front of you.",
+                             body="<ul class=\"alert__list\">" + "".join(f"<li>{e(p)}</li>" for p in advice) + "</ul>"))
+    if notices:
+        rows.append(f'<div class="numeric-answers__notices">{"".join(notices)}</div>')
+
+    prompt = s.get("prompt") or ML_STANDARD_PROMPT
+    is_default = s.get("prompt_default", True)
+    state_badge = (f'<span class="badge badge--neutral" data-ml-prompt-state>{"Standard wording" if is_default else "Customised for this profile"}</span>')
+    if mode == "edit":
+        rows.append(f'''<div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="{fid}-prompt">Generation Prompt</label>
+            <div class="field-row__value numeric-answers__prompt" data-ml-prompt data-standard="{e(ML_STANDARD_PROMPT)}">
+              <div class="numeric-answers__prompt-bar">{state_badge}{btn("Use standard wording", "tertiary", "sm", icon_left="rotate-ccw", attrs=' data-ml-standard' + (' hidden' if is_default else ''))}</div>
+              <div class="textarea"><textarea class="textarea__control" id="{fid}-prompt" rows="6" spellcheck="false" aria-describedby="{fid}-prompt-help">{e(prompt)}</textarea></div>
+              <p class="input__help field-row__help" id="{fid}-prompt-help">The instructions used to work out the mapping from this profile's spreadsheet headings. Keep the standard wording to pick up future improvements; change it when a client's data needs explaining.</p>
+            </div>
+          </div>''')
+        # TODO(backend:RecordScreen) ml-prompt: save an empty override when the text equals the standard wording → the profile keeps tracking the standard prompt (AIProfile.MetricLayerPrompt)
+    else:
+        rows.append(f'''<div class="field-row field-row--view field-row--paragraph">
+            <span class="field-row__label">Generation Prompt</span>
+            <div class="field-row__value numeric-answers__prompt"><div class="numeric-answers__prompt-bar">{state_badge}</div><p class="numeric-answers__prompt-text">{e(prompt)}</p></div>
+          </div>''')
+
+    cols = s.get("columns", [])
+    attention = [c for c in cols if c.get("concern")]
+    clean = [c for c in cols if not c.get("concern")]
+    summary = f'{len(cols)} spreadsheet column{"" if len(cols) == 1 else "s"} · {len(clean)} understood'
+    need = f'<span class="badge badge--warning">{len(attention)} need{"s" if len(attention) == 1 else ""} a look</span>' if attention else ""
+
+    def tr(c):
+        flag = '<span class="badge badge--warning">Needs a look</span>' if c.get("concern") else ""
+        how = f'<span class="numeric-answers__concern">{e(c["concern"])}</span>' if c.get("concern") else e(c["words"])
+        return (f'<tr{" class=\"numeric-answers__row--attention\"" if c.get("concern") else ""}><td><span class="numeric-answers__col">{e(c["header"])}{flag}</span></td>'
+                f'<td>{e(c["source"])}</td><td>{how}</td></tr>')
+    body = (f'''<div class="table-wrap"><div class="table-wrap__scroll"><table class="table" aria-label="How each spreadsheet column is being read">
+              <thead><tr><th scope="col">Column</th><th scope="col">Spreadsheet › Sheet</th><th scope="col">How it's read</th></tr></thead>
+              <tbody>{"".join(tr(c) for c in attention + clean)}</tbody>
+            </table></div></div>''' if cols else
+            '<p class="numeric-answers__note">No spreadsheet columns found for this profile. Media sources must be indexed before figures can be read from them.</p>')
+    rows.append(f'''<div class="acc numeric-answers__columns" data-acc="multi">
+            <div class="acc__item">
+              <h3 class="acc__heading">
+                <button type="button" class="acc__trigger" id="{fid}-cols-trigger" aria-expanded="false" aria-controls="{fid}-cols-panel" data-acc-trigger>
+                  <span class="numeric-answers__columns-title">How these spreadsheets are being read <span class="numeric-answers__meta">{summary}</span>{need}</span>
+                  <span class="acc__chevron">{icon("chevron-down")}</span>
+                </button>
+              </h3>
+              <div class="acc__panel" id="{fid}-cols-panel" role="region" aria-labelledby="{fid}-cols-trigger">{body}</div>
+            </div>
+          </div>''')
+    # TODO(backend:RecordScreen) ml-layer: status, notices, prompt and columns come from AIProfile.cfc getMetricLayerData (EXISTS / CONFIRMED / CONFIRMEDDATE / CONFIRMEDBYNAME / STALE / LASTINDEX / PROMPTMOVED / PROBLEMS / PROMPT / PROMPTISDEFAULT / COLUMNS / STATS / LAYER); the column wording follows v1's aoMLDescribe
+    return record_section("Numeric Data", rows, mode)
+
+
 # ── Quick links (View screens, 2026-10-09) ───────────────────────────
 # The live view header's "quick insight" row (CRMUserView.cfm / CRMAccountView.cfm): the record's X and
 # LinkedIn when set, then a Google, ChatGPT and Perplexity search for it, and (accounts) its address on

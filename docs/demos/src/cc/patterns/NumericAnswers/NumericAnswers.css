@@ -1,0 +1,91 @@
+/* NumericAnswers pattern (code-first, 2026-10-29; Hub TASK-575540) — no Figma frame yet.
+ * AI Profile's metric layer as a RecordSection "Numeric Data": the switch (FieldRow checkbox),
+ * the mapping's status (Badge + meta), notices (Alert), the generation prompt (Textarea + a
+ * "Use standard wording" Tertiary sm button) and the per-column readings (Accordion, closed, holding
+ * a Table). Builder: record_markup.numeric_answers. Behaviour: NumericAnswers.js.
+ *
+ * No new design values: every gap below reuses the kit's own value for the same job, cited inline.
+ */
+
+/* Status: the Badge, then the date / who / effect in secondary text. */
+.numeric-answers__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ao-spacing-2);            /* = .topic-tree__badges / the EditGrid row title */
+  margin: 0;
+}
+
+.numeric-answers__meta {
+  color: var(--ao-text-secondary);
+  font-weight: var(--ao-font-regular);
+}
+
+.numeric-answers__note {
+  margin: 0;
+  color: var(--ao-text-secondary);
+}
+
+/* Notices: stacked Alerts, spaced as the EditGrid's own parts. */
+.numeric-answers__notices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-3);            /* = .edit-grid */
+}
+
+/* Prompt: state Badge + "Use standard wording" on one line above the field. */
+.numeric-answers__prompt {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-3);            /* = .edit-grid */
+  min-inline-size: 0;
+}
+
+.numeric-answers__prompt-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ao-spacing-3);            /* = .edit-grid__actions */
+}
+
+.numeric-answers__prompt-bar [hidden] {
+  display: none;
+}
+
+.numeric-answers__prompt-text {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* Columns: the trigger carries the title, the summary and the "need a look" Badge. */
+.numeric-answers__columns-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ao-spacing-2);            /* = .topic-tree__badges */
+  min-inline-size: 0;
+  padding-block: var(--ao-spacing-3);  /* room when the title wraps on a narrow column */
+}
+
+.numeric-answers__columns-title .badge {
+  flex: none;
+}
+
+.numeric-answers__col {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ao-spacing-2);
+}
+
+.numeric-answers__concern {
+  color: var(--ao-text-warning);
+}
+
+/* The reading is a sentence — let that column wrap (Table cells are nowrap) with a readable minimum,
+   so a long concern doesn't run off the panel; the wrap still scrolls sideways on a narrow column. */
+.numeric-answers__columns .table td:last-child {
+  white-space: normal;
+  min-inline-size: var(--ao-size-4);
+}
