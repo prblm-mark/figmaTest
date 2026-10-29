@@ -163,17 +163,36 @@
               box-shadow var(--ao-transition-default);
 }
 
-/* The swatch is the picker's button: the native input covers only the swatch now, not the box. */
+/* The swatch is the chip's (Mark, 2026-10-29: the 20px dot was too small to judge a colour on a
+   styling record): a 40-wide rounded rectangle, 6px in from the box's top, bottom and left — the
+   --chip variant's own Figma values (Seating Planner 1:43245: spacing-2 padding, radius-xs) — with
+   the hex and Clear after it. Its 1px edge keeps white / very light colours visible on the white box.
+   It is also the picker's button: the native input covers only the swatch. */
+.color-picker-input--editable {
+  padding: var(--ao-spacing-2) var(--ao-spacing-5) var(--ao-spacing-2) var(--ao-spacing-2);
+}
+
 .color-picker-input--editable .color-picker-input__swatch {
   position: relative;
+  inline-size: var(--ao-spacing-8);     /* 40 — the chip's width */
+  block-size: 100%;                     /* the box's inner height (26 inside 40 with its border) */
+  padding: 0;
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-xs);
+  background-color: transparent;
+  overflow: hidden;
   cursor: pointer;
 }
 
-.color-picker-input--editable .color-picker-input__native {
-  border-radius: var(--ao-radius-full);
+.color-picker-input--editable .color-picker-input__swatch-inner {
+  border-radius: 0;                     /* the swatch's own radius + overflow clip it */
 }
 
-/* Empty: Figma State=Empty — the bare white swatch ring, no fill. */
+.color-picker-input--editable .color-picker-input__native {
+  border-radius: var(--ao-radius-xs);
+}
+
+/* Empty: Figma State=Empty — the bare outline, no fill. */
 .color-picker-input--editable.color-picker-input--empty .color-picker-input__swatch-inner {
   background-color: transparent;
 }

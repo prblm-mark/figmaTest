@@ -61,16 +61,17 @@ v1 parity, checked 2026-10-29 in `AfcForm/EditForm.cfm` (a `type="text"` input, 
 | Hover / focus edge + ring | `--ao-border-brand`; `--ao-surface-brand-soft` ring (95% light / 30% dark) | Input's |
 | Error edge / ring / message | `--ao-border-error` / `--ao-surface-error-soft` / `--ao-text-error` | Input's |
 | Clear icon | `--ao-icon-contrast`, `--ao-icon-size-sm` | Input's `.input__clear` |
+| Editable swatch | `--ao-spacing-8` wide × the box's inner height (40×26), 1px `--ao-border-secondary`, `--ao-radius-xs`; box padding `--ao-spacing-2` top/bottom/left | the --chip variant's Figma values (Mark 2026-10-29: the 20px dot was too small to judge a colour) |
 
 ## Token Gaps / known pre-existing values
 
-- The swatch's `20px` box predates this work (an image in Figma with no bound size). It's left as-is.
-- The swatch is a 20px pointer target (below 44px). The keyboard and main path is the hex field, and
-  the picker is a convenience.
+- Display form: the swatch's `20px` box predates this work (an image in Figma with no bound size). It's left as-is.
+- Editable: an empty swatch and a white (#FFFFFF) one look alike in light mode; the text ("None" vs
+  "#FFFFFF") tells them apart. A "no colour" diagonal through the empty swatch is an open design question.
 
 ## Not yet
 
-- Draw the Editable form in Figma: Clear x, Error state and Focus, as additions to the `3929:19338` set.
+- Draw the Editable form in Figma: the 40×26 chip swatch, Clear x, Error and Focus, as additions to the `3929:19338` set.
 - "Colours in this style" swatches (reusing a style's existing colours): an optional addition, later.
 - StyleSettings / AI Chat could move to the Editable form. They keep the Display form until someone
   asks, because their screens wire their own scripts.
