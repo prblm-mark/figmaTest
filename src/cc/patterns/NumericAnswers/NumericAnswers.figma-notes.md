@@ -1,12 +1,29 @@
 # NumericAnswers — Figma Notes
 
-**Tier:** pattern (Control Centre record kit) · **Status:** built code-first 2026-10-29, **no Figma frame yet**
+**Tier:** pattern (Control Centre record kit) · **Status:** built code-first 2026-10-29, **drawn in Figma the same day**
 · Hub TASK-575540 (AI Profile View held on "Metric Layer is a custom script panel").
 
 ## Figma Node
 
-None yet. It's composed entirely of existing kit parts: RecordSection, FieldRow (Checkbox / Textarea),
-Badges, Alert, Button Tertiary sm, Accordion and Table.
+DS file `Lus07xi8pPXLN87sQIyrEt`, Components › Control Centre — Record kit: set **`4529:45811`**,
+`State` × `Mode`:
+
+| Variant | Node | Shows |
+|---|---|---|
+| State=Confirmed, Mode=Edit | `4529:45152` | both warning Alerts; the column Accordion **open** with the Table |
+| State=Draft, Mode=Edit | `4529:45422` | the danger Alert; a customised prompt with **Use standard wording** (`Icon/24px/RotateCcw`) |
+| State=None, Mode=Edit | `4529:45579` | a neutral "No mapping yet" |
+| State=Confirmed, Mode=View | `4529:45706` | "On", the prompt as text, the Accordion closed |
+
+It's built from RecordSection Desktop's header and body, FieldRow Wide (Checkbox / Text; Static, Textarea
+and Paragraph rows detached, so the Badge and bar sit in their value column), Badges (hug), Alerts
+(Style=Default, Close / Button off), Button Tertiary sm, an Accordion Default item and a Table (detached
+and turned into auto-layout rows; cells padded spacing-4 / spacing-5 as Table.css; the reading column
+fills and wraps). CCDark twins are in "Control Centre — Record kit — CCDark". Code Connect:
+`NumericAnswers.figma.ts`.
+
+**Known difference:** Figma's Alert has one text layer, so the title is bold within it and the advisory
+reads inline. The code renders the problems / advisories as a `.alert__list`.
 
 ## What it is
 
