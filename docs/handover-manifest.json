@@ -1900,6 +1900,20 @@
      "element": "Design Frame Edit, Border Type = Image: the border-image slicer (v1 DC_DesignFrame.js)",
      "current": "Not built; the screen offers Color / Image and the colour fields only.",
      "needs": "A separate design pass (Mark, 2026-10-29): the image with four draggable slice guides linked to the offset and border-width inputs, previewed in the StylePreview."
+    },
+    {
+     "id": "ml-layer",
+     "category": "needs-backend",
+     "element": "AI Profile View / Edit → Numeric Data (record_markup.numeric_answers): mapping status, notices, prompt, column readings",
+     "current": "Sample state in _generate.py (ML_STATE / ML_COLUMNS): a confirmed mapping whose figures aren't rebuilt, one advisory, eight column readings.",
+     "needs": "AIProfile.cfc getMetricLayerData: EXISTS / CONFIRMED / CONFIRMEDDATE / CONFIRMEDBYNAME → the Badge + meta; STALE + LASTINDEX and PROMPTMOVED → the warning Alerts; PROBLEMS (Check: prefix = advisory) → the danger / warning Alerts; PROMPT + PROMPTISDEFAULT → the prompt; COLUMNS + STATS + LAYER → the table, worded as v1 aoMLDescribe. TypedExtractionYN saves with the profile."
+    },
+    {
+     "id": "ml-prompt",
+     "category": "needs-backend",
+     "element": "AI Profile Edit → Generation Prompt + Use standard wording",
+     "current": "Client-side only: the Badge and the reset compare the text with the standard prompt (data-standard).",
+     "needs": "Save an empty AIProfile.MetricLayerPrompt when the text equals the standard wording, so the profile keeps picking up improvements to it; the standard text comes from getDefaultMetricLayerPrompt."
     }
    ]
   },
