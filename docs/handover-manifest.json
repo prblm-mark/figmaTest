@@ -1309,9 +1309,9 @@
     {
      "id": "record-color",
      "category": "needs-backend",
-     "element": "Colour rows (Step Text Color, Background Color)",
-     "current": "ColorPickerInput over the native picker; cannot be emptied once set.",
-     "needs": "Hex value per field, empty allowed → a Clear action + typed hex."
+     "element": "Colour rows (Step Text Color, Background Color; Design Style / Design Frame colours)",
+     "current": "ColorPickerInput Editable (2026-10-29): typed / pasted hex (# optional, 3 or 6 digits), swatch opens the native picker, Clear empties to None; invalid text shows the error on leaving. Values are not saved.",
+     "needs": "Save the hex per field, empty allowed (stored as v1 does: 6 hex digits without #, or empty = inherit the default); server-side the same check as v1 CheckForm.cfm (empty, else exactly 6 hex digits)."
     },
     {
      "id": "steps-read-full",

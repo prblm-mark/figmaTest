@@ -478,16 +478,17 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
               <textarea class="textarea__control" id="{fid}" rows="10" data-rich-text>{e(html)}</textarea>
             </div>'''
     elif kind == "color":
-        # ColorPickerInput (DS component) — swatch + hex over a hidden native picker. Empty is
-        # allowed (legacy default ""), so it reads "None" until a colour is chosen; RecordScreen.js
-        # keeps the swatch and hex in step with the picker (code-first, 2026-09-30).
-        hexv = value or ""
-        ctl = f'''<label class="color-picker-input" data-color-input>
-              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner"{f' style="background-color: {e(hexv)};"' if hexv else ''}></span></span>
-              <span class="color-picker-input__value">{e(hexv.upper()) if hexv else "None"}</span>
-              <input type="color" class="color-picker-input__native" id="{fid}" value="{e(hexv or '#000000')}" aria-label="{e(label)}">
-            </label>'''
-        # TODO(backend:RecordScreen) record-color: native picker cannot be emptied → a Clear action + hex text entry
+        # ColorPickerInput, Editable form (2026-10-29; was display-only 2026-09-30): the hex is a text
+        # field you can type or paste into, the swatch opens the native picker, Clear empties it to
+        # "None" (the record falls back to its default). v1 parity: EditForm.cfm's 6-character colour
+        # input + CheckForm.cfm (empty allowed, else 6 hex digits). ColorPickerInput.js.
+        hexv = (value or "").upper()
+        ctl = f'''<div class="color-picker-input color-picker-input--editable{"" if hexv else " color-picker-input--empty"}" data-color-input data-value="{e(hexv)}">
+              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner"{f' style="background-color: {e(hexv)};"' if hexv else ''}></span><input type="color" class="color-picker-input__native" value="{e((hexv or '#000000').lower())}" aria-label="Pick {e(label)}" tabindex="-1"></span>
+              <input type="text" class="color-picker-input__value" id="{fid}" value="{e(hexv)}" placeholder="None" spellcheck="false" autocomplete="off" aria-describedby="{fid}-error{f' {fid}-help' if help_text else ''}">
+              <button type="button" class="color-picker-input__clear" aria-label="Clear {e(label)}">{icon("x")}</button>
+            </div>
+            <span class="input__help color-picker-input__error" id="{fid}-error" hidden>Enter a 6-digit hex colour, like #1A56DB, or leave it empty.</span>'''
     elif kind == "multimedia":
         # Multimedia — a MediaPicker slot whose Selector lists every media type (designer, 2026-09-29).
         ctl = media_picker(label, modal="modal-multimedia", placeholder="film")
@@ -513,8 +514,8 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
         ctl = f'<div class="field-row__radios" role="radiogroup" aria-labelledby="{fid}-label"{described}>{radios}</div>'
     if help_text and kind != "input":
         ctl += f'<p class="input__help field-row__help" id="{fid}-help">{e(help_text)}</p>'
-    lab_tag = "label" if kind in ("input", "textarea", "rich", "lookup", "date", "datetime") else "span"
-    lab_for = f' for="{fid}"' if kind in ("input", "textarea", "rich", "lookup", "date", "datetime") else f' id="{fid}-label"'
+    lab_tag = "label" if kind in ("input", "textarea", "rich", "lookup", "date", "datetime", "color") else "span"
+    lab_for = f' for="{fid}"' if kind in ("input", "textarea", "rich", "lookup", "date", "datetime", "color") else f' id="{fid}-label"'
     row_mods = "field-row field-row--edit" + (" field-row--check" if kind in ("checkbox", "radio", "static") else "")
     if help_text:
         row_mods += " field-row--has-help"

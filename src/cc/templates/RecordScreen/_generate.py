@@ -152,6 +152,7 @@ KIT_JS = '''  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/char
   <script src="../../patterns/RecordTabs/RecordTabs.js"></script>
   <script src="../../../components/AvatarGroup/AvatarGroup.js"></script>
   <script src="../../components/FieldRow/FieldRow.js"></script>
+  <script src="../../../components/ColorPickerInput/ColorPickerInput.js"></script>
   <script src="../../patterns/StylePreview/StylePreview.js"></script>
   <script src="RecordScreen.js"></script>'''
 
@@ -763,6 +764,7 @@ def write_style_preview_demo():
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>lucide.createIcons();</script>
   <script src="../../../components/SegmentedControl/SegmentedControl.js"></script>
+  <script src="../../../components/ColorPickerInput/ColorPickerInput.js"></script>
   <script src="StylePreview.js"></script>
 </body>
 </html>

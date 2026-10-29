@@ -6,6 +6,7 @@
   <script src="../dark-mode-toggle.js"></script>
   <title>ColorPickerInput — Component Demo</title>
   <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../Input/Input.css">
   <link rel="stylesheet" href="ColorPickerInput.css">
   <style>
     body {
@@ -35,6 +36,11 @@
       display: flex;
       align-items: center;
       gap: var(--ao-spacing-6);
+    }
+    .demo-field {
+      display: flex;
+      flex-direction: column;
+      inline-size: var(--ao-size-6);       /* 320 — Figma's ColorPickerInput frame width */
     }
     .demo-label {
       font-size: var(--ao-font-fixed-xxs);
@@ -88,6 +94,46 @@
     </div>
   </div>
 
+  <!-- Editable form (code-first, 2026-10-29) — record screens. Type or paste a hex (# optional,
+       3 or 6 digits), or pick with the swatch; Clear empties it to "None". v1 parity: empty allowed,
+       otherwise 6 hex digits. ColorPickerInput.js. -->
+  <div class="demo-section">
+    <h2>Editable (type / paste hex, Clear to None)</h2>
+    <div class="demo-row">
+      <label class="demo-label" for="cpi-empty">Empty</label>
+      <div class="demo-field">
+        <div class="color-picker-input color-picker-input--editable color-picker-input--empty" data-color-input data-value="">
+          <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner"></span><input type="color" class="color-picker-input__native" value="#000000" aria-label="Pick Empty" tabindex="-1"></span>
+          <input type="text" class="color-picker-input__value" id="cpi-empty" value="" placeholder="None" spellcheck="false" autocomplete="off" aria-describedby="cpi-empty-error">
+          <button type="button" class="color-picker-input__clear" aria-label="Clear Empty"><i data-lucide="x" aria-hidden="true"></i></button>
+        </div>
+        <span class="input__help color-picker-input__error" id="cpi-empty-error" hidden>Enter a 6-digit hex colour, like #1A56DB, or leave it empty.</span>
+      </div>
+    </div>
+    <div class="demo-row">
+      <label class="demo-label" for="cpi-filled">Filled</label>
+      <div class="demo-field">
+        <div class="color-picker-input color-picker-input--editable" data-color-input data-value="#1A56DB">
+          <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #1A56DB;"></span><input type="color" class="color-picker-input__native" value="#1a56db" aria-label="Pick Filled" tabindex="-1"></span>
+          <input type="text" class="color-picker-input__value" id="cpi-filled" value="#1A56DB" placeholder="None" spellcheck="false" autocomplete="off" aria-describedby="cpi-filled-error">
+          <button type="button" class="color-picker-input__clear" aria-label="Clear Filled"><i data-lucide="x" aria-hidden="true"></i></button>
+        </div>
+        <span class="input__help color-picker-input__error" id="cpi-filled-error" hidden>Enter a 6-digit hex colour, like #1A56DB, or leave it empty.</span>
+      </div>
+    </div>
+    <div class="demo-row">
+      <label class="demo-label" for="cpi-error">Error</label>
+      <div class="demo-field">
+        <div class="color-picker-input color-picker-input--editable color-picker-input--error" data-color-input data-value="">
+          <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner"></span><input type="color" class="color-picker-input__native" value="#000000" aria-label="Pick Error" tabindex="-1"></span>
+          <input type="text" class="color-picker-input__value" id="cpi-error" value="#1A56" placeholder="None" spellcheck="false" autocomplete="off" aria-describedby="cpi-error-error" aria-invalid="true">
+          <button type="button" class="color-picker-input__clear" aria-label="Clear Error"><i data-lucide="x" aria-hidden="true"></i></button>
+        </div>
+        <span class="input__help color-picker-input__error" id="cpi-error-error" role="alert">Enter a 6-digit hex colour, like #1A56DB, or leave it empty.</span>
+      </div>
+    </div>
+  </div>
+
   <div class="demo-section">
     <h2>Interactive (updates swatch + text on pick)</h2>
     <div class="demo-row">
@@ -100,7 +146,8 @@
   </div>
 
   <script>
-    document.querySelectorAll('.color-picker-input__native').forEach(function (input) {
+    /* Display-only forms; the Editable form is ColorPickerInput.js. */
+    document.querySelectorAll('.color-picker-input:not(.color-picker-input--editable) .color-picker-input__native').forEach(function (input) {
       input.addEventListener('input', function () {
         var container = input.closest('.color-picker-input');
         var swatchInner = container.querySelector('.color-picker-input__swatch-inner');
@@ -110,6 +157,9 @@
       });
     });
   </script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="ColorPickerInput.js"></script>
 
 </body>
 </html>

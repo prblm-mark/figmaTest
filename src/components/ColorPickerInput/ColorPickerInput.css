@@ -1,6 +1,9 @@
 /* ColorPickerInput — color swatch + hex value display with native picker
- * Figma node: 2160:5471 (instance in StyleSettings)
+ * Figma: set 3929:19338 (State=Empty 3929:19330 / Filled 3929:19334); first drawn as an instance in
+ * StyleSettings (2160:5471).
  * Tier: Component
+ * Forms: base (display hex over a whole-box native picker — StyleSettings, AI chat), --chip (Seating
+ * Planner), --editable (typed / pasted hex + Clear; record screens — 2026-10-29, see the end).
  */
 
 /* ── Container ───────────────────────────────────────── */
@@ -9,7 +12,7 @@
   display: flex;
   align-items: center;
   gap: var(--ao-spacing-3);
-  height: 40px;
+  height: var(--ao-spacing-8);          /* 40 — Figma h-[--ao-spacing-8] (was a raw 40px) */
   padding: 0 var(--ao-spacing-5);
   background-color: var(--ao-surface-primary);
   border: 1px solid var(--ao-border-secondary);
@@ -143,4 +146,107 @@
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+
+/* ── Editable form (code-first, 2026-10-29) ──────────────────────────────────────────────────
+ * `.color-picker-input--editable`: the hex is a real text field you can type or paste into (with or
+ * without #, 3 or 6 digits), the swatch opens the native picker, and a Clear button empties the
+ * field back to "None". This matches v1's colour field (AfcForm EditForm.cfm: a 6-character text
+ * input + a swatch-opened picker; CheckForm.cfm: empty allowed, otherwise exactly 6 hex digits).
+ * ColorPickerInput.js. Box, typography and placeholder are the base / Figma's; focus, error and Clear
+ * are Input's own treatment (Input.css), so a colour field behaves like every other field.
+ * Additive: the base and --chip markup and their screens' scripts are untouched. */
+.color-picker-input--editable {
+  cursor: text;
+  transition: border-color var(--ao-transition-default),
+              box-shadow var(--ao-transition-default);
+}
+
+/* The swatch is the picker's button: the native input covers only the swatch now, not the box. */
+.color-picker-input--editable .color-picker-input__swatch {
+  position: relative;
+  cursor: pointer;
+}
+
+.color-picker-input--editable .color-picker-input__native {
+  border-radius: var(--ao-radius-full);
+}
+
+/* Empty: Figma State=Empty — the bare white swatch ring, no fill. */
+.color-picker-input--editable.color-picker-input--empty .color-picker-input__swatch-inner {
+  background-color: transparent;
+}
+
+/* The hex as an <input>: the base's typography, with the browser's field chrome removed. */
+.color-picker-input--editable .color-picker-input__value {
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  text-transform: uppercase;
+}
+
+.color-picker-input--editable .color-picker-input__value::placeholder {
+  color: var(--ao-text-contrast);        /* = .input__control::placeholder */
+  text-transform: none;
+}
+
+/* Clear — Input's .input__clear: an icon-contrast x, shown only while there is a value. */
+.color-picker-input__clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ao-icon-contrast);
+  line-height: 0;
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.color-picker-input--editable:has(.color-picker-input__value:not(:placeholder-shown)) .color-picker-input__clear {
+  visibility: visible;
+}
+
+.color-picker-input__clear [data-lucide],
+.color-picker-input__clear svg {
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+}
+
+/* Focus — Input's ring on the whole box; the children don't draw their own outline. */
+.color-picker-input--editable:focus-within {
+  border-color: var(--ao-border-brand);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px color-mix(in srgb, var(--ao-surface-brand-soft) 95%, transparent);
+}
+
+[data-theme="dark"] .color-picker-input--editable:focus-within {
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px color-mix(in srgb, var(--ao-surface-brand-soft) 30%, transparent);
+}
+
+.color-picker-input--editable .color-picker-input__value:focus-visible,
+.color-picker-input--editable .color-picker-input__native:focus-visible,
+.color-picker-input__clear:focus-visible {
+  outline: none;
+}
+
+/* Error — Input's: red edge, red ring on focus, and the message in --ao-text-error. */
+.color-picker-input--error,
+.color-picker-input--error:hover {
+  border-color: var(--ao-border-error);
+}
+
+.color-picker-input--error:focus-within {
+  border-color: var(--ao-border-error);
+  box-shadow: 0 0 0 1px var(--ao-surface-primary),
+              0 0 0 3px var(--ao-surface-error-soft);
+}
+
+.color-picker-input__error {
+  color: var(--ao-text-error);
 }
