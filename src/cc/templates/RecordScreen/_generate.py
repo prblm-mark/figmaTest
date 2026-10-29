@@ -58,6 +58,7 @@ CSS = """
   <link rel="stylesheet" href="../../patterns/StepsTable/StepsTable.css">
   <link rel="stylesheet" href="../../../components/ActionCard/ActionCard.css">
   <link rel="stylesheet" href="../../../components/ColorPickerInput/ColorPickerInput.css">
+  <link rel="stylesheet" href="../../../components/Accordion/Accordion.css">
   <link rel="stylesheet" href="RecordScreen.css">
 </head>"""
 
@@ -425,6 +426,45 @@ pages[order.EDIT_FILE] = build(
          sidebar_on=False, mode="edit", record_type="order", help_mode="switch"),
     KIT_JS + '\n  <script src="OrderEdit.js"></script>',
     modals=order.edit_modals(), crumbs=("Commerce", "Orders", "Order"))
+
+# ── Directory Step Profile Edit (code-first, 2026-10-29; Hub TASK-576528): the EditGrid's rich rows —
+# Content Types rows hold a Label, limits and five help text areas, so each row is an Accordion item
+# (record_markup.edit_grid_rows). Rows and the Gallery error are Cat's cat-dev screenshots (msg 976216).
+DSP_FILE = "DirectoryStepProfileEdit.html"
+MEDIA_FORMATS = ["Select...", "Image", "Video", "Audio", "Image and video"]
+
+
+def dsp_row(content_type, label="", uploads="1", formats="Select...", error=None):
+    fields = [
+        dict(label="Content Type", kind="select", value=content_type, options=["Article", "Catalogue", "Gallery", "Event", "Download"]),
+        dict(label="Label", kind="input", value=label, error=error),
+        dict(label="Number of Uploads", kind="input", value=uploads),
+        dict(label="Media Formats", kind="select", value=formats, options=MEDIA_FORMATS),
+        dict(label="Hide Main Body", kind="checkbox", value=False),
+        dict(label="Multimedia Upload Size Limit (MB)", kind="input"),
+        dict(label="Image Upload Size Limit (MB)", kind="input"),
+    ] + [dict(label=f"{h} Alternative Help Text", kind="textarea")
+         for h in ("Title", "Thumbnail", "Video Link", "Main Body", "Multimedia")]
+    return {"fields": fields, "name": 0}
+
+
+pages[DSP_FILE] = build(
+    "Directory Step Profile · Edit",
+    m.record_header("Directory step profile", "zz Cat DSP 20261026", "edit", view_href="#"),
+    page(m.record_tabs("details", tabs=[("details", "Details", DSP_FILE)])
+         + '<div class="record-screen__body"><div class="record-screen__main">'
+         + m.record_section("Main", [m.edit_row("Name", "input", "zz Cat DSP 20261026", required=True, fid="dsp-name")], "edit")
+         + m.record_section("Content Types", [m.edit_grid_rows(
+               "dsp-types", "Content Types",
+               [dsp_row("Catalogue", "Catalogue", "3", "Image"),
+                dsp_row("Gallery", "", "1", error="You need to enter Label in Row 2 under the Content Types panel"),
+                dsp_row("Article", "Article", "1", "Image and video")],
+               help_text="Each content type a directory entry can hold at this step, in the order they are offered.",
+               show_title=False)], "edit")
+         + '</div></div>',
+         sidebar_on=False, mode="edit", record_type="directory-step-profile"),
+    KIT_JS,
+    crumbs=("Content", "Directory Step Profiles", "Directory Step Profile Edit"))
 
 # ── Import step (designer, 2026-09-30; code-first, flag for Figma) ──
 # The legacy "add Article Step Lookup" form, on the Steps screen: the tabs stay (Details leads back

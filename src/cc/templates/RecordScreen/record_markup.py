@@ -330,9 +330,13 @@ def view_row(label, kind, value=None, compact=False):
 _uid = [0]
 
 
+def _slug(label):
+    return "".join(ch for ch in label.lower() if ch.isalnum())[:24]
+
+
 def _id(label):
     _uid[0] += 1
-    return "f-" + "".join(ch for ch in label.lower() if ch.isalnum())[:24] + f"-{_uid[0]}"
+    return "f-" + _slug(label) + f"-{_uid[0]}"
 
 
 def ordered_list(fid, label, items, modal=None, described=""):
@@ -360,8 +364,8 @@ def ordered_list(fid, label, items, modal=None, described=""):
 ERROR_TARGETS = []  # (label, message, field id) for the validation summary — filled by edit_row(error=…)
 
 
-def edit_row(label, kind, value="", required=False, help_text=None, tags=None, modal=None, placeholder="None selected", options=None, error=None, file_icon="file-audio"):
-    fid = _id(label)
+def edit_row(label, kind, value="", required=False, help_text=None, tags=None, modal=None, placeholder="None selected", options=None, error=None, file_icon="file-audio", fid=None):
+    fid = fid or _id(label)   # fid: a grid row passes its own, so repeated rows keep unique ids
     if error:
         ERROR_TARGETS.append((label, error, fid))
     req = '<span class="field-row__required" aria-hidden="true">*</span>' if required else ""
@@ -1366,6 +1370,83 @@ def edit_grid(gid, title, columns, rows, help_text=None, attrs="", show_title=Tr
             </div>
             {help_html}
           </div>'''
+
+
+OPEN_ALL_MIN = 9   # Open all / Close all shows above a rich grid with more than 8 rows (RecordScreen.js keeps in step)
+
+
+def edit_grid_rows(gid, title, rows, help_text=None, show_title=True, level=3):
+    """An editable grid whose rows hold more than a table line can (text areas, several lines of
+    fields): each row is an Accordion item, Separated Cards, several open at once (code-first,
+    2026-10-29; Cat's TASK-582521 build, Mark's review points c177732 / c178415 — Hub TASK-576528).
+    The trigger carries only the row's name (and an Error badge straight after it); the panel holds
+    the row's FieldRows, then Move up / down and the Select to delete tick at its foot, so no control
+    sits inside the trigger. Rows start closed; a row with an error starts open.
+
+    rows: [{"fields": [dict(label, kind, value, options, error)], "name": index of the field that
+    names the row}]. RecordScreen.js opens / moves / adds / deletes rows in memory."""
+    head_tag, row_tag = f"h{level}", f"h{level + 1 if show_title else level}"
+
+    def row(i, r):
+        rid = f"{gid}-r{i + 1}"
+        fields = r["fields"]
+        name_field = fields[r.get("name", 0)]
+        name = name_field.get("value") or "New row"
+        error = any(f.get("error") for f in fields)
+        cells = []
+        for j, f in enumerate(fields):
+            html = edit_row(f["label"], f["kind"], f.get("value", ""), options=f.get("options"),
+                            error=f.get("error"), fid=f"{rid}-{_slug(f['label'])}")
+            if j == r.get("name", 0):   # the field the trigger's name follows as it is typed or picked
+                html = html.replace('class="field-row__value"', 'class="field-row__value" data-edit-grid-row-name', 1)
+            cells.append(html)
+        badge = '<span class="badge badge--danger badge--sm">Error</span>' if error else ""
+        return f'''<div class="acc__item edit-grid__row{" acc__item--open" if error else ""}" data-edit-grid-row>
+              <{row_tag} class="acc__heading">
+                <button type="button" class="acc__trigger" id="{rid}-trigger" aria-expanded="{"true" if error else "false"}" aria-controls="{rid}-panel" data-acc-trigger>
+                  <span class="edit-grid__row-title"><span class="edit-grid__row-name" id="{rid}-name">{e(name)}</span>{badge}</span>
+                  <span class="acc__chevron">{icon("chevron-down")}</span>
+                </button>
+              </{row_tag}>
+              <div class="acc__panel" id="{rid}-panel" role="region" aria-labelledby="{rid}-trigger">
+                <div class="edit-grid__row-body">
+                  {"".join(cells)}
+                  <div class="edit-grid__row-foot">
+                    <span class="edit-grid__row-move">
+                      {btn(f"Move {name} up", "tertiary", "xs", icon_left="arrow-up", icon_only=True, attrs=' data-edit-grid-move="up"')}
+                      {btn(f"Move {name} down", "tertiary", "xs", icon_left="arrow-down", icon_only=True, attrs=' data-edit-grid-move="down"')}
+                    </span>
+                    <label class="checkbox">
+                      <input type="checkbox" class="checkbox__input" aria-describedby="{rid}-name" data-edit-grid-select>
+                      <span class="checkbox__indicator">{icon("check")}</span>
+                      <span class="checkbox__label"><span class="checkbox__label-text">Select to delete</span></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>'''
+
+    described = f' aria-describedby="{gid}-help"' if help_text else ""
+    help_html = f'<p class="input__help field-row__help" id="{gid}-help">{e(help_text)}</p>' if help_text else ""
+    title_html = f'<{head_tag} class="edit-grid__title" id="{gid}-title">{e(title)}</{head_tag}>' if show_title else ""
+    toggle = btn("Open all", "tertiary", "sm", icon_left="chevrons-up-down", attrs=' data-edit-grid-open-all')
+    labelled = f'aria-labelledby="{gid}-title"' if show_title else f'aria-label="{e(title)}"'
+    return f'''<div class="edit-grid edit-grid--rows" id="{gid}" data-edit-grid data-edit-grid-rows>
+            <div class="edit-grid__head">
+              {title_html}
+              <div class="edit-grid__toolbar"{"" if len(rows) >= OPEN_ALL_MIN else " hidden"}>{toggle}</div>
+            </div>
+            <div class="acc acc--separated edit-grid__rows" data-acc="multi" role="group" {labelled}{described}>
+              {"".join(row(i, r) for i, r in enumerate(rows))}
+            </div>
+            <div class="edit-grid__actions">
+              {btn("Add row", "secondary", "sm", icon_left="plus", attrs=' data-edit-grid-add')}
+              {btn("Delete selected", "tertiary", "sm", icon_left="trash-2", attrs=' data-edit-grid-delete')}
+            </div>
+            {help_html}
+            <div class="edit-grid__live" role="status" aria-live="polite"></div>
+          </div>'''
+    # TODO(backend:RecordScreen) record-edit-grid: rows are in memory only → they post with the form, in v1's row order
 
 
 # ── Quick links (View screens, 2026-10-09) ───────────────────────────

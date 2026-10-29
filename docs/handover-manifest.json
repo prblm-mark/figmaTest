@@ -1589,9 +1589,9 @@
     {
      "id": "record-edit-grid",
      "category": "needs-backend",
-     "element": "Editable grids on edit screens (record_markup.edit_grid): Order Payment / Refund Details, Account Assign Paid / Free Subscriptions, Event Credits",
-     "current": "Add row / Delete selected work in memory (RecordScreen.js).",
-     "needs": "Post the rows with the form; each grid's own rules (refund rows at refund statuses ≤ order total; subscription max subs and dates)."
+     "element": "Editable grids on edit screens (record_markup.edit_grid): Order Payment / Refund Details, Account Assign Paid / Free Subscriptions, Event Credits; and rich rows (record_markup.edit_grid_rows, accordion items): Directory Step Profile Content Types",
+     "current": "Add row / Delete selected work in memory (RecordScreen.js). Rich rows also move up / down, open / close (Open all above 8 rows) and rename from their name field, in memory.",
+     "needs": "Post the rows with the form, in their on-screen order; each grid's own rules (refund rows at refund statuses ≤ order total; subscription max subs and dates). Rich rows: v1's per-row validation messages, which open the failing row."
     },
     {
      "id": "order-edit",

@@ -861,6 +861,92 @@
   gap: var(--ao-spacing-3);
 }
 
+/* Rich rows (record_markup.edit_grid_rows, code-first 2026-10-29 — Cat's TASK-582521 build, Mark's
+   review points; Hub TASK-576528): a row holding text areas or several lines of fields is an Accordion
+   item (Separated Cards, several open at once) instead of a table line. Every value below reuses the
+   kit's own spacing for the same job — no new design values; Figma drawing to follow. */
+.edit-grid__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ao-spacing-3);              /* = .edit-grid's own gap */
+  min-inline-size: 0;
+}
+
+.edit-grid__head:empty {
+  display: none;
+}
+
+.edit-grid__toolbar {
+  margin-inline-start: auto;             /* stays right when the grid has no title */
+}
+
+.edit-grid__toolbar[hidden] {
+  display: none;
+}
+
+/* Trigger: the row's name, then its Error badge straight after it (TopicTree's badge gap), chevron at
+   the end. The name ellipsises rather than pushing the chevron off. */
+.edit-grid__row-title {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-spacing-2);              /* = .topic-tree__badges */
+  min-inline-size: 0;
+}
+
+.edit-grid__row-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.edit-grid__row-title .badge {
+  flex: none;
+}
+
+/* Panel: the row's FieldRows spaced as a record section's are, then the foot. */
+.edit-grid__row-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-6);              /* = .record-section__body */
+}
+
+.edit-grid__row-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ao-spacing-3);              /* = .edit-grid__actions */
+}
+
+/* Move up / down: exactly OrderedList's move buttons (Button Tertiary xs icon + its subtle border line,
+   Mark 2026-10-19). The first row's up and the last row's down are disabled AND invisible, so the
+   buttons keep their place (RecordScreen.js). */
+.edit-grid__row-move {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ao-spacing-1);              /* = .ordered-list__actions */
+}
+
+.edit-grid__row-move .btn--tertiary,
+.edit-grid__row-move .btn--tertiary:hover,
+.edit-grid__row-move .btn--tertiary:focus-visible {
+  border-color: var(--ao-border-secondary);
+}
+
+.edit-grid__row-move .btn:disabled {
+  visibility: hidden;
+}
+
+/* A visually-hidden live region announcing moves; fixed so it can't lengthen the page scroller. */
+.edit-grid__live {
+  position: fixed;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* Account View → Contacts tab: a contact cell, avatar beside name + job title (code-first, 2026-10-09). */
 .account-tab__person {
   display: flex;

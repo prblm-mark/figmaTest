@@ -395,3 +395,41 @@ How it maps onto the kit:
 
 Handover: `media-record`, `media-sidebar`, `media-preview`, `media-assets`, `media-actions`,
 `media-page-analysis`, `media-edit`.
+
+## EditGrid — rich rows as accordion items (code-first, 2026-10-29) — no Figma frame yet
+
+Hub TASK-576528. Cat built this in the live kit (TASK-582521, pg/main 238e24124) under Luismi's ruling
+491055, from our components. Mark accepted it as the direction (26 Oct), and his review points are on
+TASK-582521 (c177732, c178415). This brings it into figmaTest so it is the design, not a deviation.
+**Next: draw it in Figma as an EditGrid variant (`4202:29702`), then add Code Connect.**
+
+- **When:** a grid whose rows hold text areas, files or several lines of fields. Short-cell grids stay
+  the table EditGrid. Builder: `record_markup.edit_grid_rows`. Demo: `DirectoryStepProfileEdit.html`.
+- **Shape:** Accordion **Separated Cards** (`acc acc--separated`, `data-acc="multi"`), one item per row
+  (Mark, 2026-10-29). The trigger holds only the row's **name** and, after a failed save, an
+  **Error** badge (`badge--danger badge--sm`) straight after the name, with TopicTree's badge gap
+  (`--ao-spacing-2`). The panel holds the row's FieldRows (`edit_row`, row-unique ids), spaced as a
+  record section (`--ao-spacing-6`), then the foot: **Move up / down** (exactly OrderedList's Tertiary
+  xs icon buttons with the border line; the end button is disabled and hidden) and a **Select to
+  delete** Checkbox, described by the row name. Below the rows: Add row / Delete selected, then help.
+- **Behaviour** (Mark, 2026-10-29): several rows open at once; **all closed on load**, except a row with
+  a field in error, which opens itself. **Add row** copies the last row blank (new ids, no error)
+  and opens it, with focus in its first field. **Open all / Close all** (Tertiary sm,
+  `chevrons-up-down`) shows above **more than 8 rows** (`OPEN_ALL_MIN = 9` in both files), and its
+  label tracks the state. The **name follows the row's name field** as it's typed or picked
+  (`data-edit-grid-row-name`), and so do the Move labels ("Move Gallery up"). **Move** keeps focus on
+  the moved row's button (or its partner at an end) and announces "X moved to row n of m" in a
+  polite live region. **Delete selected** removes ticked rows; one row always stays.
+- **No new design values:** every spacing reuses the kit's own value for the same job (edit-grid gap,
+  record-section gap, TopicTree badge gap, OrderedList move buttons), cited in RecordScreen.css.
+- **Verified (headless Chrome, 2026-10-29):** 31 checks pass: load state, toggle, rename by Select,
+  move + focus + announcement, add ×6 → Open all appears, unique ids, every aria reference resolves,
+  Open all / Close all, delete → Open all hides, no page errors, no horizontal overflow at 1280 /
+  480, and the page scroller stays the only scroller. Light and dark screenshots were checked.
+- **Not in this pass (follow-up):** the table EditGrid's **file cell** (thumbnail + FileInput; the
+  stored name shows once and is the link, Mark c178415) and its **Order** column (↑/↓), which Cat's kit
+  also has. Number-plus-unit cells (User Auto Archive) are also still held.
+- **Found on the way:** Select.js leaves `sel__value--placeholder` on after a pick, so a chosen value
+  keeps placeholder styling. It's worked around here (the name is read from the text) and should be
+  fixed in Select.js. EditGrid's Figma node still binds some `--ai-*` variables from before the
+  rename.
