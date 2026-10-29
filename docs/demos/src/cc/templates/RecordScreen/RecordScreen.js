@@ -423,7 +423,7 @@
   /* ColorPickerInput in edit rows — the swatch and hex follow the native picker. */
   document.addEventListener('input', function (e) {
     var wrap = e.target.closest && e.target.closest('[data-color-input]');
-    if (!wrap) return;
+    if (!wrap || wrap.classList.contains('color-picker-input--editable')) return;   /* Editable: ColorPickerInput.js */
     wrap.querySelector('.color-picker-input__swatch-inner').style.backgroundColor = e.target.value;
     wrap.querySelector('.color-picker-input__value').textContent = e.target.value.toUpperCase();
   });

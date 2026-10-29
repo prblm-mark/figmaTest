@@ -78,6 +78,9 @@
 
   /* ── Live fields (Edit) ── */
   function fieldValue(row) {
+    /* ColorPickerInput (Editable) publishes only valid values on data-value ("" = None). */
+    var colour = row.querySelector('.color-picker-input--editable');
+    if (colour) return colour.getAttribute('data-value') || '';
     var ctl = row.querySelector('input[type="color"], .input__control, .textarea__control');
     if (ctl) return ctl.value;
     var sel = row.querySelector('.sel__value');

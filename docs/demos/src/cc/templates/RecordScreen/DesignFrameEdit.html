@@ -530,12 +530,13 @@
         </section><section class="record-section" aria-labelledby="sec-border">
           <div class="record-section__header"><h2 class="record-section__title" id="sec-border">Border</h2></div>
           <div class="record-section__body"><div class="field-row field-row--edit" data-preview-prop="--border-color">
-            <span class="field-row__label" id="f-border-color-label">Border Colour</span>
-            <div class="field-row__value"><label class="color-picker-input" data-color-input>
-              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #0b3d5c;"></span></span>
-              <span class="color-picker-input__value">#0B3D5C</span>
-              <input type="color" class="color-picker-input__native" id="f-border-color" value="#0b3d5c" aria-label="Border Colour">
-            </label></div>
+            <label class="field-row__label" for="f-border-color">Border Colour</label>
+            <div class="field-row__value"><div class="color-picker-input color-picker-input--editable" data-color-input data-value="#0B3D5C">
+              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #0B3D5C;"></span><input type="color" class="color-picker-input__native" value="#0b3d5c" aria-label="Pick Border Colour" tabindex="-1"></span>
+              <input type="text" class="color-picker-input__value" id="f-border-color" value="#0B3D5C" placeholder="None" spellcheck="false" autocomplete="off" aria-describedby="f-border-color-error">
+              <button type="button" class="color-picker-input__clear" aria-label="Clear Border Colour"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <span class="input__help color-picker-input__error" id="f-border-color-error" hidden>Enter a 6-digit hex colour, like #1A56DB, or leave it empty.</span></div>
           </div><div class="field-row field-row--edit" data-preview-prop="--border-width" data-preview-unit="px">
             <label class="field-row__label" for="f-border-width">Border Width</label>
             <div class="field-row__value"><div class="input">
@@ -552,19 +553,21 @@
         </section><section class="record-section" aria-labelledby="sec-header">
           <div class="record-section__header"><h2 class="record-section__title" id="sec-header">Header</h2></div>
           <div class="record-section__body"><div class="field-row field-row--edit" data-preview-prop="--h-bg">
-            <span class="field-row__label" id="f-h-bg-label">Header Background Colour</span>
-            <div class="field-row__value"><label class="color-picker-input" data-color-input>
-              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #0b3d5c;"></span></span>
-              <span class="color-picker-input__value">#0B3D5C</span>
-              <input type="color" class="color-picker-input__native" id="f-h-bg" value="#0b3d5c" aria-label="Header Background Colour">
-            </label></div>
+            <label class="field-row__label" for="f-h-bg">Header Background Colour</label>
+            <div class="field-row__value"><div class="color-picker-input color-picker-input--editable" data-color-input data-value="#0B3D5C">
+              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #0B3D5C;"></span><input type="color" class="color-picker-input__native" value="#0b3d5c" aria-label="Pick Header Background Colour" tabindex="-1"></span>
+              <input type="text" class="color-picker-input__value" id="f-h-bg" value="#0B3D5C" placeholder="None" spellcheck="false" autocomplete="off" aria-describedby="f-h-bg-error">
+              <button type="button" class="color-picker-input__clear" aria-label="Clear Header Background Colour"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <span class="input__help color-picker-input__error" id="f-h-bg-error" hidden>Enter a 6-digit hex colour, like #1A56DB, or leave it empty.</span></div>
           </div><div class="field-row field-row--edit" data-preview-prop="--h-color">
-            <span class="field-row__label" id="f-h-color-label">Header Font Colour</span>
-            <div class="field-row__value"><label class="color-picker-input" data-color-input>
-              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #ffffff;"></span></span>
-              <span class="color-picker-input__value">#FFFFFF</span>
-              <input type="color" class="color-picker-input__native" id="f-h-color" value="#ffffff" aria-label="Header Font Colour">
-            </label></div>
+            <label class="field-row__label" for="f-h-color">Header Font Colour</label>
+            <div class="field-row__value"><div class="color-picker-input color-picker-input--editable" data-color-input data-value="#FFFFFF">
+              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #FFFFFF;"></span><input type="color" class="color-picker-input__native" value="#ffffff" aria-label="Pick Header Font Colour" tabindex="-1"></span>
+              <input type="text" class="color-picker-input__value" id="f-h-color" value="#FFFFFF" placeholder="None" spellcheck="false" autocomplete="off" aria-describedby="f-h-color-error">
+              <button type="button" class="color-picker-input__clear" aria-label="Clear Header Font Colour"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <span class="input__help color-picker-input__error" id="f-h-color-error" hidden>Enter a 6-digit hex colour, like #1A56DB, or leave it empty.</span></div>
           </div></div>
         </section></div></div>
       </div>
@@ -1288,6 +1291,7 @@
   <script src="../../patterns/RecordTabs/RecordTabs.js"></script>
   <script src="../../../components/AvatarGroup/AvatarGroup.js"></script>
   <script src="../../components/FieldRow/FieldRow.js"></script>
+  <script src="../../../components/ColorPickerInput/ColorPickerInput.js"></script>
   <script src="../../patterns/StylePreview/StylePreview.js"></script>
   <script src="RecordScreen.js"></script>
 

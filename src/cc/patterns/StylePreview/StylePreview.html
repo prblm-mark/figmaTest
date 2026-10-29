@@ -33,12 +33,13 @@
         </section><section class="record-section" aria-labelledby="sec-livefieldedit">
           <div class="record-section__header"><h2 class="record-section__title" id="sec-livefieldedit">Live field (Edit)</h2></div>
           <div class="record-section__body"><div class="field-row field-row--edit" data-preview-prop="--h1-color">
-            <span class="field-row__label" id="f-h1-color-label">H1 Font Colour</span>
-            <div class="field-row__value"><label class="color-picker-input" data-color-input>
-              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #0b3d5c;"></span></span>
-              <span class="color-picker-input__value">#0B3D5C</span>
-              <input type="color" class="color-picker-input__native" id="f-h1-color" value="#0b3d5c" aria-label="H1 Font Colour">
-            </label></div>
+            <label class="field-row__label" for="f-h1-color">H1 Font Colour</label>
+            <div class="field-row__value"><div class="color-picker-input color-picker-input--editable" data-color-input data-value="#0B3D5C">
+              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #0B3D5C;"></span><input type="color" class="color-picker-input__native" value="#0b3d5c" aria-label="Pick H1 Font Colour" tabindex="-1"></span>
+              <input type="text" class="color-picker-input__value" id="f-h1-color" value="#0B3D5C" placeholder="None" spellcheck="false" autocomplete="off" aria-describedby="f-h1-color-error">
+              <button type="button" class="color-picker-input__clear" aria-label="Clear H1 Font Colour"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <span class="input__help color-picker-input__error" id="f-h1-color-error" hidden>Enter a 6-digit hex colour, like #1A56DB, or leave it empty.</span></div>
           </div></div>
         </section></div>
   <div class="demo-stack" data-record-screen><section class="record-section record-section--preview" aria-labelledby="sec-preview-frame">
@@ -51,6 +52,7 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>lucide.createIcons();</script>
   <script src="../../../components/SegmentedControl/SegmentedControl.js"></script>
+  <script src="../../../components/ColorPickerInput/ColorPickerInput.js"></script>
   <script src="StylePreview.js"></script>
 </body>
 </html>

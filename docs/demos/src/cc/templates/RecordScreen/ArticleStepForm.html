@@ -579,12 +579,13 @@
         </section><section class="record-section" aria-labelledby="sec-background">
           <div class="record-section__header"><h2 class="record-section__title" id="sec-background">Background</h2></div>
           <div class="record-section__body"><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-backgroundcolor-399-label">Background Color</span>
-            <div class="field-row__value"><label class="color-picker-input" data-color-input>
-              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner"></span></span>
-              <span class="color-picker-input__value">None</span>
-              <input type="color" class="color-picker-input__native" id="f-backgroundcolor-399" value="#000000" aria-label="Background Color">
-            </label></div>
+            <label class="field-row__label" for="f-backgroundcolor-399">Background Color</label>
+            <div class="field-row__value"><div class="color-picker-input color-picker-input--editable color-picker-input--empty" data-color-input data-value="">
+              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner"></span><input type="color" class="color-picker-input__native" value="#000000" aria-label="Pick Background Color" tabindex="-1"></span>
+              <input type="text" class="color-picker-input__value" id="f-backgroundcolor-399" value="" placeholder="None" spellcheck="false" autocomplete="off" aria-describedby="f-backgroundcolor-399-error">
+              <button type="button" class="color-picker-input__clear" aria-label="Clear Background Color"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <span class="input__help color-picker-input__error" id="f-backgroundcolor-399-error" hidden>Enter a 6-digit hex colour, like #1A56DB, or leave it empty.</span></div>
           </div></div>
         </section><section class="record-section" aria-labelledby="sec-publication">
           <div class="record-section__header"><h2 class="record-section__title" id="sec-publication">Publication</h2></div>
@@ -1337,6 +1338,7 @@
   <script src="../../patterns/RecordTabs/RecordTabs.js"></script>
   <script src="../../../components/AvatarGroup/AvatarGroup.js"></script>
   <script src="../../components/FieldRow/FieldRow.js"></script>
+  <script src="../../../components/ColorPickerInput/ColorPickerInput.js"></script>
   <script src="../../patterns/StylePreview/StylePreview.js"></script>
   <script src="RecordScreen.js"></script>
 
