@@ -396,18 +396,30 @@ How it maps onto the kit:
 Handover: `media-record`, `media-sidebar`, `media-preview`, `media-assets`, `media-actions`,
 `media-page-analysis`, `media-edit`.
 
-## EditGrid — rich rows as accordion items (code-first, 2026-10-29) — no Figma frame yet
+## EditGrid — rich rows as accordion items (code-first, 2026-10-29) — drawn in Figma the same day
 
 Hub TASK-576528. Cat built this in the live kit (TASK-582521, pg/main 238e24124) under Luismi's ruling
 491055, from our components. Mark accepted it as the direction (26 Oct), and his review points are on
 TASK-582521 (c177732, c178415). This brings it into figmaTest so it is the design, not a deviation.
-**Next: draw it in Figma as an EditGrid variant (`4202:29702`), then add Code Connect.**
+**Figma (2026-10-29):** EditGrid is now a set, `4522:43400` (Components page › Control Centre — Record
+kit), with `Rows=Table` (the old component, `4202:29702`, which keeps its id, so instances and the Old ·
+View & Edit review frame are untouched) and `Rows=Accordion` (`4522:43225`): Head (Title + an Open
+all Tertiary sm button with the library icon `Icon/24px/ChevronsUpDown`, bound to **Show Open all**,
+off by default), then Rows (three EditGridRow instances, gap `spacing/3`), Actions and Help. The new
+**EditGridRow** set is `4521:43326`, with State=Closed / Open / Error and a Name text prop. It is a copy
+of the Accordion Separated Cards item (keeping its bindings), with a Title row (`spacing/2`: Name +
+Badges Danger), a Panel (`spacing/6`) holding FieldRow Wide instances, and a Foot (`spacing/3`)
+holding Move (OrderedListRow's move buttons, `spacing/1`) and a Checkbox ("Select to delete"). CCDark
+twins were added in "Control Centre — Record kit — CCDark" at the same offsets. Code Connect:
+`EditGrid.figma.ts` (a mapping per Rows value, on the set) and `EditGridRow.figma.ts`, both published.
+The variants share their Title / Help defaults ("Payment Details"), because Figma text defaults
+belong to the property, not the variant.
 
 - **When:** a grid whose rows hold text areas, files or several lines of fields. Short-cell grids stay
   the table EditGrid. Builder: `record_markup.edit_grid_rows`. Demo: `DirectoryStepProfileEdit.html`.
 - **Shape:** Accordion **Separated Cards** (`acc acc--separated`, `data-acc="multi"`), one item per row
   (Mark, 2026-10-29). The trigger holds only the row's **name** and, after a failed save, an
-  **Error** badge (`badge--danger badge--sm`) straight after the name, with TopicTree's badge gap
+  **Error** badge (`badge--danger`, Figma Badges Type=Default · State=Danger · Size=Default — Figma has no Danger sm) straight after the name, with TopicTree's badge gap
   (`--ao-spacing-2`). The panel holds the row's FieldRows (`edit_row`, row-unique ids), spaced as a
   record section (`--ao-spacing-6`), then the foot: **Move up / down** (exactly OrderedList's Tertiary
   xs icon buttons with the border line; the end button is disabled and hidden) and a **Select to

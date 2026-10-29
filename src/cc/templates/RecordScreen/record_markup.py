@@ -1400,7 +1400,7 @@ def edit_grid_rows(gid, title, rows, help_text=None, show_title=True, level=3):
             if j == r.get("name", 0):   # the field the trigger's name follows as it is typed or picked
                 html = html.replace('class="field-row__value"', 'class="field-row__value" data-edit-grid-row-name', 1)
             cells.append(html)
-        badge = '<span class="badge badge--danger badge--sm">Error</span>' if error else ""
+        badge = '<span class="badge badge--danger">Error</span>' if error else ""
         return f'''<div class="acc__item edit-grid__row{" acc__item--open" if error else ""}" data-edit-grid-row>
               <{row_tag} class="acc__heading">
                 <button type="button" class="acc__trigger" id="{rid}-trigger" aria-expanded="{"true" if error else "false"}" aria-controls="{rid}-panel" data-acc-trigger>
