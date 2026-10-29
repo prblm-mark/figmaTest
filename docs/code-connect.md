@@ -109,7 +109,7 @@ Failures go to **stderr only**, so a publish looks clean while components are si
 npx figma connect parse 2>&1 >/dev/null | grep -A3 "❌"    # must print nothing
 ```
 
-Current state: **77 files, 86 mappings, zero failures.**
+Current state (2026-10-29): **98 files, 119 mappings, zero parse failures** (was 77 / 86 on 2026-08-28).
 
 ### Publishing needs a live token
 
