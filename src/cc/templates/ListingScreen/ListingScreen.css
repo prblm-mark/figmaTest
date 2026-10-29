@@ -51,22 +51,11 @@
 
 /* NOTE — deliberately no `padding` here.
  *
- * `.cc-control__page` already applies the Figma inset (--ao-spacing-6), and
- * then TRIMS padding-right to --ao-spacing-4 so the content sits evenly
- * against the scrollbar gutter, which `scrollbar-gutter: stable` reserves on
- * the right edge only. 12px padding + a 15px gutter reads as 27 against the
- * 24 on the left — the closest the spacing scale gets to even.
- *
- * Re-declaring `padding: var(--ao-spacing-6)` on this modifier defeated that:
- * same specificity (one class), but ListingScreen.css loads after
- * ControlScreen.css, so the shorthand won and restored a full 24px right
- * padding. With the gutter on top the right gap measured 39 against 24 —
- * which is exactly the asymmetry this comment exists to prevent recurring.
- *
- * `scrollbar-gutter: stable both-edges` looks like the tidier fix and is not:
- * it reserves a gutter on BOTH edges, so the left gap becomes 24+15=39 while
- * the trimmed right stays 27, making the imbalance worse in the other
- * direction. The trim is the house solution — leave the page's padding alone.
+ * `.cc-control__page` already applies the Figma inset (--ao-spacing-6; --ao-spacing-4 below 768),
+ * even on every side, with `scrollbar-gutter: stable both-edges` keeping the two sides symmetric
+ * whatever the scrollbar type (decision #87088, Mark 2026-10-29 — the v3 port's rule; the old
+ * right-hand trim leaned 24 / 12 under overlay scrollbars). Re-declaring padding here would only
+ * duplicate the shell, and break the day the shell's inset changes.
  */
 
 /* ── FilterBar in the listing context ────────────────────
