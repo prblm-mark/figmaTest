@@ -1,15 +1,16 @@
-/* StylePreview pattern (code-first, 2026-10-29; Hub TASK-575540) — no Figma frame yet.
+/* StylePreview pattern (code-first, 2026-10-29; Hub TASK-575540) — Figma set 4527:43878 (drawn 2026-10-29).
  * The "Preview" section that opens Design Style and Design Frame, on View and Edit: the record drawn
  * in its OWN front-end CSS inside a sandboxed iframe, at a Desktop / Tablet / Mobile width.
  * Builder: record_markup.style_preview. Behaviour: StylePreview.js.
  *
- * No new design values: the section is RecordSection, the width switch is SegmentedControl sm, and the
+ * No new design values: the section is RecordSection, the width switch is SegmentedControl (base — Figma
+ * 3929:19302, as drawn in StylePreview 4527:43878), and the
  * frame's edge is the kit's card edge (1px --ao-border-secondary, --ao-radius-md, as Accordion /
  * Separated Cards and the datatables). Everything inside the iframe is the client's own CSS.
  */
 
-/* The width switch sits at the end of the section header (RecordSection has no action slot in Figma
-   yet — flagged for the drawing). */
+/* The width switch sits at the end of the section header (Figma: StylePreview copies RecordSection's
+   header and adds it there; RecordSection itself has no action slot). */
 .record-section--preview .style-preview__widths {
   margin-inline-start: auto;
 }

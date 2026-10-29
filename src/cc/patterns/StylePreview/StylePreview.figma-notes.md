@@ -1,13 +1,31 @@
 # StylePreview — Figma Notes
 
-**Tier:** pattern (Control Centre record kit) · **Status:** built code-first 2026-10-29, **no Figma frame yet**
+**Tier:** pattern (Control Centre record kit) · **Status:** built code-first 2026-10-29, **drawn in Figma the same day**
 · Hub TASK-575540 (the held Design Style / Design Frame rows).
 
 ## Figma Node
 
-None yet. When drawn, it is a RecordSection (`3871:3259`) whose header gains an action (a SegmentedControl
-sm, `3729:25008` family). RecordSection has no header-action slot today; that is the one structural
-addition to formalise.
+DS file `Lus07xi8pPXLN87sQIyrEt`, Components › Control Centre — Record kit: set **`4527:43878`**,
+`Kind=Style | Frame` × `Width=Desktop | Mobile`:
+
+| Variant | Node |
+|---|---|
+| Kind=Style, Width=Desktop | `4527:43588` |
+| Kind=Style, Width=Mobile | `4527:43660` |
+| Kind=Frame, Width=Desktop | `4527:43742` |
+| Kind=Frame, Width=Mobile | `4527:43805` |
+
+Each is RecordSection Desktop's header and body (copied, with their bindings), with Title "Preview" and,
+at the end of the header, the record kit's **SegmentedControl** (`3929:19302`, base size): Desktop /
+Tablet / Mobile, with the new **Icon/24px/Monitor** `4526:43589`, **Icon/24px/Tablet** `4526:43593` and
+the library's Icon/24px/Smartphone. The icons take their option label's colour, as `currentColor` does
+in code. The body holds a Stage (centred) and a Frame (1px border-secondary, radius-md), containing the
+client sample in Lora (the closest serif available to the demo's Georgia). Those values are record
+data. Tablet isn't drawn as its own variant: it's the same as Mobile at the site's tablet width.
+CCDark twins are in "Control Centre — Record kit — CCDark". Code Connect: `StylePreview.figma.ts`.
+
+The code switch was `seg-control--sm` until this drawing. It's now the base size, to match Figma (the
+record kit has no small SegmentedControl).
 
 ## What it is
 
@@ -39,7 +57,7 @@ accessible names.
 | Part | Class | From |
 |---|---|---|
 | Section | `.record-section.record-section--preview` | RecordSection |
-| Width switch | `.seg-control.seg-control--sm.style-preview__widths` (`data-seg-control`, values desktop / tablet / mobile) | SegmentedControl |
+| Width switch | `.seg-control.style-preview__widths` (`data-seg-control`, values desktop / tablet / mobile) | SegmentedControl (base) |
 | Stage | `.style-preview` (`data-style-preview`, `data-widths`, `data-thumb`) | new |
 | Record CSS | `<template data-style-preview-css>` | new |
 | Frame | `.style-preview__frame` (iframe, `title="Preview of <name>"`) | new |
