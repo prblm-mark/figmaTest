@@ -7,3 +7,12 @@
 - Known gaps: Orders · No results · Mobile has no visible search field (query text not shown); Orders · Edit Columns open · Mobile has no open menu in the frame.
 - Very tall frames: Media Items · Grid · Mobile 390×9300, Topic Manager Hierarchy ~3.5–4.2k, Long Queries ~3–4k.
 - Runbook updated: `&title=` per capture; overlay z-order check; mobile-hidden controls.
+
+## 2026-10-30 — Phase 2 Article record (attended)
+- Page 4532:231 (after Listing). 12 rows: View, Edit, Edit with errors, Confirm, Confirm (flagged), Edit + Sector modal, Delete modal, Steps, Steps + Add step modal, Step Import, Step Content, Step Form. All at 1728 + 390.
+- Modal triggers: Sector = `ArticleEdit.html?state=sector`; Delete = `click:[data-record-modal-open="modal-delete"]` on ArticleEdit (the modal has no `data-record-modal` attribute, so check `#modal-delete` directly); Add step = `click:[data-record-modal-open="modal-add-step"]` on ArticleSteps. All `tall=0`.
+- `missing` = {} everywhere EXCEPT `Colours/Light/Text 5` ×1 on every frame with the rich-text editor (Edit, Edit with errors, both modals over Edit, Step Content): the editor toolbar's Format Paragraph / Table icon vectors. They stay bound to the remote variable, so they do not flip in the Dark copies. Needs a THEMES-style mapping in postprocess.figma.js once the right local token is chosen.
+- Edit with errors · Mobile: the first capture sat in "processing" for 20+ min and never landed; the retry landed (4563:2). If the stuck first capture (c1034f04…) ever lands it will be an unprocessed duplicate frame on the page: delete it.
+- Dark check: Article View desktop + Delete modal mobile — no light-on-light.
+- Driving tip: one `javascript_tool` call per capture (`await 14 s; location.href = <next URL>`) instead of navigate + wait. Don't return `location.search` from it; the extension blocks query-string output.
+
