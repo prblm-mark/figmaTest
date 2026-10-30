@@ -44,3 +44,13 @@
 - `missing` = {} on every frame (no rich-text editor on these screens).
 - Width check FAILED on 7 mobile frames: User export ×5 mobile are 434 wide, Article export mobile 402 — the page content is wider than 390, i.e. a horizontal-overflow bug in those templates at phone width (not a capture artefact; other 390 frames on the same run are exact). Left as captured.
 - Dark check: User import Map desktop, Batch delete Confirm modal mobile, Export System Failure desktop, User export mobile — no light-on-light.
+
+## 2026-10-30 — Phase 7 Update & API (attended)
+- Update page 4727:231, 4 rows: Default, Confirm modal (`click:[data-update-action="system"];wait:300`, tall=0), Failure (`?fail=system` + the same click, then `click:[data-update-go];wait:2200` — the mock run takes 1.5 s), SSC (`?ssc=1`).
+- API page 4727:232 (new, after Update), 5 rows: API help User / CRM, API test tool User / CRM, Response (User test tool with `wait:1500;click:[data-sign];wait:800;click:[data-send];wait:600` — the first form with a Send button is Login, which renders a signed 200 OK block).
+- Dry-run trap: the first `[data-response]` on the test tool page belongs to a form WITHOUT a Send button, so checking `querySelector('[data-response]').hidden` reads "still hidden" even when the step worked. Check the Send button's own form, or count visible responses.
+- Browser extension dropped once mid-run ("not connected"), which skipped one navigation (Failure · Mobile) — its capture id was still unused, so it was simply re-opened. After any extension error, list the page frames before moving on.
+- Update · Confirm modal · Mobile: first capture stuck in "processing" 15+ min (a96834a9…); the retry landed (4750:2). Delete the unprocessed duplicate if the first ever lands.
+- `missing` = {} on every frame. Very tall frames: API help CRM mobile 402×33596, desktop 1728×22802; post-process still handles 7 per batch.
+- Width check FAILED on all 10 API mobile frames: 402 wide (same 402 as Phase 6 Article export mobile, so probably a shared element overflowing at 390).
+- Dark check: Update Failure desktop, Confirm modal mobile, Test tool Response desktop — fine.

@@ -10,7 +10,7 @@ or `failed (<date>) — <reason>`.
 - Phase 4 — Account: done (2026-10-30) — page 4608:231; 11 rows / 44 frames; no gaps
 - Phase 5 — Media & Order: done (2026-10-30) — pages Media 4634:231 (6 rows / 24 frames), Order 4634:232 (5 rows / 20 frames); Order Edit captured at status New because the demo opens at Paid Full; Media edit screens carry the Text 5 editor-icon gap
 - Phase 6 — Import & Export: done (2026-10-30) — pages Import 4666:231 (15 rows / 60 frames), Export 4666:232 (10 rows / 40 frames); User export mobile frames are 434 wide and Article export mobile 402 (page overflows 390)
-- Phase 7 — Update & API: todo
+- Phase 7 — Update & API: done (2026-10-30) — pages Update 4727:231 (4 rows / 16 frames), API 4727:232 (5 rows / 20 frames); every API mobile frame is 402 wide (page overflows 390)
 - Phase 8 — Dashboards: todo
 - Phase 9 — Seating Planner: todo
 - Phase 10 — Shell, Login & AI: todo
