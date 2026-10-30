@@ -16,3 +16,9 @@
 - Dark check: Article View desktop + Delete modal mobile — no light-on-light.
 - Driving tip: one `javascript_tool` call per capture (`await 14 s; location.href = <next URL>`) instead of navigate + wait. Don't return `location.search` from it; the extension blocks query-string output.
 
+## 2026-10-30 — Phase 3 Contact (attended)
+- Page 4567:231 (after Article). 15 rows: View, 9 tabs (Analysis, Commerce, Communication, Demographic, Digital Assets, Events, Page Analysis, Permissions, Tasks), Sparse view, Summary panel B, Summary panel C, Edit, Edit with help on. All at 1728 + 390.
+- Help switch: a harness `click:[data-record-help]` does NOT stick (FieldRow.js reads `localStorage['cc-help-text']`). Seed it instead: `&ls=cc-help-text:on`, and `:off` on plain Edit so a leftover value can't leak in. Reset it to `off` after the run.
+- `missing` = {} on every frame (Contact Edit has no rich-text editor, so no Text 5 icons).
+- Dark check: View desktop (panel B) + Analysis tab mobile — no light-on-light.
+- Edit with help on · Desktop: first capture stuck in "processing" again (bf2e85d8…); the retry landed (4602:2). Two stuck captures in two phases, both the tallest Edit frames: if one ever lands late, delete the unprocessed duplicate.
