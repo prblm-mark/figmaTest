@@ -54,3 +54,11 @@
 - `missing` = {} on every frame. Very tall frames: API help CRM mobile 402×33596, desktop 1728×22802; post-process still handles 7 per batch.
 - Width check FAILED on all 10 API mobile frames: 402 wide (same 402 as Phase 6 Article export mobile, so probably a shared element overflowing at 390).
 - Dark check: Update Failure desktop, Confirm modal mobile, Test tool Response desktop — fine.
+
+## 2026-10-30 — Phase 8 Dashboards (attended)
+- Page 4756:231 (new, after API). 11 rows: Control Screen, Control Hub, Live Dashboard, Sales Leaderboard Current week / 12 months (`?timeframe=7`), CRM Analysis, Contract Analysis Contract / Top accounts / Outstanding / Review (`?Navigation=<key>`), No match (`?Navigation=TopAccounts` + `type:.cc-analysis__filters input=zzzz;wait:700`). Chart pages use `settle=2500`.
+- HARNESS TRAP: `type:`/`attr:` split selector from value at the FIRST `=`, so an attribute selector like `[data-filter="account"]` breaks the step. Use a selector with no `=` in it (here `.cc-analysis__filters input` — the first filter host in the DOM is Top accounts).
+- Browser extension dropped once more mid-run; Top accounts · Mobile was skipped and re-run with its unused id. Pattern now seen twice: after an extension error, poll the ids around it before moving on.
+- `missing` = {} on every frame; every mobile frame is exactly 390 (no overflow on these screens).
+- Dark check: Live Dashboard + Sales 12 months desktop, No match mobile — Chart.js canvases land as vectors and flip correctly.
+- Observation for review: Contract Analysis · No match (mobile) still draws the empty bar chart's axis and column stubs under "No accounts match these filters".
