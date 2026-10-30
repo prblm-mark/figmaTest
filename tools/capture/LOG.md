@@ -22,3 +22,9 @@
 - `missing` = {} on every frame (Contact Edit has no rich-text editor, so no Text 5 icons).
 - Dark check: View desktop (panel B) + Analysis tab mobile — no light-on-light.
 - Edit with help on · Desktop: first capture stuck in "processing" again (bf2e85d8…); the retry landed (4602:2). Two stuck captures in two phases, both the tallest Edit frames: if one ever lands late, delete the unprocessed duplicate.
+
+## 2026-10-30 — Phase 4 Account (attended)
+- Page 4608:231 (after Contact). 11 rows: View, 7 tabs (Commerce, Communication, Contacts, Events, Page Analysis, Tasks, User Analysis), Summary panel B, Summary panel C, Edit. All at 1728 + 390; no retries needed.
+- `missing` = {} on every frame. Dark check: View desktop + Edit mobile — fine.
+- Gotcha: `generate_figma_design` WITHOUT `nodeId` targets a new page; always pass the phase page id (one stray ID was generated and discarded unused, no page created).
+
