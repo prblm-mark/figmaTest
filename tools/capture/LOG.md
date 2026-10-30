@@ -62,3 +62,10 @@
 - `missing` = {} on every frame; every mobile frame is exactly 390 (no overflow on these screens).
 - Dark check: Live Dashboard + Sales 12 months desktop, No match mobile — Chart.js canvases land as vectors and flip correctly.
 - Observation for review: Contract Analysis · No match (mobile) still draws the empty bar chart's axis and column stubs under "No accounts match these filters".
+
+## 2026-10-30 — Phase 9 Seating Planner (attended)
+- Page 4783:231 (new, after Dashboards). 9 rows: No event / No plan / Plan (`?state=<key>`), Plan (full width) (`?state=plan&template=full`, desktop only), Create plan / Create plan errors (`?state=create-plan[-errors]`, tall=0), Table selected (`click:[data-sp-table="mb3"]` — Table 1 is already selected by default on desktop, so pick another), Assign person (`click:[data-sp-table="mb1"];wait:600;click:[data-sp-assign]`, tall=0 — selecting first makes it work on mobile, where nothing is selected by default), Room layout (`click:[data-rl-open]`, tall=0).
+- `click:` takes the WHOLE argument as the selector, so attribute selectors with `=` are fine there (only type/attr/cls split on `=`).
+- RUNAWAY HEIGHT: the tall desktop plan frames landed 11–28k px high (Plan 19273, Full width 11331, Table selected 27674) though content ends at ~1145 — the page's full-height Body/Sidebar grow to the harness's tall viewport (app-shell height trap). Fixed in Figma before post-processing: measure the lowest box under 50% of the frame height, resize the frame to that + 24 (min 1117), clipsContent = true. Mobile frames were fine.
+- `missing`: `Colours/Black` on every plan-type frame — the TableType tier pill text (GOLD / VIP). TableType.css uses raw hex + color-mix with no dark variant, so it is fixed-colour in code too; left as is. In Dark it reads faint (dark text on a dark card) — a TableType issue, not a capture one.
+- No extension drops and no stuck captures this phase. Dark check: Plan desktop, Assign person mobile, Room layout desktop — fine.
