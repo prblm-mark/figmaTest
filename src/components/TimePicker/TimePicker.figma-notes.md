@@ -55,6 +55,7 @@ TimePicker is a Tier=Component design-system component for time entry. The set b
 | Dropdown gap | `--ao-spacing-2` | 6px |
 | Range gap | `--ao-spacing-5` | 16px |
 | Reveal "+" button color | `--ao-surface-brand` | #0071d8 |
+| Reveal "+" button line-height | `normal` (Figma `leading: normal`, node 2522:1477) | set explicitly since base.css gives form controls `font: inherit` (TASK-493539) |
 | Slot label font | `--ao-font-medium` + `--ao-font-fixed-xs` | Inter 500 / 14px |
 | Slot label padding | `--ao-spacing-4` (12px horizontal) | |
 | Slot grid gap | `--ao-spacing-3` | 8px |

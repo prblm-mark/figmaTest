@@ -76,6 +76,14 @@ body {
   background-color: var(--ao-surface-primary);
 }
 
+/* Form controls take the page font instead of the browser default (Arial
+ * 13.33px), matching the Control Centre (Mark, TASK-493539, 30 Oct 2026).
+ * The shorthand also inherits line-height, so a control whose Figma text is
+ * `leading: normal` must set that itself. */
+button, input, select, textarea {
+  font: inherit;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--ao-font-title), sans-serif;
   font-weight: var(--ao-font-semibold);
