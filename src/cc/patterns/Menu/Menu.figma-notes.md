@@ -54,6 +54,7 @@ Type controls layout; State controls which item is selected/expanded and whether
 | Search field border | `--ao-border-secondary`; `:focus-within` → `--ao-border-brand` + double box-shadow ring (`--ao-surface-brand-soft`), mirroring the Input component (the nested input has `outline:none`, so the wrapper carries the focus indicator) |
 | Search field height / padding | 40 / `--ao-spacing-5` horizontal |
 | Search placeholder | `--ao-text-contrast` |
+| Search input line-height | `--ao-leading-md` (Figma text style `body/xs`); set explicitly since base.css gives form controls `font: inherit` (TASK-493539) |
 | Search input typed | `--ao-text-primary` |
 | Submenu padding | `--ao-spacing-3` `--ao-spacing-4` (8 / 12) |
 | Submenu item gap | `--ao-spacing-2` (6) |
@@ -63,6 +64,7 @@ Type controls layout; State controls which item is selected/expanded and whether
 | CRM `crm-btn` width | 100% (fills its `crm-group` parent) |
 | CRM `crm-btn` icon size | `--ao-icon-size-md` (20) |
 | CRM `crm-btn` icon colour | rest: `--ao-icon-invert-secondary`, hover: `--cc-mainmenu-icon` (label hover: `--ao-text-invert`) |
+| CRM `crm-btn` line-height | `normal` (Figma `leading: normal`, node 4061:17843); set explicitly for the same reason |
 | CRM Recent heading colour | `--ao-text-invert` (white, bold) |
 | CRM Recent item colour | rest: `--ao-text-invert-secondary`, hover: `--ao-text-invert` |
 | CRM Recent chevron colour | rest: `--ao-icon-invert-secondary`, hover (on row): `--cc-mainmenu-icon` |

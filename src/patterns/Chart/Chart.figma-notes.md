@@ -53,6 +53,7 @@ Chart is a Tier=Pattern component (in `src/patterns/Chart/`) because it composes
 | Footer border-top | `--ao-border-secondary` | 1px |
 | Footer padding-top | `--ao-spacing-5` | 16px |
 | Filter font | `--ao-font-title` medium + `--ao-font-fixed-xs` | Inter 500 / 14px |
+| Filter line-height | `normal` (Figma `leading: normal`, node 2527:2133) | set explicitly since base.css gives form controls `font: inherit` (TASK-493539) |
 | Filter color | `--ao-text-contrast` | #67676c |
 | Filter hover bg | `--ao-surface-minimal` | #f6f6f7 |
 | Filter hover text | `--ao-text-primary` | #212123 |

@@ -115,6 +115,7 @@
   font-family: var(--ao-font-title);
   font-size: var(--ao-font-fixed-xs);
   font-weight: var(--ao-font-medium);
+  line-height: normal;                            /* Figma leading: normal */
   color: var(--ao-text-contrast);
   cursor: pointer;
   transition: background-color var(--ao-transition-default),
