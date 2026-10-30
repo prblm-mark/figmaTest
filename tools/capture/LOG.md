@@ -28,3 +28,9 @@
 - `missing` = {} on every frame. Dark check: View desktop + Edit mobile — fine.
 - Gotcha: `generate_figma_design` WITHOUT `nodeId` targets a new page; always pass the phase page id (one stray ID was generated and discarded unused, no page created).
 
+## 2026-10-30 — Phase 5 Media & Order (attended)
+- Media page 4634:231: Image view, Image edit, Video view, Video edit, Page analysis, Viewer modal (`click:[data-media-view]`, tall=0).
+- Order page 4634:232: View, View with pins, Edit (New), Edit (Paid), Status modal (`click:[data-record-modal-open="modal-order-status"]`, tall=0).
+- TRAP: OrderEdit.html opens at Order Status = Paid Full, so "Edit" and "Edit (Paid)" were identical (same heights). Plain Edit was re-captured at status New (payment + refund grids hidden) and the duplicate frames deleted. Status is set via `click:[data-order-status] [data-sel-trigger];wait:200;eval:[...document.querySelectorAll('[data-order-status] .sel__menu-item')].find(e=>e.textContent.trim()==='<Status>').click()`.
+- `missing`: `Colours/Light/Text 5` ×1 on all four Media edit frames (rich-text toolbar icons, same gap as Phase 2). Everything else {}.
+
