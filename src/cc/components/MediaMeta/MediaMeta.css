@@ -28,7 +28,7 @@
   border: 1px solid var(--ao-border-secondary);
   border-radius: var(--ao-radius-sm);
   background-color: var(--ao-surface-minimal);
-  object-fit: cover;
+  object-fit: scale-down; /* show the whole image; never crop or upscale (designer, 2026-11-02) */
 }
 
 .media-meta__summary {
