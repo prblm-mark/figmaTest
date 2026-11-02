@@ -100,3 +100,23 @@ when open, and re-measures with a `ResizeObserver` (the column changes width wit
 (`_generate.py` KIT_JS).
 
 **Figma push pending:** a FieldRow Collapsed / Expanded state for Paragraph and Rich.
+
+## Field note (code-first 2026-11-02, Affino 10.1 task U7) — NOT in Figma yet, flag for Figma
+
+Some commerce settings look like they do nothing, because another screen decides them (the product's "Coupons & Discounts" tick is never checked by coupons, only by automatic discounts). U7 puts a short line under each affected field saying what the setting does today, optionally ending in a link to the screen that controls it.
+
+- **Markup:** `p.field-row__note` holding an `info` icon (`.field-row__note-icon`) and the text, inside `.field-row__value`. Built by `field_note()` in `record_markup.py`; `view_row(..., note=)` and `edit_row(..., note=)` take a string or `(text, link_label, href)`, and the link ends the line.
+- **Always visible**, on View and Edit. The "Show help" switch never hides it, because it corrects what the screen seems to say rather than explaining it.
+- **Order:** directly under the value or control, help below it. In an Input it sits inside `.input` between the control and the help, spaced by the Input's own gap.
+- **Accessibility:** on Edit the control's `aria-describedby` lists the note first, then the help.
+- **Every row with a note** (View and Edit) gets `field-row--has-note`, which top-aligns the label. `.field-row` centres the label against the whole value, so without it the note's extra line pushed the label below the value's first line. On View this leaves the same 2px offset Paragraph and Media rows have (20px label line against a 24px value line).
+- **Gap:** set on `.field-row__value > .field-row__note`, the same weight as the help line's rule. A bare `.field-row__note` loses to `.field-row__value p { margin: 0 }`, which left the note flush under a checkbox (fixed 2026-11-02).
+- **Link:** a plain text link in the same tab (base `a` style), naming the target screen.
+
+| Property | Token |
+|---|---|
+| gap above | --ao-spacing-3 (help-line gap) |
+| type | --ao-font-body, --ao-font-fixed-xxs, Regular, --ao-leading-xs (Input help style) |
+| text | --ao-text-secondary |
+| icon | Lucide `info`, --ao-icon-size-sm, --ao-icon-secondary |
+| icon → text gap | --ao-spacing-2 (code-first choice; confirm when drawn in Figma) |
