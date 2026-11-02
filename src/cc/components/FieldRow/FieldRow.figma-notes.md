@@ -110,7 +110,7 @@ when open, and re-measures with a `ResizeObserver` (the column changes width wit
 
 **Known Figma vs code differences:**
 - **Input help order:** in Figma the Input's help line is inside the Input instance, so a shown note draws *below* it. In code it sits above.
-- **Label alignment:** Wide Text and Checkbox rows centre the label. In code a row with a note top-aligns, but a Figma boolean can't change the row's alignment, so the label sits mid-height when the note is on.
+- **Label alignment:** resolved (designer, 2026-11-02). Wide Text (`3861:1935`), Compact Text (`3865:1928`) and Wide Checkbox (`3931:19333`) are now top-aligned all the time, so the label stays on the value's first line when the note shows. The sizes are unchanged. Wide Text's label sits 2px higher than when it was centred (a 20px label line against a 24px value line), the same as Paragraph and Media. In code, Text rows *without* a note still centre the label. Make them always top-align to match exactly.
 - **Editing the note:** edit the note text directly in the instance. There is no text property, because one would reset the link colour.
 
 ## Field note — code detail
