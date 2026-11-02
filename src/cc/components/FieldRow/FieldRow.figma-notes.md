@@ -101,7 +101,19 @@ when open, and re-measures with a `ResizeObserver` (the column changes width wit
 
 **Figma push pending:** a FieldRow Collapsed / Expanded state for Paragraph and Rich.
 
-## Field note (code-first 2026-11-02, Affino 10.1 task U7) — NOT in Figma yet, flag for Figma
+## Field note (code-first 2026-11-02, Affino 10.1 task U7) — drawn in Figma 2026-11-02
+
+**Figma build (2026-11-02):** component **Field Note** `4810:44259` in the Control Centre — Record kit (`4453:147546`), beside the FieldRow set. It's an `Icon/24px/Info` instance (`68:5238`, w+h bound to `icon-size/sm`, strokes `icon/secondary`) plus the help text style in `text/secondary`, with the link run in `surface/brand`, gap `spacing/2`. FieldRow set `3861:1987` gains a boolean **Show Note** (`Show Note#4810:0`, default off). Every one of the 44 variants carries a hidden Field Note instance under its value or control:
+- **Radio, Static and Paragraph Collapsed/Expanded:** inside the existing `Value` frame, above Help.
+- **The other 36:** the value or control is wrapped in a new vertical `Value Group` (gap `spacing/3`, fill width). Every variant was measured before and after, and the sizes are unchanged.
+- **Examples:** the frame `Field Note — examples` (`4810:53135`) shows Text, Checkbox and Input with the note on.
+
+**Known Figma vs code differences:**
+- **Input help order:** in Figma the Input's help line is inside the Input instance, so a shown note draws *below* it. In code it sits above.
+- **Label alignment:** Wide Text and Checkbox rows centre the label. In code a row with a note top-aligns, but a Figma boolean can't change the row's alignment, so the label sits mid-height when the note is on.
+- **Editing the note:** edit the note text directly in the instance. There is no text property, because one would reset the link colour.
+
+## Field note — code detail
 
 Some commerce settings look like they do nothing, because another screen decides them (the product's "Coupons & Discounts" tick is never checked by coupons, only by automatic discounts). U7 puts a short line under each affected field saying what the setting does today, optionally ending in a link to the screen that controls it.
 
