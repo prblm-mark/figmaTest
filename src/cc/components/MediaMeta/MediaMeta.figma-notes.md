@@ -55,3 +55,7 @@ Chosen over an always-visible asset card (A) and an inline Show/Hide toggle; bot
   Dropdown.js owns open / outside-click / Escape. The panel anchors to `.media-meta` (the Dropdown
   root is `position: static`) and is capped at `max-inline-size: 100%`, so it never overruns a phone.
   RecordSection dropped `overflow: hidden` so the panel is not clipped on a section's last row.
+
+## Thumbnail shows the whole image (designer, 2026-11-02)
+
+The thumbnail image uses `object-fit: scale-down` (was `cover`). Luismi found two problems testing v3 Control screens. Store Profile 1 Special Offer Image is a wide banner, and `cover` cropped it to a square ("SPECIAL OFFER" read "IAL OFF"). Checkout Profile 1 error image is a small icon, and `cover` stretched it to fill the box, which blurred it. With `scale-down`, a large image shrinks to fit with nothing cut off, and a small image stays at its own size, centred. The box (size, border, radius, `--ao-surface-minimal` background) is unchanged, and the background fills the space around a letterboxed image. **Flag for Figma:** the thumbnail image fill is still drawn as Fill (crop). Set it to Fit.

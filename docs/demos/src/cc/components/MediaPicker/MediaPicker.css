@@ -51,7 +51,7 @@ button.media-picker__thumb:focus-visible {
 .media-picker__thumb img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: scale-down; /* show the whole image; never crop or upscale (designer, 2026-11-02) */
 }
 
 .media-picker__actions {
