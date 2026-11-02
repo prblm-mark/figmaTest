@@ -296,7 +296,21 @@ def is_empty(value):
     return value in EMPTY or (isinstance(value, str) and not value.strip())
 
 
-def view_row(label, kind, value=None, compact=False):
+def field_note(nid, note):
+    """Field note (Affino 10.1 U7, code-first 2026-11-02): an always-visible line under a value or
+    control saying what the setting really does, optionally ending in a link to the screen that
+    controls it. `note` is a string, or (text, link_label, href) — the link ends the line."""
+    if isinstance(note, (tuple, list)):
+        text, link_label, href = note
+        body = f'{e(text)} <a href="{e(href)}">{e(link_label)}</a>.'
+    else:
+        body = e(note)
+    return (f'<p class="field-row__note" id="{nid}">'
+            f'<i data-lucide="info" class="field-row__note-icon" aria-hidden="true"></i>'
+            f'<span>{body}</span></p>')
+
+
+def view_row(label, kind, value=None, compact=False, note=None):
     # Media with no value draws the demo image, so it is the one kind an empty value does not hide.
     if kind != "media" and is_empty(value):
         return ""
@@ -321,6 +335,9 @@ def view_row(label, kind, value=None, compact=False):
         val = value  # pre-built markup (Avatar, badges): the caller escapes its own text
     else:
         val = value if isinstance(value, Html) else e(value)
+    if note:
+        val += field_note(f"{_slug(label)}-note", note)
+        mods.append("field-row--has-note")
     return f'''<div class="{' '.join(mods)}">
             <dt class="field-row__label">{e(label)}</dt>
             <dd class="field-row__value">{val}</dd>
@@ -365,7 +382,7 @@ def ordered_list(fid, label, items, modal=None, described=""):
 ERROR_TARGETS = []  # (label, message, field id) for the validation summary — filled by edit_row(error=…)
 
 
-def edit_row(label, kind, value="", required=False, help_text=None, tags=None, modal=None, placeholder="None selected", options=None, error=None, file_icon="file-audio", fid=None, attrs=""):
+def edit_row(label, kind, value="", required=False, help_text=None, tags=None, modal=None, placeholder="None selected", options=None, error=None, file_icon="file-audio", fid=None, attrs="", note=None):
     fid = fid or _id(label)   # fid: a grid row passes its own, so repeated rows keep unique ids
     if error:
         ERROR_TARGETS.append((label, error, fid))
@@ -375,18 +392,23 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
     # Article is the exception). Input keeps it as its own help line; every other type gets the same
     # line under the control. On a screen with the "Show help" switch it is hidden until switched on
     # (FieldRow.js / FieldRow.css).
-    described = f' aria-describedby="{fid}-help"' if help_text and not error else ""
+    # Field note (U7): always visible, under the control and above any help; announced first.
+    note_ids = [f"{fid}-note"] if note else []
+    note_html = field_note(f"{fid}-note", note) if note else ""
+    described_ids = note_ids + ([f"{fid}-help"] if help_text and not error else [])
+    described = f' aria-describedby="{" ".join(described_ids)}"' if described_ids else ""
     if kind == "input":
         # A failed Save re-renders the field in Input's error state with the message as its help line
         # (code-first, 2026-10-05; Hub TASK-531782 Q3).
         msg = error or help_text
         help_html = (f'<span class="input__help{"" if error else " field-row__help"}" id="{fid}-help">{e(msg)}</span>'
                      if msg else "")
-        desc = f' aria-describedby="{fid}-help"' if msg else ""
+        desc_ids = note_ids + ([f"{fid}-help"] if msg else [])
+        desc = f' aria-describedby="{" ".join(desc_ids)}"' if desc_ids else ""
         invalid = ' aria-invalid="true"' if error else ""
         ctl = f'''<div class="input{" input--error" if error else ""}">
               <div class="input__wrap"><input id="{fid}" type="text" class="input__control" value="{e(value)}"{reqattr}{desc}{invalid}></div>
-              {help_html}
+              {note_html}{help_html}
             </div>'''
     elif kind == "select":
         placeholder = not value or value == "Select..."
@@ -512,6 +534,8 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
                 <span class="radio__label"><span class="radio__label-text">{e(o)}</span></span>
               </label>''' for o in (options or []))
         ctl = f'<div class="field-row__radios" role="radiogroup" aria-labelledby="{fid}-label"{described}>{radios}</div>'
+    if note and kind != "input":
+        ctl += note_html
     if help_text and kind != "input":
         ctl += f'<p class="input__help field-row__help" id="{fid}-help">{e(help_text)}</p>'
     lab_tag = "label" if kind in ("input", "textarea", "rich", "lookup", "date", "datetime", "color") else "span"
@@ -519,6 +543,8 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
     row_mods = "field-row field-row--edit" + (" field-row--check" if kind in ("checkbox", "radio", "static") else "")
     if help_text:
         row_mods += " field-row--has-help"
+    if note:
+        row_mods += " field-row--has-note"
     label_html = f'<{lab_tag} class="field-row__label"{lab_for}>{e(label)}{req}</{lab_tag}>'
     return f'''<div class="{row_mods}"{attrs}>
             {label_html}

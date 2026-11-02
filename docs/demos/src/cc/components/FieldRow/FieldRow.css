@@ -314,3 +314,42 @@
 .field-row--check.field-row--has-help {
   align-items: flex-start;
 }
+
+/* ══ Field note (code-first 2026-11-02, Affino 10.1 task U7) — NOT in Figma yet, flagged ═══════════
+ * A short, always-visible line that says what a setting really does when another screen decides it
+ * ("Coupons apply whatever this tick says…"), optionally ending in a link to that screen. Unlike the
+ * help line it shows on View AND Edit and the "Show help" switch never hides it. Type and gap match
+ * the help line (Input help style, spacing-3 below the value or control); a 16px Lucide `info` icon
+ * sits on the first line (12px text on a 16px line, so icon and line are the same height). When a
+ * field has both, the note sits directly under the control and the help below it. */
+.field-row__note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ao-spacing-2);
+  margin: 0;
+  font-family: var(--ao-font-body);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-regular);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-secondary);
+}
+
+/* Same selector weight as the help line's gap: `.field-row__value p { margin: 0 }` (0,1,1) outranks a
+ * bare `.field-row__note`, which left the note flush under a checkbox. Inside an Input it is not a
+ * direct child, so the Input's own column gap spaces it from the control and the help line. */
+.field-row__value > .field-row__note {
+  margin-top: var(--ao-spacing-3);
+}
+
+.field-row__note-icon {
+  flex-shrink: 0;
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-secondary);
+}
+
+/* Any row with a note top-aligns: `.field-row` centres the label against the whole value, so the
+ * note's extra line pushed a View label (and a checkbox / radio label) below the value's first line. */
+.field-row--has-note {
+  align-items: flex-start;
+}

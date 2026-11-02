@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="../../../styles/base.css">
   <link rel="stylesheet" href="../../../components/Button/Button.css">
   <link rel="stylesheet" href="../../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../../components/Checkbox/Checkbox.css">
   <link rel="stylesheet" href="../../../components/Input/Input.css">
   <link rel="stylesheet" href="../../../components/Select/Select.css">
   <link rel="stylesheet" href="../../../components/Textarea/Textarea.css">
@@ -139,6 +140,29 @@ Five headline updates lead the release. We rebuilt more than twenty exports this
           </div></div>
   </div>
 
+  <div class="demo-section" style="--demo-w: 60rem">
+    <p class="demo-section__title">Field note · View and Edit (code-first 2026-11-02, Affino 10.1 U7, not in Figma)</p><p class="demo-note">Always visible, on View and Edit; the Show help switch never hides it. Help-line type with an info icon, spacing-3 under the value or control, above any help. An optional link at the end goes to the screen that controls the setting. Wording here is illustrative.</p>
+    <dl class="demo-stack" style="margin:0"><div class="field-row field-row--has-note">
+            <dt class="field-row__label">Coupons &amp; Discounts</dt>
+            <dd class="field-row__value">Yes<p class="field-row__note" id="couponsdiscounts-note"><i data-lucide="info" class="field-row__note-icon" aria-hidden="true"></i><span>Coupons apply whatever this tick says. To limit a coupon, change it in <a href="#">Coupons</a>.</span></p></dd>
+          </div><div class="field-row field-row--has-note">
+            <dt class="field-row__label">Sale Price</dt>
+            <dd class="field-row__value">£24.00<p class="field-row__note" id="saleprice-note"><i data-lucide="info" class="field-row__note-icon" aria-hidden="true"></i><span>Shown only while a sale is running.</span></p></dd>
+          </div></dl>
+    <div class="demo-stack" style="margin-top: var(--ao-spacing-6)"><div class="field-row field-row--edit field-row--check field-row--has-note">
+            <span class="field-row__label" id="f-note-coupons-label">Coupons &amp; Discounts</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-note-coupons" aria-labelledby="f-note-coupons-label" checked aria-describedby="f-note-coupons-note">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="field-row__note" id="f-note-coupons-note"><i data-lucide="info" class="field-row__note-icon" aria-hidden="true"></i><span>Coupons apply whatever this tick says. To limit a coupon, change it in <a href="#">Coupons</a>.</span></p></div>
+          </div><div class="field-row field-row--edit field-row--has-help field-row--has-note">
+            <label class="field-row__label" for="f-note-sale">Sale Price</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-note-sale" type="text" class="input__control" value="24.00" aria-describedby="f-note-sale-note f-note-sale-help"></div>
+              <p class="field-row__note" id="f-note-sale-note"><i data-lucide="info" class="field-row__note-icon" aria-hidden="true"></i><span>Shown only while a sale is running. Set sale dates in <a href="#">Sales</a>.</span></p><span class="input__help field-row__help" id="f-note-sale-help">Leave empty for no sale price.</span>
+            </div></div>
+          </div></div>
+  </div>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>lucide.createIcons();</script>
   <script src="FieldRow.js"></script>
