@@ -1,6 +1,6 @@
 # ChatMain — Figma Notes
 
-**Figma URL:** [node 2139:2759](https://www.figma.com/design/Ikv8jxb5dcRH8ff4q4dR11/Affino-AI---AI-Chat?node-id=2-3752)
+**Figma URL:** [node 2:3752](https://www.figma.com/design/Ikv8jxb5dcRH8ff4q4dR11/Affino-AI---AI-Chat?node-id=2-3752)
 
 ## Variant Matrix
 
@@ -81,6 +81,8 @@
 | Intro padding-bottom (desktop) | `--ao-spacing-7` | 32px |
 | Suggestions grid (mobile) | `repeat(2, 1fr)` | 2 cols |
 | Suggestions grid (desktop) | `repeat(3, 1fr)` | 3 cols |
+| Suggestions grid (1 question) | `1fr` | full width, all widths — code rule, not in Figma |
+| Suggestions grid (2 or 4 questions) | `repeat(2, 1fr)` | even rows (2 × 2 for 4), all widths — code rule, not in Figma |
 | Suggestions gap | `--ao-spacing-5` | 16px |
 | Feedback font-size | `--ao-font-fixed-xxs` | 12px |
 | Feedback color | `--ao-text-contrast` | #6B7280 |
@@ -116,3 +118,35 @@
 - Processing → Response: ChatResponse timeline completes, switches to response view
 - SuggestedQuestion click: auto-submits the question text
 - Transition: `--ao-transition-default` (150ms ease) for hover states
+
+## Even rows by question count (2026-11-03)
+
+Mark's direction, relayed from affino-web (SupportChat, commit c50cb12): the suggestions grid must
+never leave one card alone in a row. Figma (`2:3753` desktop, `2:3788` mobile) only draws the
+3-question case (3 across desktop; 2 of 3 on mobile), so the other counts are a **code rule**:
+
+| Questions | Mobile (below 640px) | Desktop (640px and up) |
+|---|---|---|
+| 1 | 1 col | 1 col |
+| 2 | 2 | 2 |
+| 3 | 2 (3rd hidden — Figma) | 3 |
+| 4 | 2 × 2 | 2 × 2 |
+| 5 | 2 × 2 (3rd hidden) | 3 + 2 |
+| 6 | 2 × 3 | 3 × 2 |
+
+- Counts use `:has(> .suggested-question:nth-child(n))`, so questions must come first in
+  `.chat-main__suggestions`; `.chat-main__feedback` after them already spans `1 / -1`.
+- The mobile hide of the 3rd question is now **odd counts only** (3, 5). It used to be
+  unconditional, so 4 questions rendered 1, 2, 4 (two plus one alone).
+- The count rules (specificity 0,3,0+) intentionally beat the 2-column pins in AiChatMinimised
+  and AiAssistant. Both widgets also repeat the odd-count hide with no viewport condition, because
+  ChatMain re-shows the 3rd card at a 640px **viewport** and the widgets are always 2 columns.
+- **Figma follow-up (designer):** worth adding a 4-question (2 × 2) instance to the Initial
+  variants, so the rule has a drawn source.
+- 5 at desktop is 3 + 2 as the request specified ("keep current columns"), so there is an uneven
+  last row there.
+- Still viewport `@media (min-width: 640px)`. Per CLAUDE.md §4a this should become a container
+  query; not converted in this change.
+- Old node ID `2139:2759` in this file was stale (not found in the file); the live set is `2:3752`.
+  The variant table above still lists the old `2139:*` IDs.
+
