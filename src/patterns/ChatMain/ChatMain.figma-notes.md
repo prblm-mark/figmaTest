@@ -125,7 +125,7 @@ Mark's direction, relayed from affino-web (SupportChat, commit c50cb12): the sug
 never leave one card alone in a row. Figma (`2:3753` desktop, `2:3788` mobile) only draws the
 3-question case (3 across desktop; 2 of 3 on mobile), so the other counts are a **code rule**:
 
-| Questions | Mobile (below 640px) | Desktop (640px and up) |
+| Questions | Narrow (container below 640px) | Wide (container 640px and up) |
 |---|---|---|
 | 1 | 1 col | 1 col |
 | 2 | 2 | 2 |
@@ -139,14 +139,19 @@ never leave one card alone in a row. Figma (`2:3753` desktop, `2:3788` mobile) o
 - The mobile hide of the 3rd question is now **odd counts only** (3, 5). It used to be
   unconditional, so 4 questions rendered 1, 2, 4 (two plus one alone).
 - The count rules (specificity 0,3,0+) intentionally beat the 2-column pins in AiChatMinimised
-  and AiAssistant. Both widgets also repeat the odd-count hide with no viewport condition, because
-  ChatMain re-shows the 3rd card at a 640px **viewport** and the widgets are always 2 columns.
+  and AiAssistant, so 1 question is full width there too.
 - **Figma follow-up (designer):** worth adding a 4-question (2 × 2) instance to the Initial
   variants, so the rule has a drawn source.
 - 5 at desktop is 3 + 2 as the request specified ("keep current columns"), so there is an uneven
   last row there.
-- Still viewport `@media (min-width: 640px)`. Per CLAUDE.md §4a this should become a container
-  query; not converted in this change.
+- **Container query, not viewport (2026-11-03).** `.chat-main__initial` is the query container
+  (`container-name: chat-main-initial`; full column width, no padding). The suggestions grid and
+  the 3rd-card show switch at `@container chat-main-initial (min-width: 640px)`. This means the
+  384px AiChatMinimised and 320px AiAssistant widgets keep the narrow layout on any window, which
+  used to need a widget-only override. In AiChat the switch point is unchanged: below 1024px the
+  sidebar is hidden, so column = window; at 1024px and up the column is at least ~744px.
+- ChatMain's other `@media (min-width: 640px / 768px)` blocks (intro, input wrap, scroll area,
+  response) are **still viewport-based**; the widgets pin those with their own overrides.
 - Old node ID `2139:2759` in this file was stale (not found in the file); the live set is `2:3752`.
   The variant table above still lists the old `2139:*` IDs.
 

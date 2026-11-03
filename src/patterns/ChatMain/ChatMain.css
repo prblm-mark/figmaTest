@@ -1,5 +1,5 @@
 /* ChatMain — scrollable chat content area with multi-view support
- * Figma node: 2139:2759
+ * Figma node: 2:3752
  * Tier: Pattern
  * Views: Initial (welcome), Processing (ChatResponse), Response (full answer)
  * Composes: MessageBubble, MessageInput, SuggestedQuestion, WorkingIntro, SourcesCarousel, Skeleton, Button, Tooltip
@@ -48,6 +48,11 @@
   flex: 1;
   min-height: 0;
   width: 100%;
+  /* Query container for the suggestions grid (CLAUDE.md §4a): the grid
+     follows the chat column, not the window, so a 384px widget on a wide
+     screen keeps the narrow layout. Spans the column with no padding. */
+  container-type: inline-size;
+  container-name: chat-main-initial;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -148,7 +153,7 @@
   padding: 0 var(--ao-spacing-5);
 }
 
-@media (min-width: 640px) {
+@container chat-main-initial (min-width: 640px) {
   .chat-main__suggestions {
     grid-template-columns: repeat(3, 1fr);
     gap: var(--ao-spacing-5);
@@ -166,7 +171,9 @@
    Counts read `.suggested-question` children, which come first in the grid;
    `.chat-main__feedback` after them already spans the full row.
    Specificity (0,3,0+) deliberately beats the 2-column pins in
-   AiChatMinimised / AiAssistant, so 1 question is full width there too. */
+   AiChatMinimised / AiAssistant, so 1 question is full width there too.
+   Mobile/desktop here means the chat-main-initial CONTAINER below / at or
+   above 640px, not the viewport. */
 .chat-main__suggestions:has(> .suggested-question:nth-child(2)):not(:has(> .suggested-question:nth-child(3))),
 .chat-main__suggestions:has(> .suggested-question:nth-child(4)):not(:has(> .suggested-question:nth-child(5))) {
   grid-template-columns: repeat(2, 1fr);
@@ -184,7 +191,7 @@
   display: none;
 }
 
-@media (min-width: 640px) {
+@container chat-main-initial (min-width: 640px) {
   .chat-main__suggestions:has(> .suggested-question:nth-child(3)):not(:has(> .suggested-question:nth-child(4))) > .suggested-question:nth-child(3),
   .chat-main__suggestions:has(> .suggested-question:nth-child(5)):not(:has(> .suggested-question:nth-child(6))) > .suggested-question:nth-child(3) {
     display: flex;
