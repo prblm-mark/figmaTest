@@ -156,13 +156,37 @@
   }
 }
 
-/* Mobile: hide third suggested question (Figma mobile shows only 2) */
-.chat-main__suggestions .suggested-question:nth-child(3) {
+/* Even rows by question count (Mark, 2026-11-03 — matches affino.com
+   SupportChat, affino-web c50cb12). Figma draws only the 3-question case;
+   for other counts the grid picks the column count that leaves no card alone:
+     1 → one full-width column
+     2 → two columns (one row)
+     4 → two columns (2 × 2), at every width
+     3, 5, 6+ → the default columns above (2 mobile / 3 desktop)
+   Counts read `.suggested-question` children, which come first in the grid;
+   `.chat-main__feedback` after them already spans the full row.
+   Specificity (0,3,0+) deliberately beats the 2-column pins in
+   AiChatMinimised / AiAssistant, so 1 question is full width there too. */
+.chat-main__suggestions:has(> .suggested-question:nth-child(2)):not(:has(> .suggested-question:nth-child(3))),
+.chat-main__suggestions:has(> .suggested-question:nth-child(4)):not(:has(> .suggested-question:nth-child(5))) {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.chat-main__suggestions:not(:has(> .suggested-question:nth-child(2))) {
+  grid-template-columns: 1fr;
+}
+
+/* Mobile: with an ODD count, hide the third question so the two columns
+   stay even (Figma mobile shows 2 of 3). Previously unconditional, which
+   turned 4 questions into 1, 2, 4 — two plus one alone. */
+.chat-main__suggestions:has(> .suggested-question:nth-child(3)):not(:has(> .suggested-question:nth-child(4))) > .suggested-question:nth-child(3),
+.chat-main__suggestions:has(> .suggested-question:nth-child(5)):not(:has(> .suggested-question:nth-child(6))) > .suggested-question:nth-child(3) {
   display: none;
 }
 
 @media (min-width: 640px) {
-  .chat-main__suggestions .suggested-question:nth-child(3) {
+  .chat-main__suggestions:has(> .suggested-question:nth-child(3)):not(:has(> .suggested-question:nth-child(4))) > .suggested-question:nth-child(3),
+  .chat-main__suggestions:has(> .suggested-question:nth-child(5)):not(:has(> .suggested-question:nth-child(6))) > .suggested-question:nth-child(3) {
     display: flex;
   }
 }
