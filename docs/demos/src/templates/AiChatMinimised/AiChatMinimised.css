@@ -183,14 +183,6 @@
   padding: 0 var(--ao-spacing-5);
 }
 
-/* The widget is 2-column at every viewport, so ChatMain's odd-count hide of
-   the 3rd question must hold at every viewport too — ChatMain re-shows it at
-   a 640px VIEWPORT, which left 3 questions as two plus one alone here. */
-.ai-chat-min .chat-main__suggestions:has(> .suggested-question:nth-child(3)):not(:has(> .suggested-question:nth-child(4))) > .suggested-question:nth-child(3),
-.ai-chat-min .chat-main__suggestions:has(> .suggested-question:nth-child(5)):not(:has(> .suggested-question:nth-child(6))) > .suggested-question:nth-child(3) {
-  display: none;
-}
-
 /* ── ChatMain: container — mobile padding ─────────────── */
 
 .ai-chat-min .chat-main__container {
