@@ -1,4 +1,5 @@
-/* Stepper component — code-first (no Figma node yet), built for the Import pattern (TASK-575621).
+/* Stepper component — code-first, built for the Import pattern (TASK-575621); drawn in Figma as
+ * "Flow Stepper" 4935:44691 (2026-11-05, from this code).
  *
  * A numbered, horizontal list of the steps in a multi-step flow. Each step is one of four states:
  *   upcoming  (default)            — number in an outlined circle, muted label, not interactive
