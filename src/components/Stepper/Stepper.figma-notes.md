@@ -20,7 +20,7 @@ Named "Flow Stepper" because the file's **Stepper** (Navigation, `3567:105173`) 
 (− / + Input modifier) and **Stepper Nav** (`4065:824`) is a different, icon-circle wizard.
 Every paint, size, gap and radius is bound (22 variables, all the tokens in the table below).
 CCDark mirror frames sit at the same position in "Navigation — CCDark". Code Connect:
-`Stepper.figma.ts` (5 mappings, not yet published).
+`Stepper.figma.ts` (5 mappings, published 2026-11-05).
 
 ## Variant × State Matrix
 

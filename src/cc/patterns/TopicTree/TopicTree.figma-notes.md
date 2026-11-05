@@ -112,4 +112,4 @@ Drawn from this code (the code stays the reference), Components page, Data displ
 no computed value. Open = chevron rotated 90°. Every paint, size, gap and radius is bound (13 variables).
 New icons for it: `Icon/24px/Link2` (`4934:44636`) and `Icon/24px/FolderTree` (`4934:44644`) on
 Foundations › Icons/24px (Lucide link-2 / folder-tree). CCDark mirrors in "Data display — CCDark".
-Code Connect: `TopicTree.figma.ts` (6 mappings, not yet published).
+Code Connect: `TopicTree.figma.ts` (6 mappings, published 2026-11-05).
