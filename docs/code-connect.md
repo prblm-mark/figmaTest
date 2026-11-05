@@ -20,6 +20,10 @@ npm run code-connect:publish
 
 Token scopes required: `file_content:read`, `code_connect:write`.
 
+**CLI version: stay on v1** (`@figma/code-connect` ^1.5.3, 2026-11-05). 2.0.0 (Aug 2026) dropped the framework
+parsers: `publish` / `parse` refuse every `@figma/code-connect/html` file and point at `figma connect migrate`
+(template files). Moving to 2.x means migrating all `.figma.ts` files first. Do that as its own job.
+
 ## When to update `.figma.ts` files
 
 - A new component is built -> create a new `.figma.ts` in its directory
