@@ -81,3 +81,14 @@
 - Fixed by hand: User menu dropdown ("Menu - User menu") landed under the header's View Site button — moved to the frame root in all 4 User menu frames.
 - Dark check: CC Shell (CRM menu desktop, Login desktop) fine. AI page Dark only PARTLY flips: remap counts are low on chat frames (0–105 vs ~65 on every CC frame), and AI Chat · Processing · Desktop · Dark keeps light sidebar text (unreadable), light skeleton bars and a white footer fade (gradient, never variable-bound). Needs a chat-token mapping in postprocess (or `--ao-chat-*` Figma variables) before the AI Dark frames are trustworthy.
 - All widths exact (1728 / 390); Chat response · Answer · Mobile is 390×906 (answer runs past the viewport).
+
+## Chat Dark mapping fix (2026-11-05)
+- Cause, AI page 4813:232 + AI Assistant frames on CC Shell 4813:231: the capture binds the chat sidebar's raw `rgb(31 42 55)` to the fixed primitive Slate/800 (×18–27 per frame), the selected sidebar item and the user bubble text to remote `Colours/Black`, placeholder/icon colours to Neutral/550/500/400, and leaves the skeleton shimmer (5 stops) and the footer fade (ONE opaque white stop) unbound. The Dark root also fell back to CCDark on standalone chat screens.
+- Fix (now a chat pass in postprocess.figma.js, `__CHAT_ROOT__` = true for src/templates chat screens):
+  - Slate/800 + Black inside the chat sidebar (chat-pinned subtree, or a layer named `Sidebar` in the AI Assistant panel) → `chat-sidebar-text`; Black elsewhere → `chat-msg-text`; Neutral/550 → `text/contrast`, /500 → `icon/secondary`, /400 → `icon/contrast`. Lagoon/10 (link icons) left: same value in both modes.
+  - Skeleton stops → `skeleton/base` ×4 + `skeleton/highlight` (middle).
+  - Fade → surface/0 → `surface/primary`. TRAP: binding a stop to a variable forces it opaque, and the `gradient/surface/primary` style's unbound transparent stop is WHITE, which Figma blends unpremultiplied into a grey haze on Dark. So stop 0 = the frame's own resolved surface at a=0, recomputed on the Dark copy after its modes are set.
+  - Standalone chat Dark root → Dark (128:0), not CCDark.
+- Applied to all 58 AI-page frames and the 14 AI Assistant / Control Screen AI-open frames. Screenshots: AI Chat Processing + Response desktop Dark, AI Assistant Processing desktop Dark — readable sidebar, dark skeletons, clean fade.
+- Not a Dark issue: the AI Chat Response table's Name/Email cells are clipped in BOTH themes (caught mid-reveal at capture).
+- Large CC frames: one use_figma over all 46 CC Shell frames timed out (388 s). Target frames by name, ≤6 per call.

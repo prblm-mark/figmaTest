@@ -13,4 +13,4 @@ or `failed (<date>) — <reason>`.
 - Phase 7 — Update & API: done (2026-10-30) — pages Update 4727:231 (4 rows / 16 frames), API 4727:232 (5 rows / 20 frames); every API mobile frame is 402 wide (page overflows 390)
 - Phase 8 — Dashboards: done (2026-10-30) — page 4756:231; 11 rows / 44 frames; all mobile frames 390; charts capture as vectors and flip in Dark
 - Phase 9 — Seating Planner: done (2026-10-30) — page 4783:231; 9 rows / 34 frames (full width desktop only); runaway-height desktop plan frames trimmed to content; TableType tier pills keep a remote black (fixed colours in code)
-- Phase 10 — Shell, Login & AI: done (2026-11-03) — pages CC Shell 4813:231 (14 rows / 46 frames), AI 4813:232 (15 rows / 58 frames); ActionsMenu states desktop only (no ActionsMenu on mobile); AI-page Dark copies only partly flip (chat-only colours + gradients unbound)
+- Phase 10 — Shell, Login & AI: done (2026-11-03) — pages CC Shell 4813:231 (14 rows / 46 frames), AI 4813:232 (15 rows / 58 frames); ActionsMenu states desktop only (no ActionsMenu on mobile); chat Dark mapping fixed 2026-11-05 (see LOG)
