@@ -92,3 +92,12 @@
 - Applied to all 58 AI-page frames and the 14 AI Assistant / Control Screen AI-open frames. Screenshots: AI Chat Processing + Response desktop Dark, AI Assistant Processing desktop Dark — readable sidebar, dark skeletons, clean fade.
 - Not a Dark issue: the AI Chat Response table's Name/Email cells are clipped in BOTH themes (caught mid-reveal at capture).
 - Large CC frames: one use_figma over all 46 CC Shell frames timed out (388 s). Target frames by name, ≤6 per call.
+
+## Phase 11 — Late record screens + Contact sparse tabs (2026-11-05)
+- New page "AI Profile, Design & Directory" 4882:231 (after Order), 7 rows / 28 frames: AI Profile View/Edit, Design Frame View/Edit, Design Style View/Edit, Directory Step Profile Edit (built 2026-10-29, after PLAN.md was written, so never captured).
+- Contact 4567:231: 11 rows appended from y=53357 (44 frames): Sparse · 9 tabs + Summary panel B / C. Contact is now 104 frames.
+- No `do=` steps: every state is its own HTML file. Full page (tall) for all.
+- `missing` = {} on all 36. Chat pass not triggered (no chat surfaces). Dark check: AI Profile Edit desktop, Sparse Commerce mobile — fine.
+- Chrome trap, new this phase: the MCP tab group was torn down every ~40–60 s (2–4 captures), sometimes mid-batch, once with "extension not connected" while the batch kept running. Re-open with tabs_context_mcp{createIfEmpty} and carry on; a navigate that got ~10 s before the drop had usually submitted. Check `generate_figma_design {captureId}`: `pending` = never submitted (reuse the ID), `processing` = submitted.
+- 3 captures (Sparse Events / Permissions / Tasks desktop) sat at `processing` for 20+ min and never landed; retried once with new IDs, all landed. If the stuck originals land later they appear as un-suffixed duplicates on Contact — delete them.
+- browser_batch `wait` max is 10 s per action (a 12 s wait fails the batch).

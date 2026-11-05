@@ -66,6 +66,13 @@ Login · AI Assistant (initial / processing / response)
 AI Chat: initial · processing · response · sidebar closed · system role open · system role minimised ·
 AI Chat minimised ×3 · Chat response (intro / sources / answer) · System Role (open / minimised / dirty)
 
+## Phase 11 — Late record screens + Contact sparse tabs  (pages: Records (more) NEW, Contact)
+Added after the plan was written (record screens built 2026-10-29); Mark asked for sparse tabs 2026-11-05.
+New page "AI Profile, Design & Directory": AI Profile View · AI Profile Edit · Design Frame View ·
+Design Frame Edit · Design Style View · Design Style Edit · Directory Step Profile Edit
+Contact page (appended rows): Sparse · Analysis / Commerce / Communication / Demographic / Digital Assets /
+Events / Page Analysis / Permissions / Tasks tabs · Sparse · Summary panel B / C
+
 Out of scope: src/prototypes (What's On, Forums auto-answers, Event Builder, etc.).
 
 ≈ 150 states × 2 widths ≈ 300 light captures → ≈ 600 frames with dark.
