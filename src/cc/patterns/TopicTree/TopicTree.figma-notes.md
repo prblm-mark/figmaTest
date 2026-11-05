@@ -1,7 +1,7 @@
 # TopicTree (CC) — figma notes
 
-**Tier:** Pattern · **Status:** CODE-FIRST (Mark, 2026-10-20, Hub TASK-571925). Not in Figma yet. The code is
-the reference. Flagged for Figma; check with Mark before any push.
+**Tier:** Pattern · **Status:** CODE-FIRST (Mark, 2026-10-20, Hub TASK-571925); drawn in Figma 2026-11-05 (see below). The code is
+the reference. Drawn in Figma at Mark's request (2026-11-05).
 
 A topic list's hierarchy as a **site tree**: the **Hierarchy** view of the v3 Topic Manager
 (`src/cc/templates/ListingScreen/TopicManager.html`), which replaces v1's `/control/taxonomy-manager-screen`
@@ -97,7 +97,19 @@ File `Lus07xi8pPXLN87sQIyrEt`, page Records & Dashboards (4114:4847), section "A
 (4204:4847): **states v2 with row marks `4435:2`** (2026-10-26, 1600 desktop; 297 paints on Semantic, the 6 left
 are opacity-0 strokes). v1 `4395:2` is renamed `[superseded]`, not deleted.
 
-## Needs Figma
+## Figma components (2026-11-05)
 
-Not drawn as components. When it is: a TopicTreeItem set (Level, State = Default / Hover / Selected / Context, Expandable =
-Open / Closed / Leaf, Hint on/off), then Code Connect.
+Drawn from this code (the code stays the reference), Components page, Data display section:
+
+| Set | Node | Variants / properties |
+|---|---|---|
+| **TopicTreeItem** | `4936:44773` | State = Default / Hover / Selected / Context × Expandable = Closed / Open / Leaf (12). Props: Name (text), Type icon (bool) + Icon (instance swap, default Folder), Badges (bool, DS Badge sm), Also under (bool, link-2) |
+| **TopicTreeStatus** | `4936:44790` | Type = Loading (Spinner sm neutral + "Loading topics…") / Show more (Button Tertiary xs + "n of N"); both lead with the chevron-width spacer, as the code does |
+| **TopicTree** | `4936:44791` | example: open branch, selected + hover leaves, an "also under" row, a loading level, Show more |
+
+**Level** is not a variant axis: each child level is a "Children" row of an `icon-size-sm` Indent spacer
++ `spacing-2` gap + the level's column, the nested `ul` of the code, so the 22px step is token-bound with
+no computed value. Open = chevron rotated 90°. Every paint, size, gap and radius is bound (13 variables).
+New icons for it: `Icon/24px/Link2` (`4934:44636`) and `Icon/24px/FolderTree` (`4934:44644`) on
+Foundations › Icons/24px (Lucide link-2 / folder-tree). CCDark mirrors in "Data display — CCDark".
+Code Connect: `TopicTree.figma.ts` (6 mappings, not yet published).

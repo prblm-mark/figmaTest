@@ -2,9 +2,25 @@
 
 ## Figma Node
 
-**None yet: code-first.** Built 2026-10-22 for the v3 Import pattern (TASK-575621) after Mark chose
-a one-page flow with a stepper ("always add new components where it optimises the ui/ux"). Push to
-Figma for design review; the code is the reference until then.
+**Code-first**, built 2026-10-22 for the v3 Import pattern (TASK-575621) after Mark chose a one-page
+flow with a stepper ("always add new components where it optimises the ui/ux"). **Drawn in Figma
+2026-11-05 from this code** (the code stays the reference), file `Lus07xi8pPXLN87sQIyrEt`, Components
+page, Navigation section:
+
+| Set | Node | Variants |
+|---|---|---|
+| **Flow Stepper** | `4935:44691` | Width=Default `4935:44625` (960, 5 steps), Width=Narrow `4935:44658` (358) |
+| **Flow Stepper Step** | `4935:44624` | State = Upcoming / Current / Complete / Complete Hover / Error × Size = Default (240, connector fills, min spacing-5) / Compact (hugs, connector = spacing-3) |
+
+Step properties: **Label** (text), **Number** (text; Error draws "!"), **Connector** (off on the last
+step), **Show label** (off for non-current steps in Narrow). Narrow = Compact steps either side of a
+Default current step: an instance cannot resize a nested layer, so the 640px rule is a Size axis.
+
+Named "Flow Stepper" because the file's **Stepper** (Navigation, `3567:105173`) is the number field
+(− / + Input modifier) and **Stepper Nav** (`4065:824`) is a different, icon-circle wizard.
+Every paint, size, gap and radius is bound (22 variables, all the tokens in the table below).
+CCDark mirror frames sit at the same position in "Navigation — CCDark". Code Connect:
+`Stepper.figma.ts` (5 mappings, not yet published).
 
 ## Variant × State Matrix
 
