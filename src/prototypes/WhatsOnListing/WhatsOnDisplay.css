@@ -1,0 +1,779 @@
+/* WhatsOnDisplay — display-side prototype CSS (What's On listing credits).
+ * ────────────────────────────────────────────────────────────────────────────
+ * Everything here is PROTOTYPE-ONLY (`wod-*`): the public-site shell and the
+ * pieces the design system does not have yet — event row, product card, tabs,
+ * order summary, address choice card, account nav, result card. Existing
+ * components are composed, never restyled. Tokens only; anything without a
+ * token is logged in WhatsOnListing.token-gaps.md.
+ *
+ * Responsive: the page column is the container (`wod-page`, on <body>), per
+ * CLAUDE.md §4a — no viewport media queries.
+ */
+
+.wod-body {
+  container-type: inline-size;
+  container-name: wod-page;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--ao-surface-secondary);
+  font-family: var(--ao-font-body);
+  color: var(--ao-text-primary);
+}
+
+.wod-sr {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.wod-muted { color: var(--ao-text-contrast); }
+.wod-small { font-size: var(--ao-font-fixed-xs); }
+.wod-req { color: var(--ao-text-error); }
+
+.wod-help {
+  margin: 0;
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-contrast);
+}
+
+.wod-link {
+  color: var(--ao-text-brand);
+  font-weight: var(--ao-font-medium);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.wod-link:focus-visible,
+.wod-site a:focus-visible,
+.wod-accnav__link:focus-visible,
+.wod-event__title:focus-visible,
+.wod-product__name a:focus-visible,
+.wod-tab:focus-visible {
+  outline: 2px solid var(--ao-surface-brand);
+  outline-offset: 2px;
+}
+
+/* ── Site shell ───────────────────────────────────────────────────────────*/
+.wod-site {
+  background: var(--ao-surface-primary);
+  border-bottom: 1px solid var(--ao-border-secondary);
+}
+
+/* Centred to the page width with PADDING, not max-width + auto margins: the
+   Figma capture drops auto margins, which left the header flush-left in every
+   desktop frame (2026-09-23). Same result in the browser. */
+.wod-site__bar,
+.wod-site__nav-list,
+.wod-footer__in {
+  padding-inline: max(var(--ao-spacing-6), calc((100% - var(--ao-size-14)) / 2 + var(--ao-spacing-6)));
+  box-sizing: border-box;
+}
+
+.wod-site__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-spacing-6);
+  padding-block: var(--ao-spacing-5);
+}
+
+.wod-site__brand {
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-2xl);
+  font-weight: var(--ao-font-bold);
+  color: var(--ao-text-primary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.wod-site__search {
+  flex: 0 1 var(--ao-size-7);
+  max-inline-size: var(--ao-size-7);
+  margin-inline-start: auto;
+}
+
+.wod-account {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-spacing-4);
+  white-space: nowrap;
+}
+
+.wod-account__credits { text-decoration: none; }
+
+.wod-account__who {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ao-spacing-2);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-primary);
+  text-decoration: none;
+}
+
+.wod-account__who svg {
+  inline-size: var(--ao-icon-size-md);
+  block-size: var(--ao-icon-size-md);
+  color: var(--ao-icon-secondary);
+}
+
+.wod-site__nav { border-top: 1px solid var(--ao-border-secondary); }
+
+.wod-site__nav-list {
+  display: flex;
+  gap: var(--ao-spacing-6);
+  margin-block: 0;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.wod-site__nav-link {
+  display: inline-block;
+  padding-block: var(--ao-spacing-4);
+  border-bottom: 2px solid transparent;
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.wod-site__nav-link--active {
+  color: var(--ao-text-brand);
+  border-bottom-color: var(--ao-border-brand);
+}
+
+.wod-footer {
+  margin-top: auto;
+  background: var(--ao-surface-invert);
+  color: var(--ao-text-invert);
+}
+
+.wod-footer__in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ao-spacing-5);
+  padding-block: var(--ao-spacing-7);
+}
+
+.wod-footer__brand {
+  font-family: var(--ao-font-title);
+  font-weight: var(--ao-font-bold);
+  font-size: var(--ao-font-fixed-lg);
+}
+
+.wod-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ao-spacing-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wod-footer__links a {
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-invert-secondary);
+  text-decoration: none;
+}
+
+/* ── Page ─────────────────────────────────────────────────────────────────*/
+.wod-page {
+  inline-size: 100%;
+  max-inline-size: var(--ao-size-14);
+  margin-inline: auto;
+  padding: var(--ao-spacing-6);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-6);
+}
+
+.wod-crumbs { margin-block-end: calc(var(--ao-spacing-2) * -1); }
+
+.wod-heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-2);
+}
+
+.wod-heading--row {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ao-spacing-5);
+}
+
+/* The title + lede block only — not the .wod-actions div beside it, which
+   this selector used to catch and stack into a column. */
+.wod-heading--row > div:not(.wod-actions) { display: flex; flex-direction: column; gap: var(--ao-spacing-2); }
+
+.wod-title {
+  margin: 0;
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fluid-2xl);
+  font-weight: var(--ao-font-bold);
+  /* leading-lg (2rem): the leading tokens are absolute, and leading-sm (1.25rem)
+     under a 1.625rem title overlaps the moment the title wraps. */
+  line-height: var(--ao-leading-lg);
+  color: var(--ao-text-primary);
+}
+
+.wod-lede {
+  margin: 0;
+  font-size: var(--ao-font-fixed-sm);
+  color: var(--ao-text-secondary);
+}
+
+/* Two columns: main + a 320px aside; the refine and account-nav variants put
+   the narrow column first. Stacks below 1024px of page width. */
+.wod-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--ao-size-6);
+  gap: var(--ao-spacing-6);
+  align-items: start;
+}
+
+.wod-layout--refine,
+.wod-layout--nav {
+  grid-template-columns: var(--ao-size-5) minmax(0, 1fr);
+}
+
+.wod-main,
+.wod-aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-6);
+  min-inline-size: 0;
+}
+
+.wod-card {
+  background: var(--ao-surface-primary);
+  border-radius: var(--ao-radius-lg);
+  box-shadow: var(--ao-shadow-card);
+  padding: var(--ao-spacing-6);
+  margin: 0;
+}
+
+.wod-card--flush { padding: 0; overflow: hidden; }
+
+/* The "What happens next" cards — the one thing on those screens the
+   promoter must read, so it carries the brand-soft tint. */
+.wod-card--accent {
+  background: var(--ao-surface-brand-soft-extra);
+  box-shadow: none;
+  border: 1px solid var(--ao-border-info);
+}
+
+.wod-card__title {
+  margin: 0;
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-lg);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
+}
+
+.wod-card__title--pad { padding: var(--ao-spacing-6) var(--ao-spacing-6) var(--ao-spacing-4); }
+
+.wod-card p { margin: 0; line-height: var(--ao-leading-md); }
+
+.wod-stack { display: flex; flex-direction: column; gap: var(--ao-spacing-5); }
+.wod-stack--sm { gap: var(--ao-spacing-3); }
+
+.wod-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ao-spacing-3);
+}
+
+.wod-actions--tight { flex-wrap: nowrap; }
+.wod-actions--center { justify-content: center; }
+
+.wod-inline {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--ao-spacing-3);
+}
+
+.wod-inline > .input { flex: 1 1 auto; min-inline-size: 0; }
+.wod-inline--wrap { flex-wrap: wrap; align-items: center; }
+
+.wod-field { display: flex; flex-direction: column; gap: var(--ao-spacing-2); }
+
+.wod-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ao-spacing-5);
+}
+
+/* ── 1 · Listing ──────────────────────────────────────────────────────────*/
+.wod-filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ao-spacing-5);
+}
+
+.wod-events {
+  list-style: none;
+  padding-block: var(--ao-spacing-2);
+}
+
+.wod-event {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-spacing-5);
+  padding-block: var(--ao-spacing-5);
+  border-bottom: 1px solid var(--ao-border-secondary);
+}
+
+.wod-event:last-child { border-bottom: 0; }
+
+.wod-event__date {
+  flex: 0 0 var(--ao-spacing-11);
+  block-size: var(--ao-spacing-11);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-brand-soft);
+  color: var(--ao-text-brand);
+}
+
+.wod-event__day {
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-2xl);
+  font-weight: var(--ao-font-bold);
+  line-height: var(--ao-leading-none);
+}
+
+.wod-event__month {
+  font-size: var(--ao-font-fixed-3xs);
+  font-weight: var(--ao-font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.wod-event__text { min-inline-size: 0; display: flex; flex-direction: column; gap: var(--ao-spacing-1); }
+
+.wod-event__title {
+  font-size: var(--ao-font-fixed-md);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
+  text-decoration: none;
+}
+
+.wod-event__meta {
+  margin: 0;
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-contrast);
+}
+
+.wod-cta { display: flex; flex-direction: column; align-items: flex-start; gap: var(--ao-spacing-4); }
+
+.wod-cta__title {
+  margin: 0;
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xl);
+  font-weight: var(--ao-font-bold);
+}
+
+.wod-cta__text { color: var(--ao-text-secondary); }
+
+/* Advert placeholders at IAB sizes — logged as token gaps (fixed ad units). */
+.wod-ad {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 300px;
+  max-inline-size: 100%;
+  border: 1px dashed var(--ao-border-contrast);
+  border-radius: var(--ao-radius-md);
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-contrast);
+  box-sizing: border-box;
+}
+
+.wod-ad--skyscraper { block-size: 600px; }
+
+/* ── 2 · Credits ──────────────────────────────────────────────────────────*/
+.wod-refine { display: flex; flex-direction: column; gap: var(--ao-spacing-4); }
+
+.wod-refine__head { display: flex; align-items: baseline; justify-content: space-between; }
+
+.wod-refine__title {
+  margin: 0;
+  font-size: var(--ao-font-fixed-sm);
+  font-weight: var(--ao-font-semibold);
+}
+
+.wod-toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--ao-spacing-5);
+}
+
+.wod-toolbar__count { margin: 0; color: var(--ao-text-secondary); }
+.wod-toolbar__sort { inline-size: var(--ao-size-3); }
+
+.wod-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--ao-size-5), 1fr));
+  gap: var(--ao-spacing-6);
+}
+
+.wod-product {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-5);
+}
+
+.wod-product__media,
+.wod-pd__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-brand-soft);
+  color: var(--ao-icon-brand);
+}
+
+.wod-product__media svg { inline-size: var(--ao-icon-size-xl); block-size: var(--ao-icon-size-xl); }
+
+.wod-product__body { display: flex; flex-direction: column; gap: var(--ao-spacing-3); flex: 1 1 auto; }
+
+.wod-product__name { margin: 0; font-size: var(--ao-font-fixed-md); font-weight: var(--ao-font-semibold); }
+.wod-product__name a { color: var(--ao-text-primary); text-decoration: none; }
+.wod-product__desc { color: var(--ao-text-secondary); font-size: var(--ao-font-fixed-xs); }
+
+.wod-product__price,
+.wod-pd__price {
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xl);
+  font-weight: var(--ao-font-bold);
+}
+
+.wod-product__price .wod-muted,
+.wod-pd__price .wod-muted { font-family: var(--ao-font-body); font-size: var(--ao-font-fixed-xs); font-weight: var(--ao-font-regular); }
+
+.wod-product__foot { display: flex; flex-direction: column; align-items: flex-start; gap: var(--ao-spacing-3); }
+
+/* ── 3 · Product ──────────────────────────────────────────────────────────*/
+.wod-pd {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: var(--ao-spacing-7);
+  align-items: start;
+}
+
+.wod-pd__media svg { inline-size: var(--ao-spacing-11); block-size: var(--ao-spacing-11); }
+
+.wod-pd__info { display: flex; flex-direction: column; align-items: flex-start; gap: var(--ao-spacing-5); }
+
+.wod-pd__buy { display: flex; align-items: center; gap: var(--ao-spacing-4); }
+
+/* A stepper in a flex row has no width of its own and its number field
+   collapses to nothing; give it the stepper's natural 128px. */
+.wod-pd__buy .input--stepper { flex: 0 0 var(--ao-size-1); }
+.wod-table .input--stepper { inline-size: var(--ao-size-1); }
+
+.wod-tabs {
+  display: flex;
+  gap: var(--ao-spacing-6);
+  border-bottom: 1px solid var(--ao-border-secondary);
+  margin-block-end: var(--ao-spacing-5);
+}
+
+.wod-tab {
+  padding: var(--ao-spacing-3) 0;
+  margin-block-end: -1px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  font: inherit;
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-secondary);
+  cursor: pointer;
+}
+
+.wod-tab--active {
+  color: var(--ao-text-brand);
+  border-bottom-color: var(--ao-border-brand);
+}
+
+.wod-tabpanel { display: flex; flex-direction: column; gap: var(--ao-spacing-4); }
+
+.wod-terms {
+  margin: 0;
+  padding-inline-start: var(--ao-spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-3);
+  line-height: var(--ao-leading-md);
+}
+
+/* ── 4–6 · Commerce ───────────────────────────────────────────────────────*/
+.wod-table { inline-size: 100%; }
+.wod-table .wod-num { text-align: end; }
+.wod-table .wod-wrap { white-space: normal; }
+
+.wod-cell-meta {
+  display: block;
+  margin-block-start: var(--ao-spacing-1);
+  font-size: var(--ao-font-fixed-3xs);
+  color: var(--ao-text-contrast);
+  white-space: normal;
+}
+
+.wod-line { display: flex; align-items: center; gap: var(--ao-spacing-4); }
+
+.wod-line__thumb {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ao-spacing-9);
+  block-size: var(--ao-spacing-9);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-brand-soft);
+  color: var(--ao-icon-brand);
+}
+
+.wod-line__name { font-weight: var(--ao-font-medium); }
+
+.wod-summary { display: flex; flex-direction: column; gap: var(--ao-spacing-3); margin: 0; }
+
+.wod-summary__row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ao-spacing-4);
+  font-size: var(--ao-font-fixed-xs);
+}
+
+.wod-summary__row dt { color: var(--ao-text-secondary); }
+.wod-summary__row dd { margin: 0; font-variant-numeric: tabular-nums; }
+.wod-summary__row--discount dd { color: var(--ao-text-success); }
+
+.wod-summary__row--total {
+  padding-block-start: var(--ao-spacing-4);
+  border-top: 1px solid var(--ao-border-secondary);
+  font-size: var(--ao-font-fixed-md);
+  font-weight: var(--ao-font-bold);
+}
+
+.wod-summary__row--total dt { color: var(--ao-text-primary); }
+
+.wod-lines { margin: 0; padding: 0; list-style: none; }
+
+.wod-lines__row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ao-spacing-4);
+  font-size: var(--ao-font-fixed-xs);
+  padding-block-end: var(--ao-spacing-4);
+  border-bottom: 1px solid var(--ao-border-secondary);
+}
+
+.wod-step__head { margin-block-end: var(--ao-spacing-5); }
+
+.wod-step__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ao-spacing-7);
+  block-size: var(--ao-spacing-7);
+  margin-inline-end: var(--ao-spacing-3);
+  border-radius: var(--ao-radius-full);
+  background: var(--ao-surface-brand);
+  color: var(--ao-text-invert);
+  font-size: var(--ao-font-fixed-xs);
+  vertical-align: middle;
+}
+
+.wod-choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ao-spacing-4);
+}
+
+/* Address choice: a Radio inside a bordered, selectable card. */
+.wod-choice {
+  display: flex;
+  gap: var(--ao-spacing-4);
+  padding: var(--ao-spacing-5);
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  cursor: pointer;
+}
+
+.wod-choice--selected {
+  border-color: var(--ao-border-brand);
+  background: var(--ao-surface-brand-soft-extra);
+}
+
+.wod-choice:focus-within { outline: 2px solid var(--ao-surface-brand); outline-offset: 2px; }
+
+.wod-choice__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-1);
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-secondary);
+}
+
+.wod-choice__body strong { color: var(--ao-text-primary); font-weight: var(--ao-font-semibold); }
+
+.wod-result__head { display: flex; align-items: center; gap: var(--ao-spacing-5); }
+
+.wod-result__icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ao-spacing-9);
+  block-size: var(--ao-spacing-9);
+  border-radius: var(--ao-radius-full);
+}
+
+.wod-result__icon svg { inline-size: var(--ao-icon-size-lg); block-size: var(--ao-icon-size-lg); }
+.wod-result__icon--success { background: var(--ao-surface-success-soft); color: var(--ao-text-success); }
+.wod-result__icon--pending { background: var(--ao-surface-warning-soft); color: var(--ao-text-warning); }
+
+.wod-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ao-spacing-5);
+  margin: 0;
+}
+
+.wod-facts dt { font-size: var(--ao-font-fixed-3xs); font-weight: var(--ao-font-medium); color: var(--ao-text-contrast); }
+.wod-facts dd { margin: var(--ao-spacing-1) 0 0; font-size: var(--ao-font-fixed-xs); }
+
+/* ── 7 · Account ──────────────────────────────────────────────────────────*/
+.wod-accnav { padding: var(--ao-spacing-4); }
+.wod-accnav ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--ao-spacing-1); }
+
+.wod-accnav__title {
+  margin: 0;
+  padding: var(--ao-spacing-3) var(--ao-spacing-4);
+  font-size: var(--ao-font-fixed-3xs);
+  font-weight: var(--ao-font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ao-text-contrast);
+}
+
+.wod-accnav__link {
+  display: block;
+  padding: var(--ao-spacing-3) var(--ao-spacing-4);
+  border-radius: var(--ao-radius-md);
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-secondary);
+  text-decoration: none;
+}
+
+.wod-accnav__link--active {
+  background: var(--ao-surface-brand-soft);
+  color: var(--ao-text-brand);
+  font-weight: var(--ao-font-semibold);
+}
+
+.wod-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ao-spacing-5);
+}
+
+/* ── 8 · Submit ───────────────────────────────────────────────────────────*/
+.wod-submitbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ao-spacing-5);
+}
+
+.wod-main .datepicker,
+.wod-main .tp { inline-size: 100%; }
+
+/* ── 9 · Received ─────────────────────────────────────────────────────────*/
+.wod-result {
+  max-inline-size: var(--ao-size-11);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ao-spacing-5);
+  padding: var(--ao-spacing-9) var(--ao-spacing-7);
+  text-align: center;
+}
+
+.wod-result .wod-result__icon { inline-size: var(--ao-spacing-11); block-size: var(--ao-spacing-11); }
+
+/* ── Responsive (container, not viewport) ─────────────────────────────────*/
+@container wod-page (max-width: 1023px) {
+  .wod-layout,
+  .wod-layout--refine,
+  .wod-layout--nav { grid-template-columns: minmax(0, 1fr); }
+
+  .wod-ad--skyscraper { display: none; }
+}
+
+@container wod-page (max-width: 767px) {
+  .wod-site__bar { flex-wrap: wrap; padding-inline: var(--ao-spacing-5); gap: var(--ao-spacing-4); }
+  .wod-site__search { order: 3; flex-basis: 100%; max-inline-size: none; margin-inline-start: 0; }
+  .wod-account { margin-inline-start: auto; }
+  .wod-account__who span { display: none; }
+  .wod-site__nav-list { padding-inline: var(--ao-spacing-5); gap: var(--ao-spacing-5); }
+  .wod-page { padding: var(--ao-spacing-5); gap: var(--ao-spacing-5); }
+  .wod-card { padding: var(--ao-spacing-5); }
+  .wod-card--flush { padding: 0; }
+  .wod-card__title--pad { padding: var(--ao-spacing-5) var(--ao-spacing-5) var(--ao-spacing-3); }
+  .wod-filters,
+  .wod-grid-2,
+  .wod-choices,
+  .wod-facts,
+  .wod-stats,
+  .wod-pd { grid-template-columns: minmax(0, 1fr); }
+  .wod-site__brand { font-size: var(--ao-font-fixed-lg); }
+
+  /* Tables stack: each row becomes a block, identity cells take a full line,
+     short values sit inline under a small label. */
+  .wod-table thead { display: none; }
+  .wod-table,
+  .wod-table tbody { display: block; }
+  .wod-table tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--ao-spacing-3) var(--ao-spacing-5);
+    padding: var(--ao-spacing-5);
+    border-bottom: 1px solid var(--ao-border-secondary);
+  }
+  .wod-table tbody tr:last-child { border-bottom: 0; }
+  .wod-table tbody td { display: block; padding: 0; border: 0; white-space: normal; }
+  .wod-table tbody td.wod-td--full { flex-basis: 100%; }
+  .wod-table tbody td.wod-num { text-align: start; }
+  .wod-table tbody td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-block-end: var(--ao-spacing-1);
+    font-size: var(--ao-font-fixed-3xs);
+    font-weight: var(--ao-font-medium);
+    color: var(--ao-text-contrast);
+  }
+  .wod-actions--tight { flex-wrap: wrap; }
+  .wod-result { padding: var(--ao-spacing-7) var(--ao-spacing-5); }
+}

@@ -1,0 +1,461 @@
+/* ArticleSteps — display options for an article's steps on the record VIEW screen
+ * ────────────────────────────────────────────────────────────────────────────
+ * Prototype only (src/prototypes/). Four options for the same data, each the
+ * record screen's "Article steps" tab, built on the listing style (Datatables
+ * Type=Orders) the ListingScreen template uses. Existing --ao-* tokens only.
+ */
+
+.as-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-5);
+  min-inline-size: 0;
+}
+
+/* Tabs on the left, the tab's own actions on the right (Figma 3821:130530). */
+.as-tabbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ao-spacing-4);
+}
+
+.as-tabbar__actions {
+  display: flex;
+  gap: var(--ao-spacing-3);
+}
+
+/* The option label — a review aid for the Figma frame, not product UI. */
+.as-note {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-2);
+  padding: var(--ao-spacing-4) var(--ao-spacing-5);
+  border: 1px dashed var(--ao-border-brand);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-info-soft);
+}
+
+.as-note__title {
+  margin: 0;
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-sm);
+  font-weight: var(--ao-font-bold);
+  color: var(--ao-text-primary);
+}
+
+.as-note__text {
+  margin: 0;
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
+}
+
+.as-note__text strong { color: var(--ao-text-primary); }
+
+/* ── Shared bits ─────────────────────────────────────────────────────────── */
+.as-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-spacing-4);
+}
+
+.as-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ao-spacing-3);
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-secondary);
+}
+
+.as-muted { color: var(--ao-text-contrast); }
+
+.as-center { text-align: center; }
+
+.as-icon {
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-icon-contrast);
+  vertical-align: middle;
+}
+
+.as-icon--on { color: var(--ao-text-success); }
+
+.as-expand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ao-spacing-7);
+  block-size: var(--ao-spacing-7);
+  padding: 0;
+  border: 0;
+  border-radius: var(--ao-radius-md);
+  background: transparent;
+  color: var(--ao-icon-contrast);
+  cursor: pointer;
+}
+
+.as-expand:hover { background: var(--ao-surface-secondary); }
+
+.as-expand [data-lucide] {
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+}
+
+/* Empty media reads as ONE quiet line, not three N/A blocks. */
+.as-media {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ao-spacing-3);
+}
+
+.as-media__slot {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ao-spacing-2);
+  padding: var(--ao-spacing-1) var(--ao-spacing-3);
+  border: 1px dashed var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-contrast);
+}
+
+.as-media__slot [data-lucide] {
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+}
+
+/* Rich step text, at reading size. */
+.as-prose {
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-md);
+  color: var(--ao-text-secondary);
+}
+
+.as-prose p, .as-prose ul { margin: 0 0 var(--ao-spacing-4); }
+.as-prose h4 {
+  margin: var(--ao-spacing-5) 0 var(--ao-spacing-2);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
+}
+.as-prose strong { color: var(--ao-text-primary); }
+
+.as-prose--clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  overflow: hidden;
+}
+
+.as-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ao-spacing-2);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-brand);
+  text-decoration: none;
+}
+
+.as-link [data-lucide] {
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+}
+
+/* ── A · Expandable rows ─────────────────────────────────────────────────── */
+.as-detail > td {
+  background: var(--ao-datatable-table-expanded-bg);
+}
+
+.as-detail__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-4);
+  padding: var(--ao-spacing-2) 0 var(--ao-spacing-3);
+  /* Width 0 + min 100%: the detail fills its row but never WIDENS the table — a clamped
+   * -webkit-box asks for its max-content width, which pushed the Live column off the edge. */
+  inline-size: 0;
+  min-inline-size: 100%;
+}
+
+/* Only the detail panel takes the expanded tint — never the step row above it (designer,
+ * 2026-09-25). With Show details on, EVERY row is open, so tinting the rows too would turn the
+ * whole table the expanded colour and the panels would stop reading as panels. */
+.as-page .as-detail > td { background: var(--ao-datatable-table-expanded-bg); }
+
+/* ── B · List + inspector ────────────────────────────────────────────────── */
+.as-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--ao-size-8);
+  gap: var(--ao-spacing-5);
+  align-items: start;
+}
+
+.as-row--selected > td {
+  background: var(--ao-datatable-table-expanded-bg);
+}
+
+.as-row--selected > td:first-child {
+  box-shadow: inset 2px 0 0 var(--ao-border-brand);
+}
+
+.as-inspector {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-primary);
+}
+
+.as-inspector__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-5);
+  border-bottom: 1px solid var(--ao-border-secondary);
+}
+
+.as-inspector__eyebrow {
+  margin: 0 0 var(--ao-spacing-1);
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-contrast);
+}
+
+.as-inspector__title {
+  margin: 0;
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-sm);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
+}
+
+.as-inspector__actions {
+  display: flex;
+  gap: var(--ao-spacing-1);
+  flex-shrink: 0;
+}
+
+.as-inspector__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-3);
+  padding: var(--ao-spacing-5);
+  border-bottom: 1px solid var(--ao-border-secondary);
+}
+
+.as-inspector__section:last-child { border-bottom: 0; }
+
+.as-inspector__label {
+  margin: 0;
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--ao-text-contrast);
+}
+
+.as-dl {
+  display: grid;
+  grid-template-columns: var(--ao-size-1) minmax(0, 1fr);
+  gap: var(--ao-spacing-3) var(--ao-spacing-4);
+  margin: 0;
+  font-size: var(--ao-font-fixed-xs);
+}
+
+.as-dl dt { color: var(--ao-text-contrast); }
+.as-dl dd { margin: 0; color: var(--ao-text-primary); }
+
+/* ── C · Step cards ──────────────────────────────────────────────────────── */
+.as-cards {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--ao-border-secondary);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface-primary);
+}
+
+.as-cards__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ao-spacing-4);
+  padding: var(--ao-spacing-4) var(--ao-spacing-5);
+  border-bottom: 1px solid var(--ao-border-secondary);
+}
+
+.as-cards__count {
+  margin: 0;
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-contrast);
+}
+
+.as-cards__count strong { color: var(--ao-text-secondary); }
+
+.as-step {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--ao-spacing-4);
+  padding: var(--ao-spacing-4) var(--ao-spacing-5);
+  border-bottom: 1px solid var(--ao-border-secondary);
+}
+
+.as-step:last-child { border-bottom: 0; }
+
+.as-step__handle {
+  padding-block-start: var(--ao-spacing-1);
+  color: var(--ao-icon-contrast);
+  cursor: grab;
+}
+
+.as-step__handle [data-lucide] {
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+}
+
+.as-step__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ao-spacing-7);
+  block-size: var(--ao-spacing-7);
+  border-radius: var(--ao-radius-full);
+  background: var(--ao-surface-secondary);
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xxs);
+  font-weight: var(--ao-font-bold);
+  color: var(--ao-text-secondary);
+}
+
+.as-step__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-2);
+  min-inline-size: 0;
+}
+
+.as-step__title {
+  margin: 0;
+  font-family: var(--ao-font-title);
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-semibold);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-primary);
+}
+
+.as-step__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ao-spacing-2);
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-contrast);
+}
+
+.as-step__excerpt {
+  margin: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: var(--ao-font-fixed-xs);
+  line-height: var(--ao-leading-sm);
+  color: var(--ao-text-secondary);
+}
+
+.as-step__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-spacing-1);
+}
+
+.as-dot::before {
+  content: "·";
+  margin-inline-end: var(--ao-spacing-2);
+  color: var(--ao-text-contrast);
+}
+
+/* ── D · Title + excerpt listing ─────────────────────────────────────────── */
+.as-titlecell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-1);
+  max-inline-size: var(--ao-size-11);
+}
+
+.as-titlecell__title {
+  font-weight: var(--ao-font-semibold);
+  color: var(--ao-text-primary);
+}
+
+.as-titlecell__excerpt {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: var(--ao-font-fixed-xxs);
+  line-height: var(--ao-leading-xs);
+  color: var(--ao-text-contrast);
+}
+
+.as-assets {
+  display: inline-flex;
+  gap: var(--ao-spacing-2);
+}
+
+.as-assets [data-lucide] {
+  width: var(--ao-icon-size-sm);
+  height: var(--ao-icon-size-sm);
+  color: var(--ao-border-secondary);
+}
+
+.as-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-1);
+}
+
+.as-stack__sub {
+  font-size: var(--ao-font-fixed-xxs);
+  color: var(--ao-text-contrast);
+}
+
+/* ── Static-prototype table sizing ───────────────────────────────────────────
+ * Datatables Type=Orders is `table-layout: fixed`, with widths written at runtime by
+ * ListingScreen.js's column fit. These pages are static, so they fall back to auto layout:
+ * tight columns shrink-wrap and the title column takes the slack and wraps. The real build
+ * would use the listing's fit, where a long title ellipsises instead. */
+.as-page .datatables--orders .table { table-layout: auto; }
+
+.as-page .table .as-tight {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.as-page .table .as-wrap,
+.as-page .table .as-detail td {
+  white-space: normal;
+}
+
+.as-page .table .as-wrap { min-inline-size: var(--ao-size-3); }
+
+/* Two-word headers (Design frame, Publish start) may break rather than widen the table. */
+.as-page .table thead th.as-tight { white-space: normal; }
+
+/* Option A keeps every row at the listing's normal height, so a long title ellipsises on one line
+ * (as the listing's own column fit does) instead of wrapping and growing the row. */
+.as-titlecol { width: 100%; }  /* takes all the slack the shrink-wrapped columns leave */
+
+.as-trunc {
+  display: block;
+  /* 0 + min 100%: the title never widens the table; it fills its column and ellipsises there. */
+  inline-size: 0;
+  min-inline-size: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

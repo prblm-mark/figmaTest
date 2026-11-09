@@ -1,0 +1,195 @@
+/* WhatsOnListing — prototype-only layout.
+ * ────────────────────────────────────────────────────────────────────────────
+ * Composes existing components; restyles none of them. Everything here is
+ * either a small layout wrapper the screens need or a contextual override
+ * scoped under `.wol-*`, so nothing leaks into the templates it sits on.
+ * Tokens only — gaps, if any, are logged in WhatsOnListing.token-gaps.md.
+ */
+
+/* Visually hidden text for header cells that carry no visible label (the
+   row-actions column). base.css has no utility for this. */
+.wol-sr {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── Listing screens ──────────────────────────────────────────────────────
+ * The listing datatable is `table-layout: fixed` because ListingScreen.js
+ * writes every column width from a measuring pass. These tables are static
+ * (the template is deliberately not used — see _generate.mjs), so nothing
+ * writes those widths and fixed layout would split the table into equal
+ * columns. Auto layout lets the hug columns shrink-wrap as intended. */
+.wol-listing .datatables--orders .table {
+  table-layout: auto;
+}
+
+/* Table.css sets `white-space: nowrap` on every cell; the listing template
+   gets away with it because its fit truncates each column. Here the text
+   columns wrap instead, so the row actions stay on screen; the short
+   (hug) columns keep nowrap. */
+.wol-listing .datatables--orders .table tbody td:not(.datatables__col--hug) {
+  white-space: normal;
+}
+
+/* Title / From cells carry a second, quieter line. */
+.wol-cell-title .datatables__record-link {
+  font-weight: var(--ao-font-medium);
+}
+
+.wol-cell-meta {
+  display: block;
+  margin-block-start: var(--ao-spacing-1);
+  font-size: var(--ao-font-fixed-xs);
+  color: var(--ao-text-contrast);
+}
+
+.wol-row-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--ao-spacing-2);
+}
+
+.wol-waiting,
+.wol-muted {
+  color: var(--ao-text-contrast);
+}
+
+/* A row being removed after Save & Publish / Reject. */
+.wol-listing tr[data-wol-gone] {
+  display: none;
+}
+
+/* ── Details modal ────────────────────────────────────────────────────────
+ * Label / value pairs, the same two-column read the record screen uses for
+ * its facts: label left at a fixed share, value takes the rest. */
+.wol-detail {
+  display: grid;
+  gap: var(--ao-spacing-4);
+  margin: 0;
+}
+
+.wol-detail__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: var(--ao-spacing-4);
+}
+
+.wol-detail__row dt {
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-contrast);
+}
+
+.wol-detail__row dd {
+  margin: 0;
+  font-size: var(--ao-font-fixed-sm);
+  color: var(--ao-text-primary);
+}
+
+/* ── Reject modal ─────────────────────────────────────────────────────────*/
+.wol-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-5);
+}
+
+.wol-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-spacing-2);
+}
+
+.wol-field__label {
+  font-size: var(--ao-font-fixed-xs);
+  font-weight: var(--ao-font-medium);
+  color: var(--ao-text-primary);
+}
+
+/* ── Narrow screens ───────────────────────────────────────────────────────
+ * cs-page is the screen-width signal (CLAUDE.md §4a). Below 600px the
+ * listing rows stack into blocks and the Details pairs stack too. */
+@container cs-page (max-width: 599px) {
+  .wol-detail__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ao-spacing-1);
+  }
+
+  /* Rows become stacked blocks: identity lines and the actions take a full
+     line, the short values sit inline with a small label. The listing
+     template would hide these behind its kebab detail row instead; that
+     needs ListingScreen.js, which this prototype does not use. */
+  .wol-listing .datatables--orders .table thead {
+    display: none;
+  }
+
+  .wol-listing .datatables--orders .table,
+  .wol-listing .datatables--orders .table tbody {
+    display: block;
+  }
+
+  .wol-listing .datatables--orders .table tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ao-spacing-2) var(--ao-spacing-4);
+    padding: var(--ao-spacing-4);
+    border-bottom: 1px solid var(--ao-border-secondary);
+  }
+
+  .wol-listing .datatables--orders .table tbody td {
+    display: block;
+    height: auto;
+    padding: 0;
+    border: 0;
+  }
+
+  .wol-listing .datatables--orders .table tbody td.wol-td--full {
+    flex-basis: 100%;
+  }
+
+  .wol-listing .datatables--orders .table tbody td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-block-end: var(--ao-spacing-1);
+    font-size: var(--ao-font-fixed-xs);
+    font-weight: var(--ao-font-medium);
+    color: var(--ao-text-contrast);
+  }
+
+  .wol-row-actions {
+    flex-wrap: wrap;
+  }
+
+  /* A Spent credit has no actions; its empty cell must not leave a gap line. */
+  .wol-listing .datatables--orders .table tbody td:has(> .wol-row-actions:empty) {
+    display: none;
+  }
+}
+
+/* ── Capture mode (?capture=tall) ─────────────────────────────────────────
+ * The CC shell is a fixed-height app, so a capture would stop at one
+ * viewport. Same four rules as ControlRecordScreen.css's block, repeated here
+ * because the two listing screens do not load that file. */
+html[data-capture="tall"],
+html[data-capture="tall"] body.cc-control {
+  height: auto;
+  min-height: 0;
+}
+
+html[data-capture="tall"] .cc-control__sidebar {
+  height: auto;
+}
+
+html[data-capture="tall"] .cc-control__main {
+  min-height: 0;
+}
+
+html[data-capture="tall"] .cc-control__page {
+  overflow: visible;
+  scrollbar-gutter: auto;
+}
