@@ -24,6 +24,8 @@
     nested: params.get('nested') || '',
     dirty: false,
     vals: {},
+    secOpen: {},
+    clip: null,
     saveState: 'idle',   // idle | saving | saved
     bp: 'fluid',
     panelW: readW()
@@ -68,12 +70,18 @@
     { id: 'n3', name: 'Row 3', cells: [mk('n-levels', 'Levels DE', 'Levels', 1638, 6), mk('n-search', 'Search Image', 'Button', 2895, 2)] },
     { id: 'n4', name: 'Row 4', cells: [mk('n-menu', 'Menu cell', 'Menu', 3099, 12)] } ] };
   var HEADER_NESTED = headerCell.nested;
+  headerCell.doType = 'Row';
   var footerCell = D.ROWS[6].cells[0];
   footerCell.kind = 'de'; footerCell.type = 'Menu'; delete footerCell.nested; delete footerCell.usedIn;
   /* Fuller design-object list for the picker (first page as seen on lion; 67 in total there). */
   var DO_LIST = [['2016 RB Navigation', 'Row'], ['2016 Gill Test', 'Row'], ['2016 RB Article Prime Content', 'Cell'], ['2016 RB Article Related Content', 'Cell'],
     ['2016 RB Article Skin', 'Row'], ['2016 RB Blog Skin', 'Row'], ['2016 RB Burger Menu', 'Row'], ['2016 RB Campaign Navigation', 'Row'],
     ['2016 Footer', 'Row'], ['Newsletter promo', 'Cell'], ['Article sidebar', 'Cell'], ['Event detail header', 'Row'], ['Two-column landing', 'Row']];
+  function doTypeOf(name) { var d0 = DO_LIST.filter(function (x) { return x[0] === name; })[0]; return d0 ? d0[1] : 'Row'; }
+  /* Design Scripts picker list (first entries as on lion, plus this DO's own script). */
+  var SCRIPT_LIST = [['Promo strip script', 'Content HTML'], ['19 DIQ Dynamic Form', 'ColdFusion'], ['19 RMM Magazine Filters (CF)', 'ColdFusion'],
+    ['19 RMM Magazine Filters (HTML)', 'Content HTML'], ['2016 CS Google Map Embed', 'Content HTML'], ['2019 DataIQ Filters', 'ColdFusion'],
+    ['2019 LBR Predictive Search', 'ColdFusion'], ['2023 AI Chat', 'ColdFusion'], ['22 ChartJS HTML', 'Content HTML'], ['22 Apex Chart - Line', 'Content HTML']];
   function nestedCell() { return S.nested ? D.ROWS.reduce(function (a, r) { return a || r.cells.filter(function (c) { return c.id === S.nested && c.nested; })[0]; }, null) : null; }
   function canvasRows() { var n = nestedCell(); return n ? n.nested.rows : D.ROWS; }
   function allRows() {
@@ -94,20 +102,22 @@
   }
   function cellHtml(c, r) {
     var selected = S.select === c.id;
+    /* Lion: the green / orange status is a toggle the editor sets, written straight away (not via Save). */
     var status = c.incomplete
-      ? '<span class="cc-p-doe__status cc-p-doe__status--incomplete" title="Cell incomplete">' + ic('circle-dashed') + '</span>'
-      : '<span class="cc-p-doe__status" title="Cell complete">' + ic('circle-check') + '</span>';
+      ? '<button type="button" class="cc-p-doe__status cc-p-doe__status--incomplete" data-act="toggleDone" data-id="' + c.id + '" title="Cell incomplete — click to mark complete" aria-label="Cell incomplete, mark complete">' + ic('circle-dashed') + '</button>'
+      : '<button type="button" class="cc-p-doe__status" data-act="toggleDone" data-id="' + c.id + '" title="Cell complete — click to mark incomplete" aria-label="Cell complete, mark incomplete">' + ic('circle-check') + '</button>';
     var head;
     if (on(1)) {
       head = '<span class="cc-p-doe__el-icon cc-p-doe__el-icon--' + c.kind + '">' + ic(elIcon(c)) + '</span>' +
         '<span class="cc-p-doe__name">' + esc(c.name) + '</span>' +
-        '<span class="cc-p-doe__type">' + esc(c.type) + '</span>';
+        '<span class="cc-p-doe__type">' + (c.type ? esc(c.type) : 'No content') + '</span>';
     } else {
       head = '<span class="cc-p-doe__name">' + esc(c.name) + '</span>';
     }
     var badges = '';
     if (on(4)) {
-      if (c.incomplete) badges += '<span class="badge badge--warning">' + ic('circle-dashed') + 'Needs content</span>';
+      if (c.incomplete) badges += '<button type="button" class="badge badge--warning cc-p-doe__badge-btn" data-act="toggleDone" data-id="' + c.id + '" title="Marked incomplete — click to mark complete">' + ic('circle-dashed') + 'Incomplete</button>';
+      if (!c.type) badges += '<span class="badge badge--neutral">' + ic('square-dashed') + 'Empty</span>';
       if (c.hiddenAt) badges += '<span class="badge badge--neutral">' + ic('eye-off') + 'Hidden at ' + c.hiddenAt.join(', ') + '</span>';
       if (c.kind === 'do') badges += '<span class="badge cc-p-doe__badge--do">' + ic('component') + 'Used in ' + (c.nested ? c.nested.usedIn : c.usedIn) + '</span>';
     }
@@ -116,48 +126,161 @@
     var tools = tool('sliders-horizontal', 'Cell properties', 'cellProps', c.id) +
       tool(on(1) ? 'pencil' : 'square-pen', 'Edit cell content', 'content', c.id) +
       (c.kind === 'do' && c.nested ? tool(on(1) ? 'log-in' : 'search', on(1) ? 'Go into this design object' : 'Open the nested Design Object', 'nested', c.id) : '') +
-      tool('eraser', 'Clear', 'clear', c.id) +
+      (hasClearable(c) ? tool('eraser', 'Clear', 'clear', c.id) : '') +
       '<span class="cc-p-doe__menu-wrap">' + tool('ellipsis-vertical', 'Cell actions', 'menu', c.id) + '</span>';
     var span = BASE_SPAN[c.id] || (S.nested && c.span) || 12;
-    return '<section class="record-section cc-p-doe__cell' + (selected ? ' is-selected' : '') + (c.incomplete ? ' is-incomplete' : '') + '" style="--span:' + span + '" data-cell="' + c.id + '" title="' + esc(c.name) + ' (DCC: ' + c.dcc + ')">' +
-      '<div class="cc-p-doe__cell-head">' + '<span class="cc-p-doe__grip" title="Drag to move">' + ic('grip-vertical') + '</span>' + head +
+    return '<section class="record-section cc-p-doe__cell' + (selected ? ' is-selected' : '') + (c.incomplete ? ' is-incomplete' : '') + (hiddenNow(c) ? ' is-hidden-bp' : '') + '" style="--span:' + span + '" data-cell="' + c.id + '" title="' + esc(c.name) + ' (DCC: ' + c.dcc + ')">' +
+      '<div class="cc-p-doe__cell-head">' + '<span class="cc-p-doe__grip" data-doe-grip title="Drag to move">' + ic('grip-vertical') + '</span>' + head +
         (badges ? '<span class="cc-p-doe__badges">' + badges + '</span>' : '') + (showStatus && !badges ? status : '') + '</div>' +
       '<div class="cc-p-doe__tools">' + tools + '</div>' +
     '</section>';
   }
+  /* Clear (lion, 2026-11-10): a menu of Clear Content / Clear Properties / Clear Both. */
+  /* Lion: the Clear button shows only on a cell with content. */
+  function hasClearable(c) { return !!c.type; }
+  function clearCell(id, what) {
+    var hit = findCell(id); if (!hit) return;
+    var c = hit.cell;
+    if (what === 'both') { blank(c); markDirty(); return; }
+    if (what === 'content') {
+      if (c.kind === 'do') delete c.nested;     // the design object is taken out of the cell
+      c.kind = 'de'; c.type = '';               // the complete / incomplete flag is untouched (as lion)
+    }
+    if (what === 'props') {
+      /* lion keeps only identity and content: Name, Custom ID, Custom Class */
+      dropVals(id, /\|(name|customId|customClass|b:Name|b:Custom ID|b:Custom Class)$/);
+      delete c.hiddenAt;
+    }
+    markDirty();
+  }
+
+  /* Moving cells (drag and drop + the menu's moves). Lion's rules: a cell drops beside any cell of a
+     row that takes cells, or at the end of such a row; a row left empty goes; a design object alone in
+     its row moves the whole row, above or below another row (its row takes no cells). */
+  /* Lion's rule (design-object-editor.js §4): only a design object of TYPE Row, alone in its row, is a
+     "layout" cell — its row has no row settings and takes no cells, and the cell moves as the row. A
+     Cell-type design object behaves as any other cell. */
+  function isLayoutCell(c) { return c.kind === 'do' && (c.doType || doTypeOf(c.type)) === 'Row'; }
+  function isCellRow(r) { return !(r.cells.length === 1 && isLayoutCell(r.cells[0])); }
+  function rowMover(r, c) { return r.cells.length === 1 && isLayoutCell(c); }
+  function loneLayout(c) { var at = locate(c.id); return !!at && rowMover(canvasRows()[at.i], c); }
+  /* Delete / Cut / Copy / Paste (lion §6). Cut keeps a copy and blanks the cell; Paste puts a fresh copy
+     in the target cell; Delete removes it, and a row left empty goes. Properties travel with the copy. */
+  function valsOf(id) { var o = {}; Object.keys(S.vals).forEach(function (k) { if (k.indexOf(id + '|') === 0) o[k.slice(id.length + 1)] = S.vals[k]; }); return o; }
+  function dropVals(id, keep) { Object.keys(S.vals).forEach(function (k) { if (k.indexOf(id + '|') === 0 && !(keep && keep.test(k))) delete S.vals[k]; }); }
+  function blank(c) { delete c.nested; delete c.hiddenAt; c.kind = 'de'; c.type = ''; c.name = 'Blank Cell'; c.dcc = 0; c.incomplete = false; dropVals(c.id); }
+  var newSeq = 0;
+  function cellOp(op, id) {
+    var at = locate(id), rows = canvasRows(); if (!at) return;
+    var c = rows[at.i].cells[at.j];
+    if (op === 'copy' || op === 'cut') S.clip = { cell: JSON.parse(JSON.stringify(c)), vals: valsOf(id) };
+    if (op === 'cut') blank(c);
+    if (op === 'paste' && S.clip) {
+      var n = JSON.parse(JSON.stringify(S.clip.cell));
+      n.id = 'c-paste-' + (++newSeq); n.dcc = 0;
+      if (S.clip.cell.nested) n.nested = S.clip.cell.nested === HEADER_NESTED || S.clip.cell.type === '2016 RB Navigation' ? HEADER_NESTED : n.nested;
+      rows[at.i].cells[at.j] = n;
+      Object.keys(S.clip.vals).forEach(function (k) { S.vals[n.id + '|' + k] = S.clip.vals[k]; });
+      dropVals(id);
+      S.select = n.id;
+    }
+    if (op === 'delete') {
+      rows[at.i].cells.splice(at.j, 1);
+      if (!rows[at.i].cells.length) rows.splice(at.i, 1);
+      dropVals(id);
+      if (S.select === id) { S.select = ''; S.panel = ''; }
+    }
+    if (op !== 'copy') markDirty();
+  }
+  function moveCell(fromRow, fromIdx, toRow, toIdx) {
+    var rows = canvasRows(), src = rows[fromRow];
+    var cell = src.cells.splice(fromIdx, 1)[0];
+    if (toRow === fromRow && toIdx > fromIdx) toIdx--;
+    rows[toRow].cells.splice(toIdx, 0, cell);
+    if (!src.cells.length) rows.splice(fromRow, 1);
+    markDirty();
+  }
+  function moveRow(fromRow, toRow) {
+    var rows = canvasRows(), row = rows.splice(fromRow, 1)[0];
+    rows.splice(toRow > fromRow ? toRow - 1 : toRow, 0, row);
+    markDirty();
+  }
+  function locate(id) {
+    var rows = canvasRows();
+    for (var i = 0; i < rows.length; i++) for (var j = 0; j < rows[i].cells.length; j++) if (rows[i].cells[j].id === id) return { i: i, j: j };
+    return null;
+  }
+  /* Menu moves: Left/Right swap with the neighbour; Up/Down send the cell to the end of the row above /
+     below (a lone design object moves its row instead). */
+  function menuMove(id, dir) {
+    var at = locate(id), rows = canvasRows(); if (!at) return;
+    var r = rows[at.i], c = r.cells[at.j];
+    if (dir === 'left') moveCell(at.i, at.j, at.i, at.j - 1);
+    else if (dir === 'right') moveCell(at.i, at.j, at.i, at.j + 2);
+    else if (rowMover(r, c)) {
+      var row = rows.splice(at.i, 1)[0];
+      rows.splice(Math.max(0, Math.min(rows.length, at.i + (dir === 'up' ? -1 : 1))), 0, row);
+      markDirty();
+    } else {
+      /* to the end of the nearest row above / below that can take cells (lion's moveVertical) */
+      var step = dir === 'up' ? -1 : 1;
+      for (var k = at.i + step; k >= 0 && k < rows.length; k += step) {
+        if (!isCellRow(rows[k])) continue;
+        moveCell(at.i, at.j, k, rows[k].cells.length);
+        break;
+      }
+    }
+  }
+
   /* Lion only offers the moves that are possible: Left/Right when there is a neighbour on that side,
-     Up below the top row, Down above the bottom row (checked on every cell, 2026-11-10). */
+     Up / Down only towards a row that can take cells (checked on every cell + lion's code, 2026-11-10). */
   function moveItems(id) {
     var rows = canvasRows(), out = [];
     rows.forEach(function (r, ri) {
       var ci = r.cells.map(function (c) { return c.id; }).indexOf(id);
       if (ci === -1) return;
-      if (ci > 0) out.push(['arrow-left', 'Move Left']);
-      if (ci < r.cells.length - 1) out.push(['arrow-right', 'Move Right']);
-      if (ri > 0) out.push(['arrow-up', 'Move Up']);
-      if (ri < rows.length - 1) out.push(['arrow-down', 'Move Down']);
+      if (ci > 0) out.push(['arrow-left', 'Move Left', 'moveLeft']);
+      if (ci < r.cells.length - 1) out.push(['arrow-right', 'Move Right', 'moveRight']);
+      /* Up / Down only when a row that can take cells lies that way (lion's actionItems) */
+      if (rows.slice(0, ri).some(isCellRow)) out.push(['arrow-up', 'Move Up', 'moveUp']);
+      if (rows.slice(ri + 1).some(isCellRow)) out.push(['arrow-down', 'Move Down', 'moveDown']);
     });
     return out;
   }
   function cellMenu() {
     /* '__doc' = the editor bar's ⋮ (design-object actions); anything else is a cell id. */
+    var clearFor = S.menu.indexOf('clear:') === 0 ? S.menu.slice(6) : '';
+    if (clearFor) {
+      return '<div class="dropdown__panel cc-p-doe__menu" role="menu"><ul class="dropdown__list">' +
+        [['eraser', 'Clear Content', 'clearContent'], ['brush-cleaning', 'Clear Properties', 'clearProps'], ['circle-x', 'Clear Both', 'clearBoth']].map(function (i) {
+          return '<li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-act="' + i[2] + '" data-id="' + clearFor + '">' + ic(i[0]) + '<span data-text="' + i[1] + '">' + i[1] + '</span></button></li>';
+        }).join('') + '</ul></div>';
+    }
     var items = S.menu === '__doc'
       /* Named so they can't be mistaken for editing the design object's layout (Mark, 2026-11-10). */
       ? [['plus', 'Create new design object'], ['file-pen-line', 'Edit details'], null, ['copy', 'Copy design object'], ['list', 'Go to list']]
-      : [['plus', 'Add Cell', 'addCell'], ['trash-2', 'Delete Cell'], ['scissors', 'Cut Content'], ['copy', 'Copy Content']].concat(moveItems(S.menu));
+      : [['plus', 'Add Cell', 'addCell'], ['trash-2', 'Delete Cell', 'deleteCell'], ['scissors', 'Cut Content', 'cutCell'], ['copy', 'Copy Content', 'copyCell']]
+          .concat(S.clip ? [['clipboard-paste', 'Paste Content', 'pasteCell']] : []).concat(moveItems(S.menu));
     return '<div class="dropdown__panel cc-p-doe__menu" role="menu">' + '<ul class="dropdown__list">' + items.map(function (i) {
       if (!i) return '<li role="separator" class="cc-p-doe__menu-sep"></li>';
-      return '<li role="none"><button type="button" class="dropdown-item dropdown-item--sm" role="menuitem"' + (i[2] ? ' data-act="' + i[2] + '" data-id="' + S.menu + '"' : ' data-act="noop"') + '>' + ic(i[0]) + '<span data-text="' + i[1] + '">' + i[1] + '</span></button></li>';
+      return '<li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem"' + (i[2] ? ' data-act="' + i[2] + '" data-id="' + S.menu + '"' : ' data-act="noop"') + '>' + ic(i[0]) + '<span data-text="' + i[1] + '">' + i[1] + '</span></button></li>';
     }).join('') + '</ul></div>';
   }
+  function bpLabel() { var b = D.BREAKPOINTS.filter(function (x) { return x.id === S.bp; })[0]; return b ? b.label : 'Fluid'; }
+  function bpWidth() { var b = D.BREAKPOINTS.filter(function (x) { return x.id === S.bp; })[0]; return b && b.width; }
+  function hiddenNow(c) { return !!(c.hiddenAt && c.hiddenAt.indexOf(bpLabel()) !== -1); }
   function rowHtml(r, n) {
     var sel = S.select === r.id;
     /* Lion: the row that holds a nested design object has no row-properties button; every other
        row (including all rows inside a nested DO) has one. */
-    var gutter = !r.cells.some(function (c) { return c.kind === 'do'; });
+    var gutter = isCellRow(r);
     return '<div class="cc-p-doe__row' + (gutter ? ' cc-p-doe__row--gutter' : '') + (sel ? ' is-selected' : '') + '" data-row="' + r.id + '">' +
       (on(5) ? '<span class="cc-p-doe__row-tag">' + ic('rows-3') + 'Row ' + (n + 1) + ' · ' + r.cells.length + (r.cells.length === 1 ? ' cell' : ' cells') + '</span>' : '') +
-      '<div class="cc-p-doe__cells">' + r.cells.map(function (c) { return cellHtml(c, r); }).join('') + '</div>' +
+      '<div class="cc-p-doe__cells">' + r.cells.map(function (c) {
+        /* lion draws a cell hidden at the current breakpoint with display:none; step 4 keeps it, faded */
+        if (hiddenNow(c) && !on(4)) return '';
+        return cellHtml(c, r);
+      }).join('') + '</div>' +
       (gutter ? '<div class="cc-p-doe__gutter">' + tool('sliders-horizontal', 'Row ' + (n + 1) + ' properties', 'rowProps', r.id) + '</div>' : '') +
     '</div>';
   }
@@ -187,7 +310,7 @@
   function grid(n, inner) { return '<div class="cc-p-doe__pgrid cc-p-doe__pgrid--' + n + '">' + inner + '</div>'; }
   function sub(t) { return '<p class="cc-p-doe__psub">' + t + '</p>'; }
 
-  function panelShell(title, body) {
+  function panelShell(title, body, saveAct) {
     return '<aside class="cc-p-doe__panel' + (on(6) ? ' cc-p-doe-insp' : '') + '" aria-label="' + title + '">' +
       (on(6) ? '<div class="cc-p-doe__resize" role="separator" aria-orientation="vertical" aria-label="Resize panel" tabindex="0" title="Drag to resize"></div>' : '') +
       '<div class="cc-p-doe__panel-head"><h2 class="cc-p-doe__panel-title">' + title + '</h2>' +
@@ -195,7 +318,7 @@
         /* Docked panel: changes are saved with the editor bar's Save, so the panel only closes. */
         ? '<button type="button" class="cc-p-doe__ghost" data-act="close" aria-label="Close panel" title="Close">' + ic('x') + '</button></div>'
         : '<button type="button" class="btn btn--tertiary btn--sm" data-act="close">Cancel</button>' +
-          '<button type="button" class="btn btn--primary btn--sm" data-act="close">Save</button></div>') +
+          '<button type="button" class="btn btn--primary btn--sm" data-act="' + (saveAct || 'close') + '">Save</button></div>') +
       '<div class="cc-p-doe__panel-body">' + body + '</div></aside>';
   }
   function cellPropsPanel(c) {
@@ -220,12 +343,33 @@
       group('Main', select('Content Security Right', 'Non-secured')) +
       group('Outer row: Fluid', grid(2, select('Horizontal Padding', 'Medium') + select('Vertical Padding', 'Medium'))) +
       group('Breakpoint specific: Fluid', grid(2, select('Horizontal Align', 'Center') + '<div class="cc-p-doe__pcheck">' + checkbox('Sticky') + '</div>') +
-        grid(3, input('Width') + input('Min-Width') + input('Max-Width')) +
+        /* lion fills these defaults as the panel opens: Width 100%, Max-Width 1280px, Align Center */
+        grid(3, input('Width', '100%') + input('Min-Width') + input('Max-Width', '1280px')) +
         '<p class="cc-p-doe__plabel">Background image</p><div class="cc-p-doe__pinline"><span>None</span><button type="button" class="btn btn--secondary btn--sm">Choose</button></div>' +
         input('Background colour') + input('Outer Row CSS') + input('Inner Row CSS')));  // Wrap removed: deprecated (Mark, 2026-11-10)
   }
+  /* Add Cell (lion §12): Above / Below unless the design object being edited is a Cell type; Left / Right
+     unless the selected cell is a lone Row-type design object. Adds a Blank Cell. */
   function addCellPanel() {
-    return panelShell('Add Cell', radio('add', 'Above') + radio('add', 'Below', true) + radio('add', 'Left') + radio('add', 'Right'));
+    var hit = findCell(S.select), nc = nestedCell();
+    var vertical = !(nc && (nc.doType || doTypeOf(nc.type)) === 'Cell');
+    var lone = hit && loneLayout(hit.cell);
+    var opts = [];
+    if (vertical) opts.push(['top', 'Above'], ['bottom', 'Below']);
+    if (!lone) opts.push(['left', 'Left'], ['right', 'Right']);
+    var def = vertical ? 'bottom' : 'left';
+    var radios = opts.map(function (o) {
+      return '<label class="radio"><input type="radio" class="radio__input" name="add" value="' + o[0] + '"' + (o[0] === def ? ' checked' : '') + '><span class="radio__indicator"></span><span class="radio__label"><span class="radio__label-text">' + o[1] + '</span></span></label>';
+    }).join('');
+    return panelShell('Add Cell', radios + (on(6) ? '<button type="button" class="btn btn--primary btn--sm cc-p-doe__add-go" data-act="addCellSave">' + ic('plus') + 'Add cell</button>' : ''), 'addCellSave');
+  }
+  function addCellAt(where) {
+    var at = locate(S.select), rows = canvasRows(); if (!at) return;
+    var n = { id: 'c-new-' + (++newSeq), name: 'Blank Cell', kind: 'de', type: '', dcc: 0, span: 12 };
+    if (where === 'top' || where === 'bottom') rows.splice(at.i + (where === 'bottom' ? 1 : 0), 0, { id: 'r-new-' + newSeq, name: 'Row', cells: [n] });
+    else rows[at.i].cells.splice(at.j + (where === 'right' ? 1 : 0), 0, n);
+    S.select = n.id; S.panel = '';
+    markDirty();
   }
   function contentPanel(c) {
     var current = c.kind === 'de' ? c.type : '';
@@ -296,19 +440,20 @@
     return '<div class="input"><div class="input__wrap"><input type="text" class="input__control" data-k="' + esc(k) + '" value="' + esc(vget(k, s[2])) + '" aria-label="' + esc(s[0]) + '"></div></div>';
   }
   /* Design Objects picker, as on lion: search, Name/Type table with radios, paging, Cancel / Select. */
-  function doPickerHtml(c) {
-    var rows = DO_LIST.map(function (d) {
+  function doPickerHtml(c, kind) {
+    var isDo = kind !== 'script', list = isDo ? DO_LIST : SCRIPT_LIST;
+    var rows = list.map(function (d) {
       var on1 = d[0] === c.type;
       return '<tr class="cc-p-doe__dop-row' + (on1 ? ' is-on' : '') + '" data-dop="' + esc(d[0].toLowerCase()) + '"><td><label class="radio"><input type="radio" class="radio__input" name="dop" value="' + esc(d[0]) + '"' + (on1 ? ' checked' : '') + '><span class="radio__indicator"></span></label></td><td>' + esc(d[0]) + '</td><td>' + d[1] + '</td></tr>';
     }).join('');
     return '<div class="modal-overlay modal-overlay--open cc-p-doe__modal" role="dialog" aria-modal="true" aria-labelledby="doe-dop-title">' +
-      '<div class="modal modal--lg"><div class="modal__header"><h2 class="modal__title" id="doe-dop-title">Design Objects</h2>' +
+      '<div class="modal modal--lg"><div class="modal__header"><h2 class="modal__title" id="doe-dop-title">' + (isDo ? 'Design Objects' : 'Design Scripts') + '</h2>' +
       '<button class="modal__close" type="button" aria-label="Close" data-act="close">' + ic('x') + '</button></div>' +
       '<div class="modal__body">' +
-        '<div class="input"><div class="input__wrap">' + ic('search', 'input__icon') + '<input type="search" class="input__control" placeholder="Search design objects" aria-label="Search design objects" data-dop-search></div></div>' +
-        '<div class="cc-p-doe__dop-table"><table class="table"><thead><tr><th></th><th>Name</th><th>Design object type</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
-        '<p class="cc-p-doe__dop-count">Showing <b>1–' + DO_LIST.length + '</b> of <b>67</b> results</p>' +
-      '</div><div class="modal__footer"><button class="btn btn--secondary" type="button" data-act="close">Cancel</button><button class="btn btn--primary" type="button" data-act="dopSelect" data-id="' + c.id + '">Select</button></div></div></div>';
+        '<div class="input"><div class="input__wrap">' + ic('search', 'input__icon') + '<input type="search" class="input__control" placeholder="Search ' + (isDo ? 'design objects' : 'design scripts') + '" aria-label="Search" data-dop-search></div></div>' +
+        '<div class="cc-p-doe__dop-table"><table class="table"><thead><tr><th></th><th>Name</th><th>' + (isDo ? 'Design object type' : 'Script type') + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+        '<p class="cc-p-doe__dop-count">Showing <b>1–' + list.length + '</b> of <b>' + (isDo ? 67 : list.length) + '</b> results</p>' +
+      '</div><div class="modal__footer"><button class="btn btn--secondary" type="button" data-act="close">Cancel</button><button class="btn btn--primary" type="button" data-act="dopSelect" data-kind="' + (isDo ? 'do' : 'script') + '" data-id="' + c.id + '">Select</button></div></div></div>';
   }
   function modalHtml(c) {
     var total = SETTINGS.reduce(function (a, g) { return a + g[1].length; }, 0);
@@ -501,9 +646,9 @@
         '<button type="button" class="cc-p-doe__ghost" data-act="clearImage" data-id="' + esc(K('bgImage')) + '" aria-label="Remove image" title="Remove image">' + ic('x') + '</button></div>'
       : '<button type="button" class="doe-imgpick" data-act="pickImage" data-id="' + esc(K('bgImage')) + '">' + ic('image', 'doe-ic') + '<span>Choose image</span></button>');
     var body;
-    if (!isRow && item.kind === 'do') {
+    if (!isRow && loneLayout(item)) {
       /* Design object cells only take Custom ID, Custom Class, Sticky and Name (lion, 2026-11-10). */
-      body = '<p class="doe-help cc-p-doe-insp__note">' + ic('component', 'doe-ic') + '<span>This cell holds a design object. Its layout is set inside the design object.</span></p>' +
+      body = '<p class="doe-help cc-p-doe-insp__note">' + ic('component', 'doe-ic') + '<span>This cell holds a Row design object. Its layout is set inside the design object.</span></p>' +
         I.sec('Main', I.field('Name', txt('name', item.name)) + I.field('Custom ID', txt('customId', '')) + I.field('Custom class', txt('customClass', '')) + I.field('Sticky', sw('sticky', 'Sticky')), true);
     } else if (!isRow) {
       var c = item;
@@ -512,7 +657,7 @@
           I.field('Name', txt('name', c.name)) + I.field('Custom ID', txt('customId', c.id === 'c-prime' ? 'exhibitor_listing2' : '')) + I.field('Custom class', txt('customClass', '')) +
           I.field('Design style', dd('style', 'style', 'Not set')) + I.field('Design frame', dd('frame', 'frame', 'Not set')) + I.field('Spacing', seg('spacing', 'size', 'Medium', PAD)) +
           I.field('Sticky', sw('sticky', 'Sticky')), true) +
-        I.sec('Audience',
+        I.sec('Security',
           I.field('Content security right', dd('security', 'security', 'Non-secured')) +
           '<span class="doe-field__label">Exclude for</span>' +
           '<div class="doe-chips doe-chips--toggle">' + chip('ex:Affino', 'Affino staff') + chip('ex:LoggedIn', 'Logged in') + chip('ex:LoggedOut', 'Logged out') + chip('ex:Metered', 'Metered content') + '</div>', true) +
@@ -522,19 +667,25 @@
         I.sec('Padding', trbl('padding'), false) +
         I.sec('Background', I.field('Colour', colour('bgColour')) + bgImage, !!img || !!V('bgColour', '')) +
         I.sec('Custom CSS', I.field('Outer CSS', area('outerCss')) + I.field('Inner CSS', area('innerCss')), false) +
-        I.sec('Content grid', '<div class="doe-grid2">' + I.field('Content rows', num('rows', '', '–')) + I.field('Content columns', num('cols', '', '–')) + '</div>', false) +
         I.sec('Show at breakpoints', bpTiles(c), true,
           c.hiddenAt ? '<span class="doe-sec__mod" title="Hidden at ' + c.hiddenAt.length + '">' + c.hiddenAt.length + '</span>' : '');
     } else {
       body = I.bpScope() +
-        I.sec('Audience', I.field('Content security right', dd('security', 'security', 'Non-secured')), true) +
+        I.sec('Security', I.field('Content security right', dd('security', 'security', 'Non-secured')), true) +
         I.sec('Outer row', I.field('Horizontal padding', seg('hPad', 'size', 'Medium', PAD)) + I.field('Vertical padding', seg('vPad', 'size', 'Medium', PAD)), true) +
         /* Wrap is deprecated (Mark, 2026-11-10), so it is not offered here. */
         I.sec('Alignment', I.field('Horizontal align', seg('rowAlign', 'rowAlign', 'Center', ROW_ICONS)) + I.field('Sticky', sw('sticky', 'Sticky')), true) +
-        I.sec('Size', sizeLine('Width', ['w', 'minW', 'maxW'], 'px'), true) +
+        /* lion fills Width 100% and Max-Width 1280px as the row panel opens */
+        I.sec('Size', '<div class="cc-p-doe-insp__size">' + [['Width', 'w', '100%'], ['Min', 'minW', ''], ['Max', 'maxW', '1280px']].map(function (f) {
+          return '<label class="cc-p-doe-insp__size-item"><span>' + f[0] + '</span>' + I.num(esc(V(f[1], f[2])), '', 'Auto').replace('<input ', '<input data-k="' + esc(K(f[1])) + '" ') + '</label>';
+        }).join('') + '</div>', true) +
         I.sec('Background', I.field('Colour', colour('bgColour')) + bgImage, !!img || !!V('bgColour', '')) +
         I.sec('Custom CSS', I.field('Outer row CSS', area('outerCss')) + I.field('Inner row CSS', area('innerCss')), false);
     }
+    body = body.replace(/<details class="doe-sec"( open)?><summary class="doe-sec__head">([\s\S]*?)<span>([^<]+)<\/span>/g, function (m, op, pre, title) {
+      var k = item.id + '|' + title, open = Object.prototype.hasOwnProperty.call(S.secOpen, k) ? S.secOpen[k] : !!op;
+      return '<details class="doe-sec" data-sec="' + esc(k) + '"' + (open ? ' open' : '') + '><summary class="doe-sec__head">' + pre + '<span>' + title + '</span>';
+    });
     var icon = isRow ? 'rows-3' : elIcon(item);
     var type = isRow ? item.cells.length + (item.cells.length === 1 ? ' cell' : ' cells') : esc(item.type) + ' · DCC ' + item.dcc;
     return '<aside class="cc-p-doe__panel cc-p-doe-insp" aria-label="' + (isRow ? 'Row' : 'Cell') + ' properties">' +
@@ -563,8 +714,6 @@
     if (!bar) return;
     var tmp = document.createElement('div'); tmp.innerHTML = editorBar();
     var fresh = tmp.firstElementChild; bar.replaceWith(fresh);
-    var nc2 = document.querySelector('.cc-p-doe__canvas'); if (nc2) nc2.scrollTop = canvasTop;
-    var np = document.querySelector('.cc-p-doe__panel .doe-insp__body, .cc-p-doe__panel .cc-p-doe__panel-body'); if (np && panelTop) np.scrollTop = panelTop;
     if (window.lucide) lucide.createIcons();
     adoptTitles(fresh);
   }
@@ -640,7 +789,7 @@
       (s6 ? editorBar() : '') +
       '<div class="cc-p-doe' + (on(1) ? ' cc-p-doe--s1' : '') + (on(4) ? ' cc-p-doe--s4' : '') + (on(5) ? ' cc-p-doe--s5' : '') + (s6 ? ' cc-p-doe--s6' : '') + (panel ? ' has-panel' : '') + '">' +
         '<div class="cc-p-doe__canvas">' + (s6 ? '' : bar) +
-          nestedBanner() + '<div class="cc-p-doe__rows">' + canvasRows().map(rowHtml).join('') + '</div>' +
+          nestedBanner() + '<div class="cc-p-doe__rows"' + (bpWidth() ? ' style="max-inline-size:' + bpWidth() + 'px"' : '') + '>' + canvasRows().map(rowHtml).join('') + '</div>' +
         '</div>' + panel +
       '</div>' +
       (s6 ? '' : '<nav class="cc-p-doe__bps" aria-label="Breakpoint preview">' + bp.map(function (b) {
@@ -649,13 +798,15 @@
     /* The modal mounts at body level: inside the page column the CC header would sit over it. */
     var mroot = document.getElementById('doe-modal-root');
     if (!mroot) { mroot = document.createElement('div'); mroot.id = 'doe-modal-root'; document.body.appendChild(mroot); }
-    mroot.innerHTML = S.modal === 'doPicker' && hit ? doPickerHtml(hit.cell) : S.modal && hit ? modalHtml(hit.cell) : '';
+    mroot.innerHTML = S.modal === 'doPicker' && hit ? doPickerHtml(hit.cell, 'do') : S.modal === 'scriptPicker' && hit ? doPickerHtml(hit.cell, 'script') : S.modal && hit ? modalHtml(hit.cell) : '';
     document.querySelector('.cc-header__actions [data-doe-save]').disabled = !panel && !S.modal ? true : false;
     /* Cell actions menu mounts at body level, fixed under its trigger: the step-6 canvas is a
        scroll container, which would clip a menu positioned inside it. */
     var proot = document.getElementById('doe-pop-root');
     if (!proot) { proot = document.createElement('div'); proot.id = 'doe-pop-root'; document.body.appendChild(proot); }
     proot.innerHTML = S.menu ? cellMenu() : '';
+    var nc2 = document.querySelector('.cc-p-doe__canvas'); if (nc2) nc2.scrollTop = canvasTop;
+    var np = document.querySelector('.cc-p-doe__panel .doe-insp__body, .cc-p-doe__panel .cc-p-doe__panel-body'); if (np && panelTop) np.scrollTop = panelTop;
     if (window.lucide) lucide.createIcons();
     adoptTitles(document.getElementById('doe-root')); adoptTitles(proot); if (typeof hideTip === 'function') hideTip();
     placeMenu();
@@ -664,7 +815,9 @@
   }
   function placeMenu() {
     var menu = document.querySelector('#doe-pop-root .cc-p-doe__menu');
-    var trigger = S.menu && document.querySelector('[data-act="menu"][data-id="' + S.menu + '"]');
+    var trigger = S.menu && (S.menu.indexOf('clear:') === 0
+      ? document.querySelector('[data-act="clear"][data-id="' + S.menu.slice(6) + '"]')
+      : document.querySelector('[data-act="menu"][data-id="' + S.menu + '"]'));
     if (!menu || !trigger) return;
     var r = trigger.getBoundingClientRect(), gap = 4;
     var h = menu.offsetHeight, w = menu.offsetWidth;
@@ -783,6 +936,85 @@
       }
     }
   });
+  /* ── Drag and drop: a cell is draggable only while the pointer is down on its grip (lion's approach). */
+  var drag = null;
+  function clearDrop() {
+    document.querySelectorAll('.cc-p-doe__cell--over-before, .cc-p-doe__cell--over-after, .cc-p-doe__row--over-before, .cc-p-doe__row--over-after, .cc-p-doe__row--over-end')
+      .forEach(function (n) { n.classList.remove('cc-p-doe__cell--over-before', 'cc-p-doe__cell--over-after', 'cc-p-doe__row--over-before', 'cc-p-doe__row--over-after', 'cc-p-doe__row--over-end'); });
+  }
+  function rowIndexOf(el) { var id = el.getAttribute('data-row'); return canvasRows().map(function (r) { return r.id; }).indexOf(id); }
+  function dropAt(ev) {
+    if (!drag) return null;
+    var rowEl = ev.target.closest && ev.target.closest('#doe-root .cc-p-doe__row[data-row]');
+    if (!rowEl) return null;
+    var i = rowIndexOf(rowEl), rows = canvasRows(), rr = rowEl.getBoundingClientRect();
+    if (i < 0) return null;
+    if (drag.rowMove) {
+      var before = ev.clientY < rr.top + rr.height / 2, to = before ? i : i + 1;
+      if (to === drag.i || to === drag.i + 1) return null;
+      return { kind: 'row', i: to, node: rowEl, cls: before ? 'cc-p-doe__row--over-before' : 'cc-p-doe__row--over-after' };
+    }
+    if (!isCellRow(rows[i])) return null;
+    var cellEl = ev.target.closest('.cc-p-doe__cell[data-cell]');
+    if (cellEl && rowEl.contains(cellEl)) {
+      var j = rows[i].cells.map(function (c) { return c.id; }).indexOf(cellEl.getAttribute('data-cell'));
+      var cr = cellEl.getBoundingClientRect(), left = ev.clientX < cr.left + cr.width / 2, k = left ? j : j + 1;
+      if (i === drag.i && (k === drag.j || k === drag.j + 1)) return null;
+      return { kind: 'cell', i: i, k: k, node: cellEl, cls: left ? 'cc-p-doe__cell--over-before' : 'cc-p-doe__cell--over-after' };
+    }
+    var end = rows[i].cells.length;
+    if (i === drag.i && end === drag.j + 1) return null;
+    return { kind: 'cell', i: i, k: end, node: rowEl, cls: 'cc-p-doe__row--over-end' };
+  }
+  document.addEventListener('pointerdown', function (ev) {
+    var g = ev.target.closest && ev.target.closest('#doe-root [data-doe-grip]');
+    if (!g) return;
+    var c = g.closest('.cc-p-doe__cell'); if (c) c.draggable = true;
+  });
+  document.addEventListener('pointerup', function () {
+    document.querySelectorAll('#doe-root .cc-p-doe__cell[draggable="true"]').forEach(function (c) { if (!drag) c.draggable = false; });
+  });
+  document.addEventListener('dragstart', function (ev) {
+    var c = ev.target.closest && ev.target.closest('#doe-root .cc-p-doe__cell');
+    if (!c || !c.draggable) return;
+    var at = locate(c.getAttribute('data-cell')); if (!at) { ev.preventDefault(); return; }
+    var rows = canvasRows();
+    S.menu = ''; hideTip();
+    drag = { i: at.i, j: at.j, rowMove: rowMover(rows[at.i], rows[at.i].cells[at.j]) };
+    c.classList.add('cc-p-doe__cell--dragging');
+    if (drag.rowMove) c.closest('.cc-p-doe__row').classList.add('cc-p-doe__row--dragging');
+    if (ev.dataTransfer) { ev.dataTransfer.effectAllowed = 'move'; ev.dataTransfer.setData('text/plain', c.getAttribute('data-cell')); }
+  });
+  document.addEventListener('dragover', function (ev) {
+    if (!drag) return;
+    var t = dropAt(ev);
+    clearDrop();
+    if (!t) return;
+    ev.preventDefault();
+    if (ev.dataTransfer) ev.dataTransfer.dropEffect = 'move';
+    t.node.classList.add(t.cls);
+  });
+  document.addEventListener('drop', function (ev) {
+    if (!drag) return;
+    var t = dropAt(ev);
+    clearDrop();
+    if (!t) return;
+    ev.preventDefault();
+    if (t.kind === 'row') moveRow(drag.i, t.i); else moveCell(drag.i, drag.j, t.i, t.k);
+    drag = null;
+    render();
+  });
+  document.addEventListener('dragend', function () {
+    clearDrop(); drag = null;
+    document.querySelectorAll('.cc-p-doe__cell--dragging, .cc-p-doe__row--dragging').forEach(function (n) { n.classList.remove('cc-p-doe__cell--dragging', 'cc-p-doe__row--dragging'); });
+    document.querySelectorAll('#doe-root .cc-p-doe__cell[draggable="true"]').forEach(function (c) { c.draggable = false; });
+  });
+
+  /* Remember docked-panel sections opened / closed, so a redraw keeps the editor's place. */
+  document.addEventListener('toggle', function (e) {
+    var dsec = e.target.closest && e.target.closest('details[data-sec]');
+    if (dsec === e.target) S.secOpen[dsec.getAttribute('data-sec')] = dsec.open;
+  }, true);
   /* Design Objects picker: clicking a row picks it. */
   document.addEventListener('click', function (e) {
     var tr = e.target.closest('.cc-p-doe__dop-row');
@@ -871,7 +1103,8 @@
       if (hitT) {
         var kind = tile.getAttribute('data-kind'), cc = hitT.cell;
         cc.kind = kind; cc.type = tile.getAttribute('data-choose'); cc.incomplete = false;
-        if (kind === 'do') { var dObj = D.DESIGN_OBJECTS.filter(function (x) { return x[0] === cc.type; })[0]; cc.usedIn = dObj ? dObj[1] : 1; }
+        if (kind === 'do') { var dObj = D.DESIGN_OBJECTS.filter(function (x) { return x[0] === cc.type; })[0]; cc.usedIn = dObj ? dObj[1] : 1; cc.doType = doTypeOf(cc.type); if (cc.type === '2016 RB Navigation') cc.nested = HEADER_NESTED; else delete cc.nested; }
+        else delete cc.nested;
         markDirty(); render(); return;
       }
     }
@@ -886,21 +1119,31 @@
         var c = findCell(id).cell;
         /* The live editor opens the element's own settings in a modal once an element is chosen;
            an empty/incomplete cell opens the Cell Content picker panel instead. */
-        if (c.kind === 'do') {
-          /* Lion: a design object cell's pencil opens the Design Objects picker (swap which DO goes here). */
-          if (on(2)) { S.panel = 'content'; S.kindTab = 'do'; S.modal = false; } else { S.modal = 'doPicker'; S.panel = ''; }
-        }
-        else if (c.incomplete) { S.panel = 'content'; S.modal = false; S.kindTab = ''; } else { S.modal = true; S.panel = ''; }
+        /* Lion (§7/§13): a blank cell chooses its content; a design object / design script cell opens
+           its picker; a design element opens its settings. Step 2 swaps the pickers for the tile panel. */
+        if (!c.type) { S.panel = 'content'; S.modal = false; S.kindTab = ''; }
+        else if (c.kind === 'do') { if (on(2)) { S.panel = 'content'; S.kindTab = 'do'; S.modal = false; } else { S.modal = 'doPicker'; S.panel = ''; } }
+        else if (c.kind === 'script') { if (on(2)) { S.panel = 'content'; S.kindTab = 'script'; S.modal = false; } else { S.modal = 'scriptPicker'; S.panel = ''; } }
+        else { S.modal = true; S.panel = ''; }
       }
       else if (act === 'dopSelect') {
         var chosen = document.querySelector('input[name="dop"]:checked'), dc = findCell(id);
         if (chosen && dc && chosen.value !== dc.cell.type) {
           dc.cell.type = chosen.value;
-          if (chosen.value !== '2016 RB Navigation') delete dc.cell.nested; else dc.cell.nested = HEADER_NESTED;
+          if (a.dataset.kind !== 'script') {
+            dc.cell.doType = doTypeOf(chosen.value);
+            if (chosen.value !== '2016 RB Navigation') delete dc.cell.nested; else dc.cell.nested = HEADER_NESTED;
+          }
           markDirty();
         }
         S.modal = false;
       }
+      else if (act === 'toggleDone') { var td = findCell(id); if (td) td.cell.incomplete = !td.cell.incomplete; }   // written straight away on lion (no Save)
+      else if (act === 'deleteCell') { cellOp('delete', id); }
+      else if (act === 'cutCell') { cellOp('cut', id); }
+      else if (act === 'copyCell') { cellOp('copy', id); }
+      else if (act === 'pasteCell') { cellOp('paste', id); }
+      else if (act === 'addCellSave') { var w = document.querySelector('input[name="add"]:checked'); if (w) addCellAt(w.value); }
       else if (act === 'noop') { if (openMenu && openMenu !== '__doc') markDirty(); }
       else if (act === 'save') { doSave(); return; }
       else if (act === 'pickImage') { S.vals[id] = 'hero-banner.webp'; markDirty(); }   // mock media picker
@@ -911,7 +1154,9 @@
         try { localStorage.setItem('demo-theme', dark ? 'light' : 'dark'); } catch (err) { /* storage unavailable */ }
         return;
       }
-      else if (act === 'clear') { markDirty(); return; }
+      else if (act === 'clear') { S.menu = (openMenu === 'clear:' + id ? '' : 'clear:' + id); selectCell(id); }
+      else if (act === 'clearContent' || act === 'clearProps' || act === 'clearBoth') { clearCell(id, act === 'clearContent' ? 'content' : act === 'clearProps' ? 'props' : 'both'); }
+      else if (act === 'moveLeft' || act === 'moveRight' || act === 'moveUp' || act === 'moveDown') { menuMove(id, act.slice(4).toLowerCase()); }
       else if (act === 'bp') { S.bp = id; }
       else if (act === 'nested') { S.nested = id; S.select = ''; S.panel = ''; S.modal = false; }
       else if (act === 'exitNested') { S.select = S.nested; S.nested = ''; S.panel = ''; S.modal = false; }
@@ -932,9 +1177,11 @@
     if (on(4) && (cell || rowEl) && !e.target.closest('button')) {
       if (cell) {
         selectCell(cell.dataset.cell);
+        S.panel = 'cellProps'; S.modal = false;   // clicking a cell opens its properties, as rows do (Mark, 2026-11-10)
       } else {
-        S.select = rowEl.dataset.row;
-        if (S.panel) S.panel = 'rowProps';
+        var rr0 = findRow(rowEl.dataset.row);
+        if (rr0 && !isCellRow(rr0)) selectCell(rr0.cells[0].id);   // a lone-layout row has no row settings: select its cell
+        else { S.select = rowEl.dataset.row; S.panel = 'rowProps'; S.modal = false; }   // clicking a row opens its properties (Mark, 2026-11-10)
       }
       S.menu = '';
       render();
