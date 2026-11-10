@@ -463,3 +463,16 @@ button.cc-p-doe__status:focus-visible, .cc-p-doe__badge-btn:focus-visible { outl
 .cc-p-doe__cell.is-hidden-bp { opacity: 0.45; }
 .cc-p-doe__rows { margin-inline: auto; transition: max-inline-size var(--ao-transition-slow); }
 .cc-p-doe__add-go { align-self: flex-start; margin-top: var(--ao-spacing-2); }
+
+/* Step 4: mark-incomplete flag — hidden until the cell is hovered, focused or selected */
+.cc-p-doe__flag {
+  display: inline-flex; align-items: center; justify-content: center; flex: none; margin-inline-start: auto;
+  inline-size: var(--ao-spacing-6); block-size: var(--ao-spacing-6); padding: 0;
+  border: 0; border-radius: var(--ao-radius-sm); background: transparent; color: var(--ao-icon-secondary); cursor: pointer;
+  opacity: 0; transition: opacity var(--ao-transition-fast);
+}
+.cc-p-doe__flag svg { width: var(--ao-icon-size-xs); height: var(--ao-icon-size-xs); }
+.cc-p-doe__cell:hover .cc-p-doe__flag, .cc-p-doe__cell.is-selected .cc-p-doe__flag, .cc-p-doe__flag:focus-visible { opacity: 1; }
+.cc-p-doe__flag:hover { background: var(--ao-surface-warning-soft); color: var(--ao-text-warning); }
+.cc-p-doe__flag:focus-visible { outline: 2px solid var(--ao-surface-brand); outline-offset: 1px; }
+.cc-p-doe__badges + .cc-p-doe__flag { margin-inline-start: 0; }

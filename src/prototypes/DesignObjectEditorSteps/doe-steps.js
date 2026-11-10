@@ -131,7 +131,11 @@
     var span = BASE_SPAN[c.id] || (S.nested && c.span) || 12;
     return '<section class="record-section cc-p-doe__cell' + (selected ? ' is-selected' : '') + (c.incomplete ? ' is-incomplete' : '') + (hiddenNow(c) ? ' is-hidden-bp' : '') + '" style="--span:' + span + '" data-cell="' + c.id + '" title="' + esc(c.name) + ' (DCC: ' + c.dcc + ')">' +
       '<div class="cc-p-doe__cell-head">' + '<span class="cc-p-doe__grip" data-doe-grip title="Drag to move">' + ic('grip-vertical') + '</span>' + head +
-        (badges ? '<span class="cc-p-doe__badges">' + badges + '</span>' : '') + (showStatus && !badges ? status : '') + '</div>' +
+        (badges ? '<span class="cc-p-doe__badges">' + badges + '</span>' : '') +
+        /* Step 4: "complete" is the normal state, so it shows nothing; a flag to mark the cell incomplete
+           appears on hover / selection (Mark, 2026-11-10). The baseline keeps lion's tick. */
+        (on(4) ? (c.incomplete ? '' : '<button type="button" class="cc-p-doe__flag" data-act="toggleDone" data-id="' + c.id + '" title="Mark incomplete" aria-label="Mark ' + esc(c.name) + ' incomplete">' + ic('flag') + '</button>')
+               : (showStatus && !badges ? status : '')) + '</div>' +
       '<div class="cc-p-doe__tools">' + tools + '</div>' +
     '</section>';
   }
@@ -260,7 +264,9 @@
       /* Named so they can't be mistaken for editing the design object's layout (Mark, 2026-11-10). */
       ? [['plus', 'Create new design object'], ['file-pen-line', 'Edit details'], null, ['copy', 'Copy design object'], ['list', 'Go to list']]
       : [['plus', 'Add Cell', 'addCell'], ['trash-2', 'Delete Cell', 'deleteCell'], ['scissors', 'Cut Content', 'cutCell'], ['copy', 'Copy Content', 'copyCell']]
-          .concat(S.clip ? [['clipboard-paste', 'Paste Content', 'pasteCell']] : []).concat(moveItems(S.menu));
+          .concat(S.clip ? [['clipboard-paste', 'Paste Content', 'pasteCell']] : [])
+          .concat(on(4) ? [(findCell(S.menu) || {}).cell && findCell(S.menu).cell.incomplete ? ['flag-off', 'Mark complete', 'toggleDone'] : ['flag', 'Mark incomplete', 'toggleDone']] : [])
+          .concat(moveItems(S.menu));
     return '<div class="dropdown__panel cc-p-doe__menu" role="menu">' + '<ul class="dropdown__list">' + items.map(function (i) {
       if (!i) return '<li role="separator" class="cc-p-doe__menu-sep"></li>';
       return '<li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem"' + (i[2] ? ' data-act="' + i[2] + '" data-id="' + S.menu + '"' : ' data-act="noop"') + '>' + ic(i[0]) + '<span data-text="' + i[1] + '">' + i[1] + '</span></button></li>';
@@ -1174,7 +1180,10 @@
        it follows the selection (selection drives the panel, no extra click). */
     var cell = e.target.closest('.cc-p-doe__cell');
     var rowEl = !cell && e.target.closest('.cc-p-doe__row');
-    if (on(4) && (cell || rowEl) && !e.target.closest('button')) {
+    /* Clicks in a cell's toolbar strip (incl. the gaps between its 24px buttons), on the grip, the chips
+       or the row's properties gutter are near-misses on a control, not "open this cell" (Mark, 2026-11-10). */
+    var nearControl = e.target.closest('.cc-p-doe__tools, .cc-p-doe__grip, .cc-p-doe__badges, .cc-p-doe__flag, .cc-p-doe__gutter');
+    if (on(4) && (cell || rowEl) && !e.target.closest('button') && !nearControl) {
       if (cell) {
         selectCell(cell.dataset.cell);
         S.panel = 'cellProps'; S.modal = false;   // clicking a cell opens its properties, as rows do (Mark, 2026-11-10)
