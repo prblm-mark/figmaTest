@@ -479,3 +479,12 @@ button.cc-p-doe__status:focus-visible, .cc-p-doe__badge-btn:focus-visible { outl
 
 /* Name now fills the head (no type label beside it) */
 .cc-p-doe--s1 .cc-p-doe__name { flex: 0 1 auto; }
+
+/* Design objects: no purple (Mark, 2026-11-10 — not legible in dark, purple crumb read wrong).
+   Told apart by the component icon and the "Used in" chip, in neutral tokens. */
+.cc-p-doe__el-icon--do, .cc-p-doe__pick--do .cc-p-doe__pick-icon, .cc-p-doe-insp .doe-insp__icon--do { background: var(--ao-surface-minimal); color: var(--ao-icon-primary); }
+.cc-p-doe__badge--do { background: var(--ao-surface-minimal); color: var(--ao-text-secondary); }
+.cc-p-doe__crumb-do, .cc-p-doe__edoc--do .cc-p-doe__edoc-name { color: var(--ao-text-primary); }
+.cc-p-doe__crumb-do svg, .cc-p-doe__edoc .cc-p-doe__edoc-icon { color: var(--ao-icon-secondary); }
+.cc-p-doe-insp__note { background: var(--ao-surface-minimal); color: var(--ao-text-secondary); }
+.cc-p-doe__nested-alert { margin-bottom: var(--ao-spacing-3); }
