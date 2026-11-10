@@ -765,10 +765,15 @@
   function nestedBanner() {
     var nc = nestedCell();
     if (!nc) return '';
-    return '<div class="cc-p-doe__nested-bar" role="status">' + ic('component', 'cc-p-doe__nested-icon') +
-      '<span class="cc-p-doe__nested-text"><b>Editing design object: ' + esc(nc.nested.name) + '.</b> Used in ' + nc.nested.usedIn + ' design objects, so changes apply everywhere.</span>' +
-      '<button type="button" class="btn btn--secondary btn--sm" data-act="exitNested">' + ic('arrow-left') + 'Back to 2018 Simple DO</button></div>';
+    /* DS Alert (info, CTA variant): legible in both themes, unlike the earlier purple bar (Mark, 2026-11-10). */
+    return '<div class="alert alert--cta alert--info cc-p-doe__nested-alert" role="status"><div class="alert__header">' +
+      '<span class="alert__icon">' + ic('component') + '</span>' +
+      '<div class="alert__cta-area"><div class="alert__text"><span class="alert__title">Editing design object: ' + esc(nc.nested.name) + '.</span>' +
+      '<span class="alert__message"> Used in ' + nc.nested.usedIn + ' design objects, so changes apply everywhere.</span></div>' +
+      '<button type="button" class="btn btn--secondary btn--sm alert__cta-btn" data-act="exitNested">' + ic('arrow-left') + 'Back to 2018 Simple DO</button></div>' +
+      '</div></div>';
   }
+
 
   function render() {
     var hit = findCell(S.select);
