@@ -108,9 +108,9 @@
       : '<button type="button" class="cc-p-doe__status" data-act="toggleDone" data-id="' + c.id + '" title="Cell complete — click to mark incomplete" aria-label="Cell complete, mark incomplete">' + ic('circle-check') + '</button>';
     var head;
     if (on(1)) {
-      head = '<span class="cc-p-doe__el-icon cc-p-doe__el-icon--' + c.kind + '">' + ic(elIcon(c)) + '</span>' +
-        '<span class="cc-p-doe__name">' + esc(c.name) + '</span>' +
-        '<span class="cc-p-doe__type">' + (c.type ? esc(c.type) : 'No content') + '</span>';
+      /* Given name only; the element type lives in the icon's tooltip and the panel header (Mark, 2026-11-10). */
+      head = '<span class="cc-p-doe__el-icon cc-p-doe__el-icon--' + c.kind + '" title="' + (c.type ? esc(c.type) : 'No content') + '">' + ic(elIcon(c)) + '</span>' +
+        '<span class="cc-p-doe__name">' + esc(c.name) + '</span>';
     } else {
       head = '<span class="cc-p-doe__name">' + esc(c.name) + '</span>';
     }
@@ -129,7 +129,7 @@
       (hasClearable(c) ? tool('eraser', 'Clear', 'clear', c.id) : '') +
       '<span class="cc-p-doe__menu-wrap">' + tool('ellipsis-vertical', 'Cell actions', 'menu', c.id) + '</span>';
     var span = BASE_SPAN[c.id] || (S.nested && c.span) || 12;
-    return '<section class="record-section cc-p-doe__cell' + (selected ? ' is-selected' : '') + (c.incomplete ? ' is-incomplete' : '') + (hiddenNow(c) ? ' is-hidden-bp' : '') + '" style="--span:' + span + '" data-cell="' + c.id + '" title="' + esc(c.name) + ' (DCC: ' + c.dcc + ')">' +
+    return '<section class="record-section cc-p-doe__cell' + (selected ? ' is-selected' : '') + (c.incomplete ? ' is-incomplete' : '') + (hiddenNow(c) ? ' is-hidden-bp' : '') + '" style="--span:' + span + '" data-cell="' + c.id + '">' +
       '<div class="cc-p-doe__cell-head">' + '<span class="cc-p-doe__grip" data-doe-grip title="Drag to move">' + ic('grip-vertical') + '</span>' + head +
         (badges ? '<span class="cc-p-doe__badges">' + badges + '</span>' : '') +
         /* Step 4: "complete" is the normal state, so it shows nothing; a flag to mark the cell incomplete
@@ -693,11 +693,11 @@
       return '<details class="doe-sec" data-sec="' + esc(k) + '"' + (open ? ' open' : '') + '><summary class="doe-sec__head">' + pre + '<span>' + title + '</span>';
     });
     var icon = isRow ? 'rows-3' : elIcon(item);
-    var type = isRow ? item.cells.length + (item.cells.length === 1 ? ' cell' : ' cells') : esc(item.type) + ' · DCC ' + item.dcc;
+    var type = isRow ? item.cells.length + (item.cells.length === 1 ? ' cell' : ' cells') : (item.type ? esc(item.type) : 'No content');   // no DCC code (Mark, 2026-11-10)
     return '<aside class="cc-p-doe__panel cc-p-doe-insp" aria-label="' + (isRow ? 'Row' : 'Cell') + ' properties">' +
       '<div class="cc-p-doe__resize" role="separator" aria-orientation="vertical" aria-label="Resize panel" tabindex="0" title="Drag to resize"></div>' +
       '<div class="doe-insp__head"><span class="doe-insp__icon doe-insp__icon--' + (isRow ? 'row' : item.kind) + '">' + ic(icon, 'doe-ic') + '</span>' +
-        '<div class="doe-insp__titles"><span class="cc-p-doe-insp__title">' + (isRow ? 'Row Properties' : 'Cell Properties') + '</span><span class="doe-insp__type"><span data-live-name>' + esc(item.name) + '</span> · ' + type + '</span></div>' +
+        '<div class="doe-insp__titles"><span class="cc-p-doe-insp__title">' + (isRow ? 'Row Properties' : 'Cell Properties') + '</span><span class="doe-insp__type">' + (isRow ? '<span data-live-name>' + esc(item.name) + '</span> · ' : '') + type + '</span></div>' +
         '<button type="button" class="cc-p-doe__ghost" data-act="close" aria-label="Close panel" title="Close">' + ic('x') + '</button></div>' +
       '<div class="doe-insp__body">' + body + '</div></aside>';
   }
