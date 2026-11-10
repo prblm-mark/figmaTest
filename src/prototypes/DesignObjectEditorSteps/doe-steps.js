@@ -280,11 +280,15 @@
     if (S.menu === '__dos') {
       /* Design object switcher: search, recent, all. TODO(backend:DesignObjectEditor): recent list + search → design objects API. */
       var recent = ['2018 Simple DO', '2016 RB Navigation', 'Article sidebar', 'Two-column landing', 'Event detail header', 'Newsletter promo'];
+      var ncM = nestedCell(), focused = ncM ? ncM.nested.name : '2018 Simple DO';
       return '<div class="dropdown__panel cc-p-doe__menu cc-p-doe__dos-menu" role="menu">' +
         (S.dirty ? '<p class="cc-p-doe__menu-warn">' + ic('triangle-alert') + 'Unsaved changes will be lost if you switch</p>' : '') +
+        /* in a nested design object, the way back up comes first */
+        (ncM ? '<p class="cc-p-doe__menu-head">Parent</p><ul class="dropdown__list"><li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-act="exitNested">' +
+          ic('corner-left-up') + '<span data-text="2018 Simple DO">2018 Simple DO</span></button></li></ul><span class="cc-p-doe__menu-sep" role="separator"></span>' : '') +
         '<div class="cc-p-doe__menu-search">' + ic('search') + '<input type="search" placeholder="Search design objects" aria-label="Search design objects" data-dos-search></div>' +
         '<p class="cc-p-doe__menu-head">Recent</p><ul class="dropdown__list">' + recent.map(function (n) {
-          var cur = n === '2018 Simple DO';
+          var cur = n === focused;
           return '<li role="none" data-dos-item="' + esc(n.toLowerCase()) + '"><button type="button" class="dropdown-item dropdown-item--xs' + (cur ? ' is-current' : '') + '" role="menuitem" data-act="switchDo" data-id="' + esc(n) + '">' +
             ic('component') + '<span data-text="' + esc(n) + '">' + esc(n) + '</span>' + (cur ? ic('check', 'cc-p-doe__bp-check') : '') + '</button></li>';
         }).join('') +
@@ -539,13 +543,12 @@
     var cur = D.BREAKPOINTS.filter(function (b) { return b.id === S.bp; })[0];
     return '<header class="cc-p-doe__ebar">' +
       '<div class="cc-p-doe__ebar-left">' +
-        /* Two levels at most (Mark, 2026-11-10): the design object switcher, then the nested design object
-           being edited. The switcher replaces the old "Design Objects" crumb (it links to the full list). */
-        '<button type="button" class="cc-p-doe__edoc" data-act="menu" data-id="__dos" aria-haspopup="menu" aria-expanded="' + (S.menu === '__dos') + '" title="Switch design object">' +
-          '<span class="cc-p-doe__edoc-name">2018 Simple DO</span>' + ic('chevron-down') + '</button>' +
-        (nestedCell()
-          ? ic('chevron-right', 'cc-p-doe__ecrumb-sep') + '<span class="cc-p-doe__crumb-do" aria-current="page">' + ic('component') + esc(nestedCell().nested.name) + '</span>'
-          : '') +
+        /* Always two levels (Mark, 2026-11-10): "Design Objects" (constant link to the list), then the design
+           object in focus with the switcher chevron — the nested one when you've gone into it, whose menu
+           then leads back up to its parent. */
+        '<a class="cc-p-doe__ecrumb" href="#">Design Objects</a>' + ic('chevron-right', 'cc-p-doe__ecrumb-sep') +
+        '<button type="button" class="cc-p-doe__edoc' + (nestedCell() ? ' cc-p-doe__edoc--do' : '') + '" data-act="menu" data-id="__dos" aria-haspopup="menu" aria-expanded="' + (S.menu === '__dos') + '" aria-current="page" title="Switch design object">' +
+          (nestedCell() ? ic('component', 'cc-p-doe__edoc-icon') : '') + '<span class="cc-p-doe__edoc-name">' + esc(nestedCell() ? nestedCell().nested.name : '2018 Simple DO') + '</span>' + ic('chevron-down') + '</button>' +
         (S.saveState === 'saving' ? '<span class="cc-p-doe__esave">Saving…</span>'
           : dirty ? '<span class="cc-p-doe__esave"><span class="cc-p-doe__edot" aria-hidden="true"></span>Unsaved changes</span>'
           : '<span class="cc-p-doe__esave">All changes saved</span>') +
@@ -1205,6 +1208,7 @@
       else if (act === 'noop') { if (openMenu && openMenu.indexOf('__') !== 0) markDirty(); }
       else if (act === 'switchDo') {
         if (id === '2018 Simple DO') { if (S.nested) { S.select = S.nested; S.nested = ''; S.panel = ''; S.modal = false; } }
+        else if (id === '2016 RB Navigation' && headerCell.nested) { S.nested = headerCell.id; S.select = ''; S.panel = ''; S.modal = false; }   // in this DO: go into it
         else infoToast(id === '__all' ? 'Would open the Design Objects list' : 'Would open “' + id + '” (not part of this prototype)');
       }
       else if (act === 'save') { doSave(); return; }

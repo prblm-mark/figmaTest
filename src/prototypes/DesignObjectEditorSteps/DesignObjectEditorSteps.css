@@ -523,3 +523,5 @@ button.cc-p-doe__status:focus-visible, .cc-p-doe__badge-btn:focus-visible { outl
 .cc-p-doe__menu-warn svg { width: var(--ao-icon-size-xs); height: var(--ao-icon-size-xs); flex: none; }
 .cc-p-doe__edoc[aria-expanded="true"] { background: var(--ao-surface-minimal); }
 .cc-p-doe__crumb-do { font-size: var(--ao-font-fixed-xs); font-weight: var(--ao-font-semibold); white-space: nowrap; }
+.cc-p-doe__dos-menu .cc-p-doe__menu-sep { display: block; }
+.cc-p-doe--s1 .cc-p-doe__name { font-size: var(--ao-font-fixed-2xs); }   /* cell names one step smaller (Mark, 2026-11-10); baseline keeps lion's 14px */
