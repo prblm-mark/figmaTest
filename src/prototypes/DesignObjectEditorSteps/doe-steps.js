@@ -277,6 +277,20 @@
           return '<li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-act="' + i[2] + '" data-id="' + clearFor + '">' + ic(i[0]) + '<span data-text="' + i[1] + '">' + i[1] + '</span></button></li>';
         }).join('') + '</ul></div>';
     }
+    if (S.menu === '__dos') {
+      /* Design object switcher: search, recent, all. TODO(backend:DesignObjectEditor): recent list + search → design objects API. */
+      var recent = ['2018 Simple DO', '2016 RB Navigation', 'Article sidebar', 'Two-column landing', 'Event detail header', 'Newsletter promo'];
+      return '<div class="dropdown__panel cc-p-doe__menu cc-p-doe__dos-menu" role="menu">' +
+        (S.dirty ? '<p class="cc-p-doe__menu-warn">' + ic('triangle-alert') + 'Unsaved changes will be lost if you switch</p>' : '') +
+        '<div class="cc-p-doe__menu-search">' + ic('search') + '<input type="search" placeholder="Search design objects" aria-label="Search design objects" data-dos-search></div>' +
+        '<p class="cc-p-doe__menu-head">Recent</p><ul class="dropdown__list">' + recent.map(function (n) {
+          var cur = n === '2018 Simple DO';
+          return '<li role="none" data-dos-item="' + esc(n.toLowerCase()) + '"><button type="button" class="dropdown-item dropdown-item--xs' + (cur ? ' is-current' : '') + '" role="menuitem" data-act="switchDo" data-id="' + esc(n) + '">' +
+            ic('component') + '<span data-text="' + esc(n) + '">' + esc(n) + '</span>' + (cur ? ic('check', 'cc-p-doe__bp-check') : '') + '</button></li>';
+        }).join('') +
+        '<li role="separator" class="cc-p-doe__menu-sep"></li>' +
+        '<li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-act="switchDo" data-id="__all">' + ic('list') + '<span data-text="All design objects…">All design objects…</span></button></li></ul></div>';
+    }
     if (S.menu === '__bp') {
       return '<div class="dropdown__panel cc-p-doe__menu cc-p-doe__bp-menu" role="menu"><ul class="dropdown__list">' +
         D.BREAKPOINTS.map(function (b) {
@@ -525,12 +539,13 @@
     var cur = D.BREAKPOINTS.filter(function (b) { return b.id === S.bp; })[0];
     return '<header class="cc-p-doe__ebar">' +
       '<div class="cc-p-doe__ebar-left">' +
-        /* The CC breadcrumb is hidden in this layout, so the bar carries the way back. */
-        '<a class="cc-p-doe__ecrumb" href="#">Design Objects</a>' + ic('chevron-right', 'cc-p-doe__ecrumb-sep') +
+        /* Two levels at most (Mark, 2026-11-10): the design object switcher, then the nested design object
+           being edited. The switcher replaces the old "Design Objects" crumb (it links to the full list). */
+        '<button type="button" class="cc-p-doe__edoc" data-act="menu" data-id="__dos" aria-haspopup="menu" aria-expanded="' + (S.menu === '__dos') + '" title="Switch design object">' +
+          '<span class="cc-p-doe__edoc-name">2018 Simple DO</span>' + ic('chevron-down') + '</button>' +
         (nestedCell()
-          ? '<button type="button" class="cc-p-doe__crumb-link" data-act="exitNested">2018 Simple DO</button>' + ic('chevron-right', 'cc-p-doe__ecrumb-sep') +
-            '<button type="button" class="cc-p-doe__edoc cc-p-doe__edoc--do">' + ic('component', 'cc-p-doe__edoc-icon') + '<span class="cc-p-doe__edoc-name">' + esc(nestedCell().nested.name) + '</span>' + ic('chevron-down') + '</button>'
-          : '<button type="button" class="cc-p-doe__edoc"><span class="cc-p-doe__edoc-name">2018 Simple DO</span>' + ic('chevron-down') + '</button>') +
+          ? ic('chevron-right', 'cc-p-doe__ecrumb-sep') + '<span class="cc-p-doe__crumb-do" aria-current="page">' + ic('component') + esc(nestedCell().nested.name) + '</span>'
+          : '') +
         (S.saveState === 'saving' ? '<span class="cc-p-doe__esave">Saving…</span>'
           : dirty ? '<span class="cc-p-doe__esave"><span class="cc-p-doe__edot" aria-hidden="true"></span>Unsaved changes</span>'
           : '<span class="cc-p-doe__esave">All changes saved</span>') +
@@ -753,6 +768,16 @@
       S._saveTimer = setTimeout(function () { S.saveState = 'idle'; refreshBar(); }, 2000);
     }, 1200);
   }
+  function infoToast(msg) {
+    var stack = document.getElementById('cc-toasts'); if (!stack) return;
+    var t = document.createElement('div');
+    t.className = 'toast toast--info'; t.setAttribute('role', 'status');
+    t.innerHTML = '<span class="toast__icon">' + ic('info') + '</span><p class="toast__message">' + esc(msg) + '</p>';
+    stack.appendChild(t);
+    if (window.lucide) lucide.createIcons();
+    requestAnimationFrame(function () { requestAnimationFrame(function () { t.classList.add('toast--in'); }); });
+    setTimeout(function () { t.classList.remove('toast--in'); t.classList.add('toast--leaving'); setTimeout(function () { t.remove(); }, 400); }, 3000);
+  }
   function savedToast(name) {
     var stack = document.getElementById('cc-toasts'); if (!stack) return;
     var t = document.createElement('div');
@@ -838,6 +863,7 @@
     if (window.lucide) lucide.createIcons();
     adoptTitles(document.getElementById('doe-root')); adoptTitles(proot); if (typeof hideTip === 'function') hideTip();
     placeMenu();
+    if (S.menu === '__dos') { var ds = document.querySelector('[data-dos-search]'); if (ds) ds.focus(); }
     applyW();
     syncUrl();
   }
@@ -851,7 +877,7 @@
     var h = menu.offsetHeight, w = menu.offsetWidth;
     var top = r.bottom + gap;
     if (top + h > window.innerHeight - 8) top = Math.max(8, r.top - gap - h);   // flip up when there's no room below
-    var left = Math.max(8, r.right - w);                                          // right-aligned to the trigger
+    var left = S.menu === '__dos' ? Math.min(r.left, window.innerWidth - w - 8) : Math.max(8, r.right - w);   // switcher left-aligned, others right-aligned
     menu.style.top = top + 'px'; menu.style.left = left + 'px';
   }
   function syncUrl() {
@@ -1176,7 +1202,11 @@
       else if (act === 'copyCell') { cellOp('copy', id); }
       else if (act === 'pasteCell') { cellOp('paste', id); }
       else if (act === 'addCellSave') { var w = document.querySelector('input[name="add"]:checked'); if (w) addCellAt(w.value); }
-      else if (act === 'noop') { if (openMenu && openMenu !== '__doc' && openMenu !== '__bp') markDirty(); }
+      else if (act === 'noop') { if (openMenu && openMenu.indexOf('__') !== 0) markDirty(); }
+      else if (act === 'switchDo') {
+        if (id === '2018 Simple DO') { if (S.nested) { S.select = S.nested; S.nested = ''; S.panel = ''; S.modal = false; } }
+        else infoToast(id === '__all' ? 'Would open the Design Objects list' : 'Would open “' + id + '” (not part of this prototype)');
+      }
       else if (act === 'save') { doSave(); return; }
       else if (act === 'pickImage') { S.vals[id] = 'hero-banner.webp'; markDirty(); }   // mock media picker
       else if (act === 'clearImage') { delete S.vals[id]; markDirty(); }
@@ -1188,7 +1218,7 @@
       else if (act === 'exitNested') { S.select = S.nested; S.nested = ''; S.panel = ''; S.modal = false; }
       else if (act === 'kindTab') { S.kindTab = id; }
       else if (act === 'changeElement') { S.select = id; S.modal = false; S.panel = 'content'; S.kindTab = ''; }
-      else if (act === 'menu') { S.menu = (openMenu === id ? '' : id); if (id !== '__doc' && id !== '__bp') selectCell(id); }
+      else if (act === 'menu') { S.menu = (openMenu === id ? '' : id); if (id.indexOf('__') !== 0) selectCell(id); }
       else if (act === 'modifiedOnly') { a.classList.toggle('btn--active'); filterSettings(); return; }
       else if (act === 'collapseAll') { document.querySelectorAll('.cc-p-doe__sec').forEach(function (d) { d.open = false; }); return; }
       else return;
@@ -1225,6 +1255,10 @@
       document.querySelectorAll('[data-pick-group]').forEach(function (g) { g.hidden = !g.querySelector('.cc-p-doe__pick:not([hidden])'); });
     }
     if (e.target.matches('[data-setting-search]')) filterSettings();
+    if (e.target.matches('[data-dos-search]')) {
+      var sq = e.target.value.trim().toLowerCase();
+      document.querySelectorAll('[data-dos-item]').forEach(function (li) { li.hidden = sq && li.getAttribute('data-dos-item').indexOf(sq) === -1; });
+    }
     if (e.target.matches('[data-dop-search]')) {
       var dq = e.target.value.trim().toLowerCase();
       document.querySelectorAll('.cc-p-doe__dop-row').forEach(function (tr) { tr.hidden = dq && tr.getAttribute('data-dop').indexOf(dq) === -1; });

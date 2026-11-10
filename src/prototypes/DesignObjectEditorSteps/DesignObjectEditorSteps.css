@@ -502,3 +502,24 @@ button.cc-p-doe__status:focus-visible, .cc-p-doe__badge-btn:focus-visible { outl
 .cc-p-doe__bp-tag { padding: 0 var(--ao-spacing-1); border-radius: var(--ao-radius-xs); background: var(--ao-surface-minimal); color: var(--ao-text-contrast); font-size: var(--ao-font-fixed-5xs); font-weight: var(--ao-font-medium); }
 .cc-p-doe__bp-menu .cc-p-doe__bp-check { margin-inline-start: auto; color: var(--ao-icon-brand); }
 .cc-p-doe__bp-menu .dropdown-item { min-inline-size: var(--ao-size-2); }
+
+/* Design object switcher (editor bar) */
+.cc-p-doe__dos-menu { min-inline-size: var(--ao-size-5); }
+.cc-p-doe__dos-menu .dropdown-item.is-current { color: var(--ao-text-brand); font-weight: var(--ao-font-semibold); }
+.cc-p-doe__dos-menu .dropdown-item svg:first-child { color: var(--ao-icon-secondary); }
+.cc-p-doe__dos-menu [data-dos-item][hidden] { display: none; }
+.cc-p-doe__menu-search {
+  display: flex; align-items: center; gap: var(--ao-spacing-2); margin: 0 0 var(--ao-spacing-1); padding: 0 var(--ao-spacing-2);
+  block-size: var(--ao-spacing-7); border: 1px solid var(--ao-border-secondary); border-radius: var(--ao-radius-xs);
+  background: var(--ao-surface-input); color: var(--ao-icon-secondary);
+}
+.cc-p-doe__menu-search svg { width: var(--ao-icon-size-xs); height: var(--ao-icon-size-xs); flex: none; }
+.cc-p-doe__menu-search input { flex: 1; min-inline-size: 0; border: 0; outline: 0; background: transparent; color: var(--ao-text-primary); font-family: var(--ao-font-body); font-size: var(--ao-font-fixed-3xs); }
+.cc-p-doe__menu-search:focus-within { border-color: var(--ao-border-brand); }
+.cc-p-doe__menu-warn {
+  display: flex; align-items: center; gap: var(--ao-spacing-2); margin: 0 0 var(--ao-spacing-1); padding: var(--ao-spacing-2);
+  border-radius: var(--ao-radius-xs); background: var(--ao-surface-warning-soft); color: var(--ao-text-warning); font-size: var(--ao-font-fixed-4xs);
+}
+.cc-p-doe__menu-warn svg { width: var(--ao-icon-size-xs); height: var(--ao-icon-size-xs); flex: none; }
+.cc-p-doe__edoc[aria-expanded="true"] { background: var(--ao-surface-minimal); }
+.cc-p-doe__crumb-do { font-size: var(--ao-font-fixed-xs); font-weight: var(--ao-font-semibold); white-space: nowrap; }
