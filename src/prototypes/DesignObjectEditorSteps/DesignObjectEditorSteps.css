@@ -459,7 +459,7 @@ body.doe-s6 .cc-control__actions { display: none; }
 /* Audit fixes (lion, 2026-11-10) */
 button.cc-p-doe__status { padding: 0; border: 0; background: transparent; cursor: pointer; border-radius: var(--ao-radius-full); }
 button.cc-p-doe__status:focus-visible, .cc-p-doe__badge-btn:focus-visible { outline: 2px solid var(--ao-surface-brand); outline-offset: 1px; }
-.cc-p-doe__badge-btn { border: 0; cursor: pointer; font: inherit; }
+.cc-p-doe__badge-btn { cursor: pointer; font-family: inherit; }   /* a button that keeps the badge's own border, size, weight and line-height */
 .cc-p-doe__cell.is-hidden-bp { opacity: 0.45; }
 .cc-p-doe__rows { margin-inline: auto; transition: max-inline-size var(--ao-transition-slow); }
 .cc-p-doe__add-go { align-self: flex-start; margin-top: var(--ao-spacing-2); }
