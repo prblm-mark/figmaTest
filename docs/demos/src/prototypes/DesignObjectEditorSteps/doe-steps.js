@@ -61,6 +61,23 @@
   /* Lion, read 2026-11-10 (DO 99). Overrides doe-data.js here only, because the full prototype's
      nested screen depends on the original sample. FOOTER MENU is a Menu element (Footer Mega Menu),
      not a design object, and 2016 RB Navigation's real contents are below (spans from lion). */
+  /* Breakpoints: the profile can hold any widths (users add their own), so the icon is worked out from the
+     width rather than fixed per breakpoint (Mark, 2026-11-10). Two custom widths are added to show it. */
+  function bpIconFor(w) {
+    if (!w || w > 1200) return { icon: 'monitor', rotate: false };
+    if (w > 1000) return { icon: 'laptop', rotate: false };
+    if (w > 800) return { icon: 'tablet', rotate: true };       // tablet, landscape
+    if (w > 600) return { icon: 'tablet', rotate: false };      // tablet, portrait
+    if (w > 480) return { icon: 'smartphone', rotate: true };   // phone, landscape
+    return { icon: 'smartphone', rotate: false };
+  }
+  if (!D.BREAKPOINTS.some(function (b) { return b.custom; })) {
+    D.BREAKPOINTS.splice(1, 0, { id: '1440', label: '1440px', width: 1440, custom: true });
+    D.BREAKPOINTS.push({ id: '375', label: '375px', width: 375, custom: true });
+  }
+  D.BREAKPOINTS.forEach(function (b) { var i0 = bpIconFor(b.width); b.icon = i0.icon; b.rotate = i0.rotate; });
+  /* Lion's own profile (the baseline mirrors it) has no custom widths. */
+  function baseBps() { return D.BREAKPOINTS.filter(function (b) { return !b.custom; }); }
   function mk(id, name, type, dcc, span) { return { id: id, name: name, kind: 'de', type: type, dcc: dcc, span: span }; }
   var headerCell = D.ROWS[0].cells[0];
   headerCell.nested = { name: '2016 RB Navigation', usedIn: 14, rows: [
@@ -260,6 +277,33 @@
           return '<li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-act="' + i[2] + '" data-id="' + clearFor + '">' + ic(i[0]) + '<span data-text="' + i[1] + '">' + i[1] + '</span></button></li>';
         }).join('') + '</ul></div>';
     }
+    if (S.menu === '__dos') {
+      /* Design object switcher: search, recent, all. TODO(backend:DesignObjectEditor): recent list + search → design objects API. */
+      var recent = ['2018 Simple DO', '2016 RB Navigation', 'Article sidebar', 'Two-column landing', 'Event detail header', 'Newsletter promo'];
+      var ncM = nestedCell(), focused = ncM ? ncM.nested.name : '2018 Simple DO';
+      return '<div class="dropdown__panel cc-p-doe__menu cc-p-doe__dos-menu" role="menu">' +
+        (S.dirty ? '<p class="cc-p-doe__menu-warn">' + ic('triangle-alert') + 'Unsaved changes will be lost if you switch</p>' : '') +
+        /* in a nested design object, the way back up comes first */
+        (ncM ? '<p class="cc-p-doe__menu-head">Parent</p><ul class="dropdown__list"><li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-act="exitNested">' +
+          ic('corner-left-up') + '<span data-text="2018 Simple DO">2018 Simple DO</span></button></li></ul><span class="cc-p-doe__menu-sep" role="separator"></span>' : '') +
+        '<div class="cc-p-doe__menu-search">' + ic('search') + '<input type="search" placeholder="Search design objects" aria-label="Search design objects" data-dos-search></div>' +
+        '<p class="cc-p-doe__menu-head">Recent</p><ul class="dropdown__list">' + recent.map(function (n) {
+          var cur = n === focused;
+          return '<li role="none" data-dos-item="' + esc(n.toLowerCase()) + '"><button type="button" class="dropdown-item dropdown-item--xs' + (cur ? ' is-current' : '') + '" role="menuitem" data-act="switchDo" data-id="' + esc(n) + '">' +
+            ic('component') + '<span data-text="' + esc(n) + '">' + esc(n) + '</span>' + (cur ? ic('check', 'cc-p-doe__bp-check') : '') + '</button></li>';
+        }).join('') +
+        '<li role="separator" class="cc-p-doe__menu-sep"></li>' +
+        '<li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-act="switchDo" data-id="__all">' + ic('list') + '<span data-text="All design objects…">All design objects…</span></button></li></ul></div>';
+    }
+    if (S.menu === '__bp') {
+      return '<div class="dropdown__panel cc-p-doe__menu cc-p-doe__bp-menu" role="menu"><ul class="dropdown__list">' +
+        D.BREAKPOINTS.map(function (b) {
+          var cur1 = b.id === S.bp;
+          return '<li role="none"><button type="button" class="dropdown-item dropdown-item--xs' + (cur1 ? ' is-current' : '') + '" role="menuitemradio" aria-checked="' + cur1 + '" data-act="bp" data-id="' + b.id + '">' +
+            ic(b.icon, b.rotate ? 'cc-p-doe__rot' : '') + '<span data-text="' + b.label + '">' + b.label + '</span>' +
+            (b.custom ? '<span class="cc-p-doe__bp-tag">Custom</span>' : '') + (cur1 ? ic('check', 'cc-p-doe__bp-check') : '') + '</button></li>';
+        }).join('') + '</ul></div>';
+    }
     var items = S.menu === '__doc'
       /* Named so they can't be mistaken for editing the design object's layout (Mark, 2026-11-10). */
       ? [['plus', 'Create new design object'], ['file-pen-line', 'Edit details'], null, ['copy', 'Copy design object'], ['list', 'Go to list']]
@@ -342,7 +386,7 @@
         sub('Padding') + grid(4, input('Top') + input('Right') + input('Bottom') + input('Left')) +
         '<p class="cc-p-doe__plabel">Background image</p><div class="cc-p-doe__pinline"><span>None</span><button type="button" class="btn btn--secondary btn--sm">Choose</button></div>' +
         input('Background colour') + input('Outer CSS') + input('Inner CSS') + grid(2, input('Content rows') + input('Content columns')) +
-        '<p class="cc-p-doe__plabel">Hide at</p>' + grid(3, D.BREAKPOINTS.map(function (b) { return checkbox(b.label, c.hiddenAt && c.hiddenAt.indexOf(b.label) !== -1, 'hide:' + b.label); }).join(''))));
+        '<p class="cc-p-doe__plabel">Hide at</p>' + grid(3, baseBps().map(function (b) { return checkbox(b.label, c.hiddenAt && c.hiddenAt.indexOf(b.label) !== -1, 'hide:' + b.label); }).join(''))));
   }
   function rowPropsPanel(r) {
     return panelShell('Row Properties',
@@ -496,32 +540,23 @@
   /* Step 6: the new prototype's compact editor bar, in place of the CC page header. */
   function editorBar() {
     var dirty = S.dirty;
-    var bps = D.BREAKPOINTS.map(function (b) {
-      var a = b.id === S.bp;
-      return '<button type="button" class="cc-p-doe__ebp' + (a ? ' is-active' : '') + '" aria-pressed="' + a + '" title="' + b.label + '" aria-label="Preview at ' + b.label + '" data-act="bp" data-id="' + b.id + '">' + ic(b.icon, b.rotate ? 'cc-p-doe__rot' : '') + '</button>';
-    }).join('');
     var cur = D.BREAKPOINTS.filter(function (b) { return b.id === S.bp; })[0];
     return '<header class="cc-p-doe__ebar">' +
       '<div class="cc-p-doe__ebar-left">' +
-        '<button type="button" class="cc-p-doe__ghost" aria-label="Back to Design Objects" title="Back to Design Objects">' + ic('chevron-left') + '</button>' +
-        '<span class="cc-p-doe__ediv" aria-hidden="true"></span>' +
-        /* The CC breadcrumb is hidden in this layout, so the bar carries the way back. */
-        /* Inside a nested DO the back arrow already covers "Design Objects", so the path starts at the parent. */
-        (nestedCell() ? '' : '<a class="cc-p-doe__ecrumb" href="#">Design Objects</a>' + ic('chevron-right', 'cc-p-doe__ecrumb-sep')) +
-        (nestedCell()
-          ? '<button type="button" class="cc-p-doe__crumb-link" data-act="exitNested">2018 Simple DO</button>' + ic('chevron-right', 'cc-p-doe__ecrumb-sep') +
-            '<button type="button" class="cc-p-doe__edoc cc-p-doe__edoc--do">' + ic('component', 'cc-p-doe__edoc-icon') + '<span class="cc-p-doe__edoc-name">' + esc(nestedCell().nested.name) + '</span>' + ic('chevron-down') + '</button>'
-          : '<button type="button" class="cc-p-doe__edoc"><span class="cc-p-doe__edoc-name">2018 Simple DO</span>' + ic('chevron-down') + '</button>') +
+        /* Always two levels (Mark, 2026-11-10): "Design Objects" (constant link to the list), then the design
+           object in focus with the switcher chevron — the nested one when you've gone into it, whose menu
+           then leads back up to its parent. */
+        '<a class="cc-p-doe__ecrumb" href="#">Design Objects</a>' + ic('chevron-right', 'cc-p-doe__ecrumb-sep') +
+        '<button type="button" class="cc-p-doe__edoc' + (nestedCell() ? ' cc-p-doe__edoc--do' : '') + '" data-act="menu" data-id="__dos" aria-haspopup="menu" aria-expanded="' + (S.menu === '__dos') + '" aria-current="page" title="Switch design object">' +
+          (nestedCell() ? ic('component', 'cc-p-doe__edoc-icon') : '') + '<span class="cc-p-doe__edoc-name">' + esc(nestedCell() ? nestedCell().nested.name : '2018 Simple DO') + '</span>' + ic('chevron-down') + '</button>' +
         (S.saveState === 'saving' ? '<span class="cc-p-doe__esave">Saving…</span>'
           : dirty ? '<span class="cc-p-doe__esave"><span class="cc-p-doe__edot" aria-hidden="true"></span>Unsaved changes</span>'
           : '<span class="cc-p-doe__esave">All changes saved</span>') +
       '</div>' +
-      '<div class="cc-p-doe__ebar-centre"><div class="cc-p-doe__ebps" role="group" aria-label="Breakpoint">' + bps + '</div><span class="cc-p-doe__ebp-read">' + cur.label + '</span></div>' +
+      /* One control for any number of breakpoints: current icon + width, the rest in a menu. */
+      '<div class="cc-p-doe__ebar-centre"><button type="button" class="cc-p-doe__bp-trigger" data-act="menu" data-id="__bp" aria-haspopup="menu" aria-expanded="' + (S.menu === '__bp') + '" title="Preview breakpoint">' +
+        ic(cur.icon, cur.rotate ? 'cc-p-doe__rot' : '') + '<span>' + cur.label + '</span>' + ic('chevron-down', 'cc-p-doe__bp-chev') + '</button></div>' +
       '<div class="cc-p-doe__ebar-right">' +
-        /* TEMPORARY (Mark, 2026-11-10): theme switch for testing while building. Step 6 hides the CC
-           user menu that normally holds it. Same 'demo-theme' key as the CC ThemeToggle. Remove before handover. */
-        '<button type="button" class="cc-p-doe__ghost cc-p-doe__theme" data-act="theme" aria-label="Switch light/dark theme" title="Switch theme (temporary)">' + ic('moon', 'cc-p-doe__theme-moon') + ic('sun', 'cc-p-doe__theme-sun') + '</button>' +
-        '<span class="cc-p-doe__ediv" aria-hidden="true"></span>' +
         '<button type="button" class="cc-p-doe__ghost" aria-label="Undo" title="Undo (⌘Z)">' + ic('undo-2') + '</button>' +
         '<button type="button" class="cc-p-doe__ghost" aria-label="Redo" title="Redo (⇧⌘Z) · nothing to redo" aria-disabled="true">' + ic('redo-2') + '</button>' +
         '<span class="cc-p-doe__ediv" aria-hidden="true"></span>' +
@@ -736,6 +771,16 @@
       S._saveTimer = setTimeout(function () { S.saveState = 'idle'; refreshBar(); }, 2000);
     }, 1200);
   }
+  function infoToast(msg) {
+    var stack = document.getElementById('cc-toasts'); if (!stack) return;
+    var t = document.createElement('div');
+    t.className = 'toast toast--info'; t.setAttribute('role', 'status');
+    t.innerHTML = '<span class="toast__icon">' + ic('info') + '</span><p class="toast__message">' + esc(msg) + '</p>';
+    stack.appendChild(t);
+    if (window.lucide) lucide.createIcons();
+    requestAnimationFrame(function () { requestAnimationFrame(function () { t.classList.add('toast--in'); }); });
+    setTimeout(function () { t.classList.remove('toast--in'); t.classList.add('toast--leaving'); setTimeout(function () { t.remove(); }, 400); }, 3000);
+  }
   function savedToast(name) {
     var stack = document.getElementById('cc-toasts'); if (!stack) return;
     var t = document.createElement('div');
@@ -783,7 +828,7 @@
     if (S.panel === 'rowProps' && row) panel = on(6) ? dockedInspector(true, row) : rowPropsPanel(row);
     if (S.panel === 'content' && hit) panel = contentPanel(hit.cell);
     if (S.panel === 'addCell') panel = addCellPanel();
-    var bp = D.BREAKPOINTS.slice().reverse(); // live bar runs 480px → Fluid
+    var bp = baseBps().slice().reverse(); // live bar runs 480px → Fluid (lion's profile, no custom widths)
     var s6 = on(6);
     document.body.classList.toggle('doe-s6', s6);
     var nc = nestedCell();
@@ -821,6 +866,7 @@
     if (window.lucide) lucide.createIcons();
     adoptTitles(document.getElementById('doe-root')); adoptTitles(proot); if (typeof hideTip === 'function') hideTip();
     placeMenu();
+    if (S.menu === '__dos') { var ds = document.querySelector('[data-dos-search]'); if (ds) ds.focus(); }
     applyW();
     syncUrl();
   }
@@ -834,7 +880,7 @@
     var h = menu.offsetHeight, w = menu.offsetWidth;
     var top = r.bottom + gap;
     if (top + h > window.innerHeight - 8) top = Math.max(8, r.top - gap - h);   // flip up when there's no room below
-    var left = Math.max(8, r.right - w);                                          // right-aligned to the trigger
+    var left = S.menu === '__dos' ? Math.min(r.left, window.innerWidth - w - 8) : Math.max(8, r.right - w);   // switcher left-aligned, others right-aligned
     menu.style.top = top + 'px'; menu.style.left = left + 'px';
   }
   function syncUrl() {
@@ -861,6 +907,7 @@
   }
   function showTip(el) {
     hideTip();
+    if (el.getAttribute('aria-expanded') === 'true' || document.querySelector('#doe-pop-root .cc-p-doe__menu')) return;   // no tooltip over an open menu
     var raw = el.getAttribute('data-tip'); if (!raw) return;
     var m = raw.match(/^(.*?)\s*\(([^)]+)\)(.*)$/);
     var html = m ? esc(m[1]) + ' <span class="cc-p-doe__tip-key">' + esc(m[2]) + '</span>' + esc(m[3]) : esc(raw);
@@ -1158,16 +1205,15 @@
       else if (act === 'copyCell') { cellOp('copy', id); }
       else if (act === 'pasteCell') { cellOp('paste', id); }
       else if (act === 'addCellSave') { var w = document.querySelector('input[name="add"]:checked'); if (w) addCellAt(w.value); }
-      else if (act === 'noop') { if (openMenu && openMenu !== '__doc') markDirty(); }
+      else if (act === 'noop') { if (openMenu && openMenu.indexOf('__') !== 0) markDirty(); }
+      else if (act === 'switchDo') {
+        if (id === '2018 Simple DO') { if (S.nested) { S.select = S.nested; S.nested = ''; S.panel = ''; S.modal = false; } }
+        else if (id === '2016 RB Navigation' && headerCell.nested) { S.nested = headerCell.id; S.select = ''; S.panel = ''; S.modal = false; }   // in this DO: go into it
+        else infoToast(id === '__all' ? 'Would open the Design Objects list' : 'Would open “' + id + '” (not part of this prototype)');
+      }
       else if (act === 'save') { doSave(); return; }
       else if (act === 'pickImage') { S.vals[id] = 'hero-banner.webp'; markDirty(); }   // mock media picker
       else if (act === 'clearImage') { delete S.vals[id]; markDirty(); }
-      else if (act === 'theme') {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', 'dark');
-        try { localStorage.setItem('demo-theme', dark ? 'light' : 'dark'); } catch (err) { /* storage unavailable */ }
-        return;
-      }
       else if (act === 'clear') { S.menu = (openMenu === 'clear:' + id ? '' : 'clear:' + id); selectCell(id); }
       else if (act === 'clearContent' || act === 'clearProps' || act === 'clearBoth') { clearCell(id, act === 'clearContent' ? 'content' : act === 'clearProps' ? 'props' : 'both'); }
       else if (act === 'moveLeft' || act === 'moveRight' || act === 'moveUp' || act === 'moveDown') { menuMove(id, act.slice(4).toLowerCase()); }
@@ -1176,7 +1222,7 @@
       else if (act === 'exitNested') { S.select = S.nested; S.nested = ''; S.panel = ''; S.modal = false; }
       else if (act === 'kindTab') { S.kindTab = id; }
       else if (act === 'changeElement') { S.select = id; S.modal = false; S.panel = 'content'; S.kindTab = ''; }
-      else if (act === 'menu') { S.menu = (openMenu === id ? '' : id); if (id !== '__doc') selectCell(id); }
+      else if (act === 'menu') { S.menu = (openMenu === id ? '' : id); if (id.indexOf('__') !== 0) selectCell(id); }
       else if (act === 'modifiedOnly') { a.classList.toggle('btn--active'); filterSettings(); return; }
       else if (act === 'collapseAll') { document.querySelectorAll('.cc-p-doe__sec').forEach(function (d) { d.open = false; }); return; }
       else return;
@@ -1213,6 +1259,10 @@
       document.querySelectorAll('[data-pick-group]').forEach(function (g) { g.hidden = !g.querySelector('.cc-p-doe__pick:not([hidden])'); });
     }
     if (e.target.matches('[data-setting-search]')) filterSettings();
+    if (e.target.matches('[data-dos-search]')) {
+      var sq = e.target.value.trim().toLowerCase();
+      document.querySelectorAll('[data-dos-item]').forEach(function (li) { li.hidden = sq && li.getAttribute('data-dos-item').indexOf(sq) === -1; });
+    }
     if (e.target.matches('[data-dop-search]')) {
       var dq = e.target.value.trim().toLowerCase();
       document.querySelectorAll('.cc-p-doe__dop-row').forEach(function (tr) { tr.hidden = dq && tr.getAttribute('data-dop').indexOf(dq) === -1; });
