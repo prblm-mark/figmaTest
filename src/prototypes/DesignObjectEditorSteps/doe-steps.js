@@ -418,7 +418,7 @@
     var n = { id: 'c-new-' + (++newSeq), name: 'Blank Cell', kind: 'de', type: '', dcc: 0, span: 12 };
     if (where === 'top' || where === 'bottom') rows.splice(at.i + (where === 'bottom' ? 1 : 0), 0, { id: 'r-new-' + newSeq, name: 'Row', cells: [n] });
     else rows[at.i].cells.splice(at.j + (where === 'right' ? 1 : 0), 0, n);
-    S.select = n.id; S.panel = '';
+    S.select = n.id; S.panel = 'cellProps';   // the new cell opens straight into its properties (Mark, 2026-11-10)
     markDirty();
   }
   function contentPanel(c) {
@@ -557,7 +557,7 @@
         /* Save status sits with Undo / Redo / Save, where it's in context (Mark, 2026-11-10). */
         (S.saveState === 'saving' ? '<span class="cc-p-doe__esave">Saving…</span>'
           : dirty ? '<span class="cc-p-doe__esave"><span class="cc-p-doe__edot" aria-hidden="true"></span>Unsaved changes</span>'
-          : '<span class="cc-p-doe__esave">All changes saved</span>') +
+          : '') +   // nothing shown when there's nothing to save (Mark, 2026-11-10)
         '<button type="button" class="cc-p-doe__ghost" aria-label="Undo" title="Undo (⌘Z)">' + ic('undo-2') + '</button>' +
         '<button type="button" class="cc-p-doe__ghost" aria-label="Redo" title="Redo (⇧⌘Z) · nothing to redo" aria-disabled="true">' + ic('redo-2') + '</button>' +
         '<span class="cc-p-doe__ediv" aria-hidden="true"></span>' +
