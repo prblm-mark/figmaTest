@@ -108,9 +108,9 @@
       : '<button type="button" class="cc-p-doe__status" data-act="toggleDone" data-id="' + c.id + '" title="Cell complete — click to mark incomplete" aria-label="Cell complete, mark incomplete">' + ic('circle-check') + '</button>';
     var head;
     if (on(1)) {
-      head = '<span class="cc-p-doe__el-icon cc-p-doe__el-icon--' + c.kind + '">' + ic(elIcon(c)) + '</span>' +
-        '<span class="cc-p-doe__name">' + esc(c.name) + '</span>' +
-        '<span class="cc-p-doe__type">' + (c.type ? esc(c.type) : 'No content') + '</span>';
+      /* Given name only; the element type lives in the icon's tooltip and the panel header (Mark, 2026-11-10). */
+      head = '<span class="cc-p-doe__el-icon cc-p-doe__el-icon--' + c.kind + '" title="' + (c.type ? esc(c.type) : 'No content') + '">' + ic(elIcon(c)) + '</span>' +
+        '<span class="cc-p-doe__name">' + esc(c.name) + '</span>';
     } else {
       head = '<span class="cc-p-doe__name">' + esc(c.name) + '</span>';
     }
@@ -693,11 +693,11 @@
       return '<details class="doe-sec" data-sec="' + esc(k) + '"' + (open ? ' open' : '') + '><summary class="doe-sec__head">' + pre + '<span>' + title + '</span>';
     });
     var icon = isRow ? 'rows-3' : elIcon(item);
-    var type = isRow ? item.cells.length + (item.cells.length === 1 ? ' cell' : ' cells') : esc(item.type) + ' · DCC ' + item.dcc;
+    var type = isRow ? item.cells.length + (item.cells.length === 1 ? ' cell' : ' cells') : (item.type ? esc(item.type) : 'No content') + ' · DCC ' + item.dcc;
     return '<aside class="cc-p-doe__panel cc-p-doe-insp" aria-label="' + (isRow ? 'Row' : 'Cell') + ' properties">' +
       '<div class="cc-p-doe__resize" role="separator" aria-orientation="vertical" aria-label="Resize panel" tabindex="0" title="Drag to resize"></div>' +
       '<div class="doe-insp__head"><span class="doe-insp__icon doe-insp__icon--' + (isRow ? 'row' : item.kind) + '">' + ic(icon, 'doe-ic') + '</span>' +
-        '<div class="doe-insp__titles"><span class="cc-p-doe-insp__title">' + (isRow ? 'Row Properties' : 'Cell Properties') + '</span><span class="doe-insp__type"><span data-live-name>' + esc(item.name) + '</span> · ' + type + '</span></div>' +
+        '<div class="doe-insp__titles"><span class="cc-p-doe-insp__title">' + (isRow ? 'Row Properties' : 'Cell Properties') + '</span><span class="doe-insp__type">' + (isRow ? '<span data-live-name>' + esc(item.name) + '</span> · ' : '') + type + '</span></div>' +
         '<button type="button" class="cc-p-doe__ghost" data-act="close" aria-label="Close panel" title="Close">' + ic('x') + '</button></div>' +
       '<div class="doe-insp__body">' + body + '</div></aside>';
   }

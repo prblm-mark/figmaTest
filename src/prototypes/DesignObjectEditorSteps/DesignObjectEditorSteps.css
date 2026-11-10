@@ -476,3 +476,6 @@ button.cc-p-doe__status:focus-visible, .cc-p-doe__badge-btn:focus-visible { outl
 .cc-p-doe__flag:hover { background: var(--ao-surface-warning-soft); color: var(--ao-text-warning); }
 .cc-p-doe__flag:focus-visible { outline: 2px solid var(--ao-surface-brand); outline-offset: 1px; }
 .cc-p-doe__badges + .cc-p-doe__flag { margin-inline-start: 0; }
+
+/* Name now fills the head (no type label beside it) */
+.cc-p-doe--s1 .cc-p-doe__name { flex: 0 1 auto; }
