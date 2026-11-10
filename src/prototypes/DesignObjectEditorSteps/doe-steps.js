@@ -549,14 +549,15 @@
         '<a class="cc-p-doe__ecrumb" href="#">Design Objects</a>' + ic('chevron-right', 'cc-p-doe__ecrumb-sep') +
         '<button type="button" class="cc-p-doe__edoc' + (nestedCell() ? ' cc-p-doe__edoc--do' : '') + '" data-act="menu" data-id="__dos" aria-haspopup="menu" aria-expanded="' + (S.menu === '__dos') + '" aria-current="page" title="Switch design object">' +
           (nestedCell() ? ic('component', 'cc-p-doe__edoc-icon') : '') + '<span class="cc-p-doe__edoc-name">' + esc(nestedCell() ? nestedCell().nested.name : '2018 Simple DO') + '</span>' + ic('chevron-down') + '</button>' +
-        (S.saveState === 'saving' ? '<span class="cc-p-doe__esave">Saving…</span>'
-          : dirty ? '<span class="cc-p-doe__esave"><span class="cc-p-doe__edot" aria-hidden="true"></span>Unsaved changes</span>'
-          : '<span class="cc-p-doe__esave">All changes saved</span>') +
       '</div>' +
       /* One control for any number of breakpoints: current icon + width, the rest in a menu. */
       '<div class="cc-p-doe__ebar-centre"><button type="button" class="cc-p-doe__bp-trigger" data-act="menu" data-id="__bp" aria-haspopup="menu" aria-expanded="' + (S.menu === '__bp') + '" title="Preview breakpoint">' +
         ic(cur.icon, cur.rotate ? 'cc-p-doe__rot' : '') + '<span>' + cur.label + '</span>' + ic('chevron-down', 'cc-p-doe__bp-chev') + '</button></div>' +
       '<div class="cc-p-doe__ebar-right">' +
+        /* Save status sits with Undo / Redo / Save, where it's in context (Mark, 2026-11-10). */
+        (S.saveState === 'saving' ? '<span class="cc-p-doe__esave">Saving…</span>'
+          : dirty ? '<span class="cc-p-doe__esave"><span class="cc-p-doe__edot" aria-hidden="true"></span>Unsaved changes</span>'
+          : '<span class="cc-p-doe__esave">All changes saved</span>') +
         '<button type="button" class="cc-p-doe__ghost" aria-label="Undo" title="Undo (⌘Z)">' + ic('undo-2') + '</button>' +
         '<button type="button" class="cc-p-doe__ghost" aria-label="Redo" title="Redo (⇧⌘Z) · nothing to redo" aria-disabled="true">' + ic('redo-2') + '</button>' +
         '<span class="cc-p-doe__ediv" aria-hidden="true"></span>' +
