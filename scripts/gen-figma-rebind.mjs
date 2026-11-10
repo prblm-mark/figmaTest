@@ -81,6 +81,22 @@ const OVERRIDES = {
   // Search-input placeholder: a TEXT fill, so text/contrast rather than the icon
   // or button-disabled tokens that share this hex.
   'text|#67676C': { name: 'text/contrast', because: 'placeholder text is a TEXT fill' },
+  // DesignObjectEditor (2026-11-09), CC theme. Each settled from the prototype's own CSS:
+  // every white surface there is --ao-surface-primary except .doe-menu (elevated-1, one node,
+  // row-properties only); the stage/body is --ao-surface-secondary (neutral-soft unused);
+  // every #DCE4E8 stroke is --ao-border-secondary (border-card unused); #EDF5F5 is only
+  // .doe-scope--override → --ao-surface-info-soft (brand-soft-extra unused).
+  'surface|#FFFFFF': { name: 'surface/primary', because: 'DesignObjectEditor.css: panels/cells/inputs use surface-primary' },
+  'surface|#E7EDF0': { name: 'surface/secondary', because: 'DesignObjectEditor.css body/.doe-stage' },
+  'border|#DCE4E8': { name: 'border/secondary', because: 'DesignObjectEditor.css: only border-secondary at this hex' },
+  'surface|#EDF5F5': { name: 'surface/info-soft', because: 'DesignObjectEditor.css .doe-scope--override' },
+  // Lucide icons that take `currentColor` from a TEXT token (crumbs, row tags, segmented buttons,
+  // warning badges) — no icon/* token has these hexes; the CSS source is the text token itself.
+  'icon|#426E86': { name: 'text/contrast', because: 'DesignObjectEditor.css: icons inherit color: var(--ao-text-contrast)' },
+  'icon|#00222F': { name: 'text/primary', because: 'DesignObjectEditor.css: icons inherit color: var(--ao-text-primary)' },
+  'icon|#AC4505': { name: 'text/warning', because: 'DesignObjectEditor.css .doe-cell__badge--warn/.doe-notice--warn color: var(--ao-text-warning)' },
+  // .doe-divider { background: var(--ao-border-primary) } — a 1px rule drawn as a fill.
+  'surface|#667F89': { name: 'border/primary', because: 'DesignObjectEditor.css .doe-divider' },
 };
 
 /* Tokens whose Figma name does NOT follow `--ao-<family>-<rest>` → `<family>/<rest>`.
@@ -167,6 +183,14 @@ for (const family of FAMILIES) {
       ambiguous.push({ key, tokens });
     }
   }
+}
+/* Cross-family overrides: an icon painted via `currentColor` from a TEXT token has a hex the
+ * icon family never indexes, so the loop above never reaches its override and it was silently
+ * dropped (found 2026-11-09, DesignObjectEditor: 131 icons on #426E86). Emit every override
+ * whose key the family index did not produce. The Figma-side guard still refuses a name that
+ * is not in the Semantic collection. */
+for (const key of Object.keys(OVERRIDES)) {
+  if (!map[key]) map[key] = { name: OVERRIDES[key].name, source: 'override: ' + OVERRIDES[key].because };
 }
 
 console.error(`[gen] families indexed: ${FAMILIES.map((f) => f + '=' + perFamily[f].size).join(' ')}`);
