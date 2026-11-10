@@ -1118,9 +1118,12 @@
     if (a && a.closest('#doe-root, #doe-modal-root, #doe-pop-root')) {
       var act = a.dataset.act, id = a.dataset.id, openMenu = S.menu;
       S.menu = '';
-      if (act === 'close') { S.panel = ''; S.modal = false; }
+      /* Close shuts the topmost thing only: an open modal first, the panel otherwise (Mark, 2026-11-10). */
+      if (act === 'close') { if (S.modal) S.modal = false; else S.panel = ''; }
       else if (act === 'cellProps' || act === 'rowProps' || act === 'addCell') { S.select = id || S.select; S.panel = act; }
       else if (act === 'content') {
+        /* The cell stays selected, so an open properties panel stays open (following it) under the modal. */
+        if (S.panel && S.panel !== 'content') { selectCell(id); if (S.panel !== 'cellProps') S.panel = 'cellProps'; }
         S.select = id;
         var c = findCell(id).cell;
         /* The live editor opens the element's own settings in a modal once an element is chosen;
@@ -1128,9 +1131,9 @@
         /* Lion (§7/§13): a blank cell chooses its content; a design object / design script cell opens
            its picker; a design element opens its settings. Step 2 swaps the pickers for the tile panel. */
         if (!c.type) { S.panel = 'content'; S.modal = false; S.kindTab = ''; }
-        else if (c.kind === 'do') { if (on(2)) { S.panel = 'content'; S.kindTab = 'do'; S.modal = false; } else { S.modal = 'doPicker'; S.panel = ''; } }
-        else if (c.kind === 'script') { if (on(2)) { S.panel = 'content'; S.kindTab = 'script'; S.modal = false; } else { S.modal = 'scriptPicker'; S.panel = ''; } }
-        else { S.modal = true; S.panel = ''; }
+        else if (c.kind === 'do') { if (on(2)) { S.panel = 'content'; S.kindTab = 'do'; S.modal = false; } else { S.modal = 'doPicker'; } }
+        else if (c.kind === 'script') { if (on(2)) { S.panel = 'content'; S.kindTab = 'script'; S.modal = false; } else { S.modal = 'scriptPicker'; } }
+        else { S.modal = true; }
       }
       else if (act === 'dopSelect') {
         var chosen = document.querySelector('input[name="dop"]:checked'), dc = findCell(id);
@@ -1257,7 +1260,10 @@
   document.addEventListener('scroll', function () { if (S.menu) { S.menu = ''; render(); } }, true);
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') return;
-    if (S.modal || S.panel || S.menu) { S.modal = false; S.panel = ''; S.menu = ''; render(); }
+    /* Esc: menu, then modal, then panel — one layer at a time */
+    if (S.menu) { S.menu = ''; render(); }
+    else if (S.modal) { S.modal = false; render(); }
+    else if (S.panel) { S.panel = ''; render(); }
     else if (S.nested) { S.select = S.nested; S.nested = ''; render(); }
   });
 
