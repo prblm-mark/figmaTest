@@ -525,11 +525,8 @@
     var cur = D.BREAKPOINTS.filter(function (b) { return b.id === S.bp; })[0];
     return '<header class="cc-p-doe__ebar">' +
       '<div class="cc-p-doe__ebar-left">' +
-        '<button type="button" class="cc-p-doe__ghost" aria-label="Back to Design Objects" title="Back to Design Objects">' + ic('chevron-left') + '</button>' +
-        '<span class="cc-p-doe__ediv" aria-hidden="true"></span>' +
         /* The CC breadcrumb is hidden in this layout, so the bar carries the way back. */
-        /* Inside a nested DO the back arrow already covers "Design Objects", so the path starts at the parent. */
-        (nestedCell() ? '' : '<a class="cc-p-doe__ecrumb" href="#">Design Objects</a>' + ic('chevron-right', 'cc-p-doe__ecrumb-sep')) +
+        '<a class="cc-p-doe__ecrumb" href="#">Design Objects</a>' + ic('chevron-right', 'cc-p-doe__ecrumb-sep') +
         (nestedCell()
           ? '<button type="button" class="cc-p-doe__crumb-link" data-act="exitNested">2018 Simple DO</button>' + ic('chevron-right', 'cc-p-doe__ecrumb-sep') +
             '<button type="button" class="cc-p-doe__edoc cc-p-doe__edoc--do">' + ic('component', 'cc-p-doe__edoc-icon') + '<span class="cc-p-doe__edoc-name">' + esc(nestedCell().nested.name) + '</span>' + ic('chevron-down') + '</button>'
@@ -542,10 +539,6 @@
       '<div class="cc-p-doe__ebar-centre"><button type="button" class="cc-p-doe__bp-trigger" data-act="menu" data-id="__bp" aria-haspopup="menu" aria-expanded="' + (S.menu === '__bp') + '" title="Preview breakpoint">' +
         ic(cur.icon, cur.rotate ? 'cc-p-doe__rot' : '') + '<span>' + cur.label + '</span>' + ic('chevron-down', 'cc-p-doe__bp-chev') + '</button></div>' +
       '<div class="cc-p-doe__ebar-right">' +
-        /* TEMPORARY (Mark, 2026-11-10): theme switch for testing while building. Step 6 hides the CC
-           user menu that normally holds it. Same 'demo-theme' key as the CC ThemeToggle. Remove before handover. */
-        '<button type="button" class="cc-p-doe__ghost cc-p-doe__theme" data-act="theme" aria-label="Switch light/dark theme" title="Switch theme (temporary)">' + ic('moon', 'cc-p-doe__theme-moon') + ic('sun', 'cc-p-doe__theme-sun') + '</button>' +
-        '<span class="cc-p-doe__ediv" aria-hidden="true"></span>' +
         '<button type="button" class="cc-p-doe__ghost" aria-label="Undo" title="Undo (⌘Z)">' + ic('undo-2') + '</button>' +
         '<button type="button" class="cc-p-doe__ghost" aria-label="Redo" title="Redo (⇧⌘Z) · nothing to redo" aria-disabled="true">' + ic('redo-2') + '</button>' +
         '<span class="cc-p-doe__ediv" aria-hidden="true"></span>' +
@@ -1187,12 +1180,6 @@
       else if (act === 'save') { doSave(); return; }
       else if (act === 'pickImage') { S.vals[id] = 'hero-banner.webp'; markDirty(); }   // mock media picker
       else if (act === 'clearImage') { delete S.vals[id]; markDirty(); }
-      else if (act === 'theme') {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', 'dark');
-        try { localStorage.setItem('demo-theme', dark ? 'light' : 'dark'); } catch (err) { /* storage unavailable */ }
-        return;
-      }
       else if (act === 'clear') { S.menu = (openMenu === 'clear:' + id ? '' : 'clear:' + id); selectCell(id); }
       else if (act === 'clearContent' || act === 'clearProps' || act === 'clearBoth') { clearCell(id, act === 'clearContent' ? 'content' : act === 'clearProps' ? 'props' : 'both'); }
       else if (act === 'moveLeft' || act === 'moveRight' || act === 'moveUp' || act === 'moveDown') { menuMove(id, act.slice(4).toLowerCase()); }

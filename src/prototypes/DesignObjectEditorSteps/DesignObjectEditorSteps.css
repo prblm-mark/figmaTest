@@ -351,10 +351,6 @@ body.doe-resizing { cursor: col-resize; user-select: none; }
 .cc-p-doe__save[aria-disabled="true"] { pointer-events: none; }
 .cc-p-doe__save .spinner { color: inherit; }
 .cc-p-doe__save--done { background: var(--ao-surface-success); border-color: var(--ao-surface-success); color: var(--ao-text-invert); }
-/* TEMPORARY theme switch */
-.cc-p-doe__theme .cc-p-doe__theme-sun { display: none; }
-[data-theme="dark"] .cc-p-doe__theme .cc-p-doe__theme-sun { display: block; }
-[data-theme="dark"] .cc-p-doe__theme .cc-p-doe__theme-moon { display: none; }
 /* Step 6: toasts sit just under the editor bar, so the "Saved" button stays visible beside them. */
 body.doe-s6.cc-control .cc-toast-stack { top: calc(var(--ao-spacing-9) + var(--ao-spacing-3)); }
 
