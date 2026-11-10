@@ -61,6 +61,23 @@
   /* Lion, read 2026-11-10 (DO 99). Overrides doe-data.js here only, because the full prototype's
      nested screen depends on the original sample. FOOTER MENU is a Menu element (Footer Mega Menu),
      not a design object, and 2016 RB Navigation's real contents are below (spans from lion). */
+  /* Breakpoints: the profile can hold any widths (users add their own), so the icon is worked out from the
+     width rather than fixed per breakpoint (Mark, 2026-11-10). Two custom widths are added to show it. */
+  function bpIconFor(w) {
+    if (!w || w > 1200) return { icon: 'monitor', rotate: false };
+    if (w > 1000) return { icon: 'laptop', rotate: false };
+    if (w > 800) return { icon: 'tablet', rotate: true };       // tablet, landscape
+    if (w > 600) return { icon: 'tablet', rotate: false };      // tablet, portrait
+    if (w > 480) return { icon: 'smartphone', rotate: true };   // phone, landscape
+    return { icon: 'smartphone', rotate: false };
+  }
+  if (!D.BREAKPOINTS.some(function (b) { return b.custom; })) {
+    D.BREAKPOINTS.splice(1, 0, { id: '1440', label: '1440px', width: 1440, custom: true });
+    D.BREAKPOINTS.push({ id: '375', label: '375px', width: 375, custom: true });
+  }
+  D.BREAKPOINTS.forEach(function (b) { var i0 = bpIconFor(b.width); b.icon = i0.icon; b.rotate = i0.rotate; });
+  /* Lion's own profile (the baseline mirrors it) has no custom widths. */
+  function baseBps() { return D.BREAKPOINTS.filter(function (b) { return !b.custom; }); }
   function mk(id, name, type, dcc, span) { return { id: id, name: name, kind: 'de', type: type, dcc: dcc, span: span }; }
   var headerCell = D.ROWS[0].cells[0];
   headerCell.nested = { name: '2016 RB Navigation', usedIn: 14, rows: [
@@ -260,6 +277,15 @@
           return '<li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-act="' + i[2] + '" data-id="' + clearFor + '">' + ic(i[0]) + '<span data-text="' + i[1] + '">' + i[1] + '</span></button></li>';
         }).join('') + '</ul></div>';
     }
+    if (S.menu === '__bp') {
+      return '<div class="dropdown__panel cc-p-doe__menu cc-p-doe__bp-menu" role="menu"><ul class="dropdown__list">' +
+        D.BREAKPOINTS.map(function (b) {
+          var cur1 = b.id === S.bp;
+          return '<li role="none"><button type="button" class="dropdown-item dropdown-item--xs' + (cur1 ? ' is-current' : '') + '" role="menuitemradio" aria-checked="' + cur1 + '" data-act="bp" data-id="' + b.id + '">' +
+            ic(b.icon, b.rotate ? 'cc-p-doe__rot' : '') + '<span data-text="' + b.label + '">' + b.label + '</span>' +
+            (b.custom ? '<span class="cc-p-doe__bp-tag">Custom</span>' : '') + (cur1 ? ic('check', 'cc-p-doe__bp-check') : '') + '</button></li>';
+        }).join('') + '</ul></div>';
+    }
     var items = S.menu === '__doc'
       /* Named so they can't be mistaken for editing the design object's layout (Mark, 2026-11-10). */
       ? [['plus', 'Create new design object'], ['file-pen-line', 'Edit details'], null, ['copy', 'Copy design object'], ['list', 'Go to list']]
@@ -342,7 +368,7 @@
         sub('Padding') + grid(4, input('Top') + input('Right') + input('Bottom') + input('Left')) +
         '<p class="cc-p-doe__plabel">Background image</p><div class="cc-p-doe__pinline"><span>None</span><button type="button" class="btn btn--secondary btn--sm">Choose</button></div>' +
         input('Background colour') + input('Outer CSS') + input('Inner CSS') + grid(2, input('Content rows') + input('Content columns')) +
-        '<p class="cc-p-doe__plabel">Hide at</p>' + grid(3, D.BREAKPOINTS.map(function (b) { return checkbox(b.label, c.hiddenAt && c.hiddenAt.indexOf(b.label) !== -1, 'hide:' + b.label); }).join(''))));
+        '<p class="cc-p-doe__plabel">Hide at</p>' + grid(3, baseBps().map(function (b) { return checkbox(b.label, c.hiddenAt && c.hiddenAt.indexOf(b.label) !== -1, 'hide:' + b.label); }).join(''))));
   }
   function rowPropsPanel(r) {
     return panelShell('Row Properties',
@@ -496,10 +522,6 @@
   /* Step 6: the new prototype's compact editor bar, in place of the CC page header. */
   function editorBar() {
     var dirty = S.dirty;
-    var bps = D.BREAKPOINTS.map(function (b) {
-      var a = b.id === S.bp;
-      return '<button type="button" class="cc-p-doe__ebp' + (a ? ' is-active' : '') + '" aria-pressed="' + a + '" title="' + b.label + '" aria-label="Preview at ' + b.label + '" data-act="bp" data-id="' + b.id + '">' + ic(b.icon, b.rotate ? 'cc-p-doe__rot' : '') + '</button>';
-    }).join('');
     var cur = D.BREAKPOINTS.filter(function (b) { return b.id === S.bp; })[0];
     return '<header class="cc-p-doe__ebar">' +
       '<div class="cc-p-doe__ebar-left">' +
@@ -516,7 +538,9 @@
           : dirty ? '<span class="cc-p-doe__esave"><span class="cc-p-doe__edot" aria-hidden="true"></span>Unsaved changes</span>'
           : '<span class="cc-p-doe__esave">All changes saved</span>') +
       '</div>' +
-      '<div class="cc-p-doe__ebar-centre"><div class="cc-p-doe__ebps" role="group" aria-label="Breakpoint">' + bps + '</div><span class="cc-p-doe__ebp-read">' + cur.label + '</span></div>' +
+      /* One control for any number of breakpoints: current icon + width, the rest in a menu. */
+      '<div class="cc-p-doe__ebar-centre"><button type="button" class="cc-p-doe__bp-trigger" data-act="menu" data-id="__bp" aria-haspopup="menu" aria-expanded="' + (S.menu === '__bp') + '" title="Preview breakpoint">' +
+        ic(cur.icon, cur.rotate ? 'cc-p-doe__rot' : '') + '<span>' + cur.label + '</span>' + ic('chevron-down', 'cc-p-doe__bp-chev') + '</button></div>' +
       '<div class="cc-p-doe__ebar-right">' +
         /* TEMPORARY (Mark, 2026-11-10): theme switch for testing while building. Step 6 hides the CC
            user menu that normally holds it. Same 'demo-theme' key as the CC ThemeToggle. Remove before handover. */
@@ -783,7 +807,7 @@
     if (S.panel === 'rowProps' && row) panel = on(6) ? dockedInspector(true, row) : rowPropsPanel(row);
     if (S.panel === 'content' && hit) panel = contentPanel(hit.cell);
     if (S.panel === 'addCell') panel = addCellPanel();
-    var bp = D.BREAKPOINTS.slice().reverse(); // live bar runs 480px → Fluid
+    var bp = baseBps().slice().reverse(); // live bar runs 480px → Fluid (lion's profile, no custom widths)
     var s6 = on(6);
     document.body.classList.toggle('doe-s6', s6);
     var nc = nestedCell();
@@ -861,6 +885,7 @@
   }
   function showTip(el) {
     hideTip();
+    if (el.getAttribute('aria-expanded') === 'true' || document.querySelector('#doe-pop-root .cc-p-doe__menu')) return;   // no tooltip over an open menu
     var raw = el.getAttribute('data-tip'); if (!raw) return;
     var m = raw.match(/^(.*?)\s*\(([^)]+)\)(.*)$/);
     var html = m ? esc(m[1]) + ' <span class="cc-p-doe__tip-key">' + esc(m[2]) + '</span>' + esc(m[3]) : esc(raw);
@@ -1158,7 +1183,7 @@
       else if (act === 'copyCell') { cellOp('copy', id); }
       else if (act === 'pasteCell') { cellOp('paste', id); }
       else if (act === 'addCellSave') { var w = document.querySelector('input[name="add"]:checked'); if (w) addCellAt(w.value); }
-      else if (act === 'noop') { if (openMenu && openMenu !== '__doc') markDirty(); }
+      else if (act === 'noop') { if (openMenu && openMenu !== '__doc' && openMenu !== '__bp') markDirty(); }
       else if (act === 'save') { doSave(); return; }
       else if (act === 'pickImage') { S.vals[id] = 'hero-banner.webp'; markDirty(); }   // mock media picker
       else if (act === 'clearImage') { delete S.vals[id]; markDirty(); }
@@ -1176,7 +1201,7 @@
       else if (act === 'exitNested') { S.select = S.nested; S.nested = ''; S.panel = ''; S.modal = false; }
       else if (act === 'kindTab') { S.kindTab = id; }
       else if (act === 'changeElement') { S.select = id; S.modal = false; S.panel = 'content'; S.kindTab = ''; }
-      else if (act === 'menu') { S.menu = (openMenu === id ? '' : id); if (id !== '__doc') selectCell(id); }
+      else if (act === 'menu') { S.menu = (openMenu === id ? '' : id); if (id !== '__doc' && id !== '__bp') selectCell(id); }
       else if (act === 'modifiedOnly') { a.classList.toggle('btn--active'); filterSettings(); return; }
       else if (act === 'collapseAll') { document.querySelectorAll('.cc-p-doe__sec').forEach(function (d) { d.open = false; }); return; }
       else return;
