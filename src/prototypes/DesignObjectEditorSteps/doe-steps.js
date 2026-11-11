@@ -443,16 +443,20 @@
         return '<button class="seg-control__btn' + (a ? ' seg-control__btn--active' : '') + '" type="button" role="radio" aria-checked="' + a + '" title="' + k[1] + '" data-act="kindTab" data-id="' + k[2] + '">' + ic(k[0]) + '<span class="cc-p-doe__kind-label">' + k[1] + '</span><span class="cc-p-doe__kind-short" aria-hidden="true">' + k[3] + '</span></button>';
       }).join('') + '</div>';
     function tile(name, icon, desc, kind, isCur) {
-      return '<button type="button" class="cc-p-doe__pick cc-p-doe__pick--' + kind + (isCur ? ' is-current' : '') + '" data-pick="' + esc((name + ' ' + desc).toLowerCase()) + '" data-choose="' + esc(name) + '" data-kind="' + kind + '" title="' + esc(desc) + '">' +
+      return '<button type="button" draggable="true" class="cc-p-doe__pick cc-p-doe__pick--' + kind + (isCur ? ' is-current' : '') + '" data-pick="' + esc((name + ' ' + desc).toLowerCase()) + '" data-choose="' + esc(name) + '" data-kind="' + kind + '" title="' + esc(desc) + '">' +
         (isCur ? ic('check', 'cc-p-doe__pick-check') : '') +
         '<span class="cc-p-doe__pick-icon">' + ic(icon) + '</span><span class="cc-p-doe__pick-name">' + esc(name) + '</span></button>';
     }
     var body, count, noun;
     if (tab === 'de') {
       count = 41; noun = 'elements';
+      /* Collapsible categories, as in the full prototype's Add library; open/closed is remembered. */
       body = D.CATEGORIES.map(function (cat) {
-        return '<div class="cc-p-doe__pick-group" data-pick-group><p class="cc-p-doe__pick-cat">' + cat.label + '<span>' + cat.items.length + '</span></p>' +
-          cat.items.map(function (i) { return tile(i[0], i[1], i[2], 'de', c.kind === 'de' && i[0] === c.type); }).join('') + '</div>';
+        var k = 'pick|' + cat.label, open = Object.prototype.hasOwnProperty.call(S.secOpen, k) ? S.secOpen[k] : true;
+        return '<details class="cc-p-doe__pick-sec" data-sec="' + esc(k) + '" data-pick-group' + (open ? ' open' : '') + '>' +
+          '<summary class="cc-p-doe__pick-cat">' + ic('chevron-down', 'cc-p-doe__pick-chev') + cat.label + '<span>' + cat.items.length + '</span></summary>' +
+          '<div class="cc-p-doe__pick-group">' +
+          cat.items.map(function (i) { return tile(i[0], i[1], i[2], 'de', c.kind === 'de' && i[0] === c.type); }).join('') + '</div></details>';
       }).join('');
     } else if (tab === 'do') {
       count = D.DESIGN_OBJECTS.length; noun = 'design objects';
@@ -995,6 +999,56 @@
       }
     }
   });
+  /* Fill a cell with an element / design object / script — shared by tile click and tile drop.
+     Applies straight away (no per-cell save); the top bar's Save commits the design object. */
+  function assignContent(cc, kind, name) {
+    if (cc.kind === kind && cc.type === name) return false;
+    /* A cell still called "Blank Cell", or named after its old content, takes the new content's
+       name; a name the editor typed is kept (Mark, 2026-11-11). */
+    if (!cc.name || cc.name === 'Blank Cell' || cc.name === cc.type) cc.name = name;
+    cc.kind = kind; cc.type = name; cc.incomplete = false;
+    if (kind === 'do') { var dObj = D.DESIGN_OBJECTS.filter(function (x) { return x[0] === name; })[0]; cc.usedIn = dObj ? dObj[1] : 1; cc.doType = doTypeOf(name); if (name === '2016 RB Navigation') cc.nested = HEADER_NESTED; else delete cc.nested; }
+    else delete cc.nested;
+    markDirty();
+    return true;
+  }
+
+  /* ── Drag a picker tile onto any cell on the canvas to fill it (Mark, 2026-11-11). */
+  var tileDrag = null;
+  function clearTileDrop() { document.querySelectorAll('.cc-p-doe__cell--drop').forEach(function (n) { n.classList.remove('cc-p-doe__cell--drop'); }); }
+  function tileDropCell(ev) {
+    var cellEl = ev.target.closest && ev.target.closest('#doe-root .cc-p-doe__cell[data-cell]');
+    return cellEl && findCell(cellEl.getAttribute('data-cell')) ? cellEl : null;
+  }
+  document.addEventListener('dragstart', function (ev) {
+    var t = ev.target.closest && ev.target.closest('#doe-root .cc-p-doe__pick[data-choose]');
+    if (!t) return;
+    tileDrag = { kind: t.getAttribute('data-kind'), name: t.getAttribute('data-choose') };
+    S.menu = ''; hideTip();
+    if (ev.dataTransfer) { ev.dataTransfer.effectAllowed = 'copy'; ev.dataTransfer.setData('text/plain', tileDrag.name); }
+  });
+  document.addEventListener('dragover', function (ev) {
+    if (!tileDrag) return;
+    var cellEl = tileDropCell(ev);
+    clearTileDrop();
+    if (!cellEl) return;
+    ev.preventDefault();
+    if (ev.dataTransfer) ev.dataTransfer.dropEffect = 'copy';
+    cellEl.classList.add('cc-p-doe__cell--drop');
+  });
+  document.addEventListener('drop', function (ev) {
+    if (!tileDrag) return;
+    var cellEl = tileDropCell(ev), td = tileDrag;
+    clearTileDrop(); tileDrag = null;
+    if (!cellEl) return;
+    ev.preventDefault();
+    var id = cellEl.getAttribute('data-cell');
+    assignContent(findCell(id).cell, td.kind, td.name);
+    S.select = id;            // the dropped-on cell becomes the selection, so the picker ticks its new content
+    render();
+  });
+  document.addEventListener('dragend', function () { if (tileDrag) { tileDrag = null; clearTileDrop(); } });
+
   /* ── Drag and drop: a cell is draggable only while the pointer is down on its grip (lion's approach). */
   var drag = null;
   function clearDrop() {
@@ -1159,13 +1213,7 @@
     var tile = e.target.closest('#doe-root .cc-p-doe__pick[data-choose]');
     if (tile && !tile.classList.contains('is-current')) {
       var hitT = findCell(S.select);
-      if (hitT) {
-        var kind = tile.getAttribute('data-kind'), cc = hitT.cell;
-        cc.kind = kind; cc.type = tile.getAttribute('data-choose'); cc.incomplete = false;
-        if (kind === 'do') { var dObj = D.DESIGN_OBJECTS.filter(function (x) { return x[0] === cc.type; })[0]; cc.usedIn = dObj ? dObj[1] : 1; cc.doType = doTypeOf(cc.type); if (cc.type === '2016 RB Navigation') cc.nested = HEADER_NESTED; else delete cc.nested; }
-        else delete cc.nested;
-        markDirty(); render(); return;
-      }
+      if (hitT) { assignContent(hitT.cell, tile.getAttribute('data-kind'), tile.getAttribute('data-choose')); render(); return; }
     }
     var a = e.target.closest('[data-act]');
     if (a && a.closest('#doe-root, #doe-modal-root, #doe-pop-root')) {
@@ -1257,7 +1305,10 @@
     if (e.target.matches('[data-pick-search]')) {
       var q = e.target.value.trim().toLowerCase();
       document.querySelectorAll('.cc-p-doe__pick').forEach(function (b) { b.hidden = q && b.dataset.pick.indexOf(q) === -1; });
-      document.querySelectorAll('[data-pick-group]').forEach(function (g) { g.hidden = !g.querySelector('.cc-p-doe__pick:not([hidden])'); });
+      document.querySelectorAll('[data-pick-group]').forEach(function (g) {
+        g.hidden = !g.querySelector('.cc-p-doe__pick:not([hidden])');
+        if (q && !g.hidden && g.tagName === 'DETAILS') g.open = true;   // a match inside a collapsed category shows
+      });
     }
     if (e.target.matches('[data-setting-search]')) filterSettings();
     if (e.target.matches('[data-dos-search]')) {
