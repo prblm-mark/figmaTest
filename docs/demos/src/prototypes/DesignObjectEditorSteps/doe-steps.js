@@ -17,6 +17,7 @@
 (function () {
   var D = window.DOE_DATA;
   var params = new URLSearchParams(location.search);
+  var PANEL_MIN = 320, PANEL_MAX = 720;   // docked panel width bounds (step 6); declared before S, which reads them
   var S = {
     steps: (params.get('steps') || '').split(',').filter(Boolean).map(Number),
     select: params.get('select') || '',
@@ -32,10 +33,10 @@
     bp: 'fluid',
     panelW: readW()
   };
-  /* Docked panel width (step 6), remembered per browser. */
-  var PANEL_MIN = 320, PANEL_MAX = 720;
-  function readW() { try { var w = parseInt(localStorage.getItem('doe-steps-panel-w'), 10); return w >= PANEL_MIN ? w : 384; } catch (e) { return 384; } }
-  function saveW() { try { localStorage.setItem('doe-steps-panel-w', String(S.panelW)); } catch (e) { /* storage unavailable */ } }
+  /* Docked panel width (step 6), remembered per browser. Starts at its narrowest (Mark, 2026-11-11);
+     the storage key moved to -w2 so widths dragged before that change don't override the new default. */
+  function readW() { try { var w = parseInt(localStorage.getItem('doe-steps-panel-w2'), 10); return w >= PANEL_MIN ? w : PANEL_MIN; } catch (e) { return PANEL_MIN; } }
+  function saveW() { try { localStorage.setItem('doe-steps-panel-w2', String(S.panelW)); } catch (e) { /* storage unavailable */ } }
   function clampW(w) {
     var shell = document.querySelector('.cc-p-doe--s6');
     var max = shell ? Math.min(PANEL_MAX, Math.round(shell.clientWidth * 0.6)) : PANEL_MAX;
@@ -319,10 +320,8 @@
           .concat(S.clip ? [['clipboard-paste', 'Paste Content', 'pasteCell']] : [])
           .concat(on(4) ? [(findCell(S.menu) || {}).cell && findCell(S.menu).cell.incomplete ? ['flag-off', 'Mark complete', 'toggleDone'] : ['flag', 'Mark incomplete', 'toggleDone']] : [])
           .concat(on(7) ? [] : moveItems(S.menu));
-    /* Step 7: Add and Move are each a 2×2 grid of direction buttons — Add at the top of the cell menu,
-       Move at the foot — which keeps the menu short (Mark, 2026-11-11). Every direction keeps its slot;
+    /* Step 7: Add and Move are each a 2×2 grid of direction buttons, which keeps the menu short (Mark, 2026-11-11). Every direction keeps its slot;
        one lion doesn't allow here is shown disabled rather than dropped, so nothing shuffles. */
-    var addHead = '', moveFoot = '';
     if (on(7) && S.menu !== '__doc') {
       var hm = findCell(S.menu), dirs = addDirs(hm && hm.cell), mvOk = moveItems(S.menu).map(function (m) { return m[2]; });
       var dirGrid = function (spec) {
@@ -333,22 +332,41 @@
         }).join('') + '</div>';
       };
       var addOk = {}; dirs.forEach(function (d) { addOk[d[0]] = d[2]; });
-      addHead = '<p class="cc-p-doe__menu-head">Add cell</p>' + dirGrid([
-        ['top', 'arrow-up', 'Above'], ['bottom', 'arrow-down', 'Below'], ['left', 'arrow-left', 'Left'], ['right', 'arrow-right', 'Right']
-      ].map(function (d) {
-        return { act: 'addAt', where: d[0], icon: d[1], label: d[2], ok: !!addOk[d[0]], title: addOk[d[0]] || 'Not allowed for this cell' };
-      })) + '<span class="cc-p-doe__menu-sep" role="separator"></span>';
-      moveFoot = '<span class="cc-p-doe__menu-sep" role="separator"></span><p class="cc-p-doe__menu-head">Move cell</p>' + dirGrid([
-        ['moveUp', 'arrow-up', 'Up'], ['moveDown', 'arrow-down', 'Down'], ['moveLeft', 'arrow-left', 'Left'], ['moveRight', 'arrow-right', 'Right']
-      ].map(function (d) {
-        var ok = mvOk.indexOf(d[0]) !== -1;
-        return { act: d[0], icon: d[1], label: d[2], ok: ok, title: ok ? 'Move cell ' + d[2].toLowerCase() : 'Can\'t move ' + d[2].toLowerCase() + ' from here' };
-      }));
+      /* Sectioned (Mark, 2026-11-11): Add cell · Move cell · Content · then the cell's own state and
+         Delete on their own at the foot, Delete in the warning style. Each section has a heading and
+         a divider above it; anything not available here is shown disabled so the menu never reflows. */
+      var row = function (icon, label, act, opt) {
+        opt = opt || {};
+        return '<li role="none"><button type="button" class="dropdown-item dropdown-item--xs' + (opt.warn ? ' dropdown-item--warning' : '') + '" role="menuitem" data-act="' + act + '" data-id="' + S.menu + '"' +
+          (opt.off ? ' disabled aria-disabled="true" title="' + opt.off + '"' : '') + '>' + ic(icon) + '<span data-text="' + label + '">' + label + '</span></button></li>';
+      };
+      var sec = function (head, body) {
+        return '<div class="cc-p-doe__menu-sec" role="group"' + (head ? ' aria-label="' + head + '"' : '') + '>' + (head ? '<p class="cc-p-doe__menu-head">' + head + '</p>' : '') + body + '</div>';
+      };
+      var mc = hm && hm.cell;
+      return '<div class="dropdown__panel cc-p-doe__menu cc-p-doe__menu--sectioned" role="menu">' +
+        sec('Add cell', dirGrid([
+          ['top', 'arrow-up', 'Above'], ['bottom', 'arrow-down', 'Below'], ['left', 'arrow-left', 'Left'], ['right', 'arrow-right', 'Right']
+        ].map(function (d) {
+          return { act: 'addAt', where: d[0], icon: d[1], label: d[2], ok: !!addOk[d[0]], title: addOk[d[0]] || 'Not allowed for this cell' };
+        }))) +
+        sec('Move cell', dirGrid([
+          ['moveUp', 'arrow-up', 'Up'], ['moveDown', 'arrow-down', 'Down'], ['moveLeft', 'arrow-left', 'Left'], ['moveRight', 'arrow-right', 'Right']
+        ].map(function (d) {
+          var ok = mvOk.indexOf(d[0]) !== -1;
+          return { act: d[0], icon: d[1], label: d[2], ok: ok, title: ok ? 'Move cell ' + d[2].toLowerCase() : 'Can\'t move ' + d[2].toLowerCase() + ' from here' };
+        }))) +
+        sec('Content', '<ul class="dropdown__list">' + row('scissors', 'Cut', 'cutCell') + row('copy', 'Copy', 'copyCell') +
+          row('clipboard-paste', 'Paste', 'pasteCell', { off: S.clip ? '' : 'Nothing copied yet' }) + '</ul>') +
+        sec('', '<ul class="dropdown__list">' +
+          (on(4) ? (mc && mc.incomplete ? row('flag-off', 'Mark complete', 'toggleDone') : row('flag', 'Mark incomplete', 'toggleDone')) : '') +
+          row('trash-2', 'Delete cell', 'deleteCell', { warn: true }) + '</ul>') +
+        '</div>';
     }
-    return '<div class="dropdown__panel cc-p-doe__menu" role="menu">' + addHead + '<ul class="dropdown__list">' + items.map(function (i) {
+    return '<div class="dropdown__panel cc-p-doe__menu" role="menu"><ul class="dropdown__list">' + items.map(function (i) {
       if (!i) return '<li role="separator" class="cc-p-doe__menu-sep"></li>';
       return '<li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem"' + (i[2] ? ' data-act="' + i[2] + '" data-id="' + S.menu + '"' : ' data-act="noop"') + '>' + ic(i[0]) + '<span data-text="' + i[1] + '">' + i[1] + '</span></button></li>';
-    }).join('') + '</ul>' + moveFoot + '</div>';
+    }).join('') + '</ul></div>';
   }
   function bpLabel() { var b = D.BREAKPOINTS.filter(function (x) { return x.id === S.bp; })[0]; return b ? b.label : 'Fluid'; }
   function bpWidth() { var b = D.BREAKPOINTS.filter(function (x) { return x.id === S.bp; })[0]; return b && b.width; }

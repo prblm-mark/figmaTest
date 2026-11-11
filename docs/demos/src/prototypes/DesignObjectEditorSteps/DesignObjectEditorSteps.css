@@ -605,3 +605,11 @@ button.cc-p-doe__status:focus-visible, .cc-p-doe__badge-btn:focus-visible { outl
 /* A wrapping chip field (Exclude for): the label sits on the first chip line, not the middle of the block */
 .cc-p-doe-insp .doe-field:has(> .doe-field__ctl > .doe-chips) { align-items: start; }
 .cc-p-doe-insp .doe-field:has(> .doe-field__ctl > .doe-chips) > .doe-field__label { display: flex; align-items: center; min-block-size: var(--ao-spacing-6); }   /* = chip height (24px) */
+/* Step 7 sectioned cell menu: Add cell · Move cell · Content · state + Delete, each divided */
+.cc-p-doe__menu-sec { padding-block: var(--ao-spacing-1); }
+.cc-p-doe__menu-sec + .cc-p-doe__menu-sec { border-block-start: 1px solid var(--ao-border-secondary); }
+.cc-p-doe__menu-sec:first-child { padding-block-start: 0; }
+.cc-p-doe__menu-sec:last-child { padding-block-end: 0; }
+.cc-p-doe__menu-sec .cc-p-doe__menu-dirs { padding-block-end: 0; }
+.cc-p-doe__menu--sectioned .dropdown-item:disabled { opacity: 0.4; }
+.cc-p-doe__menu--sectioned .dropdown-item:disabled:hover { background-color: transparent; }
