@@ -149,8 +149,9 @@
       (hasClearable(c) ? tool('eraser', 'Clear', 'clear', c.id) : '') +
       '<span class="cc-p-doe__menu-wrap">' + tool('ellipsis-vertical', 'Cell actions', 'menu', c.id) + '</span>';
     var span = BASE_SPAN[c.id] || (S.nested && c.span) || 12;
-    return '<section class="record-section cc-p-doe__cell' + (selected ? ' is-selected' : '') + (c.incomplete ? ' is-incomplete' : '') + (hiddenNow(c) ? ' is-hidden-bp' : '') + '" style="--span:' + span + '" data-cell="' + c.id + '">' +
-      '<div class="cc-p-doe__cell-head">' + '<span class="cc-p-doe__grip" data-doe-grip title="Drag to move">' + ic('grip-vertical') + '</span>' + head +
+    var box = on(6) ? cellBoxStyle(c) : '';
+    return '<section class="record-section cc-p-doe__cell' + (selected ? ' is-selected' : '') + (c.incomplete ? ' is-incomplete' : '') + (hiddenNow(c) ? ' is-hidden-bp' : '') + '" style="--span:' + span + (box ? ';' + box : '') + '" data-cell="' + c.id + '">' +
+      '<div class="cc-p-doe__cell-head">' + '<span class="cc-p-doe__grip" data-doe-grip title="Drag to move">' + ic('grip-vertical') + '</span>' + head + (on(6) ? widthTag(c) : '') +
         /* Step 4: "complete" is the normal state, so it shows nothing; a flag to mark the cell incomplete
            appears on hover / selection (Mark, 2026-11-10). It leads the label group, in the slot the
            Incomplete label takes, so flagging doesn't jump and other labels sit hard right (2026-11-11).
@@ -371,6 +372,56 @@
   function bpLabel() { var b = D.BREAKPOINTS.filter(function (x) { return x.id === S.bp; })[0]; return b ? b.label : 'Fluid'; }
   function bpWidth() { var b = D.BREAKPOINTS.filter(function (x) { return x.id === S.bp; })[0]; return b && b.width; }
   function hiddenNow(c) { return !!(c.hiddenAt && c.hiddenAt.indexOf(bpLabel()) !== -1); }
+
+  /* ── Breakpoint cascade (Mark, 2026-11-11). The "breakpoint specific" properties (align, size,
+     margin, padding, background, custom CSS) are stored per breakpoint, as lion's panel groups them:
+     Fluid is "<id>|w", a breakpoint override is "<id>|w@<bp>". A value at a breakpoint is read from
+     the nearest one at or above it, then Fluid — so editing at 1200px applies to 1200px and smaller.
+     TODO(backend:DesignObjectEditor): per-breakpoint cell style overrides → persist as lion does. */
+  var BPK = /^(hAlign|vAlign|float|clear|w|minW|maxW|h|minH|maxH|margin:.+|padding:.+|bgColour|bgImage|outerCss|innerCss)$/;
+  function bpChain(bpId) {
+    var cur = D.BREAKPOINTS.filter(function (b) { return b.id === (bpId || S.bp); })[0];
+    if (!cur || !cur.width) return ['fluid'];
+    return ['fluid'].concat(D.BREAKPOINTS.filter(function (b) { return b.width && b.width > cur.width; })
+      .sort(function (a, b) { return b.width - a.width; }).map(function (b) { return b.id; })).concat([cur.id]);
+  }
+  function keyAt(id, key, bpId) { return !BPK.test(key) || !bpId || bpId === 'fluid' ? id + '|' + key : id + '|' + key + '@' + bpId; }
+  function has(k) { return Object.prototype.hasOwnProperty.call(S.vals, k) && S.vals[k] !== ''; }
+  function resolveAt(id, key, def, skipCurrent) {
+    var ch = bpChain();
+    for (var i = ch.length - 1 - (skipCurrent ? 1 : 0); i >= 0; i--) { var k = keyAt(id, key, ch[i]); if (has(k)) return S.vals[k]; }
+    return def;
+  }
+  function overridesHere(id) {
+    if (!bpWidth()) return 0;
+    var tail = '@' + S.bp;
+    return Object.keys(S.vals).filter(function (k) { return k.indexOf(id + '|') === 0 && k.slice(-tail.length) === tail && S.vals[k] !== ''; }).length;
+  }
+  /* Canvas box from the cell's own Width / Min / Max / Height at the breakpoint being edited, the way
+     lion draws cells. A % width allows for the gap between cells (50% + 50% sit side by side, as on the
+     page); px, keywords and calc() go straight through. No width = full width, as lion. */
+  function cellBoxStyle(c) {
+    var out = [], w = resolveAt(c.id, 'w', ''), minW = resolveAt(c.id, 'minW', ''), maxW = resolveAt(c.id, 'maxW', '');
+    var h = resolveAt(c.id, 'h', ''), minH = resolveAt(c.id, 'minH', '');
+    var pct = function (v, prop) {
+      if (!v || !lenOk(prop, v)) return '';
+      var p = lenSplit(v);
+      if (p.kind === 'num' && p.unit === '%') { var f = 1 - (+p.num) / 100; return f > 0 ? 'calc(' + v + ' - var(--cell-gap) * ' + (+f.toFixed(4)) + ')' : v; }
+      return v === 'auto' && prop === 'width' ? '100%' : v;
+    };
+    var wv = pct(w, 'width'); if (wv) out.push('--cell-w:' + wv);
+    var mn = pct(minW, 'min-width'); if (mn) out.push('min-inline-size:' + mn);
+    var mx = pct(maxW, 'max-width'); if (mx) out.push('max-inline-size:' + mx);
+    /* height only ever grows the card, so its own controls stay visible */
+    var hv = [h, minH].filter(function (v) { return v && lenOk('min-height', v) && lenSplit(v).kind !== 'text' || /^calc|^min|^max|^clamp/.test(v || ''); });
+    if (hv.length) out.push('min-block-size:' + (hv.length > 1 ? 'max(' + hv.join(', ') + ')' : hv[0]));
+    return out.join(';');
+  }
+  function widthTag(c) {
+    var w = resolveAt(c.id, 'w', '');
+    if (!w || !lenOk('width', w)) return '';
+    return '<span class="cc-p-doe__wtag" title="Width ' + esc(w) + (bpWidth() ? ' at ' + bpLabel() : '') + '">' + ic('move-horizontal') + esc(w) + '</span>';
+  }
   function rowHtml(r, n) {
     var sel = S.select === r.id;
     /* Lion: the row that holds a nested design object has no row-properties button; every other
@@ -640,10 +691,11 @@
   function sel(v) { return '<button type="button" class="doe-select"><span>' + v + '</span>' + pic('chevrons-up-down') + '</button>'; }
   function num(v, unit, ph) { return '<label class="doe-num"><input type="text" value="' + (v || '') + '" placeholder="' + (ph || 'Auto') + '">' + (unit ? '<span class="doe-num__unit">' + unit + '</span>' : '') + '</label>'; }
 
-  function bpScope() {
+  function bpScope(itemId) {
     var b = D.BREAKPOINTS.filter(function (x) { return x.id === S.bp; })[0];
+    var n = itemId ? overridesHere(itemId) : 0;
     if (!b.width) return '<div class="doe-scope">' + pic('monitor') + '<span>Editing <b>Fluid</b>. Changes cascade to every breakpoint.</span></div>';
-    return '<div class="doe-scope doe-scope--override">' + pic(b.icon, b.rotate ? 'doe-ic--rot' : '') + '<span>Editing at <b>' + b.label + '</b>. Changes apply to ' + b.label + ' and smaller.</span><span class="doe-scope__count">2 overrides</span></div>';
+    return '<div class="doe-scope doe-scope--override">' + pic(b.icon, b.rotate ? 'doe-ic--rot' : '') + '<span>Editing at <b>' + b.label + '</b>. Changes apply to ' + b.label + ' and smaller.</span>' + (n ? '<span class="doe-scope__count">' + n + (n === 1 ? ' override' : ' overrides') + '</span>' : '') + '</div>';
   }
 
     return { sec: sec, field: field, sel: sel, num: num, bpScope: bpScope, pic: pic };
@@ -727,6 +779,27 @@
     var bad = !lenOk(prop, v);
     wrap.classList.toggle('is-invalid', bad);
     if (bad) { input.setAttribute('aria-invalid', 'true'); wrap.title = lenHint(prop); } else { input.removeAttribute('aria-invalid'); wrap.title = p.kind === 'text' ? v : ''; }
+    paintBox(k, input);
+  }
+  /* A size value changed: redraw that cell on the canvas (its width / height follow the value as you
+     type), mark the field as set-here at a breakpoint, and refresh the override count. */
+  function paintBox(k, input) {
+    var id = k.split('|')[0], key = k.split('|')[1].split('@')[0];
+    if (input && bpWidth()) {
+      var lab = input.closest('.cc-p-doe-insp__size-item'), ls = lab && lab.firstElementChild;
+      if (ls) { ls.classList.toggle('is-mod', has(k)); if (has(k)) ls.title = 'Set at ' + bpLabel(); else ls.removeAttribute('title'); }
+      var sc = document.querySelector('.cc-p-doe__panel .doe-scope');
+      if (sc) { var t = document.createElement('div'); t.innerHTML = INSP.bpScope(id); sc.replaceWith(t.firstElementChild); if (window.lucide) lucide.createIcons(); }
+    }
+    if (!on(6) || !/^(w|minW|maxW|h|minH)$/.test(key)) return;
+    var hit = findCell(id), el = document.querySelector('.cc-p-doe__cell[data-cell="' + id + '"]');
+    if (!hit || !el) return;
+    var tmp = document.createElement('div'); tmp.innerHTML = cellHtml(hit.cell, hit.row);
+    var fresh = tmp.firstElementChild;
+    el.setAttribute('style', fresh.getAttribute('style'));
+    var oldTag = el.querySelector('.cc-p-doe__wtag'), newTag = fresh.querySelector('.cc-p-doe__wtag');
+    if (oldTag) oldTag.remove();
+    if (newTag) { el.querySelector('.cc-p-doe__name').after(newTag); if (window.lucide) lucide.createIcons(); }
   }
   function lenUnitOf(input) { var b = input.parentNode.querySelector('.cc-p-doe-len__unit'); return b && !b.hidden ? b.textContent.trim() : vget(input.getAttribute('data-k') + '~unit', 'px'); }
   function lenSetUnit(btn, u) {
@@ -739,8 +812,8 @@
 
   function dockedInspector(isRow, item) {
     var I = INSP;
-    function K(key) { return item.id + '|' + key; }
-    function V(key, def) { return vget(K(key), def); }
+    function K(key) { return keyAt(item.id, key, S.bp); }
+    function V(key, def) { return BPK.test(key) ? resolveAt(item.id, key, def) : vget(K(key), def); }
     function cb(key, label, def) {
       var on = V(key, def) === true;
       return '<label class="checkbox cc-p-doe-insp__check"><input type="checkbox" class="checkbox__input" data-k="' + esc(K(key)) + '"' + (on ? ' checked' : '') + (label ? '' : ' aria-label="Enabled"') + '><span class="checkbox__indicator">' + ic('check') + '</span>' + (label ? '<span class="checkbox__label"><span class="checkbox__label-text">' + label + '</span></span>' : '') + '</label>';
@@ -748,7 +821,13 @@
     function sw(key, label) { return toggleHtml(K(key), label, false); }
     function dd(key, optsKey, def) { return ddButton(K(key), def, OPTS[optsKey], 'doe-select'); }
     function txt(key, def, ph) { return '<label class="doe-num doe-num--text"><input type="text" data-k="' + esc(K(key)) + '" value="' + esc(V(key, def || '')) + '" placeholder="' + (ph || '') + '"></label>'; }
-    function len(key, prop, def, ph) { return lenField(K(key), prop, V(key, def || ''), ph || 'Auto'); }
+    /* At a breakpoint the field holds only this breakpoint's override; the inherited value shows as the
+       placeholder, so it's clear what applies and what was set here. */
+    function len(key, prop, def, ph) {
+      if (!bpWidth()) return lenField(K(key), prop, V(key, def || ''), ph || 'Auto');
+      return lenField(K(key), prop, vget(K(key), ''), resolveAt(item.id, key, def || '', true) || ph || 'Auto');
+    }
+    function lenLabel(key, text) { return '<span' + (bpWidth() && has(K(key)) ? ' class="is-mod" title="Set at ' + bpLabel() + '"' : '') + '>' + text + '</span>'; }
     /* Segmented control (full prototype look) for alignment / padding. Same values as the
        dropdowns they replace; data-seg + data-val are handled by the click listener. */
     function seg(key, optsKey, def, show) {
@@ -790,7 +869,7 @@
     function sizeLine(axis, keys) {   // e.g. Width · Min · Max → width / min-width / max-width
       var prop = axis.toLowerCase();
       return '<div class="cc-p-doe-insp__size">' + keys.map(function (k, i) {
-        return '<label class="cc-p-doe-insp__size-item"><span>' + (i === 0 ? axis : i === 1 ? 'Min' : 'Max') + '</span>' +
+        return '<label class="cc-p-doe-insp__size-item">' + lenLabel(k, i === 0 ? axis : i === 1 ? 'Min' : 'Max') +
           len(k, (i === 1 ? 'min-' : i === 2 ? 'max-' : '') + prop, '', i === 2 ? 'None' : 'Auto') + '</label>';
       }).join('') + '</div>';
     }
@@ -798,7 +877,7 @@
     function trbl(prefix) {   // Top / Right / Bottom / Left, as in the baseline
       return '<div class="cc-p-doe-insp__size cc-p-doe-insp__size--4">' + ['Top', 'Right', 'Bottom', 'Left'].map(function (side) {
         /* Same field as Size, label above; empty means 0 (Mark, 2026-11-10 / 11). */
-        return '<label class="cc-p-doe-insp__size-item"><span>' + side + '</span>' + len(prefix + ':' + side, prefix + '-' + side.toLowerCase(), '', '0') + '</label>';
+        return '<label class="cc-p-doe-insp__size-item">' + lenLabel(prefix + ':' + side, side) + len(prefix + ':' + side, prefix + '-' + side.toLowerCase(), '', '0') + '</label>';
       }).join('') + '</div>';
     }
     var img = V('bgImage', '');
@@ -813,7 +892,7 @@
         I.sec('Main', I.field('Name', txt('name', item.name)) + I.field('Custom ID', txt('customId', '')) + I.field('Custom class', txt('customClass', '')) + I.field('Sticky', sw('sticky', 'Sticky')), true);
     } else if (!isRow) {
       var c = item;
-      body = I.bpScope() +
+      body = I.bpScope(item.id) +
         I.sec('Main',
           I.field('Name', txt('name', c.name)) + I.field('Custom ID', txt('customId', c.id === 'c-prime' ? 'exhibitor_listing2' : '')) + I.field('Custom class', txt('customClass', '')) +
           I.field('Design style', dd('style', 'style', 'Not set')) + I.field('Design frame', dd('frame', 'frame', 'Not set')) + I.field('Spacing', seg('spacing', 'size', 'Medium', PAD)) +
@@ -831,14 +910,14 @@
         I.sec('Show at breakpoints', bpTiles(c), true,
           c.hiddenAt ? '<span class="doe-sec__mod" title="Hidden at ' + c.hiddenAt.length + '">' + c.hiddenAt.length + '</span>' : '');
     } else {
-      body = I.bpScope() +
+      body = I.bpScope(item.id) +
         I.sec('Security', I.field('Content security right', dd('security', 'security', 'Non-secured')), true) +
         I.sec('Outer row', I.field('Horizontal padding', seg('hPad', 'size', 'Medium', PAD)) + I.field('Vertical padding', seg('vPad', 'size', 'Medium', PAD)), true) +
         /* Wrap is deprecated (Mark, 2026-11-10), so it is not offered here. */
         I.sec('Alignment', I.field('Horizontal align', seg('rowAlign', 'rowAlign', 'Center', ROW_ICONS)) + I.field('Sticky', sw('sticky', 'Sticky')), true) +
         /* lion fills Width 100% and Max-Width 1280px as the row panel opens */
         I.sec('Size', '<div class="cc-p-doe-insp__size">' + [['Width', 'w', '100%'], ['Min', 'minW', ''], ['Max', 'maxW', '1280px']].map(function (f) {
-          return '<label class="cc-p-doe-insp__size-item"><span>' + f[0] + '</span>' + len(f[1], (f[1] === 'w' ? '' : f[1] === 'minW' ? 'min-' : 'max-') + 'width', f[2], f[1] === 'maxW' ? 'None' : 'Auto') + '</label>';
+          return '<label class="cc-p-doe-insp__size-item">' + lenLabel(f[1], f[0]) + len(f[1], (f[1] === 'w' ? '' : f[1] === 'minW' ? 'min-' : 'max-') + 'width', f[2], f[1] === 'maxW' ? 'None' : 'Auto') + '</label>';
         }).join('') + '</div>', true) +
         I.sec('Background', I.field('Colour', colour('bgColour')) + bgImage, !!img || !!V('bgColour', '')) +
         I.sec('Custom CSS', I.field('Outer row CSS', area('outerCss')) + I.field('Inner row CSS', area('innerCss')), false);
@@ -1023,6 +1102,7 @@
     proot.innerHTML = S.menu ? cellMenu() : '';
     var nc2 = document.querySelector('.cc-p-doe__canvas'); if (nc2) nc2.scrollTop = canvasTop;
     var np = document.querySelector('.cc-p-doe__panel .doe-insp__body, .cc-p-doe__panel .cc-p-doe__panel-body'); if (np && panelTop) np.scrollTop = panelTop;
+    render._at = Date.now();   // the scroll restore above fires a scroll event a frame later; menus ignore it
     if (window.lucide) lucide.createIcons();
     adoptTitles(document.getElementById('doe-root')); adoptTitles(proot); if (typeof hideTip === 'function') hideTip();
     placeMenu();
@@ -1534,7 +1614,9 @@
     e.preventDefault(); applyW(); saveW();
   });
   window.addEventListener('resize', function () { if (on(6)) { S.panelW = clampW(S.panelW); applyW(); } if (S.menu) { S.menu = ''; render(); } });
-  document.addEventListener('scroll', function () { if (S.menu) { S.menu = ''; render(); } }, true);
+  /* Scrolling closes an open menu — but not the scroll render() itself causes when it restores the
+     canvas / panel position (that closed the breakpoint menu whenever the panel was scrolled). */
+  document.addEventListener('scroll', function () { if (S.menu && Date.now() - (render._at || 0) > 150) { S.menu = ''; render(); } }, true);
   /* Length fields: tidy the display on commit (blur / Enter); ↑/↓ nudge a number. */
   document.addEventListener('change', function (e) { if (e.target.hasAttribute && e.target.hasAttribute('data-len')) lenRefresh(e.target); });
   document.addEventListener('keydown', function (e) {
@@ -1587,6 +1669,13 @@
     }).concat([{ label: 'All steps on', onClick: function () { location.search = '?steps=1,2,3,4,5,6,7'; } },
                { label: 'Baseline (all off)', onClick: function () { location.search = ''; } }]));
   }
+  /* Seed Fluid widths from the sample's spans, so the width-driven canvas (step 6) starts as before:
+     Text & Image 1/3 + Edition Highlights 2/3 side by side, and the nested header's cells. */
+  allRows().forEach(function (r) { r.cells.forEach(function (c) {
+    var inNested = HEADER_NESTED.rows.indexOf(r) !== -1;   // top-level cells drew full width before, except BASE_SPAN
+    var sp = BASE_SPAN[c.id] || (inNested && c.span && c.span < 12 ? c.span : 0);
+    if (sp && !has(c.id + '|w')) S.vals[c.id + '|w'] = (Math.round(sp / 12 * 10000) / 100) + '%';
+  }); });
   H.cur = snap();   // the opening state is the bottom of the undo history
   render();
 })();

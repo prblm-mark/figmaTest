@@ -631,3 +631,19 @@ button.cc-p-doe__status:focus-visible, .cc-p-doe__badge-btn:focus-visible { outl
 /* invalid value: the DS Input error state (pale red border + soft red ring on focus) */
 .cc-p-doe-insp .cc-p-doe-len.is-invalid, .cc-p-doe-insp .cc-p-doe-len.is-invalid:hover { border-color: var(--ao-border-error); background: var(--ao-surface-error-soft); }
 .cc-p-doe-insp .cc-p-doe-len.is-invalid:focus-within { border-color: var(--ao-border-error); box-shadow: 0 0 0 3px var(--ao-surface-error-soft); }
+/* Step 6: cells take their own Width / Min / Max on the canvas, as lion draws them (Mark, 2026-11-11).
+   Flex-wrap instead of the 12-column grid; no width = full width. A % width allows for --cell-gap. */
+.cc-p-doe--s6 .cc-p-doe__cells { --cell-gap: var(--ao-spacing-2); display: flex; flex-wrap: wrap; align-items: stretch; gap: var(--cell-gap); }
+.cc-p-doe--s6 .cc-p-doe__cell.record-section { flex: 0 0 auto; inline-size: var(--cell-w, 100%); max-inline-size: 100%; box-sizing: border-box; }
+/* width tag beside the name: what the cell's width is at this breakpoint */
+.cc-p-doe__wtag {
+  display: inline-flex; align-items: center; gap: var(--ao-spacing-0-5); flex: none;
+  color: var(--ao-text-contrast); font-size: var(--ao-font-fixed-5xs); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.cc-p-doe__wtag svg { width: var(--ao-icon-size-xs); height: var(--ao-icon-size-xs); color: var(--ao-icon-contrast); }
+/* a size field set at this breakpoint (not inherited) */
+.cc-p-doe-insp__size-item > span.is-mod { color: var(--ao-text-brand); font-weight: var(--ao-font-semibold); }
+/* A narrow cell stays honest to its width: its buttons wrap and its header clips, instead of
+   spilling over the next cell. */
+.cc-p-doe--s6 .cc-p-doe__tools { flex-wrap: wrap; min-inline-size: 0; }
+.cc-p-doe--s6 .cc-p-doe__cell-head { min-inline-size: 0; overflow: hidden; }
