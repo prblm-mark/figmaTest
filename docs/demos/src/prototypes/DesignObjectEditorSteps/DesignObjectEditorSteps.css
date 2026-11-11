@@ -159,7 +159,22 @@
 .cc-p-doe__pick-cat span { margin-inline-start: auto; font-weight: var(--ao-font-regular); }
 /* Tiles drag onto canvas cells; the target cell gets a brand ring. */
 .cc-p-doe__pick[draggable="true"] { cursor: grab; }
-.cc-p-doe__cell.cc-p-doe__cell--drop { outline: 2px dashed var(--ao-border-brand); outline-offset: -2px; background: var(--ao-surface-brand-soft-extra); }
+/* While a tile is dragged every cell shows as a target (dashed); the one under the pointer goes solid,
+   tints, and a pill says what the drop will do. Distinct from the selected cell (1px ring, lighter tint). */
+.cc-p-doe--tile-drag .cc-p-doe__cell[data-cell] { outline: 1px dashed var(--ao-border-brand); outline-offset: -1px; }
+.cc-p-doe--tile-drag .cc-p-doe__cell[data-cell] > * { pointer-events: none; }
+.cc-p-doe--tile-drag .cc-p-doe__cell.cc-p-doe__cell--drop {
+  outline: 2px solid var(--ao-border-brand); outline-offset: -2px;
+  border-color: var(--ao-border-brand); background: var(--ao-surface-brand-soft); box-shadow: var(--ao-shadow-md);
+}
+.cc-p-doe__cell--drop[data-drop-label]::after {
+  content: attr(data-drop-label); position: absolute; inset-block-start: 50%; inset-inline-start: 50%; z-index: 3;
+  transform: translate(-50%, -50%); max-inline-size: calc(100% - var(--ao-spacing-4)); box-sizing: border-box;
+  padding: var(--ao-spacing-1) var(--ao-spacing-3); border-radius: var(--ao-radius-full);
+  background: var(--ao-btn-primary-bg); color: var(--ao-btn-primary-text); box-shadow: var(--ao-shadow-sm);
+  font-size: var(--ao-font-fixed-4xs); font-weight: var(--ao-font-semibold);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none;
+}
 /* Tiles follow the resizable panel: 3 columns by default, 2 when narrow, 4 when wide. */
 @container doe-panel (max-width: 300px) { .cc-p-doe__pick-group { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @container doe-panel (min-width: 480px) { .cc-p-doe__pick-group { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
