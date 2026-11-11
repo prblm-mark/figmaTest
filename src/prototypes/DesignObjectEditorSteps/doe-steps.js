@@ -165,7 +165,7 @@
     if (what === 'both') { blank(c); markDirty(); return; }
     if (what === 'content') {
       if (c.kind === 'do') delete c.nested;     // the design object is taken out of the cell
-      if (!c.name || c.name === c.type) c.name = 'Blank Cell';   // auto name resets; a typed name stays (Mark, 2026-11-11)
+      c.name = 'Blank Cell';                     // a cleared cell is blank again, whatever it was called (Mark, 2026-11-11)
       c.kind = 'de'; c.type = '';             // the complete / incomplete flag is untouched (as lion)
     }
     if (what === 'props') {
