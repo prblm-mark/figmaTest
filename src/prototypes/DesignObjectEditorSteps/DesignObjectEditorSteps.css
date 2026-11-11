@@ -107,12 +107,13 @@
 
 /* ═══ STEP 1 · bordered tool buttons + element icon & type ════════════ */
 /* Same as the full prototype's .doe-ibtn--sm: 24px box, crisp 1px border, small radius, 12px icon. */
+/* Softer by default (Mark, 2026-11-11): the light card border at rest, the strong border on hover. */
 .cc-p-doe--s1 .cc-p-doe__tool {
-  border: 1px solid var(--ao-border-primary); background: var(--ao-surface-primary); color: var(--ao-icon-primary);
+  border: 1px solid var(--ao-border-secondary); background: var(--ao-surface-primary); color: var(--ao-icon-primary);
   border-radius: var(--ao-radius-sm);
 }
 .cc-p-doe--s1 .cc-p-doe__tool svg { width: var(--ao-icon-size-xs); height: var(--ao-icon-size-xs); }
-.cc-p-doe--s1 .cc-p-doe__tool:hover { background: var(--ao-surface-minimal); border-color: var(--ao-border-secondary); }
+.cc-p-doe--s1 .cc-p-doe__tool:hover { background: var(--ao-surface-minimal); border-color: var(--ao-border-primary); }
 .cc-p-doe--s1 .cc-p-doe__tool:disabled { background: transparent; border-color: var(--ao-border-card); }
 .cc-p-doe--s1 .cc-p-doe__undo .cc-p-doe__tool, .cc-p-doe--s1 .cc-p-doe__gutter .cc-p-doe__tool { background: var(--ao-surface-primary); }
 .cc-p-doe__el-icon {
@@ -594,7 +595,7 @@ button.cc-p-doe__status:focus-visible, .cc-p-doe__badge-btn:focus-visible { outl
 .cc-p-doe__menu-dirs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ao-spacing-1); padding: 0 var(--ao-spacing-2) var(--ao-spacing-1); }
 .cc-p-doe__menu-dir {
   display: inline-flex; align-items: center; gap: var(--ao-spacing-1); block-size: var(--ao-spacing-6); padding: 0 var(--ao-spacing-2);
-  border: 1px solid var(--ao-border-primary); border-radius: var(--ao-radius-sm); background: var(--ao-surface-primary);
+  border: 1px solid var(--ao-border-secondary); border-radius: var(--ao-radius-sm); background: var(--ao-surface-primary);
   color: var(--ao-text-primary); font: inherit; font-size: var(--ao-font-fixed-3xs); font-weight: var(--ao-font-medium); cursor: pointer;
 }
 .cc-p-doe__menu-dir svg { width: var(--ao-icon-size-xs); height: var(--ao-icon-size-xs); color: var(--ao-icon-secondary); }
@@ -613,3 +614,8 @@ button.cc-p-doe__status:focus-visible, .cc-p-doe__badge-btn:focus-visible { outl
 .cc-p-doe__menu-sec .cc-p-doe__menu-dirs { padding-block-end: 0; }
 .cc-p-doe__menu--sectioned .dropdown-item:disabled { opacity: 0.4; }
 .cc-p-doe__menu--sectioned .dropdown-item:disabled:hover { background-color: transparent; }
+/* Breakpoint scope note: tighter leading so a wrapped line reads as one note (Mark, 2026-11-11) */
+.cc-p-doe .doe-scope { line-height: var(--ao-leading-xs); }
+/* Panel header: title and type sit closer together (Mark, 2026-11-11) */
+.cc-p-doe-insp__title { line-height: var(--ao-leading-sm); }
+.cc-p-doe-insp .doe-insp__type { line-height: var(--ao-leading-xs); }
