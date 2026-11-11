@@ -262,7 +262,7 @@
    left, properties docked full-height on the right (square, no floating card). */
 /* The whole CC chrome (top nav + page header) goes; the editor bar becomes the top of the screen. */
 body.doe-s6 .cc-control__chrome { display: none; }
-body.doe-s6 .cc-control__page--doe { padding: 0; overflow: hidden; }
+body.doe-s6 .cc-control__page--doe { padding: 0; overflow: hidden; scrollbar-gutter: auto; }   /* the page never scrolls (canvas + panel do), so no reserved scrollbar strips left/right (Mark, 2026-11-11) */
 body.doe-s6 #doe-root { block-size: 100%; }
 
 .cc-p-doe__ebar {
