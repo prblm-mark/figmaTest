@@ -618,8 +618,7 @@
         (S.saveState === 'saving' ? '<span class="cc-p-doe__esave">Saving…</span>'
           : dirty ? '<span class="cc-p-doe__esave"><span class="cc-p-doe__edot" aria-hidden="true"></span>Unsaved changes</span>'
           : '') +   // nothing shown when there's nothing to save (Mark, 2026-11-10)
-        '<button type="button" class="cc-p-doe__ghost" aria-label="Undo" title="Undo (⌘Z)">' + ic('undo-2') + '</button>' +
-        '<button type="button" class="cc-p-doe__ghost" aria-label="Redo" title="Redo (⇧⌘Z) · nothing to redo" aria-disabled="true">' + ic('redo-2') + '</button>' +
+        histBtns('cc-p-doe__ghost') +
         '<span class="cc-p-doe__ediv" aria-hidden="true"></span>' +
         saveButton() +
         '<button type="button" class="cc-p-doe__ghost" aria-label="More actions" title="More actions" aria-haspopup="menu" aria-expanded="' + (S.menu === '__doc') + '" data-act="menu" data-id="__doc">' + ic('ellipsis-vertical') + '</button>' +
@@ -680,6 +679,64 @@
     return '<button class="toggle toggle--xs' + (on ? ' toggle--active' : '') + '" type="button" role="switch" aria-checked="' + on + '" aria-label="' + esc(label) + '" data-k="' + esc(k) + '"><span class="toggle__track"><span class="toggle__knob"></span></span></button>';
   }
 
+  /* ── CSS length fields (Mark, 2026-11-11: "make all the inputs work … pixels, percentages, calcs,
+     keywords i.e. auto"). Size, margin and padding take any value the CSS property itself accepts:
+       • a number + unit — 100px, 50%, 2rem, 10vw … (a bare number takes the field's unit, px by default)
+       • a keyword — auto, none, fit-content, inherit … (only those the property allows)
+       • a function — calc(100% - 20px), min(), max(), clamp(), var(--x)
+     The browser's own parser is the validator (CSS.supports against the real property), so e.g.
+     "auto" is fine for width but rejected for padding, and negative values only pass for margin.
+     A number shows as number + unit button; the unit button switches unit and keeps the number.
+     ↑/↓ step by 1 (⇧ 10, ⌥ 0.1). TODO(backend:DesignObjectEditor): values are stored as the CSS
+     string the cell's style attribute would carry → persist per breakpoint. */
+  var LEN_UNITS = ['px', '%', 'em', 'rem', 'vw', 'vh'];
+  var LEN_RX = /^([+-]?(?:\d+\.?\d*|\.\d+))\s*([a-z%]*)$/i;
+  function lenSplit(v) {
+    v = String(v == null ? '' : v).trim();
+    if (!v) return { kind: 'empty' };
+    var m = v.match(LEN_RX);
+    if (m && (!m[2] || /^(px|%|em|rem|vw|vh|vmin|vmax|ch|ex|pt|cm|mm|in|svh|dvh|lvh|svw|dvw|lvw)$/i.test(m[2]))) return { kind: 'num', num: String(+m[1]), unit: m[2].toLowerCase() };
+    return { kind: 'text' };
+  }
+  function lenNorm(raw, unit) {
+    var t = String(raw == null ? '' : raw).trim(), p = lenSplit(t);
+    if (p.kind === 'empty') return '';
+    if (p.kind === 'num') return p.num + (p.unit || unit || 'px');
+    return /^[a-z-]+$/i.test(t) ? t.toLowerCase() : t;   // keywords lower-case; calc() etc. kept as typed
+  }
+  function lenOk(prop, v) { return !v || !(window.CSS && CSS.supports) || CSS.supports(prop, v); }
+  function lenHint(prop) {
+    return /^padding/.test(prop) ? 'Use a length or percentage (0 or more), e.g. 16px, 2%, 1rem or calc(1rem + 4px).'
+      : 'Use a length, percentage, keyword or calc(), e.g. 100px, 50%, auto or calc(100% - 20px).';
+  }
+  function lenKeywords(prop) { return ['auto', 'none', 'fit-content'].filter(function (k) { return CSS.supports ? CSS.supports(prop, k) : false; }); }
+  function lenField(k, prop, v, ph) {
+    var p = lenSplit(v), unit = p.kind === 'num' ? (p.unit || 'px') : p.kind === 'empty' ? vget(k + '~unit', 'px') : '';
+    var bad = !lenOk(prop, lenNorm(v, unit));
+    return '<span class="doe-num cc-p-doe-len' + (bad ? ' is-invalid' : '') + '"' + (bad ? ' title="' + esc(lenHint(prop)) + '"' : p.kind === 'text' ? ' title="' + esc(v) + '"' : '') + '>' +
+      '<input type="text" data-k="' + esc(k) + '" data-len="' + prop + '" value="' + esc(p.kind === 'num' ? p.num : v || '') + '" placeholder="' + ph + '" spellcheck="false" autocomplete="off"' + (bad ? ' aria-invalid="true"' : '') + '>' +
+      '<button type="button" class="doe-num__unit cc-p-doe-len__unit" data-dd="' + esc(k) + '" data-len-unit="' + prop + '" data-opts="' + esc(LEN_UNITS.concat(lenKeywords(prop)).join('|')) + '" aria-haspopup="listbox" aria-expanded="false" aria-label="Unit" title="Change unit"' + (unit ? '' : ' hidden') + '><span>' + esc(unit) + '</span></button></span>';
+  }
+  /* Repaint one field in place from S.vals (no full render, so focus and caret survive). */
+  function lenRefresh(input, keepText) {
+    var k = input.getAttribute('data-k'), prop = input.getAttribute('data-len'), wrap = input.parentNode, btn = wrap.querySelector('.cc-p-doe-len__unit');
+    var v = S.vals[k] == null ? '' : S.vals[k], p = lenSplit(v);
+    var unit = p.kind === 'num' ? (p.unit || 'px') : p.kind === 'empty' ? vget(k + '~unit', 'px') : '';
+    if (!keepText) input.value = p.kind === 'num' ? p.num : v;
+    btn.hidden = !unit; btn.querySelector('span').textContent = unit;
+    var bad = !lenOk(prop, v);
+    wrap.classList.toggle('is-invalid', bad);
+    if (bad) { input.setAttribute('aria-invalid', 'true'); wrap.title = lenHint(prop); } else { input.removeAttribute('aria-invalid'); wrap.title = p.kind === 'text' ? v : ''; }
+  }
+  function lenUnitOf(input) { var b = input.parentNode.querySelector('.cc-p-doe-len__unit'); return b && !b.hidden ? b.textContent.trim() : vget(input.getAttribute('data-k') + '~unit', 'px'); }
+  function lenSetUnit(btn, u) {
+    var k = btn.getAttribute('data-dd'), input = btn.parentNode.querySelector('input'), p = lenSplit(S.vals[k]);
+    if (LEN_UNITS.indexOf(u) === -1) S.vals[k] = u;                         // a keyword: auto / none / fit-content
+    else if (p.kind === 'num') S.vals[k] = p.num + u;                        // keep the number, swap the unit
+    else { S.vals[k + '~unit'] = u; if (p.kind === 'text') S.vals[k] = ''; }  // empty / keyword: start a number in this unit
+    markDirty(); lenRefresh(input); input.focus(); input.select();
+  }
+
   function dockedInspector(isRow, item) {
     var I = INSP;
     function K(key) { return item.id + '|' + key; }
@@ -691,7 +748,7 @@
     function sw(key, label) { return toggleHtml(K(key), label, false); }
     function dd(key, optsKey, def) { return ddButton(K(key), def, OPTS[optsKey], 'doe-select'); }
     function txt(key, def, ph) { return '<label class="doe-num doe-num--text"><input type="text" data-k="' + esc(K(key)) + '" value="' + esc(V(key, def || '')) + '" placeholder="' + (ph || '') + '"></label>'; }
-    function num(key, unit, ph) { return I.num(esc(V(key, '')), unit, ph).replace('<input ', '<input data-k="' + esc(K(key)) + '" '); }
+    function len(key, prop, def, ph) { return lenField(K(key), prop, V(key, def || ''), ph || 'Auto'); }
     /* Segmented control (full prototype look) for alignment / padding. Same values as the
        dropdowns they replace; data-seg + data-val are handled by the click listener. */
     function seg(key, optsKey, def, show) {
@@ -730,16 +787,18 @@
         }).join('') + '</div>';
     }
     /* Size: one line per axis — value · min · max. */
-    function sizeLine(axis, keys, unit) {
+    function sizeLine(axis, keys) {   // e.g. Width · Min · Max → width / min-width / max-width
+      var prop = axis.toLowerCase();
       return '<div class="cc-p-doe-insp__size">' + keys.map(function (k, i) {
-        return '<label class="cc-p-doe-insp__size-item"><span>' + (i === 0 ? axis : i === 1 ? 'Min' : 'Max') + '</span>' + num(k, unit) + '</label>';
+        return '<label class="cc-p-doe-insp__size-item"><span>' + (i === 0 ? axis : i === 1 ? 'Min' : 'Max') + '</span>' +
+          len(k, (i === 1 ? 'min-' : i === 2 ? 'max-' : '') + prop, '', i === 2 ? 'None' : 'Auto') + '</label>';
       }).join('') + '</div>';
     }
     function area(key) { return '<textarea class="doe-code" rows="2" data-k="' + esc(K(key)) + '">' + esc(V(key, '')) + '</textarea>'; }
     function trbl(prefix) {   // Top / Right / Bottom / Left, as in the baseline
       return '<div class="cc-p-doe-insp__size cc-p-doe-insp__size--4">' + ['Top', 'Right', 'Bottom', 'Left'].map(function (side) {
-        /* Same as the Size inputs: px unit inside, "Auto" placeholder, label above (Mark, 2026-11-10). */
-        return '<label class="cc-p-doe-insp__size-item"><span>' + side + '</span>' + num(prefix + ':' + side, 'px') + '</label>';
+        /* Same field as Size, label above; empty means 0 (Mark, 2026-11-10 / 11). */
+        return '<label class="cc-p-doe-insp__size-item"><span>' + side + '</span>' + len(prefix + ':' + side, prefix + '-' + side.toLowerCase(), '', '0') + '</label>';
       }).join('') + '</div>';
     }
     var img = V('bgImage', '');
@@ -764,7 +823,7 @@
           /* label left, chips right — lines up with the dropdown above (Mark, 2026-11-11) */
           I.field('Exclude for', '<div class="doe-chips doe-chips--toggle">' + chip('ex:Affino', 'Affino staff') + chip('ex:LoggedIn', 'Logged in') + chip('ex:LoggedOut', 'Logged out') + chip('ex:Metered', 'Metered content') + '</div>'), true) +
         I.sec('Align', I.field('Horizontal', seg('hAlign', 'hAlign', 'Not set', H_ICONS)) + I.field('Vertical', seg('vAlign', 'vAlign', 'Not set', V_ICONS)) + I.field('Float', seg('float', 'float', 'Not set', ['Auto', 'None', 'Left', 'Right'])) + I.field('Clear', seg('clear', 'clear', 'Not set', ['Auto', 'Left', 'Right', 'Both'])), true) +
-        I.sec('Size', sizeLine('Width', ['w', 'minW', 'maxW'], 'px') + sizeLine('Height', ['h', 'minH', 'maxH'], 'px'), true) +
+        I.sec('Size', sizeLine('Width', ['w', 'minW', 'maxW']) + sizeLine('Height', ['h', 'minH', 'maxH']), true) +
         I.sec('Margin', trbl('margin'), false) +
         I.sec('Padding', trbl('padding'), false) +
         I.sec('Background', I.field('Colour', colour('bgColour')) + bgImage, !!img || !!V('bgColour', '')) +
@@ -779,7 +838,7 @@
         I.sec('Alignment', I.field('Horizontal align', seg('rowAlign', 'rowAlign', 'Center', ROW_ICONS)) + I.field('Sticky', sw('sticky', 'Sticky')), true) +
         /* lion fills Width 100% and Max-Width 1280px as the row panel opens */
         I.sec('Size', '<div class="cc-p-doe-insp__size">' + [['Width', 'w', '100%'], ['Min', 'minW', ''], ['Max', 'maxW', '1280px']].map(function (f) {
-          return '<label class="cc-p-doe-insp__size-item"><span>' + f[0] + '</span>' + I.num(esc(V(f[1], f[2])), '', 'Auto').replace('<input ', '<input data-k="' + esc(K(f[1])) + '" ') + '</label>';
+          return '<label class="cc-p-doe-insp__size-item"><span>' + f[0] + '</span>' + len(f[1], (f[1] === 'w' ? '' : f[1] === 'minW' ? 'min-' : 'max-') + 'width', f[2], f[1] === 'maxW' ? 'None' : 'Auto') + '</label>';
         }).join('') + '</div>', true) +
         I.sec('Background', I.field('Colour', colour('bgColour')) + bgImage, !!img || !!V('bgColour', '')) +
         I.sec('Custom CSS', I.field('Outer row CSS', area('outerCss')) + I.field('Inner row CSS', area('innerCss')), false);
@@ -811,6 +870,11 @@
     return '<button type="button" class="btn btn--primary btn--sm cc-p-doe__save"' + (S.dirty ? ' data-act="save"' : ' disabled') + '>' + ic('check') + 'Save</button>';
   }
   /* Redraw just the bar, so a field being typed in keeps its focus. */
+  function histBtns(cls) {
+    var u = H.undo.length, r = H.redo.length;
+    return '<button type="button" class="' + cls + '" data-act="undo" aria-label="Undo" title="Undo (⌘Z)' + (u ? '' : ' · nothing to undo') + '"' + (u ? '' : ' disabled') + '>' + ic('undo-2') + '</button>' +
+      '<button type="button" class="' + cls + '" data-act="redo" aria-label="Redo" title="Redo (⇧⌘Z)' + (r ? '' : ' · nothing to redo') + '"' + (r ? '' : ' disabled') + '>' + ic('redo-2') + '</button>';
+  }
   function refreshBar() {
     var bar = document.querySelector('.cc-p-doe__ebar');
     if (!bar) return;
@@ -819,8 +883,42 @@
     if (window.lucide) lucide.createIcons();
     adoptTitles(fresh);
   }
-  function markDirty() {
-    if (S.dirty && S.saveState === 'idle') return;
+  /* Undo / redo (Mark, 2026-11-11: "undo/redo doesn't work"). Snapshot history of the layout (D.ROWS)
+     and property values (S.vals): every change that marks the design object dirty records the state
+     it came from. Typing coalesces — keystrokes less than a second apart are one step. The shared
+     nested design object (HEADER_NESTED) is written once, so cells that hold it keep sharing it. */
+  var H = { undo: [], redo: [], cur: null, lastType: 0, MAX: 100 };
+  function snap() {
+    return JSON.stringify({ hn: HEADER_NESTED, vals: S.vals, rows: D.ROWS }, function (k, v) {
+      return k === 'nested' && v === HEADER_NESTED ? '__HN' : v;
+    });
+  }
+  function record(kind) {
+    var now = snap();
+    if (now === H.cur) return;
+    var t = Date.now();
+    if (!(kind === 'type' && H.lastType && t - H.lastType < 1000)) { H.undo.push(H.cur); if (H.undo.length > H.MAX) H.undo.shift(); }
+    H.lastType = kind === 'type' ? t : 0;
+    H.cur = now; H.redo = [];
+  }
+  function restore(str) {
+    var o = JSON.parse(str);
+    HEADER_NESTED.name = o.hn.name; HEADER_NESTED.usedIn = o.hn.usedIn; HEADER_NESTED.rows = o.hn.rows;
+    var relink = function (rows) { rows.forEach(function (r) { r.cells.forEach(function (c) { if (c.nested === '__HN') c.nested = HEADER_NESTED; }); }); };
+    relink(o.rows); relink(HEADER_NESTED.rows);
+    D.ROWS = o.rows; S.vals = o.vals; H.cur = str; H.lastType = 0;
+    headerCell = D.ROWS.reduce(function (a, r) { return a || r.cells.filter(function (c) { return c.id === headerCell.id; })[0]; }, null) || headerCell;
+    /* drop a selection / nested view that no longer exists */
+    if (S.nested && !nestedCell()) { S.nested = ''; }
+    if (S.select && !findCell(S.select) && !findRow(S.select)) { S.select = ''; S.panel = ''; S.modal = false; }
+    S.menu = ''; S.dirty = true; S.saveState = 'idle'; clearTimeout(S._saveTimer);
+    render();
+  }
+  function undo() { if (!H.undo.length) return; var cur = snap(); H.redo.push(cur); restore(H.undo.pop()); }
+  function redo() { if (!H.redo.length) return; H.undo.push(snap()); restore(H.redo.pop()); }
+  function markDirty(kind) {
+    record(kind);
+    if (S.dirty && S.saveState === 'idle') { refreshBar(); return; }
     S.dirty = true; S.saveState = 'idle'; clearTimeout(S._saveTimer); refreshBar();
   }
   function doSave() {
@@ -897,7 +995,7 @@
     var bar = '<div class="cc-p-doe__bar"><h2 class="cc-p-doe__title">' +
       (nc ? '<button type="button" class="cc-p-doe__crumb-link" data-act="exitNested">2018 Simple DO</button>' + ic('chevron-right', 'cc-p-doe__ecrumb-sep') + '<span class="cc-p-doe__crumb-do">' + ic('component') + esc(nc.nested.name) + '</span>' : '2018 Simple DO') +
       '</h2><span class="cc-p-doe__undo">' +
-      '<button type="button" class="cc-p-doe__tool" aria-label="Undo" title="Undo (⌘Z)">' + ic('undo-2') + '</button><button type="button" class="cc-p-doe__tool" aria-label="Redo" title="Redo (⇧⌘Z) · nothing to redo" aria-disabled="true">' + ic('redo-2') + '</button></span></div>';
+      histBtns('cc-p-doe__tool') + '</span></div>';
     /* Keep the canvas and the panel where they were scrolled across a redraw. */
     var keepCanvas = document.querySelector('.cc-p-doe__canvas'), canvasTop = keepCanvas ? keepCanvas.scrollTop : 0;
     var keepPanel = document.querySelector('.cc-p-doe__panel .doe-insp__body, .cc-p-doe__panel .cc-p-doe__panel-body');
@@ -1024,6 +1122,7 @@
   }
   function chooseDd(opt) {
     var v = opt.getAttribute('data-val');
+    if (ddBtn && ddBtn.hasAttribute('data-len-unit')) { var ub = ddBtn; closeDd(false); lenSetUnit(ub, v); return; }
     if (ddBtn && ddBtn.querySelector('span').textContent !== v) {
       ddBtn.querySelector('span').textContent = v;
       S.vals[ddBtn.getAttribute('data-dd')] = v;
@@ -1309,13 +1408,15 @@
         }
         S.modal = false;
       }
-      else if (act === 'toggleDone') { var td = findCell(id); if (td) td.cell.incomplete = !td.cell.incomplete; }   // written straight away on lion (no Save)
+      else if (act === 'toggleDone') { var td = findCell(id); if (td) td.cell.incomplete = !td.cell.incomplete; record(); }   // written straight away on lion (no Save)
       else if (act === 'deleteCell') { cellOp('delete', id); }
       else if (act === 'cutCell') { cellOp('cut', id); }
       else if (act === 'copyCell') { cellOp('copy', id); }
       else if (act === 'pasteCell') { cellOp('paste', id); }
       else if (act === 'addAt') { S.select = id; addCellAt(a.dataset.where); }
       else if (act === 'addCellSave') { var w = document.querySelector('input[name="add"]:checked'); if (w) addCellAt(w.value); }
+      else if (act === 'undo') { undo(); return; }
+      else if (act === 'redo') { redo(); return; }
       else if (act === 'noop') { if (openMenu && openMenu.indexOf('__') !== 0) markDirty(); }
       else if (act === 'switchDo') {
         if (id === '2018 Simple DO') { if (S.nested) { S.select = S.nested; S.nested = ''; S.panel = ''; S.modal = false; } }
@@ -1387,12 +1488,15 @@
     }
     /* Text / number / textarea bindings */
     var kIn = e.target.getAttribute && e.target.getAttribute('data-k');
-    if (kIn && e.target.type !== 'checkbox') {
+    if (kIn && e.target.hasAttribute('data-len')) {
+      /* store the normalised CSS value (a bare number takes the field's unit); keep what's typed on screen */
+      S.vals[kIn] = lenNorm(e.target.value, lenUnitOf(e.target)); lenRefresh(e.target, true);
+    } else if (kIn && e.target.type !== 'checkbox') {
       S.vals[kIn] = e.target.value;
       if (/\|(name|b:Name)$/.test(kIn)) renameLive(kIn.split('|')[0], e.target.value);
     }
     /* Any real edit (not a search box) makes the design object dirty. */
-    if (e.target.closest('#doe-root, #doe-modal-root') && !e.target.matches('[type="search"]')) markDirty();
+    if (e.target.closest('#doe-root, #doe-modal-root') && !e.target.matches('[type="search"]')) markDirty('type');
   });
   function filterSettings() {
     var input = document.querySelector('[data-setting-search]');
@@ -1431,6 +1535,31 @@
   });
   window.addEventListener('resize', function () { if (on(6)) { S.panelW = clampW(S.panelW); applyW(); } if (S.menu) { S.menu = ''; render(); } });
   document.addEventListener('scroll', function () { if (S.menu) { S.menu = ''; render(); } }, true);
+  /* Length fields: tidy the display on commit (blur / Enter); ↑/↓ nudge a number. */
+  document.addEventListener('change', function (e) { if (e.target.hasAttribute && e.target.hasAttribute('data-len')) lenRefresh(e.target); });
+  document.addEventListener('keydown', function (e) {
+    var t = e.target;
+    if (!t.hasAttribute || !t.hasAttribute('data-len')) return;
+    if (e.key === 'Enter') { e.preventDefault(); lenRefresh(t); t.select(); return; }
+    if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+    var k = t.getAttribute('data-k'), prop = t.getAttribute('data-len'), p = lenSplit(S.vals[k]);
+    if (p.kind === 'text') return;   // keywords and calc() aren't stepped
+    e.preventDefault();
+    var step = (e.shiftKey ? 10 : e.altKey ? 0.1 : 1) * (e.key === 'ArrowUp' ? 1 : -1);
+    var unit = p.kind === 'num' ? p.unit || 'px' : lenUnitOf(t);
+    var n = Math.round(((p.kind === 'num' ? +p.num : 0) + step) * 100) / 100;
+    if (n < 0 && !CSS.supports(prop, n + unit)) n = 0;   // padding / sizes stop at 0; margin can go negative
+    S.vals[k] = n + unit; lenRefresh(t); t.select(); markDirty('type');
+  });
+  /* ⌘Z / ⇧⌘Z (Ctrl on Windows; Ctrl+Y redoes too). Text fields keep their own native undo. */
+  document.addEventListener('keydown', function (e) {
+    if (!(e.metaKey || e.ctrlKey) || e.altKey) return;
+    var k = e.key.toLowerCase();
+    if (k !== 'z' && k !== 'y') return;
+    if (e.target.closest && e.target.closest('input:not([type=checkbox]):not([type=radio]), textarea, [contenteditable]')) return;
+    e.preventDefault();
+    if (k === 'y' || e.shiftKey) redo(); else undo();
+  });
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') return;
     /* Esc: menu, then modal, then panel — one layer at a time */
@@ -1458,5 +1587,6 @@
     }).concat([{ label: 'All steps on', onClick: function () { location.search = '?steps=1,2,3,4,5,6,7'; } },
                { label: 'Baseline (all off)', onClick: function () { location.search = ''; } }]));
   }
+  H.cur = snap();   // the opening state is the bottom of the undo history
   render();
 })();

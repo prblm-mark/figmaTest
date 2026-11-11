@@ -619,3 +619,15 @@ button.cc-p-doe__status:focus-visible, .cc-p-doe__badge-btn:focus-visible { outl
 /* Panel header: title and type sit closer together (Mark, 2026-11-11) */
 .cc-p-doe-insp__title { line-height: var(--ao-leading-sm); }
 .cc-p-doe-insp .doe-insp__type { line-height: var(--ao-leading-xs); }
+/* CSS length fields (size / margin / padding): number + unit button, or a keyword / calc() as typed */
+.cc-p-doe-len { gap: var(--ao-spacing-1); padding-inline-end: var(--ao-spacing-0-5); }
+.cc-p-doe-len__unit {
+  flex: none; display: inline-flex; align-items: center; block-size: var(--ao-spacing-5); padding: 0 var(--ao-spacing-1);
+  border: 0; border-radius: var(--ao-radius-xs); background: transparent; font-family: inherit; cursor: pointer;
+}
+.cc-p-doe-len__unit[hidden] { display: none; }
+.cc-p-doe-len__unit:hover, .cc-p-doe-len__unit[aria-expanded="true"] { background: var(--ao-surface-minimal); color: var(--ao-text-primary); }
+.cc-p-doe-len__unit:focus-visible { outline: 2px solid var(--ao-surface-brand); outline-offset: 0; }
+/* invalid value: the DS Input error state (pale red border + soft red ring on focus) */
+.cc-p-doe-insp .cc-p-doe-len.is-invalid, .cc-p-doe-insp .cc-p-doe-len.is-invalid:hover { border-color: var(--ao-border-error); background: var(--ao-surface-error-soft); }
+.cc-p-doe-insp .cc-p-doe-len.is-invalid:focus-within { border-color: var(--ao-border-error); box-shadow: 0 0 0 3px var(--ao-surface-error-soft); }
