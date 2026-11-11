@@ -318,20 +318,37 @@
       : (on(7) ? [] : [['plus', 'Add Cell', 'addCell']]).concat([['trash-2', 'Delete Cell', 'deleteCell']]).concat([, ['scissors', 'Cut Content', 'cutCell'], ['copy', 'Copy Content', 'copyCell']])
           .concat(S.clip ? [['clipboard-paste', 'Paste Content', 'pasteCell']] : [])
           .concat(on(4) ? [(findCell(S.menu) || {}).cell && findCell(S.menu).cell.incomplete ? ['flag-off', 'Mark complete', 'toggleDone'] : ['flag', 'Mark incomplete', 'toggleDone']] : [])
-          .concat(moveItems(S.menu));
-    /* Step 7: "Add cell" is a row of direction buttons at the top of the cell menu — one click adds. */
-    var addHead = '';
+          .concat(on(7) ? [] : moveItems(S.menu));
+    /* Step 7: Add and Move are each a 2×2 grid of direction buttons — Add at the top of the cell menu,
+       Move at the foot — which keeps the menu short (Mark, 2026-11-11). Every direction keeps its slot;
+       one lion doesn't allow here is shown disabled rather than dropped, so nothing shuffles. */
+    var addHead = '', moveFoot = '';
     if (on(7) && S.menu !== '__doc') {
-      var hm = findCell(S.menu), dirs = addDirs(hm && hm.cell);
-      var DIR_IC = { top: 'arrow-up', bottom: 'arrow-down', left: 'arrow-left', right: 'arrow-right' };
-      if (dirs.length) addHead = '<p class="cc-p-doe__menu-head">Add cell</p><div class="cc-p-doe__menu-dirs">' + dirs.map(function (d) {
-        return '<button type="button" class="cc-p-doe__menu-dir" role="menuitem" data-act="addAt" data-id="' + S.menu + '" data-where="' + d[0] + '" title="' + d[2] + '">' + ic(DIR_IC[d[0]]) + '<span>' + d[1] + '</span></button>';
-      }).join('') + '</div><span class="cc-p-doe__menu-sep" role="separator"></span>';
+      var hm = findCell(S.menu), dirs = addDirs(hm && hm.cell), mvOk = moveItems(S.menu).map(function (m) { return m[2]; });
+      var dirGrid = function (spec) {
+        return '<div class="cc-p-doe__menu-dirs">' + spec.map(function (d) {
+          return '<button type="button" class="cc-p-doe__menu-dir" role="menuitem" data-act="' + d.act + '" data-id="' + S.menu + '"' +
+            (d.where ? ' data-where="' + d.where + '"' : '') + ' title="' + d.title + '"' + (d.ok ? '' : ' disabled aria-disabled="true"') + '>' +
+            ic(d.icon) + '<span>' + d.label + '</span></button>';
+        }).join('') + '</div>';
+      };
+      var addOk = {}; dirs.forEach(function (d) { addOk[d[0]] = d[2]; });
+      addHead = '<p class="cc-p-doe__menu-head">Add cell</p>' + dirGrid([
+        ['top', 'arrow-up', 'Above'], ['bottom', 'arrow-down', 'Below'], ['left', 'arrow-left', 'Left'], ['right', 'arrow-right', 'Right']
+      ].map(function (d) {
+        return { act: 'addAt', where: d[0], icon: d[1], label: d[2], ok: !!addOk[d[0]], title: addOk[d[0]] || 'Not allowed for this cell' };
+      })) + '<span class="cc-p-doe__menu-sep" role="separator"></span>';
+      moveFoot = '<span class="cc-p-doe__menu-sep" role="separator"></span><p class="cc-p-doe__menu-head">Move cell</p>' + dirGrid([
+        ['moveUp', 'arrow-up', 'Up'], ['moveDown', 'arrow-down', 'Down'], ['moveLeft', 'arrow-left', 'Left'], ['moveRight', 'arrow-right', 'Right']
+      ].map(function (d) {
+        var ok = mvOk.indexOf(d[0]) !== -1;
+        return { act: d[0], icon: d[1], label: d[2], ok: ok, title: ok ? 'Move cell ' + d[2].toLowerCase() : 'Can\'t move ' + d[2].toLowerCase() + ' from here' };
+      }));
     }
     return '<div class="dropdown__panel cc-p-doe__menu" role="menu">' + addHead + '<ul class="dropdown__list">' + items.map(function (i) {
       if (!i) return '<li role="separator" class="cc-p-doe__menu-sep"></li>';
       return '<li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem"' + (i[2] ? ' data-act="' + i[2] + '" data-id="' + S.menu + '"' : ' data-act="noop"') + '>' + ic(i[0]) + '<span data-text="' + i[1] + '">' + i[1] + '</span></button></li>';
-    }).join('') + '</ul></div>';
+    }).join('') + '</ul>' + moveFoot + '</div>';
   }
   function bpLabel() { var b = D.BREAKPOINTS.filter(function (x) { return x.id === S.bp; })[0]; return b ? b.label : 'Fluid'; }
   function bpWidth() { var b = D.BREAKPOINTS.filter(function (x) { return x.id === S.bp; })[0]; return b && b.width; }
@@ -726,8 +743,8 @@
           I.field('Sticky', sw('sticky', 'Sticky')), true) +
         I.sec('Security',
           I.field('Content security right', dd('security', 'security', 'Non-secured')) +
-          '<span class="doe-field__label">Exclude for</span>' +
-          '<div class="doe-chips doe-chips--toggle">' + chip('ex:Affino', 'Affino staff') + chip('ex:LoggedIn', 'Logged in') + chip('ex:LoggedOut', 'Logged out') + chip('ex:Metered', 'Metered content') + '</div>', true) +
+          /* label left, chips right — lines up with the dropdown above (Mark, 2026-11-11) */
+          I.field('Exclude for', '<div class="doe-chips doe-chips--toggle">' + chip('ex:Affino', 'Affino staff') + chip('ex:LoggedIn', 'Logged in') + chip('ex:LoggedOut', 'Logged out') + chip('ex:Metered', 'Metered content') + '</div>'), true) +
         I.sec('Align', I.field('Horizontal', seg('hAlign', 'hAlign', 'Not set', H_ICONS)) + I.field('Vertical', seg('vAlign', 'vAlign', 'Not set', V_ICONS)) + I.field('Float', seg('float', 'float', 'Not set', ['Auto', 'None', 'Left', 'Right'])) + I.field('Clear', seg('clear', 'clear', 'Not set', ['Auto', 'Left', 'Right', 'Both'])), true) +
         I.sec('Size', sizeLine('Width', ['w', 'minW', 'maxW'], 'px') + sizeLine('Height', ['h', 'minH', 'maxH'], 'px'), true) +
         I.sec('Margin', trbl('margin'), false) +
