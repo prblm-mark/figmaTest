@@ -1,6 +1,6 @@
 {
  "description": "Backend-developer handover manifest. Machine-readable index of front-end elements that are mock / visual-only / in-memory and need real backend implementation. Front-end-only repo (vanilla HTML/CSS/JS, no framework, no backend). See HANDOVER.md for the human-readable version and the TODO(backend:<Surface>) in-code marker convention.",
- "updated": "2026-10-22",
+ "updated": "2026-11-11",
  "categories": {
   "visual-only": "Rendered but no behaviour wired at all.",
   "fe-wired": "Works client-side; no backend required (may be fine as-is).",
@@ -2079,6 +2079,68 @@
      "element": "Download (`[data-xp-download]`)",
      "current": "Hands over a CSV of the chosen column headers",
      "needs": "The run's finished file, only to the user who ran it (or right 160), for 7 days; then Expired. **Security:** resolve the file from the run id server-side, never from a path in the URL (see ExportSystem's export-system-download-path)"
+    }
+   ]
+  },
+  "DesignObjectEditor": {
+   "file": "src/prototypes/DesignObjectEditorSteps/design-object-editor.html",
+   "note": "UI enhancements (steps 1–7) on top of the v3 Design Object Editor, Hub TASK-597158. Build notes: docs/design-object-editor-steps-handover.md.",
+   "items": [
+    {
+     "id": "doe-load",
+     "category": "needs-backend",
+     "element": "Canvas rows and cells",
+     "current": "Mock data in doe-data.js + overrides in doe-steps.js",
+     "needs": "GET the design object's rows/cells (id, name, kind, type, DCC, incomplete, hiddenAt, nested DO + its Row/Cell type, usedIn). Already served by the v3 build (TASK-597158)"
+    },
+    {
+     "id": "doe-save",
+     "category": "needs-backend",
+     "element": "Editor bar Save",
+     "current": "1.2s timer, then Saved toast",
+     "needs": "PUT the whole design object (layout + per-cell properties); on failure keep 'Unsaved changes' and show an error toast"
+    },
+    {
+     "id": "doe-bp-overrides",
+     "category": "needs-backend",
+     "element": "Inspector breakpoint-specific fields (align, size, margin, padding, background, custom CSS)",
+     "current": "Kept in memory as <id>|<key> (Fluid) and <id>|<key>@<bp>",
+     "needs": "Persist per breakpoint (Fluid + one value per breakpoint id) and return the same shape; the editor resolves the cascade"
+    },
+    {
+     "id": "doe-length-values",
+     "category": "needs-backend",
+     "element": "Every length input (size, margin, padding, row size)",
+     "current": "Validated CSS strings held in memory",
+     "needs": "Store as CSS strings (50%, calc(…), auto), not number+px; the skin CSS writer must pass them through unchanged"
+    },
+    {
+     "id": "doe-incomplete",
+     "category": "needs-backend",
+     "element": "Incomplete flag / chip",
+     "current": "Toggles in memory",
+     "needs": "Write immediately (as the v3 build does), not via Save"
+    },
+    {
+     "id": "doe-switcher",
+     "category": "needs-backend",
+     "element": "Breadcrumb design object switcher",
+     "current": "Static recent + all lists",
+     "needs": "Recent design objects per user + search over all design objects"
+    },
+    {
+     "id": "doe-clipboard",
+     "category": "needs-backend",
+     "element": "Cell menu Cut / Copy / Paste",
+     "current": "In-memory, one session",
+     "needs": "None unless cross-design-object paste is wanted"
+    },
+    {
+     "id": "doe-breakpoints",
+     "category": "needs-backend",
+     "element": "Editor bar breakpoint dropdown",
+     "current": "Mock list incl. custom 1440 / 375",
+     "needs": "Breakpoint list from the profile, including custom widths"
     }
    ]
   }

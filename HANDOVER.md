@@ -276,6 +276,27 @@ own items are inherited. Build notes for Cat: [`docs/topic-manager-handover.md`]
 
 ---
 
+## Surface: DesignObjectEditor
+
+`src/prototypes/DesignObjectEditorSteps/design-object-editor.html?steps=1,2,3,4,5,6,7`: seven UI enhancements (cell headers, element picker,
+settings modal, status chips, row boxes, editor bar + docked inspector, add cells on the canvas) on top of the v3 Design Object Editor
+(Hub TASK-597158). Build notes for Luismi: [`docs/design-object-editor-steps-handover.md`](docs/design-object-editor-steps-handover.md).
+
+| id | Element | Now | Backend work needed | Category |
+|---|---|---|---|---|
+| `doe-load` | Canvas rows and cells | Mock data in doe-data.js + overrides in doe-steps.js | GET the design object's rows/cells (id, name, kind, type, DCC, incomplete, hiddenAt, nested DO + its Row/Cell type, usedIn). Already served by the v3 build (TASK-597158) | needs-backend |
+| `doe-save` | Editor bar Save | 1.2s timer, then Saved toast | PUT the whole design object (layout + per-cell properties); on failure keep 'Unsaved changes' and show an error toast | needs-backend |
+| `doe-bp-overrides` | Inspector breakpoint-specific fields (align, size, margin, padding, background, custom CSS) | Kept in memory as <id>|<key> (Fluid) and <id>|<key>@<bp> | Persist per breakpoint (Fluid + one value per breakpoint id) and return the same shape; the editor resolves the cascade | needs-backend |
+| `doe-length-values` | Every length input (size, margin, padding, row size) | Validated CSS strings held in memory | Store as CSS strings (50%, calc(…), auto), not number+px; the skin CSS writer must pass them through unchanged | needs-backend |
+| `doe-incomplete` | Incomplete flag / chip | Toggles in memory | Write immediately (as the v3 build does), not via Save | needs-backend |
+| `doe-switcher` | Breadcrumb design object switcher | Static recent + all lists | Recent design objects per user + search over all design objects | needs-backend |
+| `doe-clipboard` | Cell menu Cut / Copy / Paste | In-memory, one session | None unless cross-design-object paste is wanted | needs-backend |
+| `doe-breakpoints` | Editor bar breakpoint dropdown | Mock list incl. custom 1440 / 375 | Breakpoint list from the profile, including custom widths | needs-backend |
+
+`grep -rn "TODO(backend:DesignObjectEditor)" src/prototypes/`
+
+---
+
 ## Surface: Login
 
 `src/cc/templates/Login/Login.html` — the CC Control Centre login screen. A standalone
