@@ -558,14 +558,15 @@ button.cc-p-doe__status:focus-visible, .cc-p-doe__badge-btn:focus-visible { outl
    cell (only the directions lion allows). Top / bottom add a new row; left / right add beside. */
 .cc-p-doe__addc {
   position: absolute; z-index: 4; display: inline-flex; align-items: center; justify-content: center;
-  inline-size: var(--ao-spacing-6); block-size: var(--ao-spacing-6); padding: 0;
-  border: 2px solid var(--ao-surface-primary); border-radius: var(--ao-radius-full);
-  background: var(--ao-btn-primary-bg); color: var(--ao-btn-primary-text); box-shadow: var(--ao-shadow-sm); cursor: pointer;
+  inline-size: var(--ao-spacing-5); block-size: var(--ao-spacing-5); padding: 0;   /* 16px — smaller (Mark, 2026-11-11) */
+  border: 1px solid var(--ao-border-card); border-radius: var(--ao-radius-sm);   /* square, cell radius + cell border (Mark, 2026-11-11) */
+  background: var(--ao-surface-primary); color: var(--ao-icon-secondary); box-shadow: var(--ao-shadow-xs); cursor: pointer;
   opacity: 0; pointer-events: none; transform: translate(-50%, -50%) scale(0.85);
-  transition: opacity var(--ao-transition-fast), transform var(--ao-transition-fast);
+  transition: opacity var(--ao-transition-fast), transform var(--ao-transition-fast),
+              background-color var(--ao-transition-fast), color var(--ao-transition-fast), border-color var(--ao-transition-fast);
 }
-/* a 44px hit area around the 24px button */
-.cc-p-doe__addc::before { content: ""; position: absolute; inset: calc(-1 * var(--ao-spacing-2)); border-radius: var(--ao-radius-full); }
+/* a 44px hit area around the 16px button (16 + 2 × 14) */
+.cc-p-doe__addc::before { content: ""; position: absolute; inset: calc(-1 * (var(--ao-spacing-4) + var(--ao-spacing-0-5))); border-radius: var(--ao-radius-full); }
 .cc-p-doe__addc svg { width: var(--ao-icon-size-xs); height: var(--ao-icon-size-xs); }
 .cc-p-doe__addc--top    { inset-block-start: 0;    inset-inline-start: 50%; }
 .cc-p-doe__addc--bottom { inset-block-start: 100%; inset-inline-start: 50%; }
@@ -574,7 +575,13 @@ button.cc-p-doe__status:focus-visible, .cc-p-doe__badge-btn:focus-visible { outl
 .cc-p-doe__cell:hover > .cc-p-doe__addc, .cc-p-doe__cell.is-selected > .cc-p-doe__addc, .cc-p-doe__cell:focus-within > .cc-p-doe__addc {
   opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1);
 }
-.cc-p-doe__addc:hover { background: var(--ao-surface-brand); transform: translate(-50%, -50%) scale(1.1); }
+/* on a selected cell the + borders follow the cell's brand border */
+.cc-p-doe__cell.is-selected > .cc-p-doe__addc { border-color: var(--ao-border-brand); }
+/* subtle on the cell; lagoon only when the + itself is hovered or focused */
+.cc-p-doe__cell > .cc-p-doe__addc:hover, .cc-p-doe__cell > .cc-p-doe__addc:focus-visible {
+  background: var(--ao-btn-primary-bg); border-color: var(--ao-btn-primary-bg); color: var(--ao-btn-primary-text);
+  transform: translate(-50%, -50%) scale(1.15);
+}
 .cc-p-doe__addc:focus-visible { outline: 2px solid var(--ao-surface-brand); outline-offset: 2px; }
 .cc-p-doe__cell:hover, .cc-p-doe__cell.is-selected, .cc-p-doe__cell:focus-within { z-index: 2; }
 .cc-p-doe--tile-drag .cc-p-doe__addc { display: none; }
