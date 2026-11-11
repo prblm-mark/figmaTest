@@ -1016,7 +1016,8 @@
 
   /* ── Drag a picker tile onto any cell on the canvas to fill it (Mark, 2026-11-11). */
   var tileDrag = null;
-  function clearTileDrop() { document.querySelectorAll('.cc-p-doe__cell--drop').forEach(function (n) { n.classList.remove('cc-p-doe__cell--drop'); }); }
+  function clearTileDrop() { document.querySelectorAll('.cc-p-doe__cell--drop').forEach(function (n) { n.classList.remove('cc-p-doe__cell--drop'); n.removeAttribute('data-drop-label'); }); }
+  function tileDragMode(on) { var r = document.getElementById('doe-root'); if (r) r.classList.toggle('cc-p-doe--tile-drag', on); }
   function tileDropCell(ev) {
     var cellEl = ev.target.closest && ev.target.closest('#doe-root .cc-p-doe__cell[data-cell]');
     return cellEl && findCell(cellEl.getAttribute('data-cell')) ? cellEl : null;
@@ -1025,7 +1026,7 @@
     var t = ev.target.closest && ev.target.closest('#doe-root .cc-p-doe__pick[data-choose]');
     if (!t) return;
     tileDrag = { kind: t.getAttribute('data-kind'), name: t.getAttribute('data-choose') };
-    S.menu = ''; hideTip();
+    S.menu = ''; hideTip(); tileDragMode(true);
     if (ev.dataTransfer) { ev.dataTransfer.effectAllowed = 'copy'; ev.dataTransfer.setData('text/plain', tileDrag.name); }
   });
   document.addEventListener('dragover', function (ev) {
@@ -1035,12 +1036,15 @@
     if (!cellEl) return;
     ev.preventDefault();
     if (ev.dataTransfer) ev.dataTransfer.dropEffect = 'copy';
+    /* Say what the drop will do: fill a blank cell, or replace what is there. */
+    var cur = findCell(cellEl.getAttribute('data-cell')).cell;
+    cellEl.setAttribute('data-drop-label', cur.type ? (cur.type === tileDrag.name ? 'Already ' + tileDrag.name : 'Replace with ' + tileDrag.name) : 'Add ' + tileDrag.name);
     cellEl.classList.add('cc-p-doe__cell--drop');
   });
   document.addEventListener('drop', function (ev) {
     if (!tileDrag) return;
     var cellEl = tileDropCell(ev), td = tileDrag;
-    clearTileDrop(); tileDrag = null;
+    clearTileDrop(); tileDrag = null; tileDragMode(false);
     if (!cellEl) return;
     ev.preventDefault();
     var id = cellEl.getAttribute('data-cell');
@@ -1048,7 +1052,7 @@
     S.select = id;            // the dropped-on cell becomes the selection, so the picker ticks its new content
     render();
   });
-  document.addEventListener('dragend', function () { if (tileDrag) { tileDrag = null; clearTileDrop(); } });
+  document.addEventListener('dragend', function () { if (tileDrag) { tileDrag = null; clearTileDrop(); } tileDragMode(false); });
 
   /* ── Drag and drop: a cell is draggable only while the pointer is down on its grip (lion's approach). */
   var drag = null;
@@ -1265,7 +1269,11 @@
       else if (act === 'pickImage') { S.vals[id] = 'hero-banner.webp'; markDirty(); }   // mock media picker
       else if (act === 'clearImage') { delete S.vals[id]; markDirty(); }
       else if (act === 'clear') { S.menu = (openMenu === 'clear:' + id ? '' : 'clear:' + id); selectCell(id); }
-      else if (act === 'clearContent' || act === 'clearProps' || act === 'clearBoth') { clearCell(id, act === 'clearContent' ? 'content' : act === 'clearProps' ? 'props' : 'both'); }
+      else if (act === 'clearContent' || act === 'clearProps' || act === 'clearBoth') {
+        clearCell(id, act === 'clearContent' ? 'content' : act === 'clearProps' ? 'props' : 'both');
+        /* A cell left without content opens Cell Content, ready to fill (Mark, 2026-11-11). */
+        if (act !== 'clearProps') { S.select = id; S.panel = 'content'; S.kindTab = ''; S.modal = false; }
+      }
       else if (act === 'moveLeft' || act === 'moveRight' || act === 'moveUp' || act === 'moveDown') { menuMove(id, act.slice(4).toLowerCase()); }
       else if (act === 'bp') { S.bp = id; }
       else if (act === 'nested') { S.nested = id; S.select = ''; S.panel = ''; S.modal = false; }
