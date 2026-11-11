@@ -553,3 +553,39 @@ button.cc-p-doe__status:focus-visible, .cc-p-doe__badge-btn:focus-visible { outl
 .cc-p-doe__crumb-do { font-size: var(--ao-font-fixed-xs); font-weight: var(--ao-font-semibold); white-space: nowrap; }
 .cc-p-doe__dos-menu .cc-p-doe__menu-sep { display: block; }
 .cc-p-doe--s1 .cc-p-doe__name { font-size: var(--ao-font-fixed-2xs); }   /* cell names one step smaller (Mark, 2026-11-10); baseline keeps lion's 14px */
+
+/* Step 7: add a cell from the canvas — round + buttons straddle the edges of the hovered / selected
+   cell (only the directions lion allows). Top / bottom add a new row; left / right add beside. */
+.cc-p-doe__addc {
+  position: absolute; z-index: 4; display: inline-flex; align-items: center; justify-content: center;
+  inline-size: var(--ao-spacing-6); block-size: var(--ao-spacing-6); padding: 0;
+  border: 2px solid var(--ao-surface-primary); border-radius: var(--ao-radius-full);
+  background: var(--ao-btn-primary-bg); color: var(--ao-btn-primary-text); box-shadow: var(--ao-shadow-sm); cursor: pointer;
+  opacity: 0; pointer-events: none; transform: translate(-50%, -50%) scale(0.85);
+  transition: opacity var(--ao-transition-fast), transform var(--ao-transition-fast);
+}
+/* a 44px hit area around the 24px button */
+.cc-p-doe__addc::before { content: ""; position: absolute; inset: calc(-1 * var(--ao-spacing-2)); border-radius: var(--ao-radius-full); }
+.cc-p-doe__addc svg { width: var(--ao-icon-size-xs); height: var(--ao-icon-size-xs); }
+.cc-p-doe__addc--top    { inset-block-start: 0;    inset-inline-start: 50%; }
+.cc-p-doe__addc--bottom { inset-block-start: 100%; inset-inline-start: 50%; }
+.cc-p-doe__addc--left   { inset-block-start: 50%;  inset-inline-start: 0; }
+.cc-p-doe__addc--right  { inset-block-start: 50%;  inset-inline-start: 100%; }
+.cc-p-doe__cell:hover > .cc-p-doe__addc, .cc-p-doe__cell.is-selected > .cc-p-doe__addc, .cc-p-doe__cell:focus-within > .cc-p-doe__addc {
+  opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1);
+}
+.cc-p-doe__addc:hover { background: var(--ao-surface-brand); transform: translate(-50%, -50%) scale(1.1); }
+.cc-p-doe__addc:focus-visible { outline: 2px solid var(--ao-surface-brand); outline-offset: 2px; }
+.cc-p-doe__cell:hover, .cc-p-doe__cell.is-selected, .cc-p-doe__cell:focus-within { z-index: 2; }
+.cc-p-doe--tile-drag .cc-p-doe__addc { display: none; }
+/* Step 7 cell menu: "Add cell" direction buttons in a 2×2 grid */
+.cc-p-doe__menu-dirs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ao-spacing-1); padding: 0 var(--ao-spacing-2) var(--ao-spacing-1); }
+.cc-p-doe__menu-dir {
+  display: inline-flex; align-items: center; gap: var(--ao-spacing-1); block-size: var(--ao-spacing-7); padding: 0 var(--ao-spacing-2);
+  border: 1px solid var(--ao-border-primary); border-radius: var(--ao-radius-sm); background: var(--ao-surface-primary);
+  color: var(--ao-text-primary); font: inherit; font-size: var(--ao-font-fixed-2xs); font-weight: var(--ao-font-medium); cursor: pointer;
+}
+.cc-p-doe__menu-dir svg { width: var(--ao-icon-size-xs); height: var(--ao-icon-size-xs); color: var(--ao-icon-secondary); }
+.cc-p-doe__menu-dir:hover { border-color: var(--ao-border-brand); color: var(--ao-text-brand); }
+.cc-p-doe__menu-dir:hover svg { color: var(--ao-icon-brand); }
+.cc-p-doe__menu-dir:focus-visible { outline: 2px solid var(--ao-surface-brand); outline-offset: 1px; }

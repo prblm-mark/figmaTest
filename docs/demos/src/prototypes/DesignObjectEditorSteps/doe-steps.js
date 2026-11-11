@@ -10,6 +10,8 @@
  *   5  row structure: each row a labelled, filled box; property-panel groups boxed the same way
  *   6  editor layout: compact editor bar replaces the CC top nav + page header (breakpoints move into it);
  *      the properties panel docks full-height on the right instead of floating as a card
+ *   7  add cell on the canvas: + buttons on a hovered / selected cell's edges, and direction buttons
+ *      in the cell menu, replace the Add Cell radio panel
  * Steps come from ?steps=1,2,… and the demo gear menu; the URL updates so each state is linkable.
  * TODO(backend:DesignObjectEditor): visual-only mock — no save, no real DO data. */
 (function () {
@@ -156,6 +158,9 @@
           ? '<span class="cc-p-doe__badges">' + (c.incomplete ? '' : '<button type="button" class="cc-p-doe__flag" data-act="toggleDone" data-id="' + c.id + '" title="Mark incomplete" aria-label="Mark ' + esc(c.name) + ' incomplete">' + ic('flag') + '</button>') + badges + '</span>'
           : (badges ? '<span class="cc-p-doe__badges">' + badges + '</span>' : '') + (showStatus && !badges ? status : '')) + '</div>' +
       '<div class="cc-p-doe__tools">' + tools + '</div>' +
+      (on(7) ? addDirs(c).map(function (d) {
+        return '<button type="button" class="cc-p-doe__addc cc-p-doe__addc--' + d[0] + '" data-act="addAt" data-id="' + c.id + '" data-where="' + d[0] + '" title="' + d[2] + '" aria-label="' + d[2] + '">' + ic('plus') + '</button>';
+      }).join('') : '') +
     '</section>';
   }
   /* Clear (lion, 2026-11-10): a menu of Clear Content / Clear Properties / Clear Both. */
@@ -310,11 +315,20 @@
     var items = S.menu === '__doc'
       /* Named so they can't be mistaken for editing the design object's layout (Mark, 2026-11-10). */
       ? [['plus', 'Create new design object'], ['file-pen-line', 'Edit details'], null, ['copy', 'Copy design object'], ['list', 'Go to list']]
-      : [['plus', 'Add Cell', 'addCell'], ['trash-2', 'Delete Cell', 'deleteCell'], ['scissors', 'Cut Content', 'cutCell'], ['copy', 'Copy Content', 'copyCell']]
+      : (on(7) ? [] : [['plus', 'Add Cell', 'addCell']]).concat([['trash-2', 'Delete Cell', 'deleteCell']]).concat([, ['scissors', 'Cut Content', 'cutCell'], ['copy', 'Copy Content', 'copyCell']])
           .concat(S.clip ? [['clipboard-paste', 'Paste Content', 'pasteCell']] : [])
           .concat(on(4) ? [(findCell(S.menu) || {}).cell && findCell(S.menu).cell.incomplete ? ['flag-off', 'Mark complete', 'toggleDone'] : ['flag', 'Mark incomplete', 'toggleDone']] : [])
           .concat(moveItems(S.menu));
-    return '<div class="dropdown__panel cc-p-doe__menu" role="menu">' + '<ul class="dropdown__list">' + items.map(function (i) {
+    /* Step 7: "Add cell" is a row of direction buttons at the top of the cell menu — one click adds. */
+    var addHead = '';
+    if (on(7) && S.menu !== '__doc') {
+      var hm = findCell(S.menu), dirs = addDirs(hm && hm.cell);
+      var DIR_IC = { top: 'arrow-up', bottom: 'arrow-down', left: 'arrow-left', right: 'arrow-right' };
+      if (dirs.length) addHead = '<p class="cc-p-doe__menu-head">Add cell</p><div class="cc-p-doe__menu-dirs">' + dirs.map(function (d) {
+        return '<button type="button" class="cc-p-doe__menu-dir" role="menuitem" data-act="addAt" data-id="' + S.menu + '" data-where="' + d[0] + '" title="' + d[2] + '">' + ic(DIR_IC[d[0]]) + '<span>' + d[1] + '</span></button>';
+      }).join('') + '</div><span class="cc-p-doe__menu-sep" role="separator"></span>';
+    }
+    return '<div class="dropdown__panel cc-p-doe__menu" role="menu">' + addHead + '<ul class="dropdown__list">' + items.map(function (i) {
       if (!i) return '<li role="separator" class="cc-p-doe__menu-sep"></li>';
       return '<li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem"' + (i[2] ? ' data-act="' + i[2] + '" data-id="' + S.menu + '"' : ' data-act="noop"') + '>' + ic(i[0]) + '<span data-text="' + i[1] + '">' + i[1] + '</span></button></li>';
     }).join('') + '</ul></div>';
@@ -403,14 +417,18 @@
   }
   /* Add Cell (lion §12): Above / Below unless the design object being edited is a Cell type; Left / Right
      unless the selected cell is a lone Row-type design object. Adds a Blank Cell. */
-  function addCellPanel() {
-    var hit = findCell(S.select), nc = nestedCell();
+  /* The directions a cell can be added in beside cell c: [where, label, description]. */
+  function addDirs(c) {
+    var nc = nestedCell(), out = [];
     var vertical = !(nc && (nc.doType || doTypeOf(nc.type)) === 'Cell');
-    var lone = hit && loneLayout(hit.cell);
-    var opts = [];
-    if (vertical) opts.push(['top', 'Above'], ['bottom', 'Below']);
-    if (!lone) opts.push(['left', 'Left'], ['right', 'Right']);
-    var def = vertical ? 'bottom' : 'left';
+    if (vertical) out.push(['top', 'Above', 'Add a cell in a new row above'], ['bottom', 'Below', 'Add a cell in a new row below']);
+    if (!(c && loneLayout(c))) out.push(['left', 'Left', 'Add a cell to the left'], ['right', 'Right', 'Add a cell to the right']);
+    return out;
+  }
+  function addCellPanel() {
+    var hit = findCell(S.select);
+    var opts = addDirs(hit && hit.cell);
+    var def = opts.length && opts[0][0] === 'top' ? 'bottom' : 'left';
     var radios = opts.map(function (o) {
       return '<label class="radio"><input type="radio" class="radio__input" name="add" value="' + o[0] + '"' + (o[0] === def ? ' checked' : '') + '><span class="radio__indicator"></span><span class="radio__label"><span class="radio__label-text">' + o[1] + '</span></span></label>';
     }).join('');
@@ -421,7 +439,7 @@
     var n = { id: 'c-new-' + (++newSeq), name: 'Blank Cell', kind: 'de', type: '', dcc: 0, span: 12 };
     if (where === 'top' || where === 'bottom') rows.splice(at.i + (where === 'bottom' ? 1 : 0), 0, { id: 'r-new-' + newSeq, name: 'Row', cells: [n] });
     else rows[at.i].cells.splice(at.j + (where === 'right' ? 1 : 0), 0, n);
-    S.select = n.id; S.panel = 'cellProps';   // the new cell opens straight into its properties (Mark, 2026-11-10)
+    S.select = n.id; S.panel = 'content'; S.kindTab = ''; S.modal = false;   // a new cell is blank, so it opens Cell Content (Mark, 2026-11-11)
     markDirty();
   }
   function contentPanel(c) {
@@ -812,7 +830,8 @@
   function selectCell(id) {
     S.select = id;
     if (S.panel === 'rowProps' || S.panel === 'addCell') S.panel = 'cellProps';
-    if (S.panel === 'content' && !findCell(id).cell.incomplete) S.panel = 'cellProps';
+    var sc = findCell(id).cell;
+    if (S.panel === 'content' && !sc.incomplete && sc.type) S.panel = 'cellProps';   // a blank cell keeps Cell Content open
   }
 
   function nestedBanner() {
@@ -1260,6 +1279,7 @@
       else if (act === 'cutCell') { cellOp('cut', id); }
       else if (act === 'copyCell') { cellOp('copy', id); }
       else if (act === 'pasteCell') { cellOp('paste', id); }
+      else if (act === 'addAt') { S.select = id; addCellAt(a.dataset.where); }
       else if (act === 'addCellSave') { var w = document.querySelector('input[name="add"]:checked'); if (w) addCellAt(w.value); }
       else if (act === 'noop') { if (openMenu && openMenu.indexOf('__') !== 0) markDirty(); }
       else if (act === 'switchDo') {
@@ -1386,7 +1406,7 @@
   });
 
   /* Demo gear menu: one switch per step. */
-  var LABELS = ['Step 1 · Buttons & element icons', 'Step 2 · Element picker', 'Step 3 · Settings modal', 'Step 4 · Selection & chips', 'Step 5 · Row structure', 'Step 6 · Editor layout'];
+  var LABELS = ['Step 1 · Buttons & element icons', 'Step 2 · Element picker', 'Step 3 · Settings modal', 'Step 4 · Selection & chips', 'Step 5 · Row structure', 'Step 6 · Editor layout', 'Step 7 · Add cell on canvas'];
   if (window.demoToolbar) {
     window.demoToolbar.addControls(LABELS.map(function (l, i) {
       return { label: l, id: 'step' + (i + 1), active: on(i + 1), onClick: function (btn) {
@@ -1400,7 +1420,7 @@
         btn.classList.toggle('active', on(n));
         render();
       } };
-    }).concat([{ label: 'All steps on', onClick: function () { location.search = '?steps=1,2,3,4,5,6'; } },
+    }).concat([{ label: 'All steps on', onClick: function () { location.search = '?steps=1,2,3,4,5,6,7'; } },
                { label: 'Baseline (all off)', onClick: function () { location.search = ''; } }]));
   }
   render();
