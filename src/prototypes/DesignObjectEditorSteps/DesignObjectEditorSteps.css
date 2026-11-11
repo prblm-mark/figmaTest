@@ -471,13 +471,18 @@ body.doe-s6 .cc-control__actions { display: none; }
 .cc-p-doe__grip:active { cursor: grabbing; }
 
 /* Cell / Clear / editor-bar menus: compact (Mark, 2026-11-10). Items use the DS Size=XS dropdown
-   item (32px rows, 13px text, 12px icons); the panel itself is tightened to match. */
+   item (12px icons), with text and rows taken down a step below; the panel itself is tightened to match. */
 .cc-p-doe__menu.dropdown__panel {
   min-inline-size: 0; inline-size: max-content; padding: var(--ao-spacing-1);
   border: 1px solid var(--ao-border-secondary); border-radius: var(--ao-radius-sm); box-shadow: var(--ao-shadow-lg);
   background: var(--ao-surface-elevated-1);
 }
-.cc-p-doe__menu .dropdown-item--xs { border-radius: var(--ao-radius-xs); }
+/* One step smaller again (Mark, 2026-11-11): 12px text and 28px rows (was 13px / 32px), so the menus sit at the
+   same scale as the inspector (11–12px labels, 24px chips) rather than above it. */
+.cc-p-doe__menu .dropdown-item--xs {
+  border-radius: var(--ao-radius-xs); gap: var(--ao-spacing-2);
+  padding: var(--ao-spacing-1) var(--ao-spacing-2); font-size: var(--ao-font-fixed-3xs); line-height: var(--ao-leading-sm);
+}
 .cc-p-doe__menu .cc-p-doe__menu-sep { margin: var(--ao-spacing-1) 0; }
 
 /* Audit fixes (lion, 2026-11-10) */
@@ -524,7 +529,7 @@ button.cc-p-doe__status:focus-visible, .cc-p-doe__badge-btn:focus-visible { outl
 .cc-p-doe__bp-trigger .cc-p-doe__bp-chev { width: var(--ao-icon-size-xs); height: var(--ao-icon-size-xs); color: var(--ao-icon-secondary); }
 .cc-p-doe__bp-trigger:hover, .cc-p-doe__bp-trigger[aria-expanded="true"] { border-color: var(--ao-border-contrast); background: var(--ao-surface-minimal); }
 .cc-p-doe__bp-trigger:focus-visible { outline: 2px solid var(--ao-surface-brand); outline-offset: 1px; }
-.cc-p-doe__menu-head { margin: 0; padding: var(--ao-spacing-1) var(--ao-spacing-2) var(--ao-spacing-2); color: var(--ao-text-contrast); font-size: var(--ao-font-fixed-4xs); font-weight: var(--ao-font-semibold); white-space: nowrap; }
+.cc-p-doe__menu-head { margin: 0; padding: var(--ao-spacing-1) var(--ao-spacing-2); color: var(--ao-text-contrast); font-size: var(--ao-font-fixed-4xs); font-weight: var(--ao-font-semibold); white-space: nowrap; }
 .cc-p-doe__bp-menu .dropdown-item { font-variant-numeric: tabular-nums; }
 .cc-p-doe__bp-menu .dropdown-item.is-current { color: var(--ao-text-brand); font-weight: var(--ao-font-semibold); }
 .cc-p-doe__bp-tag { padding: 0 var(--ao-spacing-1); border-radius: var(--ao-radius-xs); background: var(--ao-surface-minimal); color: var(--ao-text-contrast); font-size: var(--ao-font-fixed-5xs); font-weight: var(--ao-font-medium); }
@@ -588,11 +593,15 @@ button.cc-p-doe__status:focus-visible, .cc-p-doe__badge-btn:focus-visible { outl
 /* Step 7 cell menu: "Add cell" direction buttons in a 2×2 grid */
 .cc-p-doe__menu-dirs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ao-spacing-1); padding: 0 var(--ao-spacing-2) var(--ao-spacing-1); }
 .cc-p-doe__menu-dir {
-  display: inline-flex; align-items: center; gap: var(--ao-spacing-1); block-size: var(--ao-spacing-7); padding: 0 var(--ao-spacing-2);
+  display: inline-flex; align-items: center; gap: var(--ao-spacing-1); block-size: var(--ao-spacing-6); padding: 0 var(--ao-spacing-2);
   border: 1px solid var(--ao-border-primary); border-radius: var(--ao-radius-sm); background: var(--ao-surface-primary);
-  color: var(--ao-text-primary); font: inherit; font-size: var(--ao-font-fixed-2xs); font-weight: var(--ao-font-medium); cursor: pointer;
+  color: var(--ao-text-primary); font: inherit; font-size: var(--ao-font-fixed-3xs); font-weight: var(--ao-font-medium); cursor: pointer;
 }
 .cc-p-doe__menu-dir svg { width: var(--ao-icon-size-xs); height: var(--ao-icon-size-xs); color: var(--ao-icon-secondary); }
-.cc-p-doe__menu-dir:hover { border-color: var(--ao-border-brand); color: var(--ao-text-brand); }
-.cc-p-doe__menu-dir:hover svg { color: var(--ao-icon-brand); }
+.cc-p-doe__menu-dir:disabled { opacity: 0.4; cursor: not-allowed; }
+.cc-p-doe__menu-dir:not(:disabled):hover { border-color: var(--ao-border-brand); color: var(--ao-text-brand); }
+.cc-p-doe__menu-dir:not(:disabled):hover svg { color: var(--ao-icon-brand); }
 .cc-p-doe__menu-dir:focus-visible { outline: 2px solid var(--ao-surface-brand); outline-offset: 1px; }
+/* A wrapping chip field (Exclude for): the label sits on the first chip line, not the middle of the block */
+.cc-p-doe-insp .doe-field:has(> .doe-field__ctl > .doe-chips) { align-items: start; }
+.cc-p-doe-insp .doe-field:has(> .doe-field__ctl > .doe-chips) > .doe-field__label { display: flex; align-items: center; min-block-size: var(--ao-spacing-6); }   /* = chip height (24px) */
