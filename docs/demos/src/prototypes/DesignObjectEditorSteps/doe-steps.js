@@ -148,11 +148,13 @@
     var span = BASE_SPAN[c.id] || (S.nested && c.span) || 12;
     return '<section class="record-section cc-p-doe__cell' + (selected ? ' is-selected' : '') + (c.incomplete ? ' is-incomplete' : '') + (hiddenNow(c) ? ' is-hidden-bp' : '') + '" style="--span:' + span + '" data-cell="' + c.id + '">' +
       '<div class="cc-p-doe__cell-head">' + '<span class="cc-p-doe__grip" data-doe-grip title="Drag to move">' + ic('grip-vertical') + '</span>' + head +
-        (badges ? '<span class="cc-p-doe__badges">' + badges + '</span>' : '') +
         /* Step 4: "complete" is the normal state, so it shows nothing; a flag to mark the cell incomplete
-           appears on hover / selection (Mark, 2026-11-10). The baseline keeps lion's tick. */
-        (on(4) ? (c.incomplete ? '' : '<button type="button" class="cc-p-doe__flag" data-act="toggleDone" data-id="' + c.id + '" title="Mark incomplete" aria-label="Mark ' + esc(c.name) + ' incomplete">' + ic('flag') + '</button>')
-               : (showStatus && !badges ? status : '')) + '</div>' +
+           appears on hover / selection (Mark, 2026-11-10). It leads the label group, in the slot the
+           Incomplete label takes, so flagging doesn't jump and other labels sit hard right (2026-11-11).
+           The baseline keeps lion's tick. */
+        (on(4)
+          ? '<span class="cc-p-doe__badges">' + (c.incomplete ? '' : '<button type="button" class="cc-p-doe__flag" data-act="toggleDone" data-id="' + c.id + '" title="Mark incomplete" aria-label="Mark ' + esc(c.name) + ' incomplete">' + ic('flag') + '</button>') + badges + '</span>'
+          : (badges ? '<span class="cc-p-doe__badges">' + badges + '</span>' : '') + (showStatus && !badges ? status : '')) + '</div>' +
       '<div class="cc-p-doe__tools">' + tools + '</div>' +
     '</section>';
   }
