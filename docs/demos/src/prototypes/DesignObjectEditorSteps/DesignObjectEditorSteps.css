@@ -267,7 +267,7 @@ body.doe-s6 #doe-root { block-size: 100%; }
 
 .cc-p-doe__ebar {
   flex: none; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--ao-spacing-4);
-  block-size: var(--ao-spacing-9); padding: 0 var(--ao-spacing-3);
+  block-size: var(--ao-spacing-9); padding: 0 var(--ao-spacing-3) 0 var(--ao-spacing-5);   /* 16px before the breadcrumb (Mark, 2026-11-11) */
   background: var(--ao-surface-primary); border-bottom: 1px solid var(--ao-border-secondary);
 }
 .cc-p-doe__ebar-left, .cc-p-doe__ebar-centre, .cc-p-doe__ebar-right { display: flex; align-items: center; gap: var(--ao-spacing-2); min-inline-size: 0; }
