@@ -647,3 +647,57 @@ button.cc-p-doe__status:focus-visible, .cc-p-doe__badge-btn:focus-visible { outl
    spilling over the next cell. */
 .cc-p-doe--s6 .cc-p-doe__tools { flex-wrap: wrap; min-inline-size: 0; }
 .cc-p-doe--s6 .cc-p-doe__cell-head { min-inline-size: 0; overflow: hidden; }
+/* Narrow cells (Mark, 2026-11-12). Lion draws 100px / 50px cells and their buttons wrap and clip.
+   Instead of a big floor that hides the real structure, each cell keeps its own width and:
+   1. never goes under --doe-cell-floor: room for the element icon and the width tag;
+   2. under 160px of content (doe-cell container, kept in step with COMPACT_MAX in doe-steps.js) shows
+      only icon + width tag (the name stays for screen readers); selecting it raises a bar above it
+      with the name, drag handle and all its tools (.cc-p-doe__selbar);
+   3. when the floor is what's holding it open, its end edge goes dashed and the width tag says so.
+   .cc-p-doe--floor-wide swaps in a 16rem floor so the two can be compared from the demo menu. */
+.cc-p-doe--s6 { --doe-cell-floor: var(--ao-spacing-13); }
+.cc-p-doe--s6.cc-p-doe--floor-wide { --doe-cell-floor: calc(var(--ao-spacing-5) * 16); }
+.cc-p-doe--s6 .cc-p-doe__cell.record-section {
+  min-inline-size: max(var(--cell-min, 0px), var(--doe-cell-floor));
+  container: doe-cell / inline-size;
+}
+.cc-p-doe--s6 .cc-p-doe__cell.is-widened { border-inline-end-style: dashed; }
+.cc-p-doe--s6 .cc-p-doe__cell.is-widened .cc-p-doe__wtag { text-decoration: underline dotted; text-underline-offset: var(--ao-spacing-0-5); }
+/* Selection bar for compact cells (Mark, 2026-11-12), after the first prototype's row toolbar
+   (DesignObjectEditor.css .doe-sel): brand tag with icon, name and width, then the cell's tools on a
+   raised strip. Sits above the cell, outside it, so the cell itself stays at its true width. */
+.cc-p-doe__selbar { display: none; }
+.cc-p-doe__selbar {
+  position: absolute; inset-block-end: 100%; inset-inline-start: -1px; z-index: 6;
+  align-items: center; gap: var(--ao-spacing-1); margin-block-end: var(--ao-spacing-1); white-space: nowrap;
+}
+.cc-p-doe__selbar.is-end { inset-inline-start: auto; inset-inline-end: -1px; }
+.cc-p-doe__selbar-tag {
+  display: inline-flex; align-items: center; gap: var(--ao-spacing-1);
+  block-size: var(--ao-spacing-7); padding: 0 var(--ao-spacing-2); border-radius: var(--ao-radius-sm);
+  background: var(--ao-surface-brand); color: var(--ao-btn-primary-text);
+  font-size: var(--ao-font-fixed-4xs); font-weight: var(--ao-font-semibold);
+}
+.cc-p-doe__selbar-tag svg { width: var(--ao-icon-size-xs); height: var(--ao-icon-size-xs); }
+.cc-p-doe__selbar-tag--do { background: var(--ao-accent-purple-solid); color: var(--ao-accent-purple-solid-fg); }
+.cc-p-doe__selbar-w { font-weight: var(--ao-font-regular); font-variant-numeric: tabular-nums; opacity: 0.85; }
+.cc-p-doe__selbar-tools {
+  display: inline-flex; align-items: center; gap: var(--ao-spacing-0-5); padding: var(--ao-spacing-0-5);
+  border-radius: var(--ao-radius-sm); background: var(--ao-surface-primary); box-shadow: var(--ao-shadow-md);
+}
+.cc-p-doe__selbar-tools .cc-p-doe__grip { margin: 0; padding: 0 var(--ao-spacing-0-5); }
+.cc-p-doe__selbar-tools .cc-p-doe__menu-wrap { display: inline-flex; }
+@container doe-cell (max-width: 160px) {
+  .cc-p-doe--s6 .cc-p-doe__cell-head { flex-wrap: wrap; gap: var(--ao-spacing-1); }
+  .cc-p-doe--s6 .cc-p-doe__cell-head .cc-p-doe__name {
+    position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+  .cc-p-doe--s6 .cc-p-doe__cell-head .cc-p-doe__badges,
+  .cc-p-doe--s6 .cc-p-doe__cell-head .cc-p-doe__status,
+  .cc-p-doe--s6 .cc-p-doe__cell-head .cc-p-doe__grip,
+  .cc-p-doe--s6 .cc-p-doe__cell-head .cc-p-doe__wtag svg,
+  .cc-p-doe--s6 .cc-p-doe__cell > .cc-p-doe__tools,
+  .cc-p-doe--s6 .cc-p-doe__cell.is-selected > .cc-p-doe__addc--top { display: none; }
+  .cc-p-doe--s6 .cc-p-doe__cell-head .cc-p-doe__wtag { display: block; flex: 0 1 auto; min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; }
+  .cc-p-doe--s6 .cc-p-doe__cell.is-selected > .cc-p-doe__selbar { display: flex; }
+}

@@ -31,6 +31,8 @@
     clip: null,
     saveState: 'idle',   // idle | saving | saved
     bp: 'fluid',
+    floor: params.get('floor') === 'wide' ? 'wide' : '',   // '' = true widths + compact cells; 'wide' = a 16rem floor, to compare
+    narrow: params.get('narrow') === '1',                  // demo: Row 3's cells at 100px / 50px
     panelW: readW()
   };
   /* Docked panel width (step 6), remembered per browser. Starts at its narrowest (Mark, 2026-11-11);
@@ -150,7 +152,15 @@
       '<span class="cc-p-doe__menu-wrap">' + tool('ellipsis-vertical', 'Cell actions', 'menu', c.id) + '</span>';
     var span = BASE_SPAN[c.id] || (S.nested && c.span) || 12;
     var box = on(6) ? cellBoxStyle(c) : '';
-    return '<section class="record-section cc-p-doe__cell' + (selected ? ' is-selected' : '') + (c.incomplete ? ' is-incomplete' : '') + (hiddenNow(c) ? ' is-hidden-bp' : '') + '" style="--span:' + span + (box ? ';' + box : '') + '" data-cell="' + c.id + '">' +
+    /* Step 6, compact cells (Mark, 2026-11-12): a cell too narrow for its head and buttons shows just
+       its icon + width; selecting it raises this bar above it (tag + the cell's own tools), as the
+       first prototype's row toolbar did. The CSS shows it only on a selected compact cell. */
+    var w6 = on(6) ? resolveAt(c.id, 'w', '') : '';
+    var selbar = on(6) ? '<div class="cc-p-doe__selbar" role="toolbar" aria-label="' + esc(c.name) + '">' +
+      '<span class="cc-p-doe__selbar-tag cc-p-doe__selbar-tag--' + c.kind + '">' + ic(elIcon(c)) + '<span class="cc-p-doe__selbar-name">' + esc(c.name) + '</span>' +
+        (w6 && lenOk('width', w6) ? '<span class="cc-p-doe__selbar-w">' + esc(w6) + '</span>' : '') + '</span>' +
+      '<span class="cc-p-doe__selbar-tools"><span class="cc-p-doe__grip" data-doe-grip title="Drag to move">' + ic('grip-vertical') + '</span>' + tools + '</span></div>' : '';
+    return '<section class="record-section cc-p-doe__cell' + (selected ? ' is-selected' : '') + (c.incomplete ? ' is-incomplete' : '') + (hiddenNow(c) ? ' is-hidden-bp' : '') + '" style="--span:' + span + (box ? ';' + box : '') + '" data-cell="' + c.id + '">' + selbar +
       '<div class="cc-p-doe__cell-head">' + '<span class="cc-p-doe__grip" data-doe-grip title="Drag to move">' + ic('grip-vertical') + '</span>' + head + (on(6) ? widthTag(c) : '') +
         /* Step 4: "complete" is the normal state, so it shows nothing; a flag to mark the cell incomplete
            appears on hover / selection (Mark, 2026-11-10). It leads the label group, in the slot the
@@ -410,7 +420,10 @@
       return v === 'auto' && prop === 'width' ? '100%' : v;
     };
     var wv = pct(w, 'width'); if (wv) out.push('--cell-w:' + wv);
-    var mn = pct(minW, 'min-width'); if (mn) out.push('min-inline-size:' + mn);
+    /* a length min goes through --cell-min, so the CSS can keep the narrow-cell floor under it;
+       a keyword (auto, fit-content…) is set straight on the box */
+    var mn = pct(minW, 'min-width');
+    if (mn) out.push(lenSplit(minW).kind === 'text' && !/^(calc|min|max|clamp)\(/.test(minW) ? 'min-inline-size:' + mn : '--cell-min:' + mn);
     var mx = pct(maxW, 'max-width'); if (mx) out.push('max-inline-size:' + mx);
     /* height only ever grows the card, so its own controls stay visible */
     var hv = [h, minH].filter(function (v) { return v && lenOk('min-height', v) && lenSplit(v).kind !== 'text' || /^calc|^min|^max|^clamp/.test(v || ''); });
@@ -797,9 +810,13 @@
     var tmp = document.createElement('div'); tmp.innerHTML = cellHtml(hit.cell, hit.row);
     var fresh = tmp.firstElementChild;
     el.setAttribute('style', fresh.getAttribute('style'));
-    var oldTag = el.querySelector('.cc-p-doe__wtag'), newTag = fresh.querySelector('.cc-p-doe__wtag');
+    var oldTag = el.querySelector('.cc-p-doe__cell-head .cc-p-doe__wtag'), newTag = fresh.querySelector('.cc-p-doe__wtag');
     if (oldTag) oldTag.remove();
-    if (newTag) { el.querySelector('.cc-p-doe__name').after(newTag); if (window.lucide) lucide.createIcons(); }
+    if (newTag) el.querySelector('.cc-p-doe__cell-head .cc-p-doe__name').after(newTag);
+    var oldBar = el.querySelector('.cc-p-doe__selbar'), newBar = fresh.querySelector('.cc-p-doe__selbar');
+    if (oldBar && newBar) { oldBar.replaceWith(newBar); adoptTitles(newBar); }
+    if (window.lucide) lucide.createIcons();
+    markCells();
   }
   function lenUnitOf(input) { var b = input.parentNode.querySelector('.cc-p-doe-len__unit'); return b && !b.hidden ? b.textContent.trim() : vget(input.getAttribute('data-k') + '~unit', 'px'); }
   function lenSetUnit(btn, u) {
@@ -1082,7 +1099,7 @@
     render._panelKey = panelKey;
     document.getElementById('doe-root').innerHTML =
       (s6 ? editorBar() : '') +
-      '<div class="cc-p-doe' + (on(1) ? ' cc-p-doe--s1' : '') + (on(4) ? ' cc-p-doe--s4' : '') + (on(5) ? ' cc-p-doe--s5' : '') + (s6 ? ' cc-p-doe--s6' : '') + (panel ? ' has-panel' : '') + '">' +
+      '<div class="cc-p-doe' + (on(1) ? ' cc-p-doe--s1' : '') + (on(4) ? ' cc-p-doe--s4' : '') + (on(5) ? ' cc-p-doe--s5' : '') + (s6 ? ' cc-p-doe--s6' : '') + (s6 && S.floor === 'wide' ? ' cc-p-doe--floor-wide' : '') + (panel ? ' has-panel' : '') + '">' +
         '<div class="cc-p-doe__canvas">' + (s6 ? '' : bar) +
           nestedBanner() + '<div class="cc-p-doe__rows"' + (bpWidth() ? ' style="max-inline-size:' + bpWidth() + 'px"' : '') + '>' + canvasRows().map(rowHtml).join('') + '</div>' +
         '</div>' + panel +
@@ -1108,13 +1125,57 @@
     placeMenu();
     if (S.menu === '__dos') { var ds = document.querySelector('[data-dos-search]'); if (ds) ds.focus(); }
     applyW();
+    measureCells();
     syncUrl();
+  }
+  /* Narrow cells (Mark, 2026-11-12). Cells keep their true width on the canvas; CSS gives each one a
+     usability floor (--doe-cell-floor) and, under COMPACT_MAX of content width, a compact head (a
+     container query on doe-cell). This marks the same state for JS: .is-compact moves the cell's
+     buttons into a bar raised on selection, .is-widened says the floor has made the cell wider than its own width,
+     so the canvas never claims a size the page won't have. Keep COMPACT_MAX in step with the CSS. */
+  var COMPACT_MAX = 160;
+  var cellRO = window.ResizeObserver ? new ResizeObserver(function () { markCells(); }) : null;
+  function measureCells() {
+    if (!cellRO) return;
+    cellRO.disconnect();
+    var shell = document.querySelector('.cc-p-doe--s6');
+    if (!shell) return;
+    cellRO.observe(shell.querySelector('.cc-p-doe__canvas') || shell);
+    markCells();
+  }
+  function markCells() {
+    var shell = document.querySelector('.cc-p-doe--s6');
+    if (!shell) return;
+    var probe = document.createElement('div');
+    probe.style.cssText = 'position:absolute;visibility:hidden;inline-size:var(--doe-cell-floor)';
+    shell.appendChild(probe);
+    var floor = probe.getBoundingClientRect().width;
+    probe.remove();
+    var canvas = shell.querySelector('.cc-p-doe__canvas'), cr = canvas && canvas.getBoundingClientRect();
+    shell.querySelectorAll('.cc-p-doe__cell[data-cell]').forEach(function (el) {
+      /* the bar opens rightwards from the cell; near the canvas's right edge it opens leftwards */
+      var bar = el.querySelector('.cc-p-doe__selbar');
+      if (bar && cr) { bar.classList.remove('is-end'); var br = bar.getBoundingClientRect(); if (br.width && br.right > cr.right - 8) bar.classList.add('is-end'); }
+      var cs = getComputedStyle(el), w = el.getBoundingClientRect().width;
+      var content = el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      var compact = content <= COMPACT_MAX;
+      el.classList.toggle('is-compact', compact);
+      /* the floor is what's holding the cell open, unless the cell asked for exactly that width */
+      var id = el.getAttribute('data-cell'), own = resolveAt(id, 'w', '') || resolveAt(id, 'maxW', '');
+      var p = own ? lenSplit(own) : null, asked = p && p.kind === 'num' && p.unit === 'px' && Math.abs(+p.num - floor) < 1;
+      var widened = !!own && Math.abs(w - floor) < 1 && !asked;
+      el.classList.toggle('is-widened', widened);
+      var tag = el.querySelector('.cc-p-doe__cell-head .cc-p-doe__wtag');
+      if (tag) {
+        var base = 'Width ' + own + (bpWidth() ? ' at ' + bpLabel() : '');
+        tag.setAttribute('title', widened ? base + ' — drawn at ' + Math.round(floor) + 'px so its controls fit' : base);
+      }
+    });
   }
   function placeMenu() {
     var menu = document.querySelector('#doe-pop-root .cc-p-doe__menu');
-    var trigger = S.menu && (S.menu.indexOf('clear:') === 0
-      ? document.querySelector('[data-act="clear"][data-id="' + S.menu.slice(6) + '"]')
-      : document.querySelector('[data-act="menu"][data-id="' + S.menu + '"]'));
+    var sel = S.menu && (S.menu.indexOf('clear:') === 0 ? '[data-act="clear"][data-id="' + S.menu.slice(6) + '"]' : '[data-act="menu"][data-id="' + S.menu + '"]');
+    var trigger = sel && [].filter.call(document.querySelectorAll(sel), function (b) { return b.getClientRects().length; })[0];
     if (!menu || !trigger) return;
     var r = trigger.getBoundingClientRect(), gap = 4;
     var h = menu.offsetHeight, w = menu.offsetWidth;
@@ -1130,6 +1191,8 @@
     if (S.panel) p.set('panel', S.panel);
     if (S.modal) p.set('modal', '1');
     if (S.nested) p.set('nested', S.nested);
+    if (S.floor) p.set('floor', S.floor);
+    if (S.narrow) p.set('narrow', '1');
     var q = p.toString();
     history.replaceState(null, '', location.pathname + (q ? '?' + q : ''));
   }
@@ -1666,7 +1729,14 @@
         btn.classList.toggle('active', on(n));
         render();
       } };
-    }).concat([{ label: 'All steps on', onClick: function () { location.search = '?steps=1,2,3,4,5,6,7'; } },
+    }).concat([
+      { label: 'Step 6 · Narrow sample: Row 3 at 100px / 50px', id: 'narrow', active: S.narrow, onClick: function (btn) {
+        S.narrow = !S.narrow; seedNarrow(); btn.classList.toggle('active', S.narrow); render();
+      } },
+      { label: 'Step 6 · Compare: 16rem floor instead of compact cells', id: 'floorwide', active: S.floor === 'wide', onClick: function (btn) {
+        S.floor = S.floor === 'wide' ? '' : 'wide'; btn.classList.toggle('active', S.floor === 'wide'); render();
+      } },
+      { label: 'All steps on', onClick: function () { location.search = '?steps=1,2,3,4,5,6,7'; } },
                { label: 'Baseline (all off)', onClick: function () { location.search = ''; } }]));
   }
   /* Seed Fluid widths from the sample's spans, so the width-driven canvas (step 6) starts as before:
@@ -1676,6 +1746,14 @@
     var sp = BASE_SPAN[c.id] || (inNested && c.span && c.span < 12 ? c.span : 0);
     if (sp && !has(c.id + '|w')) S.vals[c.id + '|w'] = (Math.round(sp / 12 * 10000) / 100) + '%';
   }); });
+  /* Demo: the narrow cells lion has (100px / 50px), on Row 3's six cells, at Fluid. */
+  var NARROW = { 'c-prime': '', 'c-al': '100px', 'c-contacts': '50px', 'c-el': '100px', 'c-artcar': '50px', 'c-medcar': '100px' };
+  function seedNarrow() {
+    Object.keys(NARROW).forEach(function (id) {
+      if (S.narrow && NARROW[id]) S.vals[id + '|w'] = NARROW[id]; else if (!S.narrow) delete S.vals[id + '|w'];
+    });
+  }
+  if (S.narrow) seedNarrow();
   H.cur = snap();   // the opening state is the bottom of the undo history
   render();
 })();
