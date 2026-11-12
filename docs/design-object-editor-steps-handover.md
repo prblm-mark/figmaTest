@@ -21,7 +21,7 @@
 | Any combination | `?steps=1,4,6` … The demo gear menu toggles each step, and the URL keeps up, so every state can be linked |
 
 Other parameters open a state directly: `select=<cell id>`, `panel=cellProps|rowProps|content|addCell`,
-`modal=1`, `menu=<cell id>`, `nested=<cell id>`.
+`modal=1`, `menu=<cell id>`, `nested=<cell id>`, `narrow=1` (narrow sample cells), `floor=wide` (16rem floor, for comparison).
 
 | What | Where |
 |---|---|
@@ -158,7 +158,40 @@ Applies to width, min and max width, height, min height, margins, padding and th
 - No width means full width, and `auto` also means full width.
 - Height only ever grows the card, so the cell's own controls stay visible.
 - A **width tag** (↔ value) shows in the header of any cell that has a width.
-- Narrow cells wrap their tools and clip their header rather than spill into the next cell.
+- Narrow cells: see **3a** below (replaces the old "wrap their tools and clip their header").
+
+### 3a. Narrow cells: true widths, compact cells, small floor (added 2026-11-12, TASK-612796)
+**Replaces the 16rem cell minimum.** A 16rem floor fixed the cramped tools but made a row of 100px / 50px cells
+look like a row of 16rem cells, so the canvas stopped showing the real structure. Instead:
+
+1. **Floor: 5rem (`--ao-spacing-13`).** A cell never draws under it; it's room for the element icon and the width
+   tag. It sits *under* the cell's own Min: `min-inline-size: max(var(--cell-min, 0px), var(--doe-cell-floor))`.
+   The JS passes a length Min as `--cell-min` (a keyword Min such as `fit-content` goes straight on the box).
+2. **Compact cell under 160px of content width.** Each cell is a container (`container: doe-cell / inline-size`);
+   `@container doe-cell (max-width: 160px)` shows **only the element icon and the width value** (no arrow). The
+   name is visually hidden (still read by screen readers); chips, status, grip and the whole tool row are hidden.
+   Container queries measure the content box, so the JS mirrors the same 160px (`COMPACT_MAX`) on
+   `clientWidth − padding`.
+3. **Selection bar.** Selecting a compact cell raises a bar **above** the cell (absolute, `bottom: 100%`), after the
+   first prototype's row toolbar: a brand tag (element icon + name + width; purple for a design object) and a
+   raised strip with the **drag handle and the cell's own tools** (properties, edit, go into, clear, ⋮). The cell
+   itself keeps its true width. Near the canvas's right edge the bar opens leftwards (`.is-end`). The top "+"
+   is hidden while the bar shows (Add above is in the ⋮ menu). Every tool works from the bar, including drag.
+4. **"Drawn wider" mark.** When the floor is what's holding a cell open (e.g. a 50px cell drawn at 80px), its end
+   border goes dashed, the width value gets a dotted underline, and the tooltip reads
+   "Width 50px — drawn at 80px so its controls fit". Measured with a `ResizeObserver` on the canvas, since the
+   column changes with the panel and side menu, not only the window.
+5. Cells wider than 160px are unchanged: full head, chips and tool row as before.
+
+**Against your current build:** drop the 16rem minimum and the "chips icon-only under 22rem" rule; the compact
+cell replaces both. Keep the width tag's Min/Max (≥ / ≤) in the full head and the selection bar. Hidden-at-this-
+breakpoint cells are a separate open question for Mark; until he decides, draw them at their own width (floored
+at 5rem), dimmed, as any other cell.
+
+Compare in the prototype (demo gear menu, or URL):
+- Compact cells: `?steps=1,2,3,4,5,6,7&narrow=1&select=c-contacts`
+- The 16rem floor, for comparison: add `&floor=wide`
+- `narrow=1` sets Row 3's cells to 100px / 50px to show the problem.
 
 ### 4. Per-breakpoint overrides (cascade)
 - The breakpoint-specific properties are stored per breakpoint:
